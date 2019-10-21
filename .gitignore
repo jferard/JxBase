@@ -1,0 +1,13 @@
+target/
+out/
+
+# eclipse
+.classpath
+.project
+.settings
+
+# intellij
+.idea
+*.iml
+
+
