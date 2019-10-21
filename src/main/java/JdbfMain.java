@@ -1,3 +1,19 @@
+/*
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,13 +24,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.iryndin.jdbf.core.DbfFileTypeEnum;
-import net.iryndin.jdbf.core.DbfMetadata;
-import net.iryndin.jdbf.core.DbfRecord;
-import net.iryndin.jdbf.reader.DbfReader;
-import net.iryndin.jdbf.util.DbfMetadataUtils;
-import net.iryndin.jdbf.util.JdbfUtils;
-import net.iryndin.jdbf.writer.DbfWriter;
+import com.github.jferard.jxbase.core.DbfFileTypeEnum;
+import com.github.jferard.jxbase.core.DbfMetadata;
+import com.github.jferard.jxbase.core.DbfRecord;
+import com.github.jferard.jxbase.reader.DbfReader;
+import com.github.jferard.jxbase.util.DbfMetadataUtils;
+import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.writer.DbfWriter;
 
 
 public class JdbfMain {
@@ -37,11 +53,11 @@ public class JdbfMain {
 		Charset stringCharset = Charset.forName("Cp866");
 		//File file = new File("data/215451/gds_im.dbf");
 		File file = new File("data/215451/tir_im.dbf");
-		net.iryndin.jdbf.reader.DbfReader reader = new net.iryndin.jdbf.reader.DbfReader(file);
+		com.github.jferard.jxbase.reader.DbfReader reader = new com.github.jferard.jxbase.reader.DbfReader(file);
 		DbfMetadata meta = reader.getMetadata();
 		System.out.println(meta);
-		net.iryndin.jdbf.core.DbfRecord rec = null;
-		List<net.iryndin.jdbf.core.DbfRecord> recs = new ArrayList<net.iryndin.jdbf.core.DbfRecord>(10);
+		com.github.jferard.jxbase.core.DbfRecord rec = null;
+		List<com.github.jferard.jxbase.core.DbfRecord> recs = new ArrayList<com.github.jferard.jxbase.core.DbfRecord>(10);
 		List<Map<String,Object>> maps = new ArrayList<Map<String,Object>>();
 		while ((rec = reader.read()) != null) {
 			rec.setStringCharset(stringCharset);
@@ -60,9 +76,9 @@ public class JdbfMain {
 		meta1.setRecordsQty(maps.size());
 		//meta1.setRecordsQty(1);
 		FileOutputStream out = new FileOutputStream("2.dbf"); 
-		net.iryndin.jdbf.writer.DbfWriter writer = new net.iryndin.jdbf.writer.DbfWriter(meta1,out);
+		com.github.jferard.jxbase.writer.DbfWriter writer = new com.github.jferard.jxbase.writer.DbfWriter(meta1,out);
 		writer.setStringCharset("Cp866");
-//		for (net.iryndin.jdbf.core.DbfRecord r : recs) {
+//		for (com.github.jferard.jxbase.core.DbfRecord r : recs) {
 //			writer.write(rec);
 //		}
 		
