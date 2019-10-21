@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.DoubleBinaryOperator;
 
 public class DbfMetadataUtils {
 
@@ -106,7 +108,7 @@ public class DbfMetadataUtils {
     }
 
     public static void readFields(DbfMetadata metadata, InputStream inputStream) throws IOException {
-        List<DbfField> fields = new ArrayList<>();
+        List<DbfField> fields = new ArrayList<DbfField>();
         byte[] fieldBytes = new byte[JdbfUtils.FIELD_RECORD_LENGTH];
         int headerLength = 0;
         int fieldLength = 0;

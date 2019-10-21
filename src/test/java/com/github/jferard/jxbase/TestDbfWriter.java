@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,9 +33,9 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class TestDbfWriter {
-    private final Map<String, Object> valueMap = new HashMap<>();
+    private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private String filePath;
-    private List<DbfField> fields = new ArrayList<>();
+    private List<DbfField> fields = new ArrayList<DbfField>();
 
     public DbfField addCharDBFField(String name, int length) {
         final DbfField fld = new DbfField();

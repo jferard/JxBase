@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +21,6 @@ import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.core.DbfRecord;
 import com.github.jferard.jxbase.reader.DbfReader;
 import com.github.jferard.jxbase.util.JdbfUtils;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -35,9 +35,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class TestDbfReader {
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
-	
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
     public void test1() throws IOException, ParseException {
         Charset stringCharset = Charset.forName("Cp866");
@@ -45,7 +45,8 @@ public class TestDbfReader {
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/gds_im.dbf");
 
         DbfRecord rec;
-        try (DbfReader reader = new DbfReader(dbf)) {
+        DbfReader reader = new DbfReader(dbf);
+        try {
             DbfMetadata meta = reader.getMetadata();
 
             assertEquals(5, meta.getRecordsQty());
@@ -62,6 +63,8 @@ public class TestDbfReader {
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
             }
+        } finally {
+            reader.close();
         }
     }
 
@@ -72,7 +75,8 @@ public class TestDbfReader {
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/tir_im.dbf");
 
         DbfRecord rec;
-        try (DbfReader reader = new DbfReader(dbf)) {
+        DbfReader reader = new DbfReader(dbf);
+        try {
             DbfMetadata meta = reader.getMetadata();
 
             assertEquals(1, meta.getRecordsQty());
@@ -89,91 +93,106 @@ public class TestDbfReader {
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
             }
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testEmptyStream() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {});
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(new byte[]{});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testOneByteStreamWithGoodFileType() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {0x02});
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testOneByteStreamWithBadFileType() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {0x02});
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testSixteenByteStreamWithGoodFileType() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2});
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testThirtyTwoByteStreamWithGoodFileType() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 });
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testSixtyFourByteStreamWithGoodFileType() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2 });
-    	exception.expect(IOException.class);
-    	exception.expectMessage("The file is corrupted or is not a dbf file");
-        try (DbfReader reader = new DbfReader(dbf)) {
+        InputStream dbf = new ByteArrayInputStream(
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2});
+        exception.expect(IOException.class);
+        exception.expectMessage("The file is corrupted or is not a dbf file");
+        DbfReader reader = new DbfReader(dbf);
+        try {
+        } finally {
+            reader.close();
         }
     }
-    
+
     @Test
     public void testSixtyFourByteStreamWithGoodFileTypeAndCloseHeader() throws IOException {
-    	InputStream dbf = new ByteArrayInputStream(new byte[] {
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 
-    			JdbfUtils.HEADER_TERMINATOR });
-        try (DbfReader reader = new DbfReader(dbf)) {
-        	assertNull(reader.read());
+        InputStream dbf = new ByteArrayInputStream(
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, JdbfUtils.HEADER_TERMINATOR});
+        DbfReader reader = new DbfReader(dbf);
+        try {
+            assertNull(reader.read());
+        } finally {
+            reader.close();
         }
     }
 }

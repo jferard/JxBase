@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,7 +91,7 @@ public class DbfMetadata {
 	}
 	
 	private void processFields(List<DbfField> fields) {
-		fieldMap = new LinkedHashMap<>(fields.size()*2);
+		fieldMap = new LinkedHashMap<String, DbfField>(fields.size()*2);
 		int offset = 1;
 		for (DbfField f : fields) {
 			// 1. count offset

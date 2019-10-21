@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,38 +41,43 @@ public class TestMemo {
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("memo1/texto.dbf");
         FileInputStream memo = new FileInputStream(getClass().getClassLoader().getResource("memo1/texto.fpt").getFile());
 
-        try (DbfReader reader = new DbfReader(dbf, memo)) {
-            DbfMetadata meta = reader.getMetadata();
-            System.out.println("Read DBF Metadata: " + meta);
+        try {
+            DbfReader reader = new DbfReader(dbf, memo);
+            try {
+                DbfMetadata meta = reader.getMetadata();
+                System.out.println("Read DBF Metadata: " + meta);
 
-            assertEquals(5, meta.getField("TEXVER").getLength());
-            assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXVER").getType());
+                assertEquals(5, meta.getField("TEXVER").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXVER").getType());
 
-            assertEquals(4, meta.getField("TEXTEX").getLength());
-            assertEquals(DbfFieldTypeEnum.Memo, meta.getField("TEXTEX").getType());
+                assertEquals(4, meta.getField("TEXTEX").getLength());
+                assertEquals(DbfFieldTypeEnum.Memo, meta.getField("TEXTEX").getType());
 
-            assertEquals(8, meta.getField("TEXDAT").getLength());
-            assertEquals(DbfFieldTypeEnum.Date, meta.getField("TEXDAT").getType());
+                assertEquals(8, meta.getField("TEXDAT").getLength());
+                assertEquals(DbfFieldTypeEnum.Date, meta.getField("TEXDAT").getType());
 
-            assertEquals(1, meta.getField("TEXSTA").getLength());
-            assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXSTA").getType());
+                assertEquals(1, meta.getField("TEXSTA").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXSTA").getType());
 
-            assertEquals(254, meta.getField("TEXCAM").getLength());
-            assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXCAM").getType());
+                assertEquals(254, meta.getField("TEXCAM").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXCAM").getType());
 
-            DbfRecord rec;
-            while ((rec = reader.read()) != null) {
-                rec.setStringCharset(stringCharset);
+                DbfRecord rec;
+                while ((rec = reader.read()) != null) {
+                    rec.setStringCharset(stringCharset);
 
-                System.out.println("Record is DELETED: " + rec.isDeleted());
-                System.out.println("TEXVER: " + rec.getString("TEXVER"));
-                System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX"));
-                System.out.println("TEXDAT: " + rec.getDate("TEXDAT"));
-                System.out.println("TEXSTA: " + rec.getString("TEXSTA"));
-                System.out.println("TEXCAM: " + rec.getString("TEXCAM"));
-                System.out.println("++++++++++++++++++++++++++++++++++");
+                    System.out.println("Record is DELETED: " + rec.isDeleted());
+                    System.out.println("TEXVER: " + rec.getString("TEXVER"));
+                    System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX"));
+                    System.out.println("TEXDAT: " + rec.getDate("TEXDAT"));
+                    System.out.println("TEXSTA: " + rec.getString("TEXSTA"));
+                    System.out.println("TEXCAM: " + rec.getString("TEXCAM"));
+                    System.out.println("++++++++++++++++++++++++++++++++++");
+                }
+
+            } finally {
+                reader.close();
             }
-
         } catch (IOException e) {
             //e.printStackTrace();
         } catch (ParseException e) {
