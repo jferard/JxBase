@@ -158,4 +158,53 @@ public class DbfRecordTest {
                 record.getStringRepresentation());
     }
 
+    @Test
+    public void testGetBytes() throws IOException {
+        DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
+        Assert.assertArrayEquals(new byte[]{97, 98, 99, 100}, record.getBytes());
+    }
+
+    @Test
+    public void testGetBoolean() throws IOException {
+        MemoRecord mrec = Mockito.mock(MemoRecord.class);
+        final DbfField ft = DbfField.fromStringRepresentation("x,L,1,0");
+        final DbfField ff = DbfField.fromStringRepresentation("y,L,1,0");
+        ff.setOffset(1);
+
+        Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
+        Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
+        Mockito.when(md.getField("x")).thenReturn(ft);
+        Mockito.when(md.getField("y")).thenReturn(ff);
+
+        DbfRecord record = new DbfRecord("tf".getBytes(ASCII), md, mr, 2);
+        Assert.assertTrue(record.getBoolean("x"));
+        Assert.assertFalse(record.getBoolean("y"));
+    }
+
+    @Test
+    public void testGetInteger() throws IOException {
+        MemoRecord mrec = Mockito.mock(MemoRecord.class);
+        final DbfField f = DbfField.fromStringRepresentation("x,I,4,0");
+
+        Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
+        Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
+        Mockito.when(md.getField("x")).thenReturn(f);
+
+        DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
+        Assert.assertEquals(Integer.valueOf(1684234849), record.getInteger("x"));
+    }
+
+    @Test
+    public void testFieldBytes() throws IOException {
+        MemoRecord mrec = Mockito.mock(MemoRecord.class);
+        final DbfField f = DbfField.fromStringRepresentation("x,I,4,0");
+
+        Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
+        Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
+        Mockito.when(md.getField("x")).thenReturn(f);
+
+        DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
+        System.out.println(Arrays.toString(record.getBytes("x")));
+        Assert.assertArrayEquals(new byte[] {97, 98, 99, 100}, record.getBytes("x"));
+    }
 }

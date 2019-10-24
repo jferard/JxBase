@@ -23,6 +23,7 @@ import com.github.jferard.jxbase.util.JdbfUtils;
 
 import java.io.*;
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -40,7 +41,7 @@ import java.nio.channels.FileChannel.MapMode;
  */
 public class MemoReader implements Closeable {
     private MemoFileHeader memoHeader;
-    private MappedByteBuffer memoByteBuffer;
+    private ByteBuffer memoByteBuffer;
 
     public MemoReader(File memoFile) throws IOException {
         this(new FileInputStream(memoFile));
