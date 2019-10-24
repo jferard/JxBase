@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
@@ -38,6 +39,12 @@ public class IOUtilsTest {
     }
 
     @Test
+    public void testToByteArray() throws IOException {
+        Assert.assertArrayEquals(new byte[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+                IOUtils.toByteArray(this.in));
+    }
+
+    @Test
     public void readFullyAVoidArray() throws Exception {
         byte[] bs = new byte[0];
         Assert.assertEquals(0, IOUtils.readFully(in, bs));
@@ -51,9 +58,7 @@ public class IOUtilsTest {
         byte[] bs = new byte[5];
         Assert.assertEquals(5, IOUtils.readFully(in, bs));
 
-        byte[] ret = new byte[5];
-        Arrays.fill(ret, (byte) 15);
-        Assert.assertArrayEquals(ret, bs);
+        Assert.assertArrayEquals(new byte[]{15, 15, 15, 15, 15}, bs);
     }
 
     @Test
@@ -61,9 +66,7 @@ public class IOUtilsTest {
         byte[] bs = new byte[10];
         Assert.assertEquals(10, IOUtils.readFully(in, bs));
 
-        byte[] ret = new byte[10];
-        Arrays.fill(ret, (byte) 15);
-        Assert.assertArrayEquals(ret, bs);
+        Assert.assertArrayEquals(new byte[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15}, bs);
     }
 
     @Test

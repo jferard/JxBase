@@ -1,5 +1,4 @@
 /*
- * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase;
+package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.core.DbfField;
 import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
@@ -32,7 +31,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class TestDbfWriter {
+public class DbfWriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private String filePath;
     private List<DbfField> fields = new ArrayList<DbfField>();
