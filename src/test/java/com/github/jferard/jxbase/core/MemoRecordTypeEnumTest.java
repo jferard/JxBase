@@ -19,19 +19,12 @@ package com.github.jferard.jxbase.core;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DbfFileTypeEnumTest {
+public class MemoRecordTypeEnumTest {
     @Test
-    public void testFomInt() {
-        Assert.assertEquals(DbfFileTypeEnum.FoxBASE1, DbfFileTypeEnum.fromInt((byte) 0x02));
+    public void testFromInt() {
+        Assert.assertEquals(MemoRecordTypeEnum.IMAGE, MemoRecordTypeEnum.fromInt(0x00));
+        Assert.assertEquals(MemoRecordTypeEnum.TEXT, MemoRecordTypeEnum.fromInt(0x01));
+        Assert.assertNull(MemoRecordTypeEnum.fromInt(0x02));
     }
 
-    @Test
-    public void testFomIntNoValue() {
-        Assert.assertNull(DbfFileTypeEnum.fromInt((byte) 0xFF));
-    }
-
-    @Test
-    public void testToByte() {
-        Assert.assertEquals((byte) 0x8B, DbfFileTypeEnum.dBASEIV3.toByte());
-    }
 }

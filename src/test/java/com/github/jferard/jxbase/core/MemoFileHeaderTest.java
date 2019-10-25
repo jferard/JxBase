@@ -19,19 +19,19 @@ package com.github.jferard.jxbase.core;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DbfFileTypeEnumTest {
+import java.nio.charset.Charset;
+
+public class MemoFileHeaderTest {
     @Test
-    public void testFomInt() {
-        Assert.assertEquals(DbfFileTypeEnum.FoxBASE1, DbfFileTypeEnum.fromInt((byte) 0x02));
+    public void testBlockAndNext() {
+        MemoFileHeader memoFileHeader = MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
+        Assert.assertEquals(26472, memoFileHeader.getBlockSize());
+        Assert.assertEquals(1633837924, memoFileHeader.getNextFreeBlockLocation());
     }
 
     @Test
-    public void testFomIntNoValue() {
-        Assert.assertNull(DbfFileTypeEnum.fromInt((byte) 0xFF));
-    }
-
-    @Test
-    public void testToByte() {
-        Assert.assertEquals((byte) 0x8B, DbfFileTypeEnum.dBASEIV3.toByte());
+    public void testToString() {
+        MemoFileHeader memoFileHeader = MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
+        Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=1633837924, blockSize=26472}", memoFileHeader.toString());
     }
 }

@@ -34,8 +34,9 @@ public class DbfMetadataUtilsTest {
         DbfField f = DbfField.fromStringRepresentation("x,C,1,0");
 
         final DbfMetadata metadata = DbfMetadataUtils.fromFields(Arrays.asList(f), DbfFileTypeEnum.FoxBASEPlus1);
+        metadata.setUpdateDate(new Date(1234567891011L));
         Assert.assertEquals("DbfMetadata [\n" + "  type=FoxBASEPlus1, \n" +
-                "  updateDate=2019-10-24, \n" + "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
+                "  updateDate=2009-02-14, \n" + "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
                 "  oneRecordLength=2, \n" + "  uncompletedTxFlag=0, \n" + "  ecnryptionFlag=0, \n" +
                 "  fields=x,C,1,0\n]", metadata.toString());
     }
@@ -43,8 +44,9 @@ public class DbfMetadataUtilsTest {
     @Test
     public void testFromFieldsString() throws IOException {
         final DbfMetadata metadata = DbfMetadataUtils.fromFieldsString("x,C,1,0");
+        metadata.setUpdateDate(new Date(1234567891011L));
         Assert.assertEquals("DbfMetadata [\n" + "  type=FoxBASEPlus1, \n" +
-                "  updateDate=2019-10-24, \n" + "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
+                "  updateDate=2009-02-14, \n" + "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
                 "  oneRecordLength=2, \n" + "  uncompletedTxFlag=0, \n" + "  ecnryptionFlag=0, \n" +
                 "  fields=x,C,1,0\n]", metadata.toString());
     }
