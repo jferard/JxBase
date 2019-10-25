@@ -1,5 +1,5 @@
 /*
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
