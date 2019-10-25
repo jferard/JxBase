@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.util;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -87,5 +88,14 @@ public class IOUtilsTest {
         byte[] ret = new byte[100];
         Arrays.fill(ret, 5, 15, (byte) 15);
         Assert.assertArrayEquals(ret, bs);
+    }
+
+    @Test
+    public void readFully() throws Exception {
+        byte[] bs = new byte[100];
+        final InputStream is = Mockito.mock(InputStream.class);
+
+        Mockito.when(is.read(Mockito.eq(bs), Mockito.anyInt(), Mockito.anyInt())).thenReturn(1);
+        Assert.assertEquals(10, IOUtils.readFully(is, bs, 5, 10));
     }
 }

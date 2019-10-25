@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,20 @@ public class JdbfUtilsTest {
     public void testCreateFieldsFromString() {
         final List<DbfField> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|y,M,4,4");
+        Assert.assertEquals(2, fieldsFromString.size());
+        Assert.assertEquals(
+                "DbfField [\n" + "  name=x, \n" + "  type=Integer, \n" + "  length=10, \n" +
+                        "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]",
+                fieldsFromString.get(0).toString());
+        Assert.assertEquals("DbfField [\n" + "  name=y, \n" + "  type=Memo, \n" + "  length=4, \n" +
+                        "  numberOfDecimalPlaces=4, \n" + "  offset=0\n" + "]",
+                fieldsFromString.get(1).toString());
+    }
+
+    @Test
+    public void testCreateFieldsFromStringWithEmptyOne() {
+        final List<DbfField> fieldsFromString =
+                JdbfUtils.createFieldsFromString("x,I,10,2|   |y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
         Assert.assertEquals(
                 "DbfField [\n" + "  name=x, \n" + "  type=Integer, \n" + "  length=10, \n" +
@@ -68,19 +83,66 @@ public class JdbfUtilsTest {
     }
 
     @Test
-    public void testCompareMaps() {
+    public void testCompareMapsDifferentSize() {
         Map<String, Object> m1 = new HashMap<String, Object>();
         m1.put("a", 1);
         m1.put("b", 2);
         Map<String, Object> m2 = new HashMap<String, Object>();
-        m1.put("a", 1);
-        m1.put("c", 3);
+        m2.put("a", 1);
         Assert.assertFalse(JdbfUtils.compareMaps(m1, m2));
+    }
+
+    @Test
+    public void testCompareMapsDifferentKeys() {
+        Map<String, Object> m1 = new HashMap<String, Object>();
+        m1.put("a", 1);
+        m1.put("b", 2);
+        Map<String, Object> m2 = new HashMap<String, Object>();
+        m2.put("a", 1);
+        m2.put("c", 3);
+        Assert.assertFalse(JdbfUtils.compareMaps(m1, m2));
+    }
+
+    @Test
+    public void testCompareMapsDifferentValues() {
+        Map<String, Object> m1 = new HashMap<String, Object>();
+        m1.put("a", 1);
+        m1.put("b", 2);
+        Map<String, Object> m2 = new HashMap<String, Object>();
+        m2.put("a", 1);
+        m2.put("b", 3);
+        Assert.assertFalse(JdbfUtils.compareMaps(m1, m2));
+    }
+
+    @Test
+    public void testCompareMapsEqual() {
+        Map<String, Object> m1 = new HashMap<String, Object>();
+        m1.put("a", 1);
+        m1.put("b", 2);
+        Map<String, Object> m2 = new HashMap<String, Object>();
+        m2.put("a", 1);
+        m2.put("b", 2);
+        Assert.assertTrue(JdbfUtils.compareMaps(m1, m2));
+    }
+
+    @Test
+    public void testCompareObjects() {
+        final Object o = new Object();
+        Assert.assertTrue(JdbfUtils.compareObjects(null, null));
+        Assert.assertFalse(JdbfUtils.compareObjects(o, null));
+        Assert.assertFalse(JdbfUtils.compareObjects(null, o));
+        Assert.assertTrue(JdbfUtils.compareObjects(o, o));
     }
 
     @Test
     public void testWriteJulianDate() {
         Assert.assertArrayEquals(new byte[]{0, 0, -101, -48, 0, 28, -38, -72},
                 JdbfUtils.writeJulianDate(new Date(1234567891011L)));
+    }
+
+    @Test
+    public void testWriteJulianDateHuge() {
+        Assert.assertArrayEquals(new byte[]{-84, 74, -104, -34, 0, 102, -115, -24},
+                JdbfUtils.writeJulianDate(new Date(1234567891011121314L)));
     }
 }
