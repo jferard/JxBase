@@ -136,14 +136,18 @@ public class DbfWriterTest {
     }
 
     @Test
-    public void TestWriteIL() throws IOException {
+    public void TestWriteILFDoubleNull() throws IOException {
         final DbfField f1 = DbfField.fromStringRepresentation("x,I,1,2");
         f1.setOffset(0);
         final DbfField f2 = DbfField.fromStringRepresentation("y,L,10,2");
         f2.setOffset(1);
+        final DbfField f3 = DbfField.fromStringRepresentation("z,F,10,2");
+        f3.setOffset(2);
+        final DbfField f4 = DbfField.fromStringRepresentation("t,F,10,2");
+        f4.setOffset(3);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
-        Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2));
+        Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
         Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
@@ -152,14 +156,19 @@ public class DbfWriterTest {
         Map<String, Object> m1 = new HashMap<String, Object>();
         m1.put("x", 5);
         m1.put("y", true);
+        m1.put("z", new Double(15.6));
+        m1.put("t", null);
         w.write(m1);
         Assert.assertArrayEquals(
                 new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 73, 0, 0, 0,
                         0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 76, 1, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        13, 0, 84, 0, 5, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
-                        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32}, bos.toByteArray());
+                        122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 2, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 3, 0, 0, 0,
+                        10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 84, 32, 49, 53, 44,
+                        54, 48, 48, 48, 48, 48, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+                        32, 32, 32, 32, 32}, bos.toByteArray());
     }
 
     private void testWriteUnsupported(String ch, String error) throws IOException {
@@ -177,5 +186,54 @@ public class DbfWriterTest {
         exception.expect(UnsupportedOperationException.class);
         exception.expectMessage(error);
         w.write(m1);
+    }
+
+    @Test
+    public void TestBigDecimal() throws IOException {
+        final DbfField f1 = DbfField.fromStringRepresentation("x,N,1,2");
+        f1.setOffset(0);
+
+        DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1));
+        Mockito.when(md.getOneRecordLength()).thenReturn(30);
+        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DbfWriter w = new DbfWriter(md, bos);
+        Map<String, Object> m1 = new HashMap<String, Object>();
+        m1.put("x", new BigDecimal(1234465646488L));
+        w.write(m1);
+        w.close();
+        Assert.assertArrayEquals(
+                new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0, 0,
+                        0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 49, 32, 32, 32, 32,
+                        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+                        32, 32, 32, 32, 32, 32}, bos.toByteArray());
+    }
+
+    @Test
+    public void setStringCharset() throws IOException {
+        final DbfField f1 = DbfField.fromStringRepresentation("x,C,1,2");
+        f1.setOffset(0);
+
+        DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1));
+        Mockito.when(md.getOneRecordLength()).thenReturn(30);
+        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        DbfWriter w = new DbfWriter(md, bos);
+        w.setStringCharset("ISO-8859-1");
+        Map<String, Object> m1 = new HashMap<String, Object>();
+        m1.put("x", "é");
+        w.write(m1);
+
+        Assert.assertArrayEquals(
+                new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 0, 0,
+                        0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, -23, 32, 32, 32, 32,
+                        32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
+                        32, 32, 32, 32, 32, 32}, bos.toByteArray());
     }
 }

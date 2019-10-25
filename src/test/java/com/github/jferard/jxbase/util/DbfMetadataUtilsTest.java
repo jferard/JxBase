@@ -85,4 +85,18 @@ public class DbfMetadataUtilsTest {
                 DbfMetadataUtils.createDbfField(
                         "name       I    éA".getBytes(Charset.forName("ISO-8859-1"))).toString());
     }
+
+    @Test
+    public void testFillHeaderFields() throws IOException {
+        DbfMetadata md = new DbfMetadata();
+        DbfMetadataUtils.fillHeaderFields(md,
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2});
+        Assert.assertEquals(
+                "DbfMetadata [\n" + "  type=FoxBASE1, \n" + "  updateDate=2002-02-02, \n" +
+                        "  recordsQty=33686018, \n" + "  fullHeaderLength=514, \n" +
+                        "  oneRecordLength=514, \n" + "  uncompletedTxFlag=2, \n" +
+                        "  ecnryptionFlag=2, \n" + "  fields=null\n" + "]", md.toString());
+
+    }
 }

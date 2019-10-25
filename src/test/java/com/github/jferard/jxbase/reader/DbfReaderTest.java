@@ -18,13 +18,18 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.util.JdbfUtils;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 import static org.junit.Assert.assertNull;
 
@@ -110,5 +115,33 @@ public class DbfReaderTest {
         } finally {
             reader.close();
         }
+    }
+
+    @Test
+    public void testMemoStream() throws IOException {
+        final byte[] buf =
+                {0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                        0x2, 'a', 'b', 'c', 'd', 0, 0, 0, 0, 0, 'L', 'L', 'L', 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0D};
+        Assert.assertEquals(65, buf.length);
+        InputStream dbf = new ByteArrayInputStream(buf);
+
+        FileInputStream fis = Mockito.mock(FileInputStream.class);
+        FileChannel fc = Mockito.mock(FileChannel.class);
+        MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+
+        Mockito.when(fis.getChannel()).thenReturn(fc);
+        Mockito.when(fc.size()).thenReturn(100L);
+        Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
+
+        DbfReader reader = new DbfReader(dbf, fis);
+        Assert.assertEquals(
+                "DbfMetadata [\n" + "  type=FoxBASE1, \n" + "  updateDate=2002-02-02, \n" +
+                        "  recordsQty=33686018, \n" + "  fullHeaderLength=514, \n" +
+                        "  oneRecordLength=514, \n" + "  uncompletedTxFlag=2, \n" +
+                        "  ecnryptionFlag=2, \n" + "  fields=abcd,L,0,0\n" + "]",
+                reader.getMetadata().toString());
+        reader.close();
     }
 }
