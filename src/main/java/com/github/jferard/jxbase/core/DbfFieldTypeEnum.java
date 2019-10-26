@@ -25,7 +25,7 @@ public enum DbfFieldTypeEnum {
      * Binary, a string 	10 digits representing a .DBT block number. The number is stored as a
      * string, right justified and padded with blanks.
      */
-    Binary('B'),
+    // Binary('B'),
 
     /**
      * Character 	All OEM code page characters - padded with blanks to the width of the field.
