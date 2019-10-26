@@ -29,7 +29,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DbfWriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -37,10 +41,7 @@ public class DbfWriterIT {
     private List<DbfField> fields = new ArrayList<DbfField>();
 
     public DbfField addCharDBFField(String name, int length) {
-        final DbfField fld = new DbfField();
-        fld.setName(name);
-        fld.setType(DbfFieldTypeEnum.Character);
-        fld.setLength(length);
+        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Character, length, 0);
         fields.add(fld);
         return fld;
     }
@@ -49,19 +50,13 @@ public class DbfWriterIT {
   lenght *= 2;*/
 
     public DbfField addNumDBFField(String name, int length, int decimal) {
-        final DbfField fld = new DbfField();
-        fld.setName(name);
-        fld.setType(DbfFieldTypeEnum.Numeric);
-        fld.setLength(length);
-        fld.setNumberOfDecimalPlaces(decimal);
+        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Numeric, length, decimal);
         fields.add(fld);
         return fld;
     }
 
     public DbfField addDateDBFField(String name) {
-        final DbfField fld = new DbfField();
-        fld.setName(name);
-        fld.setType(DbfFieldTypeEnum.Date);
+        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Date, 0, 0);
         fields.add(fld);
         return fld;
     }

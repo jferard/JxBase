@@ -37,7 +37,7 @@ public class DbfMetadataTest {
         Assert.assertEquals("DbfMetadata [\n" + "  type=null, \n" + "  updateDate=1970-01-01, \n" +
                         "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0,"
                         + " \n" +
-                        "  uncompletedTxFlag=0, \n" + "  ecnryptionFlag=0, \n" + "  fields=null\n"
+                        "  uncompletedTxFlag=0, \n" + "  encryptionFlag=0, \n" + "  fields=null\n"
                         + "]",
                 metadata.toString());
     }
@@ -52,7 +52,7 @@ public class DbfMetadataTest {
         metadata.setFields(Arrays.asList(f1, f2));
         Assert.assertEquals("DbfMetadata [\n" + "  type=null, \n" + "  updateDate=1970-01-01, \n" +
                 "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0," + " \n" +
-                "  uncompletedTxFlag=0, \n" + "  ecnryptionFlag=0, \n" +
+                "  uncompletedTxFlag=0, \n" + "  encryptionFlag=0, \n" +
                 "  fields=x,C,1,0|y,I,8,0\n" + "]", metadata.toString());
     }
 
@@ -87,10 +87,10 @@ public class DbfMetadataTest {
     }
 
     @Test
-    public void testGetEcnryptionFlag() {
+    public void testGetEncryptionFlag() {
         final DbfMetadata metadata = new DbfMetadata();
-        metadata.setEcnryptionFlag((byte) 10);
-        Assert.assertEquals(10, metadata.getEcnryptionFlag());
+        metadata.setEncryptionFlag((byte) 10);
+        Assert.assertEquals(10, metadata.getEncryptionFlag());
     }
 
     @Test

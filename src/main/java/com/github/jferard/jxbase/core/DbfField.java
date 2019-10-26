@@ -18,43 +18,50 @@ package com.github.jferard.jxbase.core;
 
 
 public class DbfField {
-	
-	private String name;
-	private DbfFieldTypeEnum type;
-	private int length;	
-	private int numberOfDecimalPlaces;
+	private final String name;
+	private final DbfFieldTypeEnum type;
+	private final int length;
+	private final int numberOfDecimalPlaces;
 	private int offset;
+
+	/**
+	 * @param name  the name of the field
+	 * @param type the type of the field
+	 * @param length the length of the field
+	 * @param numberOfDecimalPlaces the number of decimal places of the field
+	 */
+	public DbfField(String name, DbfFieldTypeEnum type, int length, int numberOfDecimalPlaces) {
+		this.name = name;
+		this.type = type;
+		this.length = length;
+		this.numberOfDecimalPlaces = numberOfDecimalPlaces;
+	}
+
 	
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public DbfFieldTypeEnum getType() {
 		return type;
 	}
-	public void setType(DbfFieldTypeEnum type) {
-		this.type = type;
-	}
+
 	public int getLength() {
 		return length;
 	}
-	public void setLength(int length) {
-		this.length = length;
-	}
+
 	public int getNumberOfDecimalPlaces() {
 		return numberOfDecimalPlaces;
 	}
-	public void setNumberOfDecimalPlaces(int numberOfDecimalPlaces) {
-		this.numberOfDecimalPlaces = numberOfDecimalPlaces;
-	}
+
 	public int getOffset() {
 		return offset;
 	}
+
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
+
 	@Override
 	public String toString() {
 		return "DbfField [\n  name=" + name + ", \n  type=" + type
@@ -74,11 +81,7 @@ public class DbfField {
 	public static DbfField fromStringRepresentation(String s) {
 		String[] a = s.split(",");
 		
-		DbfField f = new DbfField();
-		f.setName(a[0]);
-		f.setType(DbfFieldTypeEnum.fromChar(a[1].charAt(0)));
-		f.setLength(Integer.parseInt(a[2]));
-		f.setNumberOfDecimalPlaces(Integer.parseInt(a[3]));
+		DbfField f = new DbfField(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)), Integer.parseInt(a[2]), Integer.parseInt(a[3]));
 		return f;
 	}
 	

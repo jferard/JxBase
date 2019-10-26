@@ -33,10 +33,10 @@ public class DbfMetadata {
 	private int fullHeaderLength;
 	private int oneRecordLength;
 	private byte uncompletedTxFlag;
-	private byte ecnryptionFlag;
+	private byte encryptionFlag;
 	private Map<String,DbfField> fieldMap;
 	
-	public DbfFileTypeEnum getType() {
+	public DbfFileTypeEnum getFileType() {
 		return type;
 	}
 	public void setType(DbfFileTypeEnum type) throws IOException {
@@ -74,11 +74,11 @@ public class DbfMetadata {
 	public void setUncompletedTxFlag(byte uncompletedTxFlag) {
 		this.uncompletedTxFlag = uncompletedTxFlag;
 	}
-	public byte getEcnryptionFlag() {
-		return ecnryptionFlag;
+	public byte getEncryptionFlag() {
+		return encryptionFlag;
 	}
-	public void setEcnryptionFlag(byte ecnryptionFlag) {
-		this.ecnryptionFlag = ecnryptionFlag;
+	public void setEncryptionFlag(byte encryptionFlag) {
+		this.encryptionFlag = encryptionFlag;
 	}
 	public DbfField getField(String name) {
 		return fieldMap.get(name);
@@ -129,7 +129,7 @@ public class DbfMetadata {
 				+ ", \n  fullHeaderLength=" + fullHeaderLength
 				+ ", \n  oneRecordLength=" + oneRecordLength
 				+ ", \n  uncompletedTxFlag=" + uncompletedTxFlag
-				+ ", \n  ecnryptionFlag=" + ecnryptionFlag + ", \n  fields="
+				+ ", \n  encryptionFlag=" + encryptionFlag + ", \n  fields="
 				//+ fields + "\n]";
 				+ getFieldsStringRepresentation() + "\n]";
 	}

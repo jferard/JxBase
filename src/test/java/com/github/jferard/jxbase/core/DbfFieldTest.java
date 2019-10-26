@@ -22,11 +22,7 @@ import org.junit.Test;
 public class DbfFieldTest {
     @Test
     public void testToString() {
-        DbfField f = new DbfField();
-        f.setName("a");
-        f.setType(DbfFieldTypeEnum.Character);
-        f.setLength(10);
-        f.setNumberOfDecimalPlaces(2);
+        DbfField f = new DbfField("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals(
                 "DbfField [\n" + "  name=a, \n" + "  type=Character, \n" + "  length=10, \n" +
                         "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]", f.toString());
@@ -34,11 +30,7 @@ public class DbfFieldTest {
 
     @Test
     public void testGetStringRepresentation() {
-        DbfField f = new DbfField();
-        f.setName("a");
-        f.setType(DbfFieldTypeEnum.Character);
-        f.setLength(10);
-        f.setNumberOfDecimalPlaces(2);
+        DbfField f = new DbfField("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals("a,C,10,2", f.getStringRepresentation());
     }
 

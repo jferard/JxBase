@@ -41,7 +41,7 @@ public class DbfMetadataUtilsTest {
                 "DbfMetadata [\n" + "  type=FoxBASEPlus1, \n" + "  updateDate=2009-02-14, \n" +
                         "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
                         "  oneRecordLength=2, \n" + "  uncompletedTxFlag=0, \n" +
-                        "  ecnryptionFlag=0, \n" + "  fields=x,C,1,0\n]", metadata.toString());
+                        "  encryptionFlag=0, \n" + "  fields=x,C,1,0\n]", metadata.toString());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class DbfMetadataUtilsTest {
                 "DbfMetadata [\n" + "  type=FoxBASEPlus1, \n" + "  updateDate=2009-02-14, \n" +
                         "  recordsQty=0, \n" + "  fullHeaderLength=65, \n" +
                         "  oneRecordLength=2, \n" + "  uncompletedTxFlag=0, \n" +
-                        "  ecnryptionFlag=0, \n" + "  fields=x,C,1,0\n]", metadata.toString());
+                        "  encryptionFlag=0, \n" + "  fields=x,C,1,0\n]", metadata.toString());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class DbfMetadataUtilsTest {
                 "DbfMetadata [\n" + "  type=FoxBASE1, \n" + "  updateDate=2002-02-02, \n" +
                         "  recordsQty=33686018, \n" + "  fullHeaderLength=514, \n" +
                         "  oneRecordLength=514, \n" + "  uncompletedTxFlag=2, \n" +
-                        "  ecnryptionFlag=2, \n" + "  fields=null\n" + "]", md.toString());
+                        "  encryptionFlag=2, \n" + "  fields=null\n" + "]", md.toString());
 
     }
 }

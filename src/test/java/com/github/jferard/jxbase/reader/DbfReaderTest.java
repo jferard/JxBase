@@ -140,7 +140,7 @@ public class DbfReaderTest {
                 "DbfMetadata [\n" + "  type=FoxBASE1, \n" + "  updateDate=2002-02-02, \n" +
                         "  recordsQty=33686018, \n" + "  fullHeaderLength=514, \n" +
                         "  oneRecordLength=514, \n" + "  uncompletedTxFlag=2, \n" +
-                        "  ecnryptionFlag=2, \n" + "  fields=abcd,L,0,0\n" + "]",
+                        "  encryptionFlag=2, \n" + "  fields=abcd,L,0,0\n" + "]",
                 reader.getMetadata().toString());
         reader.close();
     }

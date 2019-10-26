@@ -49,9 +49,10 @@ public class DbfWriterTest {
         f4.setOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119,9,25));
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4));
         Mockito.when(md.getOneRecordLength()).thenReturn(24);
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -90,9 +91,10 @@ public class DbfWriterTest {
         f4.setOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119,9,25));
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -147,9 +149,10 @@ public class DbfWriterTest {
         f4.setOffset(3);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119,9,25));
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -177,7 +180,7 @@ public class DbfWriterTest {
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1));
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         DbfWriter w = new DbfWriter(md, bos);
         Map<String, Object> m1 = new HashMap<String, Object>();
@@ -194,9 +197,10 @@ public class DbfWriterTest {
         f1.setOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119,9,25));
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -218,9 +222,10 @@ public class DbfWriterTest {
         f1.setOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
+        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119,9,25));
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
