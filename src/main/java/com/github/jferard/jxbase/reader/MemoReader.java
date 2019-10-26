@@ -21,23 +21,26 @@ import com.github.jferard.jxbase.core.MemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 
 /**
  * Reader of memo files (tested of *.FPT files - Visual FoxPro)
  * See links:
- *
+ * <p>
  * Visual FoxPro file formats:
  * http://msdn.microsoft.com/en-us/library/aa977077(v=vs.71).aspx
- *
+ * <p>
  * DBase file formats:
  * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
  *
+ * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
 public class MemoReader implements Closeable {
     private MemoFileHeader memoHeader;
@@ -73,20 +76,23 @@ public class MemoReader implements Closeable {
         return memoHeader;
     }
 
+    /**
+     * @param offsetInBlocks the number of the record
+     * @return the record
+     * @throws IOException
+     */
     public MemoRecord read(int offsetInBlocks) throws IOException {
-        int start = memoHeader.getBlockSize()*offsetInBlocks;
-        try {
+        byte[] recordHeader = new byte[JdbfUtils.RECORD_HEADER_LENGTH];
 
-            byte[] recordHeader = new byte[JdbfUtils.RECORD_HEADER_LENGTH];
-            this.memoByteBuffer.position(start);
-            this.memoByteBuffer.get(recordHeader);
-            int memoRecordLength = BitUtils.makeInt(recordHeader[7], recordHeader[6], recordHeader[5], recordHeader[4]);
+        int start = memoHeader.getBlockSize() * offsetInBlocks;
+        this.memoByteBuffer.position(start);
+        this.memoByteBuffer.get(recordHeader);
+        // record type is at 0-3
+        int memoRecordLength = BitUtils.makeInt(recordHeader[7], recordHeader[6], recordHeader[5],
+                recordHeader[4]);
 
-            byte[] recordBody = new byte[memoRecordLength];
-            this.memoByteBuffer.get(recordBody);
-            return new MemoRecord(recordHeader, recordBody, memoHeader.getBlockSize(), offsetInBlocks);
-        } catch (BufferUnderflowException e) {
-            throw new IOException("The file is corrupted or is not a dbf file", e);
-        }
+        byte[] recordBody = new byte[memoRecordLength];
+        this.memoByteBuffer.get(recordBody);
+        return new MemoRecord(recordHeader, recordBody, memoHeader.getBlockSize(), offsetInBlocks);
     }
 }

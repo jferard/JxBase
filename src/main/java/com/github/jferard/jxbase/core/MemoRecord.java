@@ -20,6 +20,9 @@ import com.github.jferard.jxbase.util.BitUtils;
 
 import java.nio.charset.Charset;
 
+/**
+ * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
+ */
 public class MemoRecord {
     private final int blockSize;
     private final int offsetInBlocks;

@@ -33,14 +33,6 @@ public enum DbfFileTypeEnum {
 	dBASEIVII3(0x8D,"dBASE VII with memo"),
 	dBASEIVII4(0xCD,"dBASE VII SQL table files, with memo"),;
 	
-	final int type;
-	final String description;
-	
-	DbfFileTypeEnum(int type, String description) {
-		this.type= type;
-		this.description = description;
-	}
-	
 	public static DbfFileTypeEnum fromInt(byte bType) {
         int iType = 0xFF & bType;
 		for (DbfFileTypeEnum e : DbfFileTypeEnum.values()) {
@@ -50,7 +42,15 @@ public enum DbfFileTypeEnum {
 		}
 		return null;
 	}
-	
+
+	final int type;
+	final String description;
+
+	DbfFileTypeEnum(int type, String description) {
+		this.type= type;
+		this.description = description;
+	}
+
 	public byte toByte() {
 		return (byte)this.type; 
 	}

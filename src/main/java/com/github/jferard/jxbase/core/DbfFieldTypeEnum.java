@@ -16,36 +16,102 @@
 
 package com.github.jferard.jxbase.core;
 
+/**
+ * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Storage of dBASE Data Types
+ */
+// TODO: depends on the concrete format + search for other formats
 public enum DbfFieldTypeEnum {
+    /**
+     * Binary, a string 	10 digits representing a .DBT block number. The number is stored as a
+     * string, right justified and padded with blanks.
+     */
+    Binary('B'),
+
+    /**
+     * Character 	All OEM code page characters - padded with blanks to the width of the field.
+     */
     Character('C'),
-    Currency('Y'),
-    Numeric('N'),
-    Float('F'),
+
+    /**
+     * Date 	8 bytes - date stored as a string in the format YYYYMMDD.
+     */
     Date('D'),
+
+    /**
+     * Numeric 	Number stored as a string, right justified, and padded with blanks to the width of
+     * the field.
+     */
+    Numeric('N'),
+
+    /**
+     * Logical 	1 byte - initialized to 0x20 (space) otherwise T or F.
+     */
+    Logical('L'),
+
+    /**
+     * Memo, a string 	10 digits (bytes) representing a .DBT block number. The number is stored
+     * as a string, right justified and padded with blanks.
+     */
+    Memo('M'),
+
+    /**
+     * dbASE 7 Timestamp 	8 bytes - two longs, first for date, second for time.  The date is the
+     * number
+     * of days since  01/01/4713 BC. Time is hours * 3600000L + minutes * 60000L + Seconds * 1000L
+     */
+    Timestamp('@'),
+
+    /**
+     * Long 	4 bytes. Leftmost bit used to indicate sign, 0 negative.
+     */
+    Integer('I'),
+
+    /**
+     * Autoincrement 	Same as a Long
+     */
+    Autoincrement('+'),
+
+    /**
+     * Float 	Number stored as a string, right justified, and padded with blanks to the width of
+     * the field.
+     */
+    Float('F'),
+
+    /**
+     * Double 	8 bytes - no conversions, stored as a double.
+     */
+    Double7('O'), // dBASE 7 binary double (standardized in contrast to 'B'
+
+    /**
+     * OLE 	10 digits (bytes) representing a .DBT block number. The number is stored as a string,
+     * right justified and padded with blanks.
+     */
+    General('G'),
+
+    /**
+     * not dBase7
+     */
+    Currency('Y'),
+
     /**
      * @deprecated FoxPro-specific extension. Use Timestamp/@ with dBASE 7 or later
      */
-    @Deprecated
-    DateTime('T'),
-    Timestamp('@'), // dbASE 7 julain date
+    @Deprecated DateTime('T'),
     /**
-     * @deprecated Binary doubles are FoxPro specific dBASE V uses B for binary MEMOs. Use Double7, Float or Numeric instead
+     * @deprecated Binary doubles are FoxPro specific dBASE V uses B for binary MEMOs. Use
+     * Double7, Float or Numeric instead
      */
-    @Deprecated
-    Double('B'),
-    Double7('O'), // dBASE 7 binary double (standardized in contrast to 'B'
-    Integer('I'),
-    Logical('L'),
-    Memo('M'),
-    General('G'),
+    @Deprecated Double('B'),
+
+    /**
+     * not dBase7
+     */
     Picture('P'),
+
+    /**
+     * not dBase7
+     */
     NullFlags('0');
-
-    final char type;
-
-    DbfFieldTypeEnum(char type) {
-        this.type = type;
-    }
 
     public static DbfFieldTypeEnum fromChar(char type) {
         for (DbfFieldTypeEnum e : DbfFieldTypeEnum.values()) {
@@ -54,6 +120,12 @@ public enum DbfFieldTypeEnum {
             }
         }
         return null;
+    }
+
+    final char type;
+
+    DbfFieldTypeEnum(char type) {
+        this.type = type;
     }
 
     public byte toByte() {
