@@ -46,20 +46,20 @@ public class MemoIT {
                 DbfMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
-                assertEquals(5, meta.getField("TEXVER").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXVER").getType());
+                assertEquals(5, meta.getOffsetField("TEXVER").getField().getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXVER").getField().getType());
 
-                assertEquals(4, meta.getField("TEXTEX").getLength());
-                assertEquals(DbfFieldTypeEnum.Memo, meta.getField("TEXTEX").getType());
+                assertEquals(4, meta.getOffsetField("TEXTEX").getField().getLength());
+                assertEquals(DbfFieldTypeEnum.Memo, meta.getOffsetField("TEXTEX").getField().getType());
 
-                assertEquals(8, meta.getField("TEXDAT").getLength());
-                assertEquals(DbfFieldTypeEnum.Date, meta.getField("TEXDAT").getType());
+                assertEquals(8, meta.getOffsetField("TEXDAT").getField().getLength());
+                assertEquals(DbfFieldTypeEnum.Date, meta.getOffsetField("TEXDAT").getField().getType());
 
-                assertEquals(1, meta.getField("TEXSTA").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXSTA").getType());
+                assertEquals(1, meta.getOffsetField("TEXSTA").getField().getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXSTA").getField().getType());
 
-                assertEquals(254, meta.getField("TEXCAM").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getField("TEXCAM").getType());
+                assertEquals(254, meta.getOffsetField("TEXCAM").getField().getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXCAM").getField().getType());
 
                 DbfRecord rec;
                 while ((rec = reader.read()) != null) {

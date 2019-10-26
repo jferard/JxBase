@@ -19,11 +19,12 @@ package com.github.jferard.jxbase.core;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class DbfMetadata {
@@ -34,8 +35,9 @@ public class DbfMetadata {
 	private int oneRecordLength;
 	private byte uncompletedTxFlag;
 	private byte encryptionFlag;
-	private Map<String,DbfField> fieldMap;
-	
+	private HashMap<String, OffsetDbfField> offsetFieldByName;
+	private List<DbfField> fields;
+
 	public DbfFileTypeEnum getFileType() {
 		return type;
 	}
@@ -80,37 +82,36 @@ public class DbfMetadata {
 	public void setEncryptionFlag(byte encryptionFlag) {
 		this.encryptionFlag = encryptionFlag;
 	}
-	public DbfField getField(String name) {
-		return fieldMap.get(name);
+	public OffsetDbfField getOffsetField(String name) {
+		return offsetFieldByName.get(name);
 	}
 	public Collection<DbfField> getFields() {
-		return fieldMap.values();
+		return fields;
 	}
 	public void setFields(List<DbfField> fields) {
 		processFields(fields);
 	}
 	
 	private void processFields(List<DbfField> fields) {
-		fieldMap = new LinkedHashMap<String, DbfField>(fields.size()*2);
+		offsetFieldByName = new LinkedHashMap<String, OffsetDbfField>(fields.size()*2);
 		int offset = 1;
 		for (DbfField f : fields) {
-			// 1. count offset
 			f.setOffset(offset);
+			offsetFieldByName.put(f.getName(), new OffsetDbfField(f, offset));
 			offset += f.getLength();
-			// 2. put field into map
-			fieldMap.put(f.getName(), f);
 		}
+		this.fields = new ArrayList<DbfField>(fields);
 	}
 	
 	public String getFieldsStringRepresentation() {
-		if (fieldMap == null) {
+		if (offsetFieldByName == null) {
 			return null;
 		}
-		int i = fieldMap.size();
+		int i = offsetFieldByName.size();
 		// i*64 - just to allocate enough space
 		StringBuilder sb = new StringBuilder(i*64);		
-		for (DbfField f : fieldMap.values()) {
-			sb.append(f.getStringRepresentation());
+		for (OffsetDbfField of : offsetFieldByName.values()) {
+			sb.append(of.toString());
 			i--;
 			if (i>0) {
 				sb.append("|");			

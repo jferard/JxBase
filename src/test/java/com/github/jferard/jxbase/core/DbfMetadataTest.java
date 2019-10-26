@@ -51,9 +51,11 @@ public class DbfMetadataTest {
         metadata.setUpdateDate(new Date(0));
         metadata.setFields(Arrays.asList(f1, f2));
         Assert.assertEquals("DbfMetadata [\n" + "  type=null, \n" + "  updateDate=1970-01-01, \n" +
-                "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0," + " \n" +
+                "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0, \n" +
                 "  uncompletedTxFlag=0, \n" + "  encryptionFlag=0, \n" +
-                "  fields=x,C,1,0|y,I,8,0\n" + "]", metadata.toString());
+                "  fields=OffsetDbfField[field=x,C,1,0, offset=1]|OffsetDbfField[field=y,I,8,0, " +
+                "offset=2]\n" +
+                "]", metadata.toString());
     }
 
     @Test
@@ -102,6 +104,7 @@ public class DbfMetadataTest {
         metadata.setFields(Arrays.asList(f));
 
         Assert.assertEquals(Arrays.asList(f), new ArrayList<DbfField>(metadata.getFields()));
-        Assert.assertEquals(f, metadata.getField("x"));
+        Assert.assertEquals("OffsetDbfField[field=x,C,1,0, offset=1]",
+                metadata.getOffsetField("x").toString());
     }
 }

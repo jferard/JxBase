@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -101,9 +102,9 @@ public class DbfRecord {
     }
 
     public String getString(String fieldName, Charset charset) {
-        DbfField f = getField(fieldName);
-        int actualOffset = f.getOffset();
-        int actualLength = f.getLength();
+        OffsetDbfField of = getOffsetField(fieldName);
+        int actualOffset = of.getOffset();
+        int actualLength = of.getField().getLength();
 
         byte[] fieldBytes = new byte[actualLength];
         System.arraycopy(bytes, actualOffset, fieldBytes, 0, actualLength);
@@ -123,29 +124,11 @@ public class DbfRecord {
         }
 
         return new String(bytes, actualOffset, actualLength, charset);
-
-		/*
-        byte[] b = new byte[actualLength];
-		System.arraycopy(bytes, actualOffset, b, 0, actualLength);
-		// check for empty strings
-		{
-			for (int i = b.length-1; i>=0; i--) {
-				if (b[i] == JdbfUtils.EMPTY) {
-					actualLength--;
-				} else {
-					break;
-				}
-			}
-			if (actualLength == 0) {
-				return null;
-			}
-		}
-		return new String(b, 0, actualLength, charset);
-		*/
     }
 
     public byte[] getMemoAsBytes(String fieldName) throws IOException {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         if (f.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
@@ -162,7 +145,8 @@ public class DbfRecord {
     }
 
     public String getMemoAsString(String fieldName, Charset charset) throws IOException {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         if (f.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
@@ -195,7 +179,8 @@ public class DbfRecord {
     }
 
     public BigDecimal getBigDecimal(String fieldName) {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         String s = getString(fieldName);
 
         if (s == null || s.trim().length() == 0) {
@@ -228,19 +213,22 @@ public class DbfRecord {
     }
 
     public void setBoolean(String fieldName, Boolean value) {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         // TODO: write boolean
     }
 
     public byte[] getBytes(String fieldName) {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         byte[] b = new byte[f.getLength()];
         System.arraycopy(bytes, f.getOffset(), b, 0, f.getLength());
         return b;
     }
 
     public void setBytes(String fieldName, byte[] fieldBytes) {
-        DbfField f = getField(fieldName);
+        OffsetDbfField of = getOffsetField(fieldName);
+        DbfField f = of.getField();
         // TODO:
         // assert fieldBytes.length = f.getLength()
         System.arraycopy(fieldBytes, 0, bytes, f.getOffset(), f.getLength());
@@ -252,8 +240,8 @@ public class DbfRecord {
         return BitUtils.makeInt(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
 
-    public DbfField getField(String fieldName) {
-        return metadata.getField(fieldName);
+    public OffsetDbfField getOffsetField(String fieldName) {
+        return metadata.getOffsetField(fieldName);
     }
 
     public Collection<DbfField> getFields() {
