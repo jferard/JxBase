@@ -32,6 +32,6 @@ public class MemoFileHeaderTest {
     @Test
     public void testToString() {
         MemoFileHeader memoFileHeader = MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
-        Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=1633837924, blockSize=26472}", memoFileHeader.toString());
+        Assert.assertEquals("MemoFileHeader[nextFreeBlockLocation=1633837924, blockSize=26472]", memoFileHeader.toString());
     }
 }

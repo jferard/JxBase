@@ -18,9 +18,11 @@
 package com.github.jferard.jxbase.util;
 
 import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfFieldImpl;
 import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class JdbfUtils {
     public static final int HEADER_FIELDS_SIZE = 32;
     public static final byte NULL_BYTE = (byte) 0x0;
     public static final int RECORDS_TERMINATOR = 0x1A;
+    public static final Charset ASCII_CHARSET = Charset.forName("ASCII");
     public static int EMPTY = 0x20;
 
     public static List<DbfField> createFieldsFromString(String fieldsString) {
@@ -62,8 +65,8 @@ public class JdbfUtils {
 
     public static DbfField createDbfFieldFromString(String s) {
         String[] a = s.split(",");
-        return new DbfField(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)), Integer.parseInt(a[2]),
-                Integer.parseInt(a[3]));
+        return new DbfFieldImpl(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)),
+                Integer.parseInt(a[2]), Integer.parseInt(a[3]));
     }
 
     @SuppressWarnings("deprecation")
@@ -140,11 +143,12 @@ public class JdbfUtils {
                 (Math.floor(7.0 * (year + Math.floor((month + 9.0) / 12.0)) / 4.0)) +
                 Math.floor((275.0 * month) / 9.0) + day);
 
-        // Unsigned types are too complicated they said... Only having signed ones makes it easier they said
-		if (l > Integer.MAX_VALUE) {
-			return ~((int) l & Integer.MAX_VALUE);
-		} else {
-			return (int) (l & Integer.MAX_VALUE);
-		}
+        // Unsigned types are too complicated they said... Only having signed ones makes it
+        // easier they said
+        if (l > Integer.MAX_VALUE) {
+            return ~((int) l & Integer.MAX_VALUE);
+        } else {
+            return (int) (l & Integer.MAX_VALUE);
+        }
     }
 }

@@ -43,8 +43,8 @@ public class DbfMetadataTest {
 
     @Test
     public void testToStringWithFields() {
-        DbfField f1 = DbfField.fromStringRepresentation("x,C,1,0");
-        DbfField f2 = DbfField.fromStringRepresentation("y,I,8,0");
+        DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
+        DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,I,8,0");
 
         final DbfMetadata metadata = DbfMetadata
                 .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
@@ -99,7 +99,7 @@ public class DbfMetadataTest {
 
     @Test
     public void testGetFields() {
-        DbfField f = DbfField.fromStringRepresentation("x,C,1,0");
+        DbfField f = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
         final DbfMetadata metadata = DbfMetadata
                 .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
                         JdbfUtils.NULL_BYTE, Collections.singletonList(f));

@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfFieldImpl;
 import com.github.jferard.jxbase.core.DbfFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.core.OffsetDbfField;
@@ -41,13 +42,13 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteCNFD() throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation("x,C,1,2");
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfField.fromStringRepresentation("y,N,4,2");
+        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,N,4,2");
         final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfField.fromStringRepresentation("z,F,10,2");
+        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
         final OffsetDbfField of3 = new OffsetDbfField(f3, 0);
-        final DbfField f4 = DbfField.fromStringRepresentation("t,D,6,2");
+        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,D,8,0");
         final OffsetDbfField of4 = new OffsetDbfField(f4, 13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
@@ -71,7 +72,7 @@ public class DbfWriterTest {
                         0, 0, 0, 78, 1, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 68, 13, 0, 0, 0,
-                        6, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 32, 49, 54, 44, 48, 48,
+                        8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 32, 49, 54, 44, 48, 48,
                         48, 48, 48, 48, 32, 32, 32, 49, 57, 55, 48, 48, 49, 48, 49, 32, 32, 32},
                 bos.toByteArray());
     }
@@ -83,13 +84,13 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteTABO() throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation("x,T,1,2");
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,T,1,2");
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfField.fromStringRepresentation("y,@,10,2");
+        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,@,10,2");
         final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfField.fromStringRepresentation("z,B,4,2");
+        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,B,4,2");
         final OffsetDbfField of3 = new OffsetDbfField(f3, 0);
-        final DbfField f4 = DbfField.fromStringRepresentation("t,O,6,2");
+        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,O,6,2");
         final OffsetDbfField of4 = new OffsetDbfField(f4, 13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
@@ -141,13 +142,13 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteILFDoubleNull() throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation("x,I,1,2");
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,I,1,2");
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfField.fromStringRepresentation("y,L,10,2");
+        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,L,10,2");
         final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfField.fromStringRepresentation("z,F,10,2");
+        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
         final OffsetDbfField of3 = new OffsetDbfField(f3, 2);
-        final DbfField f4 = DbfField.fromStringRepresentation("t,F,10,2");
+        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,F,10,2");
         final OffsetDbfField of4 = new OffsetDbfField(f4, 3);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
@@ -177,7 +178,7 @@ public class DbfWriterTest {
     }
 
     private void testWriteUnsupported(String ch, String error) throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation(ch);
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation(ch);
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -196,7 +197,7 @@ public class DbfWriterTest {
 
     @Test
     public void TestBigDecimal() throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation("x,N,1,2");
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,N,1,2");
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
@@ -221,7 +222,7 @@ public class DbfWriterTest {
 
     @Test
     public void setStringCharset() throws IOException {
-        final DbfField f1 = DbfField.fromStringRepresentation("x,C,1,2");
+        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
         final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);

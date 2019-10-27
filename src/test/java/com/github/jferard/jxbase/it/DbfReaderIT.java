@@ -19,12 +19,10 @@ package com.github.jferard.jxbase.it;
 import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.core.DbfRecord;
 import com.github.jferard.jxbase.reader.DbfReader;
-import com.github.jferard.jxbase.util.JdbfUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -54,10 +52,9 @@ public class DbfReaderIT {
             System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
-                rec.setStringCharset(stringCharset);
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.toMap());
+                System.out.println(rec.toMap(stringCharset));
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
@@ -84,10 +81,9 @@ public class DbfReaderIT {
             System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
-                rec.setStringCharset(stringCharset);
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.toMap());
+                System.out.println(rec.toMap(stringCharset));
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());

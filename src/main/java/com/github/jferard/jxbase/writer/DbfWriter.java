@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
-import com.github.jferard.jxbase.core.DbfField;
 import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.core.OffsetDbfField;
 import com.github.jferard.jxbase.util.BitUtils;

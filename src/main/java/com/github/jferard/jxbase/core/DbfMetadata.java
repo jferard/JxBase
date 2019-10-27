@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * Represents the file meta data, read from the first part of the header
+ */
 public class DbfMetadata {
     public static DbfMetadata create(DbfFileTypeEnum type, Date updateDate, int recordsQty,
                                      int fullHeaderLength, int oneRecordLength,

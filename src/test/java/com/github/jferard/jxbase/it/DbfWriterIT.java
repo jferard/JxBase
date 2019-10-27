@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfFieldImpl;
 import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
 import com.github.jferard.jxbase.core.DbfFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
@@ -42,7 +43,7 @@ public class DbfWriterIT {
     private List<DbfField> fields = new ArrayList<DbfField>();
 
     public DbfField addCharDBFField(String name, int length) {
-        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Character, length, 0);
+        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Character, length, 0);
         fields.add(fld);
         return fld;
     }
@@ -51,13 +52,13 @@ public class DbfWriterIT {
   lenght *= 2;*/
 
     public DbfField addNumDBFField(String name, int length, int decimal) {
-        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Numeric, length, decimal);
+        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Numeric, length, decimal);
         fields.add(fld);
         return fld;
     }
 
     public DbfField addDateDBFField(String name) {
-        final DbfField fld = new DbfField(name, DbfFieldTypeEnum.Date, 0, 0);
+        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Date, 0, 0);
         fields.add(fld);
         return fld;
     }

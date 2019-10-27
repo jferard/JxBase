@@ -17,7 +17,10 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.DateDbfField;
 import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfFieldImpl;
 import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
 import com.github.jferard.jxbase.core.DbfFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
@@ -126,7 +129,12 @@ public class DbfMetadataReader {
         // 4. number of decimal places
         final byte numberOfDecimalPlaces = fieldBytes[17];
 
-        return new DbfField(name, type, length, numberOfDecimalPlaces);
+        if (type == DbfFieldTypeEnum.Date) {
+            assert length == 8;
+            return new DateDbfField(name);
+        } else {
+            return new DbfFieldImpl(name, type, length, numberOfDecimalPlaces);
+        }
     }
 
     private String getName(byte[] fieldBytes) {

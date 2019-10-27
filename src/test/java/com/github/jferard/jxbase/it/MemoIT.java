@@ -45,36 +45,29 @@ public class MemoIT {
                 DbfMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
-                assertEquals(5, meta.getOffsetField("TEXVER").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character,
-                        meta.getOffsetField("TEXVER").getField().getType());
+                assertEquals(5, meta.getOffsetField("TEXVER").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXVER").getType());
 
-                assertEquals(4, meta.getOffsetField("TEXTEX").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Memo,
-                        meta.getOffsetField("TEXTEX").getField().getType());
+                assertEquals(4, meta.getOffsetField("TEXTEX").getLength());
+                assertEquals(DbfFieldTypeEnum.Memo, meta.getOffsetField("TEXTEX").getType());
 
-                assertEquals(8, meta.getOffsetField("TEXDAT").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Date,
-                        meta.getOffsetField("TEXDAT").getField().getType());
+                assertEquals(8, meta.getOffsetField("TEXDAT").getLength());
+                assertEquals(DbfFieldTypeEnum.Date, meta.getOffsetField("TEXDAT").getType());
 
-                assertEquals(1, meta.getOffsetField("TEXSTA").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character,
-                        meta.getOffsetField("TEXSTA").getField().getType());
+                assertEquals(1, meta.getOffsetField("TEXSTA").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXSTA").getType());
 
-                assertEquals(254, meta.getOffsetField("TEXCAM").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character,
-                        meta.getOffsetField("TEXCAM").getField().getType());
+                assertEquals(254, meta.getOffsetField("TEXCAM").getLength());
+                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXCAM").getType());
 
                 DbfRecord rec;
                 while ((rec = reader.read()) != null) {
-                    rec.setStringCharset(stringCharset);
-
                     System.out.println("Record is DELETED: " + rec.isDeleted());
-                    System.out.println("TEXVER: " + rec.getString("TEXVER"));
-                    System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX"));
+                    System.out.println("TEXVER: " + rec.getString("TEXVER", stringCharset));
+                    System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX", stringCharset));
                     System.out.println("TEXDAT: " + rec.getDate("TEXDAT"));
-                    System.out.println("TEXSTA: " + rec.getString("TEXSTA"));
-                    System.out.println("TEXCAM: " + rec.getString("TEXCAM"));
+                    System.out.println("TEXSTA: " + rec.getString("TEXSTA", stringCharset));
+                    System.out.println("TEXCAM: " + rec.getString("TEXCAM", stringCharset));
                     System.out.println("++++++++++++++++++++++++++++++++++");
                 }
 

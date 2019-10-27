@@ -1,6 +1,5 @@
 /*
  * JxBase - Copyright (c) 2019 Julien Férard
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,72 +16,35 @@
 
 package com.github.jferard.jxbase.core;
 
+import java.nio.charset.Charset;
+import java.text.ParseException;
 
-public class DbfField {
-    public static DbfField fromStringRepresentation(String s) {
-        String[] a = s.split(",");
-
-        return new DbfField(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)), Integer.parseInt(a[2]),
-                Integer.parseInt(a[3]));
-    }
-
-    private final String name;
-    private final DbfFieldTypeEnum type;
-    private final int length;
-    private final int numberOfDecimalPlaces;
-
-    /**
-     * @param name                  the name of the field
-     * @param type                  the type of the field
-     * @param length                the length of the field
-     * @param numberOfDecimalPlaces the number of decimal places of the field
-     */
-    public DbfField(String name, DbfFieldTypeEnum type, int length, int numberOfDecimalPlaces) {
-        this.name = name;
-        this.type = type;
-        this.length = length;
-        this.numberOfDecimalPlaces = numberOfDecimalPlaces;
-    }
-
+public interface DbfField {
     /**
      * @return the name of the field
      */
-    public String getName() {
-        return name;
-    }
+    String getName();
 
     /**
      * @return the type of the field
      */
-    public DbfFieldTypeEnum getType() {
-        return type;
-    }
+    DbfFieldTypeEnum getType();
 
     /**
      * @return the length of the field
      */
-    public int getLength() {
-        return length;
-    }
+    int getLength();
 
     /**
      * @return the number of decimal places of the field
      */
-    public int getNumberOfDecimalPlaces() {
-        return numberOfDecimalPlaces;
-    }
-
-    @Override
-    public String toString() {
-        return "DbfField[name=" + name + ", type=" + type + ", length=" + length +
-                ", numberOfDecimalPlaces=" + numberOfDecimalPlaces + "]";
-    }
+    int getNumberOfDecimalPlaces();
 
     /**
      * @return a string representation in the format name[11 chars], type[1 char], length[<256],
      * decimal[<256]
      */
-    public String getStringRepresentation() {
-        return name + "," + type.getType() + "," + length + "," + numberOfDecimalPlaces;
-    }
+    String getStringRepresentation();
+
+    Object getValue(DbfRecord dbfRecord, Charset charset) throws ParseException;
 }

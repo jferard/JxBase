@@ -30,13 +30,6 @@ public class OffsetDbfField {
     }
 
     /**
-     * @return the field
-     */
-    public DbfField getField() {
-        return field;
-    }
-
-    /**
      * @return the offset of the field
      */
     public int getOffset() {
