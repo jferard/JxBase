@@ -44,7 +44,7 @@ public class DbfReaderIT {
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/gds_im.dbf");
 
         DbfRecord rec;
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         try {
             DbfMetadata meta = reader.getMetadata();
 
@@ -74,7 +74,7 @@ public class DbfReaderIT {
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/tir_im.dbf");
 
         DbfRecord rec;
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         try {
             DbfMetadata meta = reader.getMetadata();
 

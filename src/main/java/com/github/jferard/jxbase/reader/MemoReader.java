@@ -25,6 +25,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -46,14 +47,19 @@ public class MemoReader implements Closeable {
     private MemoFileHeader memoHeader;
     private ByteBuffer memoByteBuffer;
 
-    public MemoReader(File memoFile) throws IOException {
-        this(new FileInputStream(memoFile));
+    public static MemoReader fromRandomAccess(File memoFile) throws IOException {
+        RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
+        return new MemoReader(randomAccessFile.getChannel());
     }
 
-    public MemoReader(FileInputStream inputStream) throws IOException {
-        FileChannel channel = inputStream.getChannel();
+    public static MemoReader fromChannel(File memoFile) throws IOException {
+        final FileInputStream fileInputStream = new FileInputStream(memoFile);
+        return new MemoReader(fileInputStream.getChannel());
+    }
+
+    public MemoReader(FileChannel channel) throws IOException {
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
-        readMetadata();
+        this.readMetadata();
     }
 
     private void readMetadata() throws IOException {
@@ -70,10 +76,6 @@ public class MemoReader implements Closeable {
     @Override
     public void close() throws IOException {
         this.memoByteBuffer = null;
-    }
-
-    public MemoFileHeader getMemoHeader() {
-        return memoHeader;
     }
 
     /**

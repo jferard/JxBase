@@ -22,10 +22,9 @@ import com.github.jferard.jxbase.core.DbfRecord;
 import com.github.jferard.jxbase.reader.DbfReader;
 import org.junit.Test;
 
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
@@ -37,29 +36,34 @@ public class MemoIT {
     public void test1() throws FileNotFoundException {
         Charset stringCharset = Charset.forName("cp1252");
 
-        InputStream dbf = getClass().getClassLoader().getResourceAsStream("memo1/texto.dbf");
-        FileInputStream memo = new FileInputStream(getClass().getClassLoader().getResource("memo1/texto.fpt").getFile());
+        File dbf = getResourceFile("memo1/texto.dbf");
+        File memo = getResourceFile("memo1/texto.fpt");
 
         try {
-            DbfReader reader = new DbfReader(dbf, memo);
+            DbfReader reader = DbfReader.create(dbf, memo);
             try {
                 DbfMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
                 assertEquals(5, meta.getOffsetField("TEXVER").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXVER").getField().getType());
+                assertEquals(DbfFieldTypeEnum.Character,
+                        meta.getOffsetField("TEXVER").getField().getType());
 
                 assertEquals(4, meta.getOffsetField("TEXTEX").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Memo, meta.getOffsetField("TEXTEX").getField().getType());
+                assertEquals(DbfFieldTypeEnum.Memo,
+                        meta.getOffsetField("TEXTEX").getField().getType());
 
                 assertEquals(8, meta.getOffsetField("TEXDAT").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Date, meta.getOffsetField("TEXDAT").getField().getType());
+                assertEquals(DbfFieldTypeEnum.Date,
+                        meta.getOffsetField("TEXDAT").getField().getType());
 
                 assertEquals(1, meta.getOffsetField("TEXSTA").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXSTA").getField().getType());
+                assertEquals(DbfFieldTypeEnum.Character,
+                        meta.getOffsetField("TEXSTA").getField().getType());
 
                 assertEquals(254, meta.getOffsetField("TEXCAM").getField().getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXCAM").getField().getType());
+                assertEquals(DbfFieldTypeEnum.Character,
+                        meta.getOffsetField("TEXCAM").getField().getType());
 
                 DbfRecord rec;
                 while ((rec = reader.read()) != null) {
@@ -82,5 +86,9 @@ public class MemoIT {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    private File getResourceFile(String name) {
+        return new File(getClass().getClassLoader().getResource(name).getFile());
     }
 }

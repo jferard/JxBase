@@ -25,7 +25,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.MappedByteBuffer;
@@ -40,7 +39,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -49,7 +48,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -58,7 +57,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -69,7 +68,7 @@ public class DbfReaderTest {
                         0x2, 0x2});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -81,7 +80,7 @@ public class DbfReaderTest {
                         0x2, 0x2, 0x2});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf);
+        DbfReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -95,7 +94,7 @@ public class DbfReaderTest {
                         0x2, 0x2, 0x2, 0x2, 0x2});
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Unknown field type: \u0002 (2)");
-        DbfReader reader = new DbfReader(dbf);
+        new DbfReader(dbf, null);
     }
 
     @Test
@@ -108,7 +107,7 @@ public class DbfReaderTest {
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, JdbfUtils.HEADER_TERMINATOR});
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Unknown field type: \u0002 (2)");
-        DbfReader reader = new DbfReader(dbf);
+        new DbfReader(dbf, null);
     }
 
     @Test
@@ -122,15 +121,13 @@ public class DbfReaderTest {
         Assert.assertEquals(65, buf.length);
         InputStream dbf = new ByteArrayInputStream(buf);
 
-        FileInputStream fis = Mockito.mock(FileInputStream.class);
         FileChannel fc = Mockito.mock(FileChannel.class);
         MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
 
-        Mockito.when(fis.getChannel()).thenReturn(fc);
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
 
-        DbfReader reader = new DbfReader(dbf, fis);
+        DbfReader reader = new DbfReader(dbf, new MemoReader(fc));
         Assert.assertEquals(
                 "DbfMetadata[type=FoxBASE1, updateDate=2002-02-02, recordsQty=33686018, " +
                         "fullHeaderLength=65, oneRecordLength=1, uncompletedTxFlag=2, " +

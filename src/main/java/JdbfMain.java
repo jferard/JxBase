@@ -55,11 +55,11 @@ public class JdbfMain {
 		Charset stringCharset = Charset.forName("Cp866");
 		//File file = new File("data/215451/gds_im.dbf");
 		File file = new File("data/215451/tir_im.dbf");
-		com.github.jferard.jxbase.reader.DbfReader reader = new com.github.jferard.jxbase.reader.DbfReader(file);
+		DbfReader reader = DbfReader.create(file);
 		DbfMetadata meta = reader.getMetadata();
 		System.out.println(meta);
-		com.github.jferard.jxbase.core.DbfRecord rec = null;
-		List<com.github.jferard.jxbase.core.DbfRecord> recs = new ArrayList<com.github.jferard.jxbase.core.DbfRecord>(10);
+		DbfRecord rec = null;
+		List<DbfRecord> recs = new ArrayList<DbfRecord>(10);
 		List<Map<String,Object>> maps = new ArrayList<Map<String,Object>>();
 		while ((rec = reader.read()) != null) {
 			rec.setStringCharset(stringCharset);
@@ -77,9 +77,9 @@ public class JdbfMain {
 		DbfMetadata meta1 = DbfMetadataUtils.fromFieldsString(DbfFileTypeEnum.FoxBASEPlus1,
 				new Date(), maps.size(), fieldsInfo);
 		FileOutputStream out = new FileOutputStream("2.dbf");
-		com.github.jferard.jxbase.writer.DbfWriter writer = new com.github.jferard.jxbase.writer.DbfWriter(meta1,out);
+		DbfWriter writer = new DbfWriter(meta1,out);
 		writer.setStringCharset("Cp866");
-//		for (com.github.jferard.jxbase.core.DbfRecord r : recs) {
+//		for (DbfRecord r : recs) {
 //			writer.write(rec);
 //		}
 		
@@ -136,7 +136,7 @@ public class JdbfMain {
 		
 		// 1. Read file
 		
-		DbfReader reader = new DbfReader(file);
+		DbfReader reader = DbfReader.create(file);
 		DbfMetadata meta = reader.getMetadata();
 		DbfRecord rec = null;
 		List<Map<String,Object>> maps = new ArrayList<Map<String,Object>>();
@@ -162,7 +162,7 @@ public class JdbfMain {
 		
 		// 3. Read written file and compare data with initially read data
 		{
-			DbfReader reader1 = new DbfReader(new File("1.dbf"));
+			DbfReader reader1 = DbfReader.create(new File("1.dbf"));
 			DbfRecord rec1 = null;
 			List<Map<String,Object>> maps2 = new ArrayList<Map<String,Object>>();
 			while ((rec1 = reader1.read()) != null) {

@@ -155,7 +155,6 @@ public class DbfRecord {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
         final int length = of.getLength();
-        final int offsetInBlocks;
         if (length == 10) {
             return getBigDecimal(fieldName).intValueExact();
         } else {

@@ -33,29 +33,23 @@ import java.util.Arrays;
 
 public class DbfReader implements Closeable {
 
+    public static DbfReader create(File dbfFile) throws IOException {
+        return new DbfReader(new FileInputStream(dbfFile), null);
+    }
+
+    public static DbfReader create(File dbfFile, File memoFile) throws IOException {
+        return new DbfReader(new FileInputStream(dbfFile), MemoReader.fromRandomAccess(memoFile));
+    }
+
     private InputStream dbfInputStream;
     private MemoReader memoReader;
     private DbfMetadata metadata;
     private byte[] oneRecordBuffer;
     private int recordsCounter = 0;
 
-    public DbfReader(File dbfFile) throws IOException {
-        this(new FileInputStream(dbfFile));
-    }
-
-    public DbfReader(File dbfFile, File memoFile) throws IOException {
-        this(new FileInputStream(dbfFile), new FileInputStream(memoFile));
-    }
-
-    public DbfReader(InputStream dbfInputStream) throws IOException {
+    public DbfReader(InputStream dbfInputStream, MemoReader memoReader) throws IOException {
         this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
-        readMetadata();
-    }
-
-    public DbfReader(InputStream dbfInputStream, FileInputStream memoInputStream)
-            throws IOException {
-        this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
-        this.memoReader = new MemoReader(memoInputStream);
+        this.memoReader = memoReader;
         this.readMetadata();
     }
 

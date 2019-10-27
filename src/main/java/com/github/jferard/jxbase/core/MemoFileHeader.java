@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,24 +23,23 @@ import com.github.jferard.jxbase.util.BitUtils;
  * See http://msdn.microsoft.com/en-US/library/8599s21w(v=vs.80).aspx
  */
 public class MemoFileHeader {
-    private byte[] headerBytes;
-    private int nextFreeBlockLocation;
-    private int blockSize;
-
+    /**
+     * @param headerBytes the source bytes
+     * @return the memo header
+     */
     public static MemoFileHeader create(byte[] headerBytes) {
-        MemoFileHeader h = new MemoFileHeader();
-        h.setHeaderBytes(headerBytes);
-        h.calculateHeaderFields();
-        return h;
+        final int nextFreeBlockLocation =
+                BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
+        final int blockSize = BitUtils.makeInt(headerBytes[7], headerBytes[6]);
+        return new MemoFileHeader(nextFreeBlockLocation, blockSize);
     }
 
-    private void calculateHeaderFields() {
-        this.nextFreeBlockLocation = BitUtils.makeInt(headerBytes[3],headerBytes[2],headerBytes[1],headerBytes[0]);
-        this.blockSize = BitUtils.makeInt(headerBytes[7],headerBytes[6]);
-    }
+    private final int nextFreeBlockLocation;
+    private final int blockSize;
 
-    private void setHeaderBytes(byte[] headerBytes) {
-        this.headerBytes = headerBytes;
+    public MemoFileHeader(int nextFreeBlockLocation, int blockSize) {
+        this.nextFreeBlockLocation = nextFreeBlockLocation;
+        this.blockSize = blockSize;
     }
 
     public int getNextFreeBlockLocation() {
@@ -52,9 +52,7 @@ public class MemoFileHeader {
 
     @Override
     public String toString() {
-        return "MemoFileHeader{" +
-                "nextFreeBlockLocation=" + nextFreeBlockLocation +
-                ", blockSize=" + blockSize +
-                '}';
+        return "MemoFileHeader[" + "nextFreeBlockLocation=" + nextFreeBlockLocation +
+                ", blockSize=" + blockSize + ']';
     }
 }
