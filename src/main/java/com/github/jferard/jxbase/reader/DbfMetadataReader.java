@@ -107,7 +107,7 @@ public class DbfMetadataReader {
             recordLength += field.getLength();
             headerLength += fieldBytes.length;
 
-            if (this.isEndOfFieldArray(inputStream)) {
+            if (IOUtils.isEndOfFieldArray(inputStream, JdbfUtils.HEADER_TERMINATOR)) {
                 headerLength += 1;
                 recordLength += 1;
                 break;
@@ -143,19 +143,6 @@ public class DbfMetadataReader {
             length += 256;
         }
         return length;
-    }
-
-    private boolean isEndOfFieldArray(InputStream inputStream) throws IOException {
-        inputStream.mark(1);
-        int terminator = inputStream.read();
-        if (terminator == -1) {
-            throw new IOException("The file is corrupted or is not a dbf file");
-        } else if (terminator == JdbfUtils.HEADER_TERMINATOR) {
-            return true;
-        } else { // unget
-            inputStream.reset();
-            return false;
-        }
     }
 
     private void checkLengths(int headerLength, int recordLength) throws IOException {

@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -126,45 +126,11 @@ public class DbfRecord {
     }
 
     public byte[] getMemoAsBytes(String fieldName) throws IOException {
-        OffsetDbfField of = getOffsetField(fieldName);
-        if (of.getType() != DbfFieldTypeEnum.Memo) {
-            throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
-        }
-        int offsetInBlocks = 0;
-        final int length = of.getLength();
-        if (length == 10) {
-            offsetInBlocks = getBigDecimal(fieldName).intValueExact();
-        } else {
-            byte[] dbfFieldBytes = new byte[length];
-            System.arraycopy(bytes, of.getOffset(), dbfFieldBytes, 0, length);
-            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2],
-                    dbfFieldBytes[3]);
-        }
+        int offsetInBlocks = this.getOffsetInBlocks(fieldName);
         if (offsetInBlocks == 0) {
             return new byte[0];
         }
         return memoReader.read(offsetInBlocks).getValue();
-    }
-
-    public String getMemoAsString(String fieldName, Charset charset) throws IOException {
-        OffsetDbfField of = getOffsetField(fieldName);
-        if (of.getType() != DbfFieldTypeEnum.Memo) {
-            throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
-        }
-        int offsetInBlocks = 0;
-        final int length = of.getLength();
-        if (length == 10) {
-            offsetInBlocks = getBigDecimal(fieldName).intValueExact();
-        } else {
-            byte[] dbfFieldBytes = new byte[length];
-            System.arraycopy(bytes, of.getOffset(), dbfFieldBytes, 0, length);
-            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2],
-                    dbfFieldBytes[3]);
-        }
-        if (offsetInBlocks == 0) {
-            return "";
-        }
-        return memoReader.read(offsetInBlocks).getValueAsString(charset);
     }
 
     public String getMemoAsString(String fieldName) throws IOException {
@@ -173,6 +139,31 @@ public class DbfRecord {
             charset = Charset.defaultCharset();
         }
         return getMemoAsString(fieldName, charset);
+    }
+
+    public String getMemoAsString(String fieldName, Charset charset) throws IOException {
+        int offsetInBlocks = this.getOffsetInBlocks(fieldName);
+        if (offsetInBlocks == 0) {
+            return "";
+        }
+        return memoReader.read(offsetInBlocks).getValueAsString(charset);
+    }
+
+    private int getOffsetInBlocks(String fieldName) throws IllegalFormatException {
+        OffsetDbfField of = getOffsetField(fieldName);
+        if (of.getType() != DbfFieldTypeEnum.Memo) {
+            throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
+        }
+        final int length = of.getLength();
+        final int offsetInBlocks;
+        if (length == 10) {
+            return getBigDecimal(fieldName).intValueExact();
+        } else {
+            // throw new IllegalArgumentException("A memo field has a length of 10");
+            final int offset = of.getOffset();
+            return BitUtils.makeInt(bytes[offset], bytes[offset + 1], bytes[offset + 2],
+                    bytes[offset + 3]);
+        }
     }
 
     public Date getDate(String fieldName) throws ParseException {

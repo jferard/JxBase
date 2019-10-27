@@ -72,4 +72,23 @@ public class IOUtils {
         }
         return byteCount;
     }
+
+    /**
+     * @param inputStream the buffered input stream
+     * @param terminator
+     * @return true if the terminator was met
+     * @throws IOException if the file ended abruptly.
+     */
+    public static boolean isEndOfFieldArray(final InputStream inputStream, final int terminator) throws IOException {
+        inputStream.mark(1);
+        int maybeTerminator = inputStream.read();
+        if (maybeTerminator == -1) {
+            throw new IOException("The file is corrupted or is not a dbf file");
+        } else if (maybeTerminator == terminator) {
+            return true;
+        } else { // unget
+            inputStream.reset();
+            return false;
+        }
+    }
 }

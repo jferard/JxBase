@@ -44,6 +44,7 @@ public class JdbfUtils {
             };
     public static final int HEADER_FIELDS_SIZE = 32;
     public static final byte NULL_BYTE = (byte) 0x0;
+    public static final int RECORDS_TERMINATOR = 0x1A;
     public static int EMPTY = 0x20;
 
     public static List<DbfField> createFieldsFromString(String fieldsString) {

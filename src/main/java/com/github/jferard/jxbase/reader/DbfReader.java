@@ -56,7 +56,7 @@ public class DbfReader implements Closeable {
             throws IOException {
         this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
         this.memoReader = new MemoReader(memoInputStream);
-        readMetadata();
+        this.readMetadata();
     }
 
     public DbfMetadata getMetadata() {
@@ -64,9 +64,26 @@ public class DbfReader implements Closeable {
     }
 
     private void readMetadata() throws IOException {
-        this.dbfInputStream.mark(1024 * 1024);
         this.metadata = new DbfMetadataReader().read(this.dbfInputStream);
         oneRecordBuffer = new byte[metadata.getOneRecordLength()];
+    }
+
+    /**
+     * @return the next record, or null if the end of file was reached
+     * @throws IOException if an I/O exception occurs
+     */
+    public DbfRecord read() throws IOException {
+        if (IOUtils.isEndOfFieldArray(this.dbfInputStream, JdbfUtils.RECORDS_TERMINATOR)) {
+            return null;
+        }
+        Arrays.fill(oneRecordBuffer, JdbfUtils.NULL_BYTE);
+        int readLength = IOUtils.readFully(dbfInputStream, oneRecordBuffer);
+
+        if (readLength < metadata.getOneRecordLength()) {
+            throw new IOException("Bad record: " + readLength + " -> " + oneRecordBuffer[0]);
+        }
+
+        return new DbfRecord(oneRecordBuffer, metadata, memoReader, ++recordsCounter);
     }
 
     @Override
@@ -83,19 +100,4 @@ public class DbfReader implements Closeable {
         recordsCounter = 0;
     }
 
-    public DbfRecord read() throws IOException {
-        Arrays.fill(oneRecordBuffer, JdbfUtils.NULL_BYTE);
-        int readLength = IOUtils.readFully(dbfInputStream, oneRecordBuffer);
-
-        if (readLength < metadata.getOneRecordLength()) {
-            return null;
-            // throw new IOException("Can't read record");
-        }
-
-        return createDbfRecord();
-    }
-
-    private DbfRecord createDbfRecord() {
-        return new DbfRecord(oneRecordBuffer, metadata, memoReader, ++recordsCounter);
-    }
 }
