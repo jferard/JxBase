@@ -48,4 +48,32 @@ public class OffsetDbfField {
         return "OffsetDbfField[field=" + field.getStringRepresentation() + ", offset=" + offset +
                 "]";
     }
+
+    /**
+     * @return the length of the inner field
+     */
+    public int getLength() {
+        return this.field.getLength();
+    }
+
+    /**
+     * @return the type of the inner field
+     */
+    public DbfFieldTypeEnum getType() {
+        return this.field.getType();
+    }
+
+    /**
+     * @return the name of the inner field
+     */
+    public String getName() {
+        return this.field.getName();
+    }
+
+    /**
+     * @return the nodp of the inner field
+     */
+    public int getNumberOfDecimalPlaces() {
+        return this.field.getNumberOfDecimalPlaces();
+    }
 }

@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +17,27 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.*;
+import com.github.jferard.jxbase.core.DbfMetadata;
+import com.github.jferard.jxbase.core.DbfRecord;
 import com.github.jferard.jxbase.util.DbfMetadataUtils;
 import com.github.jferard.jxbase.util.IOUtils;
+import com.github.jferard.jxbase.util.JdbfUtils;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 public class DbfReader implements Closeable {
 
-    private static final int HEADER_HALF_SIZE = 16;
-	private InputStream dbfInputStream;
+    private InputStream dbfInputStream;
     private MemoReader memoReader;
     private DbfMetadata metadata;
     private byte[] oneRecordBuffer;
     private int recordsCounter = 0;
-    private static final int BUFFER_SIZE = 8192;
 
     public DbfReader(File dbfFile) throws IOException {
         this(new FileInputStream(dbfFile));
@@ -42,12 +48,13 @@ public class DbfReader implements Closeable {
     }
 
     public DbfReader(InputStream dbfInputStream) throws IOException {
-        this.dbfInputStream = new BufferedInputStream(dbfInputStream, BUFFER_SIZE);
+        this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
         readMetadata();
     }
 
-    public DbfReader(InputStream dbfInputStream, FileInputStream memoInputStream) throws IOException {
-        this.dbfInputStream = new BufferedInputStream(dbfInputStream, BUFFER_SIZE);
+    public DbfReader(InputStream dbfInputStream, FileInputStream memoInputStream)
+            throws IOException {
+        this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
         this.memoReader = new MemoReader(memoInputStream);
         readMetadata();
     }
@@ -57,28 +64,9 @@ public class DbfReader implements Closeable {
     }
 
     private void readMetadata() throws IOException {
-        this.dbfInputStream.mark(1024*1024);
-        metadata = new DbfMetadata();
-        readHeader();
-        DbfMetadataUtils.readFields(metadata, dbfInputStream);
-
+        this.dbfInputStream.mark(1024 * 1024);
+        this.metadata = new DbfMetadataReader().read(this.dbfInputStream);
         oneRecordBuffer = new byte[metadata.getOneRecordLength()];
-
-        findFirstRecord();
-    }
-
-    private void readHeader() throws IOException {
-        // 1. Allocate buffer
-        byte[] bytes = new byte[HEADER_HALF_SIZE];
-        // 2. Read 16 bytes
-        if (IOUtils.readFully(dbfInputStream, bytes) != HEADER_HALF_SIZE)
-            throw new IOException("The file is corrupted or is not a dbf file");
-
-        // 3. Fill header fields
-        DbfMetadataUtils.fillHeaderFields(metadata, bytes);
-        // 4. Read next 16 bytes (for most DBF types these are reserved bytes)
-        if (IOUtils.readFully(dbfInputStream, bytes) != HEADER_HALF_SIZE)
-            throw new IOException("The file is corrupted or is not a dbf file");
     }
 
     @Override
@@ -95,21 +83,13 @@ public class DbfReader implements Closeable {
         recordsCounter = 0;
     }
 
-    public void findFirstRecord() throws IOException {
-        seek(dbfInputStream, metadata.getFullHeaderLength());
-    }
-
-    private void seek(InputStream inputStream, int position) throws IOException {
-        inputStream.reset();
-        inputStream.skip(position);
-    }
-
     public DbfRecord read() throws IOException {
-        Arrays.fill(oneRecordBuffer, (byte)0x0);
+        Arrays.fill(oneRecordBuffer, JdbfUtils.NULL_BYTE);
         int readLength = IOUtils.readFully(dbfInputStream, oneRecordBuffer);
 
         if (readLength < metadata.getOneRecordLength()) {
             return null;
+            // throw new IOException("Can't read record");
         }
 
         return createDbfRecord();

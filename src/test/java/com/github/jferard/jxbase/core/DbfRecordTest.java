@@ -202,7 +202,7 @@ public class DbfRecordTest {
         expected.put("y", new Date(110, 4, 1));
         expected.put("z", new BigDecimal(8));
         expected.put("t", true);
-        expected.put("u", 825242209);
+        expected.put("u", 875770417);
         Assert.assertEquals(expected, record.toMap());
     }
 
@@ -290,7 +290,7 @@ public class DbfRecordTest {
     public void testSetBytes() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
         final OffsetDbfField of =
-                new OffsetDbfField(DbfField.fromStringRepresentation("x,S,3,0"), 0);
+                new OffsetDbfField(DbfField.fromStringRepresentation("x,C,3,0"), 0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");

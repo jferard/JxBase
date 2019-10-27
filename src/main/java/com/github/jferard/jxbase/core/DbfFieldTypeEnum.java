@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -119,7 +120,7 @@ public enum DbfFieldTypeEnum {
                 return e;
             }
         }
-        return null;
+        throw new IllegalArgumentException("Unknown field type: "+type+ " ("+(int) type+")");
     }
 
     final char type;

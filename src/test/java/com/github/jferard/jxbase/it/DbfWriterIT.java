@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
 import com.github.jferard.jxbase.core.DbfFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.util.DbfMetadataUtils;
+import com.github.jferard.jxbase.util.JdbfUtils;
 import com.github.jferard.jxbase.writer.DbfWriter;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,10 +83,8 @@ public class DbfWriterIT {
 
     @Test
     public void test() throws IOException {
-        DbfMetadata dbfMetadata = new DbfMetadata();
-        dbfMetadata.setFields(fields);
-        dbfMetadata.setOneRecordLength(DbfMetadataUtils.calculateOneRecordLength(fields));
-        dbfMetadata.setType(DbfFileTypeEnum.FoxBASE2);
+        DbfMetadata dbfMetadata = DbfMetadata.create(DbfFileTypeEnum.FoxBASE2, new Date(), 0, 0, DbfMetadataUtils.calculateOneRecordLength(fields),
+                JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
         FileOutputStream fos = null;
         DbfWriter dbfWriter = null;
         try {

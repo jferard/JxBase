@@ -23,9 +23,8 @@ public class DbfFieldTest {
     @Test
     public void testToString() {
         DbfField f = new DbfField("a", DbfFieldTypeEnum.Character, 10, 2);
-        Assert.assertEquals(
-                "DbfField [\n" + "  name=a, \n" + "  type=Character, \n" + "  length=10, \n" +
-                        "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]", f.toString());
+        Assert.assertEquals("DbfField[name=a, type=Character, length=10, numberOfDecimalPlaces=2]",
+                f.toString());
     }
 
     @Test

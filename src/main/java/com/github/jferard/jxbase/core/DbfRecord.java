@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -33,12 +34,11 @@ import java.util.Map;
 public class DbfRecord {
 
     public static final String NUMERIC_OVERFLOW = "*";
-
+    private final int recordNumber;
     private byte[] bytes;
     private DbfMetadata metadata;
     private MemoReader memoReader;
     private Charset stringCharset;
-    private final int recordNumber;
 
     public DbfRecord(byte[] source, DbfMetadata metadata, MemoReader memoReader, int recordNumber) {
         this.recordNumber = recordNumber;
@@ -64,9 +64,11 @@ public class DbfRecord {
      * Check if record is deleted.
      * According to documentation at
      * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm :
-     * Data records are preceded by one byte, that is, a space (0x20) if the record is not deleted, an asterisk (0x2A) if the record is deleted.
+     * Data records are preceded by one byte, that is, a space (0x20) if the record is not
+     * deleted, an asterisk (0x2A) if the record is deleted.
      * So, if record is preceded by 0x2A - it is considered to be deleted
      * All other cases: record is considered to be not deleted
+     *
      * @return
      */
     public boolean isDeleted() {
@@ -106,9 +108,6 @@ public class DbfRecord {
         int actualOffset = of.getOffset();
         int actualLength = of.getField().getLength();
 
-        byte[] fieldBytes = new byte[actualLength];
-        System.arraycopy(bytes, actualOffset, fieldBytes, 0, actualLength);
-
         // check for empty strings
         while ((actualLength > 0) && (bytes[actualOffset] == JdbfUtils.EMPTY)) {
             actualOffset++;
@@ -128,37 +127,43 @@ public class DbfRecord {
 
     public byte[] getMemoAsBytes(String fieldName) throws IOException {
         OffsetDbfField of = getOffsetField(fieldName);
-        DbfField f = of.getField();
-        if (f.getType() != DbfFieldTypeEnum.Memo) {
+        if (of.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
         int offsetInBlocks = 0;
-        if (f.getLength() == 10) {
+        final int length = of.getLength();
+        if (length == 10) {
             offsetInBlocks = getBigDecimal(fieldName).intValueExact();
         } else {
-            byte[] dbfFieldBytes = new byte[f.getLength()];
-            System.arraycopy(bytes, f.getOffset(), dbfFieldBytes, 0, f.getLength());
-            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0],dbfFieldBytes[1],dbfFieldBytes[2],dbfFieldBytes[3]);
+            byte[] dbfFieldBytes = new byte[length];
+            System.arraycopy(bytes, of.getOffset(), dbfFieldBytes, 0, length);
+            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2],
+                    dbfFieldBytes[3]);
         }
-        if (offsetInBlocks == 0) return new byte[0];
+        if (offsetInBlocks == 0) {
+            return new byte[0];
+        }
         return memoReader.read(offsetInBlocks).getValue();
     }
 
     public String getMemoAsString(String fieldName, Charset charset) throws IOException {
         OffsetDbfField of = getOffsetField(fieldName);
-        DbfField f = of.getField();
-        if (f.getType() != DbfFieldTypeEnum.Memo) {
+        if (of.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
         int offsetInBlocks = 0;
-        if (f.getLength() == 10) {
+        final int length = of.getLength();
+        if (length == 10) {
             offsetInBlocks = getBigDecimal(fieldName).intValueExact();
         } else {
-            byte[] dbfFieldBytes = new byte[f.getLength()];
-            System.arraycopy(bytes, f.getOffset(), dbfFieldBytes, 0, f.getLength());
-            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0],dbfFieldBytes[1],dbfFieldBytes[2],dbfFieldBytes[3]);
+            byte[] dbfFieldBytes = new byte[length];
+            System.arraycopy(bytes, of.getOffset(), dbfFieldBytes, 0, length);
+            offsetInBlocks = BitUtils.makeInt(dbfFieldBytes[0], dbfFieldBytes[1], dbfFieldBytes[2],
+                    dbfFieldBytes[3]);
         }
-        if (offsetInBlocks == 0) return "";
+        if (offsetInBlocks == 0) {
+            return "";
+        }
         return memoReader.read(offsetInBlocks).getValueAsString(charset);
     }
 
@@ -220,18 +225,16 @@ public class DbfRecord {
 
     public byte[] getBytes(String fieldName) {
         OffsetDbfField of = getOffsetField(fieldName);
-        DbfField f = of.getField();
-        byte[] b = new byte[f.getLength()];
-        System.arraycopy(bytes, f.getOffset(), b, 0, f.getLength());
+        byte[] b = new byte[of.getLength()];
+        System.arraycopy(bytes, of.getOffset(), b, 0, of.getLength());
         return b;
     }
 
     public void setBytes(String fieldName, byte[] fieldBytes) {
         OffsetDbfField of = getOffsetField(fieldName);
-        DbfField f = of.getField();
         // TODO:
         // assert fieldBytes.length = f.getLength()
-        System.arraycopy(fieldBytes, 0, bytes, f.getOffset(), f.getLength());
+        System.arraycopy(fieldBytes, 0, bytes, of.getOffset(), of.getLength());
     }
 
     public Integer getInteger(String fieldName) {

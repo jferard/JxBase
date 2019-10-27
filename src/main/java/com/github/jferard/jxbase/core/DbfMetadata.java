@@ -17,121 +17,125 @@
 
 package com.github.jferard.jxbase.core;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DbfMetadata {
-	private DbfFileTypeEnum type;
-	private Date updateDate;
-	private int recordsQty;
-	private int fullHeaderLength;
-	private int oneRecordLength;
-	private byte uncompletedTxFlag;
-	private byte encryptionFlag;
-	private HashMap<String, OffsetDbfField> offsetFieldByName;
-	private List<DbfField> fields;
+    public static DbfMetadata create(DbfFileTypeEnum type, Date updateDate, int recordsQty,
+                                     int fullHeaderLength, int oneRecordLength,
+                                     byte uncompletedTxFlag, byte encryptionFlag,
+                                     List<DbfField> fields) {
+        Map<String, OffsetDbfField> offsetFieldByName =
+                new LinkedHashMap<String, OffsetDbfField>(fields.size() * 2);
+        int offset = 1;
+        for (DbfField f : fields) {
+            offsetFieldByName.put(f.getName(), new OffsetDbfField(f, offset));
+            offset += f.getLength();
+        }
+        fields = new ArrayList<DbfField>(fields);
+        return new DbfMetadata(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
+                uncompletedTxFlag, encryptionFlag, fields, offsetFieldByName);
+    }
 
-	public DbfFileTypeEnum getFileType() {
-		return type;
-	}
-	public void setType(DbfFileTypeEnum type) throws IOException {
-		if (type == null)
-			throw new IOException("The file is corrupted or is not a dbf file");
-		this.type = type;
-	}
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	public int getRecordsQty() {
-		return recordsQty;
-	}
-	public void setRecordsQty(int recordsQty) {
-		this.recordsQty = recordsQty;
-	}
-	public int getFullHeaderLength() {
-		return fullHeaderLength;
-	}
-	public void setFullHeaderLength(int fullHeaderLength) {
-		this.fullHeaderLength = fullHeaderLength;
-	}
-	public int getOneRecordLength() {
-		return oneRecordLength;
-	}
-	public void setOneRecordLength(int oneRecordLength) {
-		this.oneRecordLength = oneRecordLength;
-	}
-	public byte getUncompletedTxFlag() {
-		return uncompletedTxFlag;
-	}
-	public void setUncompletedTxFlag(byte uncompletedTxFlag) {
-		this.uncompletedTxFlag = uncompletedTxFlag;
-	}
-	public byte getEncryptionFlag() {
-		return encryptionFlag;
-	}
-	public void setEncryptionFlag(byte encryptionFlag) {
-		this.encryptionFlag = encryptionFlag;
-	}
-	public OffsetDbfField getOffsetField(String name) {
-		return offsetFieldByName.get(name);
-	}
-	public Collection<DbfField> getFields() {
-		return fields;
-	}
-	public void setFields(List<DbfField> fields) {
-		processFields(fields);
-	}
-	
-	private void processFields(List<DbfField> fields) {
-		offsetFieldByName = new LinkedHashMap<String, OffsetDbfField>(fields.size()*2);
-		int offset = 1;
-		for (DbfField f : fields) {
-			f.setOffset(offset);
-			offsetFieldByName.put(f.getName(), new OffsetDbfField(f, offset));
-			offset += f.getLength();
-		}
-		this.fields = new ArrayList<DbfField>(fields);
-	}
-	
-	public String getFieldsStringRepresentation() {
-		if (offsetFieldByName == null) {
-			return null;
-		}
-		int i = offsetFieldByName.size();
-		// i*64 - just to allocate enough space
-		StringBuilder sb = new StringBuilder(i*64);		
-		for (OffsetDbfField of : offsetFieldByName.values()) {
-			sb.append(of.toString());
-			i--;
-			if (i>0) {
-				sb.append("|");			
-			}			
-		}
-		return sb.toString();
-	}
+    private final DbfFileTypeEnum type;
+    private final Date updateDate;
+    private final int recordsQty;
+    private final int fullHeaderLength;
+    private final int oneRecordLength;
+    private final byte uncompletedTxFlag;
+    private final byte encryptionFlag;
+    private final Map<String, OffsetDbfField> offsetFieldByName;
+    private final List<DbfField> fields;
+
+    public DbfMetadata(DbfFileTypeEnum type, Date updateDate, int recordsQty, int fullHeaderLength,
+                       int oneRecordLength, byte uncompletedTxFlag, byte encryptionFlag,
+                       List<DbfField> fields, Map<String, OffsetDbfField> offsetFieldByName) {
+        if (type == null) {
+            throw new IllegalArgumentException("File type should not be null");
+        }
+        this.type = type;
+        this.updateDate = updateDate;
+        this.recordsQty = recordsQty;
+        this.fullHeaderLength = fullHeaderLength;
+        this.oneRecordLength = oneRecordLength;
+        this.uncompletedTxFlag = uncompletedTxFlag;
+        this.encryptionFlag = encryptionFlag;
+        this.fields = fields;
+        this.offsetFieldByName = offsetFieldByName;
+    }
+
+    public DbfFileTypeEnum getFileType() {
+        return type;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public int getRecordsQty() {
+        return recordsQty;
+    }
+
+    public int getFullHeaderLength() {
+        return fullHeaderLength;
+    }
+
+    public int getOneRecordLength() {
+        return oneRecordLength;
+    }
+
+    public byte getUncompletedTxFlag() {
+        return uncompletedTxFlag;
+    }
+
+    public byte getEncryptionFlag() {
+        return encryptionFlag;
+    }
+
+    public OffsetDbfField getOffsetField(String name) {
+        return offsetFieldByName.get(name);
+    }
+
+    public Collection<OffsetDbfField> getOffsetFields() {
+        return offsetFieldByName.values();
+    }
+
+    public Collection<DbfField> getFields() {
+        return fields;
+    }
+
+    public String getFieldsStringRepresentation() {
+        if (offsetFieldByName == null) {
+            return null;
+        }
+        int i = offsetFieldByName.size();
+        // i*64 - just to allocate enough space
+        StringBuilder sb = new StringBuilder(i * 64);
+        for (OffsetDbfField of : offsetFieldByName.values()) {
+            sb.append(of.toString());
+            i--;
+            if (i > 0) {
+                sb.append("|");
+            }
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "DbfMetadata[type=" + type + ", updateDate=" + formatUpdateDate() + ", recordsQty=" +
+                recordsQty + ", fullHeaderLength=" + fullHeaderLength + ", oneRecordLength=" +
+                oneRecordLength + ", uncompletedTxFlag=" + uncompletedTxFlag + ", encryptionFlag=" +
+                encryptionFlag + ", fields=" + getFieldsStringRepresentation() + "]";
+    }
 
     private String formatUpdateDate() {
         return new SimpleDateFormat("yyyy-MM-dd").format(updateDate);
     }
-	@Override
-	public String toString() {
-		return "DbfMetadata [\n  type=" + type + ", \n  updateDate="
-				+ formatUpdateDate() + ", \n  recordsQty=" + recordsQty
-				+ ", \n  fullHeaderLength=" + fullHeaderLength
-				+ ", \n  oneRecordLength=" + oneRecordLength
-				+ ", \n  uncompletedTxFlag=" + uncompletedTxFlag
-				+ ", \n  encryptionFlag=" + encryptionFlag + ", \n  fields="
-				//+ fields + "\n]";
-				+ getFieldsStringRepresentation() + "\n]";
-	}
 }

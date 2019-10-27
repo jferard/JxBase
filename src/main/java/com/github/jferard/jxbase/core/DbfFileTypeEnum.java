@@ -40,7 +40,7 @@ public enum DbfFileTypeEnum {
 				return e;
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Unknown file type: "+bType);
 	}
 
 	final int type;

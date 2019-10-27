@@ -31,8 +31,6 @@ import java.io.InputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-import static org.junit.Assert.assertNull;
-
 public class DbfReaderTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -95,35 +93,32 @@ public class DbfReaderTest {
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2});
-        exception.expect(IOException.class);
-        exception.expectMessage("The file is corrupted or is not a dbf file");
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Unknown field type: \u0002 (2)");
         DbfReader reader = new DbfReader(dbf);
-        reader.close();
     }
 
     @Test
     public void testSixtyFourByteStreamWithGoodFileTypeAndCloseHeader() throws IOException {
         InputStream dbf = new ByteArrayInputStream(
-                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                new byte[]{0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, (byte) 0x41, 0x0, 0x3, 0x0, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
-                        0x2, 0x2, 0x2, 0x2, 0x2, JdbfUtils.HEADER_TERMINATOR});
+                        0x2, 0x2, 0x2, 0x2, 0x2, 0x2, JdbfUtils.HEADER_TERMINATOR});
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("Unknown field type: \u0002 (2)");
         DbfReader reader = new DbfReader(dbf);
-        try {
-            assertNull(reader.read());
-        } finally {
-            reader.close();
-        }
     }
 
     @Test
     public void testMemoStream() throws IOException {
         final byte[] buf =
-                {0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
+                {0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, (byte) 0x41, 0x0, 0x1, 0x0, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
-                        0x2, 'a', 'b', 'c', 'd', 0, 0, 0, 0, 0, 'L', 'L', 'L', 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x0D};
+                        JdbfUtils.HEADER_TERMINATOR, 'a', 'b', 'c', 'd', 0, 0, 0, 0, 'L', 'L', 'L',
+                        'L', 'L', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        JdbfUtils.HEADER_TERMINATOR};
         Assert.assertEquals(65, buf.length);
         InputStream dbf = new ByteArrayInputStream(buf);
 
@@ -137,10 +132,9 @@ public class DbfReaderTest {
 
         DbfReader reader = new DbfReader(dbf, fis);
         Assert.assertEquals(
-                "DbfMetadata [\n" + "  type=FoxBASE1, \n" + "  updateDate=2002-02-02, \n" +
-                        "  recordsQty=33686018, \n" + "  fullHeaderLength=514, \n" +
-                        "  oneRecordLength=514, \n" + "  uncompletedTxFlag=2, \n" +
-                        "  encryptionFlag=2, \n" + "  fields=OffsetDbfField[field=abcd,L,0,0, offset=1]\n" + "]",
+                "DbfMetadata[type=FoxBASE1, updateDate=2002-02-02, recordsQty=33686018, " +
+                        "fullHeaderLength=65, oneRecordLength=1, uncompletedTxFlag=2, " +
+                        "encryptionFlag=2, fields=OffsetDbfField[field=bcd,L,0,0, offset=1]]",
                 reader.getMetadata().toString());
         reader.close();
     }

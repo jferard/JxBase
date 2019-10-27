@@ -18,50 +18,30 @@
 package com.github.jferard.jxbase.util;
 
 import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
 import com.github.jferard.jxbase.core.DbfFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
+import com.github.jferard.jxbase.core.OffsetDbfField;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class DbfMetadataUtils {
+    public static final int BUFFER_SIZE = 8192;
 
-    public static DbfMetadata fromFieldsString(String s) throws IOException {
+    public static DbfMetadata fromFieldsString(DbfFileTypeEnum fileType, Date updateDate,
+                                               int recordQty, String s) {
         List<DbfField> fields = JdbfUtils.createFieldsFromString(s);
-
-        DbfMetadata metadata = new DbfMetadata();
-
-        metadata.setType(DbfFileTypeEnum.FoxBASEPlus1);
-        metadata.setUpdateDate(new Date());
-        //metadata.setRecordsQty(recordsQty);
-        int fullHeaderLength = calculateFullHeaderLength(fields);
-        metadata.setFullHeaderLength(fullHeaderLength);
-        int oneRecordLength = calculateOneRecordLength(fields);
-        metadata.setOneRecordLength(oneRecordLength);
-
-        metadata.setFields(fields);
-
-        return metadata;
+        return fromFields(fileType, updateDate, recordQty, fields);
     }
 
-    public static DbfMetadata fromFields(List<DbfField> fields, DbfFileTypeEnum fileType)
-            throws IOException {
-        DbfMetadata metadata = new DbfMetadata();
+    public static DbfMetadata fromFields(DbfFileTypeEnum fileType, Date updateDate, int recordQty,
+                                         List<DbfField> fields) {
+        final int fullHeaderLength = calculateFullHeaderLength(fields);
+        final int oneRecordLength = calculateOneRecordLength(fields);
 
-        metadata.setType(fileType);
-        metadata.setUpdateDate(new Date());
-        int fullHeaderLength = calculateFullHeaderLength(fields);
-        metadata.setFullHeaderLength(fullHeaderLength);
-        int oneRecordLength = calculateOneRecordLength(fields);
-        metadata.setOneRecordLength(oneRecordLength);
-
-        metadata.setFields(fields);
-
-        return metadata;
+        return DbfMetadata
+                .create(fileType, updateDate, recordQty, fullHeaderLength, oneRecordLength,
+                        JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
     }
 
     public static int calculateOneRecordLength(List<DbfField> fields) {
@@ -69,119 +49,16 @@ public class DbfMetadataUtils {
         for (DbfField field : fields) {
             result += field.getLength();
         }
-        result++;
-        return result;
+        return result + 1;
     }
 
     private static int calculateFullHeaderLength(List<DbfField> fields) {
-        int result = 32;
-        result += 32 * fields.size();
-        result++;
-        return result;
+        int result = JdbfUtils.HEADER_FIELDS_SIZE;
+        result += JdbfUtils.FIELD_RECORD_LENGTH * fields.size();
+        return result + 1;
     }
 
-    //	public static byte[] toByteArray(DbfMetadata metadata) {
-    //
-    //	}
-
-    /**
-     * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, 1.1 Table File Header
-     *
-     * @param metadata    the metadata destination
-     * @param headerBytes the source bytes
-     * @throws IOException
-     */
-    public static void fillHeaderFields(DbfMetadata metadata, byte[] headerBytes)
-            throws IOException {
-        metadata.setType(DbfFileTypeEnum.fromInt(headerBytes[0]));
-        metadata.setUpdateDate(parseHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3],
-                metadata.getFileType()));
-        metadata.setRecordsQty(
-                BitUtils.makeInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]));
-        metadata.setFullHeaderLength(BitUtils.makeInt(headerBytes[8], headerBytes[9]));
-        metadata.setOneRecordLength(BitUtils.makeInt(headerBytes[10], headerBytes[11]));
-        // 12-13: Reserved; filled with zeros.
-        metadata.setUncompletedTxFlag(headerBytes[14]);
-        metadata.setEncryptionFlag(headerBytes[15]);
-    }
-
-    @SuppressWarnings("deprecation")
-    public static Date parseHeaderUpdateDate(byte yearByte, byte monthByte, byte dayByte,
-                                             DbfFileTypeEnum fileType) {
-        int year = yearByte + 2000 - 1900;
-        switch (fileType) {
-            case FoxBASEPlus1:
-                year = yearByte;
-        }
-        int month = monthByte - 1;
-        int day = dayByte;
-        return new Date(year, month, day);
-
-    }
-
-    public static void readFields(DbfMetadata metadata, InputStream inputStream)
-            throws IOException {
-        List<DbfField> fields = new ArrayList<DbfField>();
-        byte[] fieldBytes = new byte[JdbfUtils.FIELD_RECORD_LENGTH];
-        int headerLength = 0;
-        int fieldLength = 0;
-        while (true) {
-            if (inputStream.read(fieldBytes) != JdbfUtils.FIELD_RECORD_LENGTH) {
-                throw new IOException("The file is corrupted or is not a dbf file");
-            }
-
-            DbfField field = createDbfField(fieldBytes);
-            fields.add(field);
-
-            fieldLength += field.getLength();
-            headerLength += fieldBytes.length;
-
-            long oldAvailable = inputStream.available();
-            int terminator = inputStream.read();
-            if (terminator == -1) {
-                throw new IOException("The file is corrupted or is not a dbf file");
-            } else if (terminator == JdbfUtils.HEADER_TERMINATOR) {
-                break;
-            } else {
-                inputStream.reset();
-                inputStream.skip(inputStream.available() - oldAvailable);
-            }
-        }
-        fieldLength += 1;
-        headerLength += 32;
-        headerLength += 1;
-
-        if (headerLength != metadata.getFullHeaderLength()) {
-            // TODO: handle this anyway!
-        }
-        if (fieldLength != metadata.getOneRecordLength()) {
-            // TODO: handle this anyway!
-        }
-
-        metadata.setFields(fields);
-    }
-
-    public static DbfField createDbfField(byte[] fieldBytes) {
-        // 1. name
-        int nameLength = 0;
-        while (nameLength < 11 && fieldBytes[nameLength] > 0) { // maybe != 0
-            nameLength++;
-        }
-        final String name = new String(fieldBytes, 0, nameLength);
-        // 2. type
-        final DbfFieldTypeEnum type = DbfFieldTypeEnum.fromChar((char) fieldBytes[11]);
-        // 3. length
-        int length = fieldBytes[16];
-        if (length < 0) {
-            length += 256;
-        }
-        // 4. number of decimal places
-        final byte numberOfDecimalPlaces = fieldBytes[17];
-
-        return new DbfField(name, type, length, numberOfDecimalPlaces);
-    }
-
-    public static void writeDbfField(DbfField field, byte[] fieldBytes) {
+    public static void writeDbfField(OffsetDbfField field, byte[] fieldBytes) {
         BitUtils.memset(fieldBytes, 0);
         byte[] nameBytes = field.getName().getBytes();
         int nameLength = nameBytes.length;
@@ -243,4 +120,6 @@ public class DbfMetadataUtils {
 
         return headerBytes;
     }
+
+
 }

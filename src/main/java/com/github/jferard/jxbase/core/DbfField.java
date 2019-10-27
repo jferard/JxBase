@@ -30,8 +30,6 @@ public class DbfField {
     private final DbfFieldTypeEnum type;
     private final int length;
     private final int numberOfDecimalPlaces;
-    private int offset;
-
 
     /**
      * @param name                  the name of the field
@@ -74,25 +72,10 @@ public class DbfField {
         return numberOfDecimalPlaces;
     }
 
-    /**
-     * @return the offset of the field
-     */
-    public int getOffset() {
-        return offset;
-    }
-
-    /**
-     * @param offset the offset of the field
-     */
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
     @Override
     public String toString() {
-        return "DbfField [\n  name=" + name + ", \n  type=" + type + ", \n  length=" + length +
-                ", \n  numberOfDecimalPlaces=" + numberOfDecimalPlaces + ", \n  offset=" + offset +
-                "\n]";
+        return "DbfField[name=" + name + ", type=" + type + ", length=" + length +
+                ", numberOfDecimalPlaces=" + numberOfDecimalPlaces + "]";
     }
 
     /**

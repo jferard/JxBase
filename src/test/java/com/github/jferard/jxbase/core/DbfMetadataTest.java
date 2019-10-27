@@ -16,14 +16,15 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.util.JdbfUtils;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 public class DbfMetadataTest {
@@ -32,14 +33,12 @@ public class DbfMetadataTest {
 
     @Test
     public void testToString() {
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setUpdateDate(new Date(0));
-        Assert.assertEquals("DbfMetadata [\n" + "  type=null, \n" + "  updateDate=1970-01-01, \n" +
-                        "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0,"
-                        + " \n" +
-                        "  uncompletedTxFlag=0, \n" + "  encryptionFlag=0, \n" + "  fields=null\n"
-                        + "]",
-                metadata.toString());
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
+                        JdbfUtils.NULL_BYTE, Collections.<DbfField>emptyList());
+        Assert.assertEquals("DbfMetadata[type=FoxBASEPlus1, updateDate=1970-01-01, recordsQty=0, " +
+                "fullHeaderLength=0, oneRecordLength=0, uncompletedTxFlag=0, " +
+                "encryptionFlag=0, fields=]", metadata.toString());
     }
 
     @Test
@@ -47,63 +46,65 @@ public class DbfMetadataTest {
         DbfField f1 = DbfField.fromStringRepresentation("x,C,1,0");
         DbfField f2 = DbfField.fromStringRepresentation("y,I,8,0");
 
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setUpdateDate(new Date(0));
-        metadata.setFields(Arrays.asList(f1, f2));
-        Assert.assertEquals("DbfMetadata [\n" + "  type=null, \n" + "  updateDate=1970-01-01, \n" +
-                "  recordsQty=0, \n" + "  fullHeaderLength=0, \n" + "  oneRecordLength=0, \n" +
-                "  uncompletedTxFlag=0, \n" + "  encryptionFlag=0, \n" +
-                "  fields=OffsetDbfField[field=x,C,1,0, offset=1]|OffsetDbfField[field=y,I,8,0, " +
-                "offset=2]\n" +
-                "]", metadata.toString());
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
+                        JdbfUtils.NULL_BYTE, Arrays.asList(f1, f2));
+        Assert.assertEquals(
+                "DbfMetadata[type=FoxBASEPlus1, updateDate=1970-01-01, recordsQty=0, " +
+                        "fullHeaderLength=0, oneRecordLength=0, uncompletedTxFlag=0, " +
+                        "encryptionFlag=0, fields=OffsetDbfField[field=x,C,1,0, " +
+                        "offset=1]|OffsetDbfField[field=y,I,8,0, offset=2]]",
+                metadata.toString());
     }
 
     @Test
-    public void testSetNullType() throws IOException {
-        final DbfMetadata metadata = new DbfMetadata();
-
-        exception.expect(IOException.class);
-        exception.expectMessage("The file is corrupted or is not a dbf file");
-        metadata.setType(null);
+    public void testSetNullType() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("File type should not be null");
+        DbfMetadata.create(null, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE,
+                Collections.<DbfField>emptyList());
     }
 
     @Test
     public void testGetUpdateDate() {
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setUpdateDate(new Date(0));
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
+                        JdbfUtils.NULL_BYTE, Collections.<DbfField>emptyList());
         Assert.assertEquals(new Date(0), metadata.getUpdateDate());
     }
 
     @Test
     public void testGetRecordsQty() {
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setRecordsQty(100);
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 100, 0, 0, JdbfUtils.NULL_BYTE,
+                        JdbfUtils.NULL_BYTE, Collections.<DbfField>emptyList());
         Assert.assertEquals(100, metadata.getRecordsQty());
     }
 
     @Test
     public void testGetUncompletedTxFlag() {
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setUncompletedTxFlag((byte) 10);
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
+                        JdbfUtils.NULL_BYTE, Collections.<DbfField>emptyList());
         Assert.assertEquals(10, metadata.getUncompletedTxFlag());
     }
 
     @Test
     public void testGetEncryptionFlag() {
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setEncryptionFlag((byte) 10);
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
+                        (byte) 10, Collections.<DbfField>emptyList());
         Assert.assertEquals(10, metadata.getEncryptionFlag());
     }
 
     @Test
     public void testGetFields() {
         DbfField f = DbfField.fromStringRepresentation("x,C,1,0");
-
-        final DbfMetadata metadata = new DbfMetadata();
-        metadata.setUpdateDate(new Date(0));
-        metadata.setFields(Arrays.asList(f));
-
-        Assert.assertEquals(Arrays.asList(f), new ArrayList<DbfField>(metadata.getFields()));
+        final DbfMetadata metadata = DbfMetadata
+                .create(DbfFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
+                        JdbfUtils.NULL_BYTE, Collections.singletonList(f));
+        Assert.assertEquals(Collections.singletonList(f),
+                new ArrayList<DbfField>(metadata.getFields()));
         Assert.assertEquals("OffsetDbfField[field=x,C,1,0, offset=1]",
                 metadata.getOffsetField("x").toString());
     }

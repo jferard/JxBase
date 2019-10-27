@@ -22,7 +22,6 @@ import org.junit.Test;
 
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,12 +33,9 @@ public class JdbfUtilsTest {
         final List<DbfField> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
-        Assert.assertEquals(
-                "DbfField [\n" + "  name=x, \n" + "  type=Integer, \n" + "  length=10, \n" +
-                        "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]",
+        Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",
                 fieldsFromString.get(0).toString());
-        Assert.assertEquals("DbfField [\n" + "  name=y, \n" + "  type=Memo, \n" + "  length=4, \n" +
-                        "  numberOfDecimalPlaces=4, \n" + "  offset=0\n" + "]",
+        Assert.assertEquals("DbfField[name=y, type=Memo, length=4, numberOfDecimalPlaces=4]",
                 fieldsFromString.get(1).toString());
     }
 
@@ -48,20 +44,15 @@ public class JdbfUtilsTest {
         final List<DbfField> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|   |y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
-        Assert.assertEquals(
-                "DbfField [\n" + "  name=x, \n" + "  type=Integer, \n" + "  length=10, \n" +
-                        "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]",
+        Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",
                 fieldsFromString.get(0).toString());
-        Assert.assertEquals("DbfField [\n" + "  name=y, \n" + "  type=Memo, \n" + "  length=4, \n" +
-                        "  numberOfDecimalPlaces=4, \n" + "  offset=0\n" + "]",
+        Assert.assertEquals("DbfField[name=y, type=Memo, length=4, numberOfDecimalPlaces=4]",
                 fieldsFromString.get(1).toString());
     }
 
     @Test
     public void testCreateDbfFieldFromString() {
-        Assert.assertEquals(
-                "DbfField [\n" + "  name=x, \n" + "  type=Integer, \n" + "  length=10, \n" +
-                        "  numberOfDecimalPlaces=2, \n" + "  offset=0\n" + "]",
+        Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",
                 JdbfUtils.createDbfFieldFromString("x,I,10,2").toString());
     }
 

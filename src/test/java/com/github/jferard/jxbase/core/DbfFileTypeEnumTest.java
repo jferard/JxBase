@@ -17,9 +17,14 @@
 package com.github.jferard.jxbase.core;
 
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class DbfFileTypeEnumTest {
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
     public void testFomInt() {
         Assert.assertEquals(DbfFileTypeEnum.FoxBASE1, DbfFileTypeEnum.fromInt((byte) 0x02));
@@ -27,7 +32,8 @@ public class DbfFileTypeEnumTest {
 
     @Test
     public void testFomIntNoValue() {
-        Assert.assertNull(DbfFileTypeEnum.fromInt((byte) 0xFF));
+        exception.expect(IllegalArgumentException.class);
+        DbfFileTypeEnum.fromInt((byte) 0xFF);
     }
 
     @Test

@@ -1,4 +1,5 @@
 /*
+ * JxBase - Copyright (c) 2019 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +42,8 @@ public class JdbfUtils {
                     return new SimpleDateFormat("yyyyMMdd");
                 }
             };
+    public static final int HEADER_FIELDS_SIZE = 32;
+    public static final byte NULL_BYTE = (byte) 0x0;
     public static int EMPTY = 0x20;
 
     public static List<DbfField> createFieldsFromString(String fieldsString) {
@@ -62,6 +65,7 @@ public class JdbfUtils {
                 Integer.parseInt(a[3]));
     }
 
+    @SuppressWarnings("deprecation")
     public static byte[] writeDateForHeader(Date date) {
         byte[] headerBytes = {(byte) (date.getYear() - 100), (byte) (date.getMonth() + 1),
                 (byte) (date.getDay()),};
@@ -113,6 +117,7 @@ public class JdbfUtils {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public static byte[] writeJulianDate(Date d) {
         ByteBuffer bb = ByteBuffer.allocate(8);
 
@@ -123,6 +128,7 @@ public class JdbfUtils {
         return bb.array();
     }
 
+    @SuppressWarnings("deprecation")
     private static int julianDay(Date d) {
         int year = d.getYear();
         int month = d.getMonth() + 1;
