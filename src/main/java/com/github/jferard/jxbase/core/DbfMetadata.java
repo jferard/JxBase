@@ -33,15 +33,15 @@ public class DbfMetadata {
     public static DbfMetadata create(DbfFileTypeEnum type, Date updateDate, int recordsQty,
                                      int fullHeaderLength, int oneRecordLength,
                                      byte uncompletedTxFlag, byte encryptionFlag,
-                                     List<DbfField> fields) {
-        Map<String, OffsetDbfField> offsetFieldByName =
-                new LinkedHashMap<String, OffsetDbfField>(fields.size() * 2);
+                                     List<DbfField<?>> fields) {
+        Map<String, OffsetDbfField<?>> offsetFieldByName =
+                new LinkedHashMap<String, OffsetDbfField<?>>(fields.size() * 2);
         int offset = 1;
-        for (DbfField f : fields) {
-            offsetFieldByName.put(f.getName(), new OffsetDbfField(f, offset));
+        for (DbfField<?> f : fields) {
+            offsetFieldByName.put(f.getName(), f.withOffset(offset));
             offset += f.getLength();
         }
-        fields = new ArrayList<DbfField>(fields);
+        fields = new ArrayList<DbfField<?>>(fields);
         return new DbfMetadata(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
                 uncompletedTxFlag, encryptionFlag, fields, offsetFieldByName);
     }
@@ -53,12 +53,12 @@ public class DbfMetadata {
     private final int oneRecordLength;
     private final byte uncompletedTxFlag;
     private final byte encryptionFlag;
-    private final Map<String, OffsetDbfField> offsetFieldByName;
-    private final List<DbfField> fields;
+    private final Map<String, OffsetDbfField<?>> offsetFieldByName;
+    private final List<DbfField<?>> fields;
 
     public DbfMetadata(DbfFileTypeEnum type, Date updateDate, int recordsQty, int fullHeaderLength,
                        int oneRecordLength, byte uncompletedTxFlag, byte encryptionFlag,
-                       List<DbfField> fields, Map<String, OffsetDbfField> offsetFieldByName) {
+                       List<DbfField<?>> fields, Map<String, OffsetDbfField<?>> offsetFieldByName) {
         if (type == null) {
             throw new IllegalArgumentException("File type should not be null");
         }
@@ -101,15 +101,15 @@ public class DbfMetadata {
         return encryptionFlag;
     }
 
-    public OffsetDbfField getOffsetField(String name) {
+    public OffsetDbfField<?> getOffsetField(String name) {
         return offsetFieldByName.get(name);
     }
 
-    public Collection<OffsetDbfField> getOffsetFields() {
+    public Collection<OffsetDbfField<?>> getOffsetFields() {
         return offsetFieldByName.values();
     }
 
-    public Collection<DbfField> getFields() {
+    public Collection<DbfField<?>> getFields() {
         return fields;
     }
 
@@ -120,7 +120,7 @@ public class DbfMetadata {
         int i = offsetFieldByName.size();
         // i*64 - just to allocate enough space
         StringBuilder sb = new StringBuilder(i * 64);
-        for (OffsetDbfField of : offsetFieldByName.values()) {
+        for (OffsetDbfField<?> of : offsetFieldByName.values()) {
             sb.append(of.toString());
             i--;
             if (i > 0) {

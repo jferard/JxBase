@@ -26,19 +26,16 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Date;
 import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DbfRecord {
 
-    public static final String NUMERIC_OVERFLOW = "*";
     private final int recordNumber;
     private byte[] bytes;
     private DbfMetadata metadata;
     private MemoReader memoReader;
-    private Charset stringCharset;
 
     public DbfRecord(byte[] source, DbfMetadata metadata, MemoReader memoReader, int recordNumber) {
         this.recordNumber = recordNumber;
@@ -75,12 +72,15 @@ public class DbfRecord {
         return getString(fieldName, JdbfUtils.ASCII_CHARSET);
     }
 
-    public String getString(String fieldName, String charsetName) {
-        return getString(fieldName, Charset.forName(charsetName));
-    }
-
+    /**
+     * Return the string value for this field. The string is either non empty or null.
+     *
+     * @param fieldName the field name
+     * @param charset   the charset
+     * @return the trimmed string or null if the trimmed string is empty.
+     */
     public String getString(String fieldName, Charset charset) {
-        OffsetDbfField of = metadata.getOffsetField(fieldName);
+        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
         int actualOffset = of.getOffset();
         int actualLength = of.getLength();
 
@@ -104,7 +104,7 @@ public class DbfRecord {
     public byte[] getMemoAsBytes(String fieldName) throws IOException {
         int offsetInBlocks = this.getOffsetInBlocks(fieldName);
         if (offsetInBlocks == 0) {
-            return new byte[0];
+            return new byte[] {};
         }
         return memoReader.read(offsetInBlocks).getValue();
     }
@@ -118,7 +118,7 @@ public class DbfRecord {
     }
 
     private int getOffsetInBlocks(String fieldName) throws IllegalFormatException {
-        OffsetDbfField of = metadata.getOffsetField(fieldName);
+        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
         if (of.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
@@ -133,78 +133,41 @@ public class DbfRecord {
         }
     }
 
-    public Date getDate(String fieldName) throws ParseException {
-        String s = getASCIIString(fieldName);
-        if (s == null) {
-            return null;
-        }
-        return JdbfUtils.parseDate(s);
-    }
-
-    public BigDecimal getBigDecimal(String fieldName) {
+    private BigDecimal getBigDecimal(String fieldName) {
         String s = this.getASCIIString(fieldName);
 
-        if (s == null || s.trim().length() == 0) {
-            return null;
-        } else {
-            s = s.trim();
-        }
-
-        if (s.contains(NUMERIC_OVERFLOW)) {
+        if (s == null || s.contains(NumericDbfField.NUMERIC_OVERFLOW)) {
             return null;
         }
-
-        //MathContext mc = new MathContext(f.getNumberOfDecimalPlaces());
-        //return new BigDecimal(s, mc);
         return new BigDecimal(s);
     }
 
-    public Boolean getBoolean(String fieldName) {
-        String s = getASCIIString(fieldName);
-        if (s == null) {
-            return null;
-        }
-        if (s.equalsIgnoreCase("t")) {
-            return Boolean.TRUE;
-        } else if (s.equalsIgnoreCase("f")) {
-            return Boolean.FALSE;
-        } else {
-            return null;
-        }
-    }
-
     public void setBoolean(String fieldName, Boolean value) {
-        OffsetDbfField of = metadata.getOffsetField(fieldName);
+        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
         // TODO: write boolean
     }
 
     public byte[] getBytes(String fieldName) {
-        OffsetDbfField of = metadata.getOffsetField(fieldName);
+        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
         byte[] b = new byte[of.getLength()];
         System.arraycopy(bytes, of.getOffset(), b, 0, of.getLength());
         return b;
     }
 
     public void setBytes(String fieldName, byte[] fieldBytes) {
-        OffsetDbfField of = metadata.getOffsetField(fieldName);
+        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
         // TODO:
         // assert fieldBytes.length = f.getLength()
         System.arraycopy(fieldBytes, 0, bytes, of.getOffset(), of.getLength());
     }
 
-    public Integer getInteger(String fieldName) {
-        byte[] bytes = getBytes(fieldName);
-
-        return BitUtils.makeInt(bytes[0], bytes[1], bytes[2], bytes[3]);
-    }
-
-    public Collection<DbfField> getFields() {
+    public Collection<DbfField<?>> getFields() {
         return metadata.getFields();
     }
 
     public String getStringRepresentation(final Charset charset) throws Exception {
         StringBuilder sb = new StringBuilder(bytes.length * 10);
-        for (DbfField f : getFields()) {
+        for (DbfField<?> f : getFields()) {
             sb.append(f.getName()).append("=").append(f.getValue(this, charset));
             sb.append(", ");
         }
@@ -214,7 +177,7 @@ public class DbfRecord {
     public Map<String, Object> toMap(final Charset charset) throws ParseException {
         Map<String, Object> map = new LinkedHashMap<String, Object>(getFields().size() * 2);
 
-        for (DbfField f : getFields()) {
+        for (DbfField<?> f : getFields()) {
             String name = f.getName();
             final Object value = f.getValue(this, charset);
             if (value != null) {
@@ -223,32 +186,5 @@ public class DbfRecord {
         }
 
         return map;
-    }
-
-    public Object getObject(String name, DbfFieldTypeEnum type, Charset charset) throws ParseException {
-        final Object value;
-        switch (type) {
-
-            case Character:
-                value = getString(name, charset);
-                break;
-
-            case Numeric:
-                value = getBigDecimal(name);
-                break;
-
-            case Logical:
-                value = getBoolean(name);
-                break;
-
-            case Integer:
-                value = getInteger(name);
-                break;
-
-            default:
-                value = null;
-                break;
-        }
-        return value;
     }
 }

@@ -113,10 +113,10 @@ public class DbfReaderTest {
     @Test
     public void testMemoStream() throws IOException {
         final byte[] buf =
-                {0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, (byte) 0x41, 0x0, 0x1, 0x0, 0x2, 0x2, 0x2,
+                {0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, (byte) 0x41, 0x0, 0x2, 0x0, 0x2, 0x2, 0x2,
                         0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x2,
-                        JdbfUtils.HEADER_TERMINATOR, 'a', 'b', 'c', 'd', 0, 0, 0, 0, 'L', 'L', 'L',
-                        'L', 'L', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        JdbfUtils.HEADER_TERMINATOR, 'a', 'b', 'c', 'd', 0, 0, 0, 0, 0, 0, 0,
+                        0, 'L', 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         JdbfUtils.HEADER_TERMINATOR};
         Assert.assertEquals(65, buf.length);
         InputStream dbf = new ByteArrayInputStream(buf);
@@ -130,8 +130,8 @@ public class DbfReaderTest {
         DbfReader reader = new DbfReader(dbf, new MemoReader(fc));
         Assert.assertEquals(
                 "DbfMetadata[type=FoxBASE1, updateDate=2002-02-02, recordsQty=33686018, " +
-                        "fullHeaderLength=65, oneRecordLength=1, uncompletedTxFlag=2, " +
-                        "encryptionFlag=2, fields=OffsetDbfField[field=bcd,L,0,0, offset=1]]",
+                        "fullHeaderLength=65, oneRecordLength=2, uncompletedTxFlag=2, " +
+                        "encryptionFlag=2, fields=OffsetDbfField[field=bcd,L,1,0, offset=1]]",
                 reader.getMetadata().toString());
         reader.close();
     }

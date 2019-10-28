@@ -30,12 +30,12 @@ public class DbfMetadataUtils {
 
     public static DbfMetadata fromFieldsString(DbfFileTypeEnum fileType, Date updateDate,
                                                int recordQty, String s) {
-        List<DbfField> fields = JdbfUtils.createFieldsFromString(s);
+        List<DbfField<?>> fields = JdbfUtils.createFieldsFromString(s);
         return fromFields(fileType, updateDate, recordQty, fields);
     }
 
     public static DbfMetadata fromFields(DbfFileTypeEnum fileType, Date updateDate, int recordQty,
-                                         List<DbfField> fields) {
+                                         List<DbfField<?>> fields) {
         final int fullHeaderLength = calculateFullHeaderLength(fields);
         final int oneRecordLength = calculateOneRecordLength(fields);
 
@@ -44,21 +44,21 @@ public class DbfMetadataUtils {
                         JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
     }
 
-    public static int calculateOneRecordLength(List<DbfField> fields) {
+    public static int calculateOneRecordLength(List<DbfField<?>> fields) {
         int result = 0;
-        for (DbfField field : fields) {
+        for (DbfField<?> field : fields) {
             result += field.getLength();
         }
         return result + 1;
     }
 
-    private static int calculateFullHeaderLength(List<DbfField> fields) {
+    private static int calculateFullHeaderLength(List<DbfField<?>> fields) {
         int result = JdbfUtils.HEADER_FIELDS_SIZE;
         result += JdbfUtils.FIELD_RECORD_LENGTH * fields.size();
         return result + 1;
     }
 
-    public static void writeDbfField(OffsetDbfField field, byte[] fieldBytes) {
+    public static void writeDbfField(OffsetDbfField<?> field, byte[] fieldBytes) {
         BitUtils.memset(fieldBytes, 0);
         byte[] nameBytes = field.getName().getBytes();
         int nameLength = nameBytes.length;

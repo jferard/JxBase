@@ -60,7 +60,7 @@ public class DbfWriter {
 
 	private void writeFields() throws IOException {
 		byte[] bytes = new byte[JdbfUtils.FIELD_RECORD_LENGTH];
-		for (OffsetDbfField of : metadata.getOffsetFields()) {
+		for (OffsetDbfField<?> of : metadata.getOffsetFields()) {
 			DbfMetadataUtils.writeDbfField(of, bytes);
 			out.write(bytes);
 		}
@@ -69,14 +69,14 @@ public class DbfWriter {
 
 	public void write(Map<String, Object> map) throws IOException {
 		BitUtils.memset(recordBuffer, JdbfUtils.EMPTY);
-		for (OffsetDbfField of : metadata.getOffsetFields()) {
+		for (OffsetDbfField<?> of : metadata.getOffsetFields()) {
 			Object o = map.get(of.getName());
 			writeIntoRecordBuffer(of, o);
 		}
 		out.write(recordBuffer);
 	}
 
-	private void writeIntoRecordBuffer(OffsetDbfField of, Object o) {
+	private void writeIntoRecordBuffer(OffsetDbfField<?> of, Object o) {
 		if (o == null) {
 			return;
 		}
@@ -129,7 +129,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeBigDecimal(OffsetDbfField of, BigDecimal value) {
+	private void writeBigDecimal(OffsetDbfField<?> of, BigDecimal value) {
 		if (value != null) {
 			String s = value.toPlainString();
 			byte[] bytes = s.getBytes();
@@ -144,7 +144,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeBoolean(OffsetDbfField f, Boolean value) {
+	private void writeBoolean(OffsetDbfField<?> f, Boolean value) {
 		if (value != null) {
 			String s = value.booleanValue() ? "T" : "F";
 			byte[] bytes = s.getBytes();
@@ -156,7 +156,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeDate(OffsetDbfField f, Date value) {
+	private void writeDate(OffsetDbfField<?> f, Date value) {
 		if (value != null) {
 			byte[] bytes = JdbfUtils.writeDate(value);
 			// TODO: check that bytes.length = f.getLength();
@@ -166,7 +166,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeString(OffsetDbfField of, String value) {
+	private void writeString(OffsetDbfField<?> of, String value) {
 		if (value != null) {
 			byte[] bytes = value.getBytes(stringCharset);
 			if (bytes.length > of.getLength()) {
@@ -180,11 +180,11 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeFloat(OffsetDbfField f, Float value) {
+	private void writeFloat(OffsetDbfField<?> f, Float value) {
 		writeDouble(f, value.doubleValue());
 	}
 
-	private void writeDouble(OffsetDbfField of, Double value) {
+	private void writeDouble(OffsetDbfField<?> of, Double value) {
 		if (value != null) {
 			String str = String.format("% 20.18f", value); // Whitespace pad; 20 min length; 18 max precision
 			if (str.length() > 20) { // Trim to 20 places, if longer
@@ -196,7 +196,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeTimestamp(OffsetDbfField f, Date d) {
+	private void writeTimestamp(OffsetDbfField<?> f, Date d) {
 		if (d != null) {
 			byte[] bytes = JdbfUtils.writeJulianDate(d);
 			System.arraycopy(bytes, 0, recordBuffer, f.getOffset(), bytes.length);
@@ -206,7 +206,7 @@ public class DbfWriter {
 	}
 
 	// TODO: Appears to be 64 bit epoch timestamp, but there was no reliable source for that
-	private void writeDateTime(OffsetDbfField f, Date d) {
+	private void writeDateTime(OffsetDbfField<?> f, Date d) {
 		if (d != null) {
 			ByteBuffer bb = ByteBuffer.allocate(8);
 			bb.putLong(d.getTime());
@@ -216,7 +216,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeDouble7(OffsetDbfField of, Double d) {
+	private void writeDouble7(OffsetDbfField<?> of, Double d) {
 		if (d != null) {
 			ByteBuffer bb = ByteBuffer.allocate(8);
 			bb.putDouble(d);
@@ -226,7 +226,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void writeInteger(OffsetDbfField f, Integer i) {
+	private void writeInteger(OffsetDbfField<?> f, Integer i) {
 		if (i != null) {
 			ByteBuffer bb = ByteBuffer.allocate(4);
 			bb.putInt(i);
@@ -236,7 +236,7 @@ public class DbfWriter {
 		}
 	}
 
-	private void blankify(OffsetDbfField of) {
+	private void blankify(OffsetDbfField<?> of) {
 		byte[] bytes = new byte[of.getLength()];
 		Arrays.fill(bytes, (byte)' ');
 		System.arraycopy(bytes, 0, recordBuffer, of.getOffset(), bytes.length);

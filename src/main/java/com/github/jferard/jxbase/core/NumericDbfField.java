@@ -16,18 +16,23 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.util.JdbfUtils;
-
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Date;
 
-public class DateDbfField implements DbfField<Date> {
-    private String name;
+public class NumericDbfField implements DbfField<BigDecimal> {
+    public static final String NUMERIC_OVERFLOW = "*";
+    private final String name;
+    private final int length;
+    private final int numberOfDecimalPlaces;
+    private final MathContext mc;
 
-    public DateDbfField(String name) {
+    public NumericDbfField(final String name, final int length, int numberOfDecimalPlaces) {
         this.name = name;
+        this.length = length;
+        this.numberOfDecimalPlaces = numberOfDecimalPlaces;
+        this.mc = new MathContext(numberOfDecimalPlaces);
     }
 
     @Override
@@ -37,35 +42,36 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Date;
+        return DbfFieldTypeEnum.Numeric;
     }
 
     @Override
     public int getLength() {
-        return 8;
+        return this.length;
     }
 
     @Override
     public int getNumberOfDecimalPlaces() {
-        return 0;
+        return this.numberOfDecimalPlaces;
     }
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",D,8,0";
+        return this.name + ",N," + this.length + "," + this.numberOfDecimalPlaces;
     }
 
     @Override
-    public Date getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
+    public BigDecimal getValue(final DbfRecord dbfRecord, final Charset charset) throws ParseException {
         String s = dbfRecord.getASCIIString(this.name);
-        if (s == null) {
+        if (s == null || s.contains(NumericDbfField.NUMERIC_OVERFLOW)) {
             return null;
         }
-        return JdbfUtils.parseDate(s);
+
+        return new BigDecimal(s, this.mc);
     }
 
     @Override
-    public OffsetDbfField<Date> withOffset(int offset) {
-        return new OffsetDbfField<Date>(this, offset);
+    public OffsetDbfField<BigDecimal> withOffset(int offset) {
+        return new OffsetDbfField<BigDecimal>(this, offset);
     }
 }

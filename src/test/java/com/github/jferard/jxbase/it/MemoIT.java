@@ -63,11 +63,15 @@ public class MemoIT {
                 DbfRecord rec;
                 while ((rec = reader.read()) != null) {
                     System.out.println("Record is DELETED: " + rec.isDeleted());
-                    System.out.println("TEXVER: " + rec.getString("TEXVER", stringCharset));
+                    System.out.println("TEXVER: " +
+                            meta.getOffsetField("TEXVER").getValue(rec, stringCharset));
                     System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX", stringCharset));
-                    System.out.println("TEXDAT: " + rec.getDate("TEXDAT"));
-                    System.out.println("TEXSTA: " + rec.getString("TEXSTA", stringCharset));
-                    System.out.println("TEXCAM: " + rec.getString("TEXCAM", stringCharset));
+                    System.out.println("TEXDAT: " +
+                            meta.getOffsetField("TEXDAT").getValue(rec, stringCharset));
+                    System.out.println("TEXSTA: " +
+                            meta.getOffsetField("TEXSTA").getValue(rec, stringCharset));
+                    System.out.println("TEXCAM: " +
+                            meta.getOffsetField("TEXCAM").getValue(rec, stringCharset));
                     System.out.println("++++++++++++++++++++++++++++++++++");
                 }
 

@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.core;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public interface DbfField {
+public interface DbfField<V> {
     /**
      * @return the name of the field
      */
@@ -46,5 +46,13 @@ public interface DbfField {
      */
     String getStringRepresentation();
 
-    Object getValue(DbfRecord dbfRecord, Charset charset) throws ParseException;
+    /**
+     * @param dbfRecord the current record
+     * @param charset the charset
+     * @return the value of this field in the record
+     * @throws ParseException
+     */
+    V getValue(DbfRecord dbfRecord, Charset charset) throws ParseException;
+
+    OffsetDbfField<V> withOffset(final int offset);
 }

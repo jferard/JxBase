@@ -30,7 +30,7 @@ import java.util.Map;
 public class JdbfUtilsTest {
     @Test
     public void testCreateFieldsFromString() {
-        final List<DbfField> fieldsFromString =
+        final List<DbfField<?>> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
         Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",
@@ -41,7 +41,7 @@ public class JdbfUtilsTest {
 
     @Test
     public void testCreateFieldsFromStringWithEmptyOne() {
-        final List<DbfField> fieldsFromString =
+        final List<DbfField<?>> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|   |y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
         Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",

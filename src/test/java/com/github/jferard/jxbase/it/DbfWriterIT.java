@@ -40,10 +40,10 @@ import java.util.Map;
 public class DbfWriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private String filePath;
-    private List<DbfField> fields = new ArrayList<DbfField>();
+    private List<DbfField<?>> fields = new ArrayList<DbfField<?>>();
 
-    public DbfField addCharDBFField(String name, int length) {
-        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Character, length, 0);
+    public DbfField<?> addCharDBFField(String name, int length) {
+        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Character, length, 0);
         fields.add(fld);
         return fld;
     }
@@ -51,14 +51,14 @@ public class DbfWriterIT {
   /*if(encoding.equals("UTF-8"))
   lenght *= 2;*/
 
-    public DbfField addNumDBFField(String name, int length, int decimal) {
-        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Numeric, length, decimal);
+    public DbfField<?> addNumDBFField(String name, int length, int decimal) {
+        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Numeric, length, decimal);
         fields.add(fld);
         return fld;
     }
 
-    public DbfField addDateDBFField(String name) {
-        final DbfField fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Date, 0, 0);
+    public DbfField<?> addDateDBFField(String name) {
+        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Date, 0, 0);
         fields.add(fld);
         return fld;
     }

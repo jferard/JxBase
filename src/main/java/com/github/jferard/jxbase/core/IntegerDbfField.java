@@ -16,18 +16,18 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.BitUtils;
 
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Date;
 
-public class DateDbfField implements DbfField<Date> {
-    private String name;
+public class IntegerDbfField implements DbfField<Integer> {
+    private final String name;
+    private final int length;
 
-    public DateDbfField(String name) {
+    public IntegerDbfField(final String name, final int length) {
         this.name = name;
+        this.length = length;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Date;
+        return DbfFieldTypeEnum.Integer;
     }
 
     @Override
     public int getLength() {
-        return 8;
+        return this.length;
     }
 
     @Override
@@ -52,20 +52,17 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",D,8,0";
+        return this.name + ",I," + this.length + ",0";
     }
 
     @Override
-    public Date getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
-        String s = dbfRecord.getASCIIString(this.name);
-        if (s == null) {
-            return null;
-        }
-        return JdbfUtils.parseDate(s);
+    public Integer getValue(final DbfRecord dbfRecord, final Charset charset) throws ParseException {
+        byte[] bytes = dbfRecord.getBytes(this.name);
+        return BitUtils.makeInt(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
 
     @Override
-    public OffsetDbfField<Date> withOffset(int offset) {
-        return new OffsetDbfField<Date>(this, offset);
+    public OffsetDbfField<Integer> withOffset(int offset) {
+        return new OffsetDbfField<Integer>(this, offset);
     }
 }

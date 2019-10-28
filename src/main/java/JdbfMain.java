@@ -62,7 +62,7 @@ public class JdbfMain {
 		List<DbfRecord> recs = new ArrayList<DbfRecord>(10);
 		List<Map<String,Object>> maps = new ArrayList<Map<String,Object>>();
 		while ((rec = reader.read()) != null) {
-			String s = rec.getString("G022", stringCharset);
+			String s = (String) meta.getOffsetField("G022").getValue(rec, stringCharset);
 			System.out.println(rec.getStringRepresentation(stringCharset));
 
 			Map<String,Object> map = rec.toMap(stringCharset);

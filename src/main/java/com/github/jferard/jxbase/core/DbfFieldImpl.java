@@ -18,22 +18,44 @@
 package com.github.jferard.jxbase.core;
 
 
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public class DbfFieldImpl implements DbfField {
-    public static DbfField fromStringRepresentation(String s) {
+public class DbfFieldImpl implements DbfField<Void> {
+    public static DbfField<?> fromStringRepresentation(String s) {
         String[] a = s.split(",");
 
+        final String name = a[0];
         final DbfFieldTypeEnum type = DbfFieldTypeEnum.fromChar(a[1].charAt(0));
         final int length = Integer.parseInt(a[2]);
         final int numberOfDecimalPlaces = Integer.parseInt(a[3]);
-        final String name = a[0];
-        if (type == DbfFieldTypeEnum.Date) {
-            assert length == 8;
-            return new DateDbfField(name);
-        } else {
-            return new DbfFieldImpl(name, type, length, numberOfDecimalPlaces);
+        return getDbfField(name, type, length, numberOfDecimalPlaces);
+    }
+
+    public static DbfField<?> getDbfField(String name, DbfFieldTypeEnum type, int length,
+                                        int numberOfDecimalPlaces) {
+        switch (type) {
+            case Date:
+                if (length != 8) {
+                    throw new IllegalArgumentException("A date has 8 chars");
+                }
+                return new DateDbfField(name);
+            case Character:
+                return new CharacterDbfField(name, length);
+            case Numeric: case Double:
+                return new NumericDbfField(name, length, numberOfDecimalPlaces);
+            case Logical:
+                if (length != 1) {
+                    throw new IllegalArgumentException("A boolean has one char");
+                }
+                return new LogicalDbfField(name);
+            case Integer:
+                return new IntegerDbfField(name, length);
+            case Memo:
+                return new MemoDbfField(name);
+            default:
+                return new DbfFieldImpl(name, type, length, numberOfDecimalPlaces);
         }
     }
 
@@ -87,7 +109,12 @@ public class DbfFieldImpl implements DbfField {
     }
 
     @Override
-    public Object getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
-        return dbfRecord.getObject(this.name, this.type, charset);
+    public Void getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
+        return null;
+    }
+
+    @Override
+    public OffsetDbfField<Void> withOffset(int offset) {
+        return new OffsetDbfField<Void>(this, offset);
     }
 }

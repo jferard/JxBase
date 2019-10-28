@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.reader.MemoReader;
+import com.github.jferard.jxbase.util.JdbfUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,6 +36,7 @@ import java.util.Map;
 
 public class DbfRecordTest {
     private static final Charset ASCII = Charset.forName("ASCII");
+    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -73,8 +75,8 @@ public class DbfRecordTest {
 
     @Test
     public void testString() {
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,I,3,4"), 0));
+        final OffsetDbfField<?> of = DbfFieldImpl.fromStringRepresentation("y,I,3,4").withOffset(0);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("abc".getBytes(ASCII), md, mr, -1);
         Assert.assertEquals("abc", record.getString("x", ASCII));
@@ -84,12 +86,12 @@ public class DbfRecordTest {
     public void testMemoAsString() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
 
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,M,4,4").withOffset(0));
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,M,4,4"), 0));
 
-        DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
+        DbfRecord record = new DbfRecord("0123456789".getBytes(ASCII), md, mr, 1);
         Assert.assertEquals("ok", record.getMemoAsString("x", ASCII));
     }
 
@@ -99,8 +101,8 @@ public class DbfRecordTest {
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,C,4,4"), 0));
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,C,4,4").withOffset(0));
 
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Field 'x' is not MEMO field!");
@@ -114,8 +116,8 @@ public class DbfRecordTest {
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,M,10,0"), 0));
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,M,10,0").withOffset(0));
 
         DbfRecord record = new DbfRecord("0000000000".getBytes(ASCII), md, mr, 1);
 
@@ -126,13 +128,13 @@ public class DbfRecordTest {
     public void testMemoAsBytes() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
 
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,M,4,4").withOffset(0));
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
-        Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,M,4,4"), 0));
+        Mockito.when(mrec.getValue()).thenReturn("ok".getBytes(ASCII));
 
-        DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
-        Assert.assertArrayEquals(null, record.getMemoAsBytes("x"));
+        DbfRecord record = new DbfRecord("0123456789".getBytes(ASCII), md, mr, 1);
+        Assert.assertArrayEquals("ok".getBytes(ASCII), record.getMemoAsBytes("x"));
     }
 
     @Test
@@ -141,8 +143,8 @@ public class DbfRecordTest {
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,C,1,0"), 0));
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,C,1,0").withOffset(0));
 
         DbfRecord record = new DbfRecord("a".getBytes(ASCII), md, mr, 1);
 
@@ -157,8 +159,8 @@ public class DbfRecordTest {
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x"))
-                .thenReturn(new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,M,10,0"), 0));
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x"))
+                .thenReturn(DbfFieldImpl.fromStringRepresentation("y,M,10,0").withOffset(0));
 
         DbfRecord record = new DbfRecord("0000000000".getBytes(ASCII), md, mr, 1);
 
@@ -167,23 +169,23 @@ public class DbfRecordTest {
 
     @Test
     public void testMap() throws Exception {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,D,8,0");
-        final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,N,1,2");
-        final OffsetDbfField of3 = new OffsetDbfField(f3, 9);
-        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,L,1,0");
-        final OffsetDbfField of4 = new OffsetDbfField(f4, 10);
-        final DbfField f5 = DbfFieldImpl.fromStringRepresentation("u,I,4,2");
-        final OffsetDbfField of5 = new OffsetDbfField(f5, 11);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,D,8,0");
+        final OffsetDbfField<?> of2 = f2.withOffset(1);
+        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,N,1,2");
+        final OffsetDbfField<?> of3 = f3.withOffset(9);
+        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,L,1,0");
+        final OffsetDbfField<?> of4 = f4.withOffset(10);
+        final DbfField<?> f5 = DbfFieldImpl.fromStringRepresentation("u,I,4,2");
+        final OffsetDbfField<?> of5 = f5.withOffset(11);
 
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4, f5));
-        Mockito.when(md.getOffsetField("x")).thenReturn(of1);
-        Mockito.when(md.getOffsetField("y")).thenReturn(of2);
-        Mockito.when(md.getOffsetField("z")).thenReturn(of3);
-        Mockito.when(md.getOffsetField("t")).thenReturn(of4);
-        Mockito.when(md.getOffsetField("u")).thenReturn(of5);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of1);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("y")).thenReturn(of2);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("z")).thenReturn(of3);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("t")).thenReturn(of4);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("u")).thenReturn(of5);
 
         DbfRecord record = new DbfRecord("a201005018t1234".getBytes(ASCII), md, mr, 1);
         final Map<String, Object> expected = new HashMap<String, Object>();
@@ -197,20 +199,20 @@ public class DbfRecordTest {
 
     @Test
     public void testStringRepresentation() throws Exception {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,D,8,0");
-        final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,N,1,2");
-        final OffsetDbfField of3 = new OffsetDbfField(f3, 9);
-        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,L,1,2");
-        final OffsetDbfField of4 = new OffsetDbfField(f4, 10);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,D,8,0");
+        final OffsetDbfField<?> of2 = f2.withOffset(1);
+        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,N,1,2");
+        final OffsetDbfField<?> of3 = f3.withOffset(9);
+        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,L,1,2");
+        final OffsetDbfField<?> of4 = f4.withOffset(10);
 
         Mockito.when(md.getFields()).thenReturn(Arrays.asList(f1, f2, f3, f4));
-        Mockito.when(md.getOffsetField("x")).thenReturn(of1);
-        Mockito.when(md.getOffsetField("y")).thenReturn(of2);
-        Mockito.when(md.getOffsetField("z")).thenReturn(of3);
-        Mockito.when(md.getOffsetField("t")).thenReturn(of4);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of1);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("y")).thenReturn(of2);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("z")).thenReturn(of3);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("t")).thenReturn(of4);
 
 
         DbfRecord record = new DbfRecord("a201005018t".getBytes(ASCII), md, mr, 1);
@@ -219,56 +221,56 @@ public class DbfRecordTest {
     }
 
     @Test
-    public void testGetBytes() throws IOException {
+    public void testGetBytes() {
         DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
         Assert.assertArrayEquals(new byte[]{97, 98, 99, 100}, record.getBytes());
     }
 
     @Test
-    public void testGetBoolean() throws IOException {
+    public void testGetBoolean() throws IOException, ParseException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField oft =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,L,1,0"), 0);
-        final OffsetDbfField off =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("y,L,1,0"), 1);
-        final OffsetDbfField ofn =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("z,L,1,0"), 2);
+        final DbfField<?> field1 = DbfFieldImpl.fromStringRepresentation("x,L,1,0");
+        final OffsetDbfField<?> of1 = field1.withOffset(0);
+        final DbfField<?> field2 = DbfFieldImpl.fromStringRepresentation("y,L,1,0");
+        final OffsetDbfField<?> of2 = field2.withOffset(1);
+        final DbfField<?> field3 = DbfFieldImpl.fromStringRepresentation("z,L,1,0");
+        final OffsetDbfField<?> of3 = field3.withOffset(2);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(oft);
-        Mockito.when(md.getOffsetField("y")).thenReturn(off);
-        Mockito.when(md.getOffsetField("z")).thenReturn(ofn);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of1);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("y")).thenReturn(of2);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("z")).thenReturn(of3);
 
         DbfRecord record = new DbfRecord("tf0".getBytes(ASCII), md, mr, 3);
-        Assert.assertTrue(record.getBoolean("x"));
-        Assert.assertFalse(record.getBoolean("y"));
-        Assert.assertNull(record.getBoolean("z"));
+        Assert.assertTrue((Boolean) field1.getValue(record, ASCII));
+        Assert.assertFalse((Boolean) field2.getValue(record, ASCII));
+        Assert.assertNull(field3.getValue(record, ASCII));
     }
 
     @Test
-    public void testGetNullBoolean() throws IOException {
-        MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField oft =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,L,0,0"), 0);
+    public void testVoidBoolean() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("A boolean has one char");
+        DbfFieldImpl.fromStringRepresentation("x,L,0,0");
+    }
 
-        Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
-        Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(oft);
-
-        DbfRecord record = new DbfRecord("tf0".getBytes(ASCII), md, mr, 3);
-        Assert.assertNull(record.getBoolean("x"));
+    @Test
+    public void testVoidDate() {
+        exception.expect(IllegalArgumentException.class);
+        exception.expectMessage("A date has 8 chars");
+        DbfFieldImpl.fromStringRepresentation("x,D,0,0");
     }
 
     @Test
     public void testSetBoolean() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField oft =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,L,1,0"), 0);
+        final OffsetDbfField<?> oft =
+                DbfFieldImpl.fromStringRepresentation("x,L,1,0").withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(oft);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(oft);
 
         DbfRecord record = new DbfRecord("tf0".getBytes(ASCII), md, mr, 3);
         record.setBoolean("x", true);
@@ -277,12 +279,11 @@ public class DbfRecordTest {
     @Test
     public void testSetBytes() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,C,3,0"), 0);
+        final OffsetDbfField<?> of = DbfFieldImpl.fromStringRepresentation("x,C,3,0").withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("efg".getBytes(ASCII), md, mr, 3);
         record.setBytes("x", "abc".getBytes(ASCII));
@@ -292,96 +293,93 @@ public class DbfRecordTest {
     @Test
     public void testGetDate() throws IOException, ParseException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,I,0,0"), 0);
+        final DbfField<?> field = DbfFieldImpl.fromStringRepresentation("x,D,8,0");
+        final OffsetDbfField<?> of = field.withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
-        DbfRecord record = new DbfRecord("2010-05-01".getBytes(ASCII), md, mr, 2);
-        Assert.assertNull(record.getDate("x"));
+        DbfRecord record = new DbfRecord("20100501".getBytes(ASCII), md, mr, 2);
+        Assert.assertEquals(new Date(110, 4, 1), field.getValue(record, JdbfUtils.ASCII_CHARSET));
     }
 
     @Test
-    public void testGetInteger() throws IOException {
+    public void testGetInteger() throws IOException, ParseException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,I,4,0"), 0);
+        final DbfField<?> field = DbfFieldImpl.fromStringRepresentation("x,I,4,0");
+        final OffsetDbfField<?> of = field.withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
-        Assert.assertEquals(Integer.valueOf(1684234849), record.getInteger("x"));
+        Assert.assertEquals(1684234849, field.getValue(record, ASCII));
     }
 
     @Test
-    public void testGetNullBigDecimal() throws IOException {
+    public void testGetNullBigDecimal() throws IOException, ParseException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,B,0,0"), 0);
+        final DbfField<?> field = DbfFieldImpl.fromStringRepresentation("x,B,0,0");
+        final OffsetDbfField<?> of = field.withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
-        Assert.assertNull(record.getBigDecimal("x"));
+        Assert.assertNull(field.getValue(record, ASCII));
     }
 
     @Test
-    public void testGetNumericOverflowBigDecimal() throws IOException {
+    public void testGetNumericOverflowBigDecimal() throws IOException, ParseException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,B,4,0"), 0);
+        final DbfField<?> field = DbfFieldImpl.fromStringRepresentation("x,B,4,0");
+        final OffsetDbfField<?> of = field.withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("a*cd".getBytes(ASCII), md, mr, 1);
-        Assert.assertNull(record.getBigDecimal("x"));
+        Assert.assertNull(field.getValue(record, ASCII));
     }
 
     @Test
     public void testGetString() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,I,4,0"), 0);
+        final OffsetDbfField<?> of = DbfFieldImpl.fromStringRepresentation("x,I,4,0").withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord(" bc ".getBytes(ASCII), md, mr, 1);
-        Assert.assertEquals("bc", record.getString("x", "UTF-8"));
+        Assert.assertEquals("bc", record.getString("x", Charset.forName("UTF-8")));
     }
 
     @Test
     public void testGetStringWithCharset() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,I,4,0"), 0);
+        final OffsetDbfField<?> of = DbfFieldImpl.fromStringRepresentation("x,I,4,0").withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
-        Assert.assertEquals("abcd", record.getString("x", "UTF-8"));
+        Assert.assertEquals("abcd", record.getString("x", UTF8_CHARSET));
     }
 
     @Test
     public void testFieldBytes() throws IOException {
         MemoRecord mrec = Mockito.mock(MemoRecord.class);
-        final OffsetDbfField of =
-                new OffsetDbfField(DbfFieldImpl.fromStringRepresentation("x,I,4,0"), 0);
+        final OffsetDbfField<?> of = DbfFieldImpl.fromStringRepresentation("x,I,4,0").withOffset(0);
 
         Mockito.when(mr.read(Mockito.anyInt())).thenReturn(mrec);
         Mockito.when(mrec.getValueAsString(ASCII)).thenReturn("ok");
-        Mockito.when(md.getOffsetField("x")).thenReturn(of);
+        Mockito.<OffsetDbfField<?>>when(md.getOffsetField("x")).thenReturn(of);
 
         DbfRecord record = new DbfRecord("abcd".getBytes(ASCII), md, mr, 1);
         Assert.assertArrayEquals(new byte[]{97, 98, 99, 100}, record.getBytes("x"));

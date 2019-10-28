@@ -29,11 +29,11 @@ import java.util.Date;
 public class DbfMetadataUtilsTest {
     @Test
     public void testFromFields() {
-        DbfField f = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
+        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
 
         final DbfMetadata metadata = DbfMetadataUtils
                 .fromFields(DbfFileTypeEnum.FoxBASEPlus1, new Date(1234567891011L), 0,
-                        Collections.singletonList(f));
+                        Collections.<DbfField<?>>singletonList(f));
         Assert.assertEquals("DbfMetadata[type=FoxBASEPlus1, updateDate=2009-02-14, recordsQty=0, " +
                         "fullHeaderLength=65, oneRecordLength=2, uncompletedTxFlag=0, " +
                         "encryptionFlag=0, fields=OffsetDbfField[field=x,C,1,0, offset=1]]",

@@ -16,15 +16,18 @@
 
 package com.github.jferard.jxbase.core;
 
-public class OffsetDbfField {
-    private final DbfField field;
+import java.nio.charset.Charset;
+import java.text.ParseException;
+
+public class OffsetDbfField<V> {
+    private final DbfField<V> field;
     private final int offset;
 
     /**
      * @param field  the field
      * @param offset the offset
      */
-    public OffsetDbfField(final DbfField field, final int offset) {
+    public OffsetDbfField(final DbfField<V> field, final int offset) {
         this.field = field;
         this.offset = offset;
     }
@@ -68,5 +71,14 @@ public class OffsetDbfField {
      */
     public int getNumberOfDecimalPlaces() {
         return this.field.getNumberOfDecimalPlaces();
+    }
+
+    /**
+     * @param record the current record
+     * @param charset the charset
+     * @return the value of the inner field
+     */
+    public V getValue(DbfRecord record, Charset charset) throws ParseException {
+        return this.field.getValue(record, charset);
     }
 }

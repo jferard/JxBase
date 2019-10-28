@@ -16,17 +16,13 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.util.JdbfUtils;
-
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Date;
 
-public class DateDbfField implements DbfField<Date> {
+public class MemoDbfField<V> implements DbfField<V> {
     private String name;
 
-    public DateDbfField(String name) {
+    public MemoDbfField(String name) {
         this.name = name;
     }
 
@@ -37,12 +33,12 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Date;
+        return DbfFieldTypeEnum.Memo;
     }
 
     @Override
     public int getLength() {
-        return 8;
+        return 10;
     }
 
     @Override
@@ -52,20 +48,16 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",D,8,0";
+        return this.name + ",M,10,0";
     }
 
     @Override
-    public Date getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
-        String s = dbfRecord.getASCIIString(this.name);
-        if (s == null) {
-            return null;
-        }
-        return JdbfUtils.parseDate(s);
+    public V getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
+        return null;
     }
 
     @Override
-    public OffsetDbfField<Date> withOffset(int offset) {
-        return new OffsetDbfField<Date>(this, offset);
+    public OffsetDbfField<V> withOffset(int offset) {
+        return new OffsetDbfField<V>(this, offset);
     }
 }

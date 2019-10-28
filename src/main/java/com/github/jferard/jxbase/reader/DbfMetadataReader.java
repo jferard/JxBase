@@ -17,8 +17,6 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DateDbfField;
-import com.github.jferard.jxbase.core.DbfField;
 import com.github.jferard.jxbase.core.DbfField;
 import com.github.jferard.jxbase.core.DbfFieldImpl;
 import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
@@ -45,8 +43,8 @@ public class DbfMetadataReader {
     private int oneRecordLength;
     private byte uncompletedTxFlag;
     private byte encryptionFlag;
-    private HashMap<String, OffsetDbfField> offsetFieldByName;
-    private List<DbfField> fields;
+    private HashMap<String, OffsetDbfField<?>> offsetFieldByName;
+    private List<DbfField<?>> fields;
 
     public DbfMetadata read(InputStream dbfInputStream) throws IOException {
         this.parseHeaderFields(dbfInputStream);
@@ -95,7 +93,7 @@ public class DbfMetadataReader {
     }
 
     private void parseFieldDescriptorArray(InputStream inputStream) throws IOException {
-        this.fields = new ArrayList<DbfField>();
+        this.fields = new ArrayList<DbfField<?>>();
         byte[] fieldBytes = new byte[JdbfUtils.FIELD_RECORD_LENGTH];
         int headerLength = JdbfUtils.HEADER_FIELDS_SIZE;
         int recordLength = 0;
@@ -104,7 +102,7 @@ public class DbfMetadataReader {
                 throw new IOException("The file is corrupted or is not a dbf file");
             }
 
-            DbfField field = createDbfField(fieldBytes);
+            DbfField<?> field = createDbfField(fieldBytes);
             fields.add(field);
 
             recordLength += field.getLength();
@@ -112,14 +110,14 @@ public class DbfMetadataReader {
 
             if (IOUtils.isEndOfFieldArray(inputStream, JdbfUtils.HEADER_TERMINATOR)) {
                 headerLength += 1;
-                recordLength += 1;
+                recordLength += 1; // +1 for the flag
                 break;
             }
         }
         this.checkLengths(headerLength, recordLength);
     }
 
-    private DbfField createDbfField(byte[] fieldBytes) {
+    private DbfField<?> createDbfField(byte[] fieldBytes) {
         // 1. name
         final String name = getName(fieldBytes);
         // 2. type
@@ -129,12 +127,7 @@ public class DbfMetadataReader {
         // 4. number of decimal places
         final byte numberOfDecimalPlaces = fieldBytes[17];
 
-        if (type == DbfFieldTypeEnum.Date) {
-            assert length == 8;
-            return new DateDbfField(name);
-        } else {
-            return new DbfFieldImpl(name, type, length, numberOfDecimalPlaces);
-        }
+        return DbfFieldImpl.getDbfField(name, type, length, numberOfDecimalPlaces);
     }
 
     private String getName(byte[] fieldBytes) {
@@ -142,7 +135,7 @@ public class DbfMetadataReader {
         while (nameLength < 11 && fieldBytes[nameLength] != 0x0) {
             nameLength++;
         }
-        return new String(fieldBytes, 0, nameLength);
+        return new String(fieldBytes, 0, nameLength, JdbfUtils.ASCII_CHARSET);
     }
 
     private int getLength(byte lenByte) {
@@ -155,10 +148,12 @@ public class DbfMetadataReader {
 
     private void checkLengths(int headerLength, int recordLength) throws IOException {
         if (headerLength != this.fullHeaderLength) {
-            throw new IOException(String.format("Bad header length: expected: %s, actual: %s", this.fullHeaderLength, headerLength));
+            throw new IOException(String.format("Bad header length: expected: %s, actual: %s",
+                    this.fullHeaderLength, headerLength));
         }
         if (recordLength != this.oneRecordLength) {
-            throw new IOException(String.format("Bad record length: expected: %s, actual: %s", this.oneRecordLength, recordLength));
+            throw new IOException(String.format("Bad record length: expected: %s, actual: %s",
+                    this.oneRecordLength, recordLength));
         }
     }
 }

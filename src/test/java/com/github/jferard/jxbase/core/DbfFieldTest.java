@@ -22,29 +22,29 @@ import org.junit.Test;
 public class DbfFieldTest {
     @Test
     public void testToString() {
-        DbfField f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
+        DbfField<?> f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals("DbfField[name=a, type=Character, length=10, numberOfDecimalPlaces=2]",
                 f.toString());
     }
 
     @Test
     public void testGetStringRepresentation() {
-        DbfField f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
+        DbfField<?> f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals("a,C,10,2", f.getStringRepresentation());
     }
 
     @Test
     public void testFromStringRepresentation() {
-        DbfField f = DbfFieldImpl.fromStringRepresentation("a,C,10,2");
+        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("a,C,10,2");
         Assert.assertEquals("a", f.getName());
         Assert.assertEquals(DbfFieldTypeEnum.Character, f.getType());
         Assert.assertEquals(10, f.getLength());
-        Assert.assertEquals(2, f.getNumberOfDecimalPlaces());
+        Assert.assertEquals(0, f.getNumberOfDecimalPlaces());
     }
 
     @Test
     public void testFromStringRepresentation0() {
-        DbfField f = DbfFieldImpl.fromStringRepresentation("a,0,1,2");
+        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("a,0,1,2");
         Assert.assertEquals("a", f.getName());
         Assert.assertEquals(DbfFieldTypeEnum.NullFlags, f.getType());
         Assert.assertEquals(1, f.getLength());

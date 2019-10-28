@@ -50,20 +50,20 @@ public class JdbfUtils {
     public static final Charset ASCII_CHARSET = Charset.forName("ASCII");
     public static int EMPTY = 0x20;
 
-    public static List<DbfField> createFieldsFromString(String fieldsString) {
-        List<DbfField> list = new ArrayList<DbfField>();
+    public static List<DbfField<?>> createFieldsFromString(String fieldsString) {
         String[] a = fieldsString.split("\\|");
+        List<DbfField<?>> list = new ArrayList<DbfField<?>>(a.length);
         for (String b : a) {
             if (b.trim().length() == 0) {
                 continue;
             }
-            DbfField f = createDbfFieldFromString(b);
+            DbfField<?> f = createDbfFieldFromString(b);
             list.add(f);
         }
         return list;
     }
 
-    public static DbfField createDbfFieldFromString(String s) {
+    public static DbfField<?> createDbfFieldFromString(String s) {
         String[] a = s.split(",");
         return new DbfFieldImpl(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)),
                 Integer.parseInt(a[2]), Integer.parseInt(a[3]));

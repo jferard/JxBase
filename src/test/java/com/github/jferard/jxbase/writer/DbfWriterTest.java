@@ -42,14 +42,14 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteCNFD() throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,N,4,2");
-        final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
-        final OffsetDbfField of3 = new OffsetDbfField(f3, 0);
-        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,D,8,0");
-        final OffsetDbfField of4 = new OffsetDbfField(f4, 13);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,N,4,2");
+        final OffsetDbfField<?> of2 = f2.withOffset(1);
+        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
+        final OffsetDbfField<?> of3 = f3.withOffset(0);
+        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,D,8,0");
+        final OffsetDbfField<?> of4 = f4.withOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
@@ -68,7 +68,7 @@ public class DbfWriterTest {
         Assert.assertArrayEquals(
                 new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 0, 0,
-                        0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
+                        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 78, 1, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 0, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 68, 13, 0, 0, 0,
@@ -84,14 +84,14 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteTABO() throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,T,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,@,10,2");
-        final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,B,4,2");
-        final OffsetDbfField of3 = new OffsetDbfField(f3, 0);
-        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,O,6,2");
-        final OffsetDbfField of4 = new OffsetDbfField(f4, 13);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,T,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,@,10,2");
+        final OffsetDbfField<?> of2 = f2.withOffset(1);
+        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,B,4,2");
+        final OffsetDbfField<?> of3 = f3.withOffset(0);
+        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,O,6,2");
+        final OffsetDbfField<?> of4 = f4.withOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
@@ -104,7 +104,7 @@ public class DbfWriterTest {
         Map<String, Object> m1 = new HashMap<String, Object>();
         m1.put("x", new Date(0));
         m1.put("y", new Date(5));
-        m1.put("z", new Double(1.5));
+        m1.put("z", new BigDecimal(1.5));
         m1.put("t", new Double(1.5));
         w.write(m1);
         Assert.assertArrayEquals(
@@ -112,17 +112,16 @@ public class DbfWriterTest {
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 84, 0, 0, 0,
                         0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 64, 1, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0,
+                        122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 79, 13, 0, 0, 0,
-                        6, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 63, -8, 0, 0, 0, 0, 0,
-                        0, -128, 32, 32, 32, 32, 63, -8, 0, 0, 0, 0, 0, 0, 32, 32, 32, 32, 32, 32,
-                        32, 32, 32}, bos.toByteArray());
+                        6, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 49, 46, 53, 99, -1, 0,
+                        54, -18, -128, 32, 32, 32, 32, 63, -8, 0, 0, 0, 0, 0, 0, 32, 32, 32, 32, 32,
+                        32, 32, 32, 32}, bos.toByteArray());
     }
 
     @Test
     public void TestWriteM() throws IOException {
         testWriteUnsupported("x,M,1,2", "Unknown or unsupported field type Memo for");
-        return;
     }
 
     @Test
@@ -142,14 +141,14 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteILFDoubleNull() throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,I,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
-        final DbfField f2 = DbfFieldImpl.fromStringRepresentation("y,L,10,2");
-        final OffsetDbfField of2 = new OffsetDbfField(f2, 1);
-        final DbfField f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
-        final OffsetDbfField of3 = new OffsetDbfField(f3, 2);
-        final DbfField f4 = DbfFieldImpl.fromStringRepresentation("t,F,10,2");
-        final OffsetDbfField of4 = new OffsetDbfField(f4, 3);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,I,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,L,1,0");
+        final OffsetDbfField<?> of2 = f2.withOffset(1);
+        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
+        final OffsetDbfField<?> of3 = f3.withOffset(2);
+        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,F,10,2");
+        final OffsetDbfField<?> of4 = f4.withOffset(3);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
@@ -168,8 +167,8 @@ public class DbfWriterTest {
         Assert.assertArrayEquals(
                 new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 73, 0, 0, 0,
-                        0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 76, 1, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 121, 0, 0, 0, 0, 0, 0, 0,
+                        0, 0, 0, 76, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         122, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 2, 0, 0, 0, 10, 2, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 70, 3, 0, 0, 0,
                         10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 84, 32, 49, 53, 44,
@@ -178,12 +177,13 @@ public class DbfWriterTest {
     }
 
     private void testWriteUnsupported(String ch, String error) throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation(ch);
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation(ch);
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
-        Mockito.when(md.getOffsetFields()).thenReturn(Arrays.asList(of1));
+        Mockito.when(md.getOffsetFields())
+                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
         Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
         DbfWriter w = new DbfWriter(md, bos);
@@ -197,12 +197,13 @@ public class DbfWriterTest {
 
     @Test
     public void TestBigDecimal() throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,N,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,N,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
-        Mockito.when(md.getOffsetFields()).thenReturn(Collections.singletonList(of1));
+        Mockito.when(md.getOffsetFields())
+                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
         Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
@@ -222,12 +223,13 @@ public class DbfWriterTest {
 
     @Test
     public void setStringCharset() throws IOException {
-        final DbfField f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField of1 = new OffsetDbfField(f1, 0);
+        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
+        final OffsetDbfField<?> of1 = f1.withOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
-        Mockito.when(md.getOffsetFields()).thenReturn(Collections.singletonList(of1));
+        Mockito.when(md.getOffsetFields())
+                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
         Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
 
@@ -241,7 +243,7 @@ public class DbfWriterTest {
         Assert.assertArrayEquals(
                 new byte[]{68, 19, 10, 5, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 0, 0,
-                        0, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, -23, 32, 32, 32, 32,
+                        0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, -23, 32, 32, 32, 32,
                         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
                         32, 32, 32, 32, 32, 32}, bos.toByteArray());
     }
