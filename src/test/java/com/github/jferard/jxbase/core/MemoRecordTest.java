@@ -27,13 +27,14 @@ public class MemoRecordTest {
 
     @Test
     public void testCreateVoid() {
-        exception.expect(ArrayIndexOutOfBoundsException.class);
-        MemoRecord mr = new MemoRecord(new byte[]{}, new byte[]{}, 0, 0);
+        XBaseMemoRecord mr = new DbfMemoRecord(new byte[]{}, MemoRecordTypeEnum.IMAGE, 0, 0);
     }
 
     @Test
     public void testCreate() {
-        MemoRecord mr = new MemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, new byte[]{}, 0, 0);
+        XBaseMemoRecord mr =
+                new DbfMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, MemoRecordTypeEnum.IMAGE, 84281096,
+                        0);
         Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
         Assert.assertEquals(84281096, mr.getLength());
     }
@@ -41,9 +42,12 @@ public class MemoRecordTest {
     @Test
     public void testGet() {
         final byte[] value = {0, 1};
-        MemoRecord mr = new MemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, value, 1, 2);
-        Assert.assertArrayEquals(value, mr.getValue());
-        Assert.assertEquals(1, mr.getBlockSize());
-        Assert.assertEquals(2, mr.getOffsetInBlocks());
+        XBaseMemoRecord mr =
+                new DbfMemoRecord(value, MemoRecordTypeEnum.IMAGE, 2,
+                        3);
+        Assert.assertArrayEquals(value, mr.getBytes());
+        Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
+        Assert.assertEquals(2, mr.getLength());
+        Assert.assertEquals(3, mr.getOffsetInBlocks());
     }
 }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.util;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,6 +90,14 @@ public class IOUtils {
         } else { // unget
             inputStream.reset();
             return false;
+        }
+    }
+
+    public static InputStream resettable(final InputStream inputStream, final int bufferSize) {
+        if (inputStream.markSupported()) {
+            return inputStream;
+        } else {
+            return new BufferedInputStream(inputStream, bufferSize);
         }
     }
 }

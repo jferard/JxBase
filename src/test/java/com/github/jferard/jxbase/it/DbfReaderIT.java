@@ -17,8 +17,9 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.DbfRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.reader.DbfReader;
+import com.github.jferard.jxbase.reader.XBaseReader;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -41,8 +42,8 @@ public class DbfReaderIT {
 
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/gds_im.dbf");
 
-        DbfRecord rec;
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseRecord rec;
+        XBaseReader reader = new DbfReader(dbf, null);
         try {
             DbfMetadata meta = reader.getMetadata();
 
@@ -70,8 +71,8 @@ public class DbfReaderIT {
 
         InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/tir_im.dbf");
 
-        DbfRecord rec;
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseRecord rec;
+        XBaseReader reader = new DbfReader(dbf, null);
         try {
             DbfMetadata meta = reader.getMetadata();
 

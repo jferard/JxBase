@@ -16,18 +16,21 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.field.XBaseField;
+
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public class OffsetDbfField<V> {
-    private final DbfField<V> field;
+public class OffsetXBaseField<V, T extends XBaseMemoRecord> {
+    private final XBaseField<V, T> field;
     private final int offset;
 
     /**
      * @param field  the field
      * @param offset the offset
      */
-    public OffsetDbfField(final DbfField<V> field, final int offset) {
+    public OffsetXBaseField(final XBaseField<V, T> field, final int offset) {
         this.field = field;
         this.offset = offset;
     }
@@ -78,7 +81,7 @@ public class OffsetDbfField<V> {
      * @param charset the charset
      * @return the value of the inner field
      */
-    public V getValue(DbfRecord record, Charset charset) throws ParseException {
+    public V getValue(XBaseRecord<T> record, Charset charset) throws ParseException {
         return this.field.getValue(record, charset);
     }
 }

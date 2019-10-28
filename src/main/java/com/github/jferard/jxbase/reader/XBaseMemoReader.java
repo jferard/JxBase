@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
-import org.junit.Assert;
-import org.junit.Test;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
 
-public class DbfFieldTypeEnumTest {
-    @Test
-    public void testType() {
-        Assert.assertEquals('N', DbfFieldTypeEnum.Numeric.getType());
-    }
+import java.io.Closeable;
+import java.io.IOException;
 
-    @Test
-    public void testByte() {
-        Assert.assertEquals((byte) 'D', DbfFieldTypeEnum.Date.toByte());
-    }
+/**
+ * A reader for a memo file
+ *
+ * @param <T> the type of the memo record
+ */
+public interface XBaseMemoReader<T extends XBaseMemoRecord> extends Closeable {
 
-    @Test
-    public void testFromChar() {
-        Assert.assertEquals(DbfFieldTypeEnum.Integer, DbfFieldTypeEnum.fromChar('I'));
-    }
+    /**
+     * Read a record
+     *
+     * @param offsetInBlocks 1 for the first block, 2 for the second. 0 is forbidden
+     * @return the memo record
+     * @throws IOException if an I/O error occurs
+     */
+    T read(int offsetInBlocks) throws IOException;
 }

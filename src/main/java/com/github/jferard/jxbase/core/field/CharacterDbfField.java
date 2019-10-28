@@ -14,25 +14,22 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
+
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public class NumericDbfField implements DbfField<BigDecimal> {
-    public static final String NUMERIC_OVERFLOW = "*";
+public class CharacterDbfField<T extends XBaseMemoRecord> implements XBaseField<String, T> {
     private final String name;
     private final int length;
-    private final int numberOfDecimalPlaces;
-    private final MathContext mc;
 
-    public NumericDbfField(final String name, final int length, int numberOfDecimalPlaces) {
+    public CharacterDbfField(final String name, final int length) {
         this.name = name;
         this.length = length;
-        this.numberOfDecimalPlaces = numberOfDecimalPlaces;
-        this.mc = new MathContext(numberOfDecimalPlaces);
     }
 
     @Override
@@ -42,7 +39,7 @@ public class NumericDbfField implements DbfField<BigDecimal> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Numeric;
+        return DbfFieldTypeEnum.Character;
     }
 
     @Override
@@ -52,26 +49,22 @@ public class NumericDbfField implements DbfField<BigDecimal> {
 
     @Override
     public int getNumberOfDecimalPlaces() {
-        return this.numberOfDecimalPlaces;
+        return 0;
     }
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",N," + this.length + "," + this.numberOfDecimalPlaces;
+        return this.name + ",C," + this.length + ",0";
     }
 
     @Override
-    public BigDecimal getValue(final DbfRecord dbfRecord, final Charset charset) throws ParseException {
-        String s = dbfRecord.getASCIIString(this.name);
-        if (s == null || s.contains(NumericDbfField.NUMERIC_OVERFLOW)) {
-            return null;
-        }
-
-        return new BigDecimal(s, this.mc);
+    public String getValue(final XBaseRecord<T> dbfRecord, final Charset charset)
+            throws ParseException {
+        return dbfRecord.getString(this.name, charset);
     }
 
     @Override
-    public OffsetDbfField<BigDecimal> withOffset(int offset) {
-        return new OffsetDbfField<BigDecimal>(this, offset);
+    public OffsetXBaseField<String, T> withOffset(int offset) {
+        return new OffsetXBaseField<String, T>(this, offset);
     }
 }

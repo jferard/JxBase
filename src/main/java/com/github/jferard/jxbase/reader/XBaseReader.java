@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
-import org.junit.Assert;
-import org.junit.Test;
+import com.github.jferard.jxbase.core.DbfMetadata;
+import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
 
-public class DbfFieldTypeEnumTest {
-    @Test
-    public void testType() {
-        Assert.assertEquals('N', DbfFieldTypeEnum.Numeric.getType());
-    }
+import java.io.Closeable;
+import java.io.IOException;
 
-    @Test
-    public void testByte() {
-        Assert.assertEquals((byte) 'D', DbfFieldTypeEnum.Date.toByte());
-    }
+public interface XBaseReader<T extends XBaseMemoRecord> extends Closeable {
+    DbfMetadata getMetadata();
 
-    @Test
-    public void testFromChar() {
-        Assert.assertEquals(DbfFieldTypeEnum.Integer, DbfFieldTypeEnum.fromChar('I'));
-    }
+    /**
+     * @return the next record, or null if the end of file was reached
+     * @throws IOException if an I/O exception occurs
+     */
+    XBaseRecord<T> read() throws IOException;
+
+    @Override
+    void close() throws IOException;
 }

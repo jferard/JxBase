@@ -16,12 +16,14 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldImpl;
-import com.github.jferard.jxbase.core.DbfFileTypeEnum;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.field.DbfFieldFactory;
+import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.OffsetDbfField;
+import com.github.jferard.jxbase.core.OffsetXBaseField;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -39,23 +41,29 @@ import java.util.Map;
 public class DbfWriterTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
+    private DbfFieldFactory<DbfMemoRecord> dbfFieldFactory;
+
+    @Before
+    public void setUp() {
+        this.dbfFieldFactory = new DbfFieldFactory<DbfMemoRecord>();
+    }
 
     @Test
     public void TestWriteCNFD() throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
-        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,N,4,2");
-        final OffsetDbfField<?> of2 = f2.withOffset(1);
-        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
-        final OffsetDbfField<?> of3 = f3.withOffset(0);
-        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,D,8,0");
-        final OffsetDbfField<?> of4 = f4.withOffset(13);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation("x,C,1,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f2 = dbfFieldFactory.fromStringRepresentation("y,N,4,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of2 = f2.withOffset(1);
+        final XBaseField<?, DbfMemoRecord> f3 = dbfFieldFactory.fromStringRepresentation("z,F,10,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of3 = f3.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f4 = dbfFieldFactory.fromStringRepresentation("t,D,8,0");
+        final OffsetXBaseField<?, DbfMemoRecord> of4 = f4.withOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
         Mockito.when(md.getOffsetFields()).thenReturn(Arrays.asList(of1, of2, of3, of4));
         Mockito.when(md.getOneRecordLength()).thenReturn(24);
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -84,20 +92,20 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteTABO() throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,T,1,2");
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
-        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,@,10,2");
-        final OffsetDbfField<?> of2 = f2.withOffset(1);
-        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,B,4,2");
-        final OffsetDbfField<?> of3 = f3.withOffset(0);
-        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,O,6,2");
-        final OffsetDbfField<?> of4 = f4.withOffset(13);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation("x,T,1,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f2 = dbfFieldFactory.fromStringRepresentation("y,@,10,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of2 = f2.withOffset(1);
+        final XBaseField<?, DbfMemoRecord> f3 = dbfFieldFactory.fromStringRepresentation("z,B,4,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of3 = f3.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f4 = dbfFieldFactory.fromStringRepresentation("t,O,6,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of4 = f4.withOffset(13);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
         Mockito.when(md.getOffsetFields()).thenReturn(Arrays.asList(of1, of2, of3, of4));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -141,20 +149,20 @@ public class DbfWriterTest {
 
     @Test
     public void TestWriteILFDoubleNull() throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,I,1,2");
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
-        final DbfField<?> f2 = DbfFieldImpl.fromStringRepresentation("y,L,1,0");
-        final OffsetDbfField<?> of2 = f2.withOffset(1);
-        final DbfField<?> f3 = DbfFieldImpl.fromStringRepresentation("z,F,10,2");
-        final OffsetDbfField<?> of3 = f3.withOffset(2);
-        final DbfField<?> f4 = DbfFieldImpl.fromStringRepresentation("t,F,10,2");
-        final OffsetDbfField<?> of4 = f4.withOffset(3);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation("x,I,1,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f2 = dbfFieldFactory.fromStringRepresentation("y,L,1,0");
+        final OffsetXBaseField<?, DbfMemoRecord> of2 = f2.withOffset(1);
+        final XBaseField<?, DbfMemoRecord> f3 = dbfFieldFactory.fromStringRepresentation("z,F,10,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of3 = f3.withOffset(2);
+        final XBaseField<?, DbfMemoRecord> f4 = dbfFieldFactory.fromStringRepresentation("t,F,10,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of4 = f4.withOffset(3);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
         Mockito.when(md.getOffsetFields()).thenReturn(Arrays.asList(of1, of2, of3, of4));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -177,14 +185,14 @@ public class DbfWriterTest {
     }
 
     private void testWriteUnsupported(String ch, String error) throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation(ch);
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation(ch);
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+                .thenReturn(Collections.<OffsetXBaseField<?, DbfMemoRecord>>singletonList(of1));
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         DbfWriter w = new DbfWriter(md, bos);
         Map<String, Object> m1 = new HashMap<String, Object>();
@@ -197,15 +205,15 @@ public class DbfWriterTest {
 
     @Test
     public void TestBigDecimal() throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,N,1,2");
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation("x,N,1,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
         Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
+                .thenReturn(Collections.<OffsetXBaseField<?, DbfMemoRecord>>singletonList(of1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);
@@ -223,15 +231,15 @@ public class DbfWriterTest {
 
     @Test
     public void setStringCharset() throws IOException {
-        final DbfField<?> f1 = DbfFieldImpl.fromStringRepresentation("x,C,1,2");
-        final OffsetDbfField<?> of1 = f1.withOffset(0);
+        final XBaseField<?, DbfMemoRecord> f1 = dbfFieldFactory.fromStringRepresentation("x,C,1,2");
+        final OffsetXBaseField<?, DbfMemoRecord> of1 = f1.withOffset(0);
 
         DbfMetadata md = Mockito.mock(DbfMetadata.class);
         Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
         Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetDbfField<?>>singletonList(of1));
+                .thenReturn(Collections.<OffsetXBaseField<?, DbfMemoRecord>>singletonList(of1));
         Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(DbfFileTypeEnum.dBASEVII1);
+        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DbfWriter w = new DbfWriter(md, bos);

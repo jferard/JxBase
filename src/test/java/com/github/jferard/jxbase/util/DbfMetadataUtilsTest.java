@@ -16,24 +16,33 @@
 
 package com.github.jferard.jxbase.util;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldImpl;
-import com.github.jferard.jxbase.core.DbfFileTypeEnum;
-import com.github.jferard.jxbase.core.DbfMetadata;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.core.field.DbfFieldFactory;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Date;
 
 public class DbfMetadataUtilsTest {
+    private DbfFieldFactory<DbfMemoRecord> dbfFieldFactory;
+
+    @Before
+    public void setUp() {
+        this.dbfFieldFactory = new DbfFieldFactory<DbfMemoRecord>();
+    }
+
     @Test
     public void testFromFields() {
-        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("x,C,1,0");
+        XBaseField<?, DbfMemoRecord> f = dbfFieldFactory.fromStringRepresentation("x,C,1,0");
 
-        final DbfMetadata metadata = DbfMetadataUtils
-                .fromFields(DbfFileTypeEnum.FoxBASEPlus1, new Date(1234567891011L), 0,
-                        Collections.<DbfField<?>>singletonList(f));
+        final XBaseMetadata<DbfMemoRecord> metadata = DbfMetadataUtils
+                .fromFields(XBaseFileTypeEnum.FoxBASEPlus1, new Date(1234567891011L), 0,
+                        Collections.<XBaseField<?, DbfMemoRecord>>singletonList(f));
         Assert.assertEquals("DbfMetadata[type=FoxBASEPlus1, updateDate=2009-02-14, recordsQty=0, " +
                         "fullHeaderLength=65, oneRecordLength=2, uncompletedTxFlag=0, " +
                         "encryptionFlag=0, fields=OffsetDbfField[field=x,C,1,0, offset=1]]",
@@ -42,8 +51,8 @@ public class DbfMetadataUtilsTest {
 
     @Test
     public void testFromFieldsString() {
-        final DbfMetadata metadata = DbfMetadataUtils
-                .fromFieldsString(DbfFileTypeEnum.FoxBASEPlus1, new Date(1234567891011L), 0,
+        final XBaseMetadata<DbfMemoRecord> metadata = DbfMetadataUtils
+                .fromFieldsString(XBaseFileTypeEnum.FoxBASEPlus1, new Date(1234567891011L), 0,
                         "x,C,1,0");
         Assert.assertEquals("DbfMetadata[type=FoxBASEPlus1, updateDate=2009-02-14, recordsQty=0, " +
                         "fullHeaderLength=65, oneRecordLength=2, uncompletedTxFlag=0, " +

@@ -16,58 +16,46 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.util.BitUtils;
-
 import java.nio.charset.Charset;
 
 /**
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
-public class MemoRecord {
-    private final int blockSize;
+public class DbfMemoRecord implements XBaseMemoRecord {
+    private final byte[] bytes;
+    private final MemoRecordTypeEnum type;
+    private final int length;
     private final int offsetInBlocks;
-    private byte[] value;
-    private int length;
-    private MemoRecordTypeEnum memoType;
 
-    public MemoRecord(byte[] header, byte[] value, int blockSize, int offsetInBlocks) {
-        this.value = value;
-        calculateFields(header);
-        this.blockSize = blockSize;
+    public DbfMemoRecord(byte[] bytes, MemoRecordTypeEnum type, int length, int offsetInBlocks) {
+        this.bytes = bytes;
+        this.type = type;
+        this.length = length;
         this.offsetInBlocks = offsetInBlocks;
     }
 
-    private void calculateFields(byte[] bytes) {
-        int type = BitUtils.makeInt(bytes[3],bytes[2],bytes[1],bytes[0]);
-        this.memoType = MemoRecordTypeEnum.fromInt(type);
-        this.length = BitUtils.makeInt(bytes[7],bytes[6],bytes[5],bytes[4]);
+    @Override
+    public byte[] getBytes() {
+        return bytes;
     }
 
-    public byte[] getValue() {
-        return value;
-    }
-
+    @Override
     public String getValueAsString(Charset charset) {
-        return new String(value, charset);
+        return new String(bytes, 0, bytes.length, charset);
     }
 
-    /**
-     * Memo record length in bytes
-     * @return
-     */
+    @Override
     public int getLength() {
-        return length;
+        return this.length;
     }
 
+    @Override
     public MemoRecordTypeEnum getMemoType() {
-        return memoType;
+        return this.type;
     }
 
-    public int getBlockSize() {
-        return blockSize;
-    }
-
+    @Override
     public int getOffsetInBlocks() {
-        return offsetInBlocks;
+        return this.offsetInBlocks;
     }
 }

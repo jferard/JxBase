@@ -39,7 +39,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -48,7 +48,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -57,7 +57,7 @@ public class DbfReaderTest {
         InputStream dbf = new ByteArrayInputStream(new byte[]{0x02});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -68,7 +68,7 @@ public class DbfReaderTest {
                         0x2, 0x2});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -80,7 +80,7 @@ public class DbfReaderTest {
                         0x2, 0x2, 0x2});
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        DbfReader reader = new DbfReader(dbf, null);
+        XBaseReader reader = new DbfReader(dbf, null);
         reader.close();
     }
 
@@ -127,7 +127,7 @@ public class DbfReaderTest {
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
 
-        DbfReader reader = new DbfReader(dbf, new MemoReader(fc));
+        XBaseReader reader = new DbfReader(dbf, new DbfMemoReader(fc));
         Assert.assertEquals(
                 "DbfMetadata[type=FoxBASE1, updateDate=2002-02-02, recordsQty=33686018, " +
                         "fullHeaderLength=65, oneRecordLength=2, uncompletedTxFlag=2, " +

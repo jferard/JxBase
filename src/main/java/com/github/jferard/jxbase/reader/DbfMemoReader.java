@@ -17,11 +17,12 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.core.MemoFileHeader;
-import com.github.jferard.jxbase.core.MemoRecord;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,6 +31,7 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.util.Arrays;
 
 /**
  * Reader of memo files (tested of *.FPT files - Visual FoxPro)
@@ -40,24 +42,26 @@ import java.nio.channels.FileChannel.MapMode;
  * <p>
  * DBase file formats:
  * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
- *
+ * <p>
  * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
-public class MemoReader implements Closeable {
+public class DbfMemoReader implements XBaseMemoReader<DbfMemoRecord> {
+    public static DbfMemoReader fromRandomAccess(File memoFile) throws IOException {
+        RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
+        return new DbfMemoReader(randomAccessFile.getChannel());
+    }
+
+    public static DbfMemoReader fromChannel(File memoFile) throws IOException {
+        final FileInputStream fileInputStream = new FileInputStream(memoFile);
+        return new DbfMemoReader(fileInputStream.getChannel());
+    }
     private MemoFileHeader memoHeader;
     private ByteBuffer memoByteBuffer;
+    private FileChannel channel;
+    private RawMemoReader rawMemoReader;
 
-    public static MemoReader fromRandomAccess(File memoFile) throws IOException {
-        RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new MemoReader(randomAccessFile.getChannel());
-    }
-
-    public static MemoReader fromChannel(File memoFile) throws IOException {
-        final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new MemoReader(fileInputStream.getChannel());
-    }
-
-    public MemoReader(FileChannel channel) throws IOException {
+    public DbfMemoReader(FileChannel channel) throws IOException {
+        this.channel = channel;
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
         this.readMetadata();
     }
@@ -71,30 +75,30 @@ public class MemoReader implements Closeable {
         }
 
         this.memoHeader = MemoFileHeader.create(headerBytes);
+        this.rawMemoReader =
+                new RawMemoReader(this.memoByteBuffer, this.memoHeader.getNextFreeBlockLocation(),
+                        this.memoHeader.getBlockSize());
     }
 
     @Override
     public void close() throws IOException {
-        this.memoByteBuffer = null;
+//        this.channel.close();
     }
 
     /**
      * @param offsetInBlocks the number of the record
      * @return the record
-     * @throws IOException
      */
-    public MemoRecord read(int offsetInBlocks) throws IOException {
-        byte[] recordHeader = new byte[JdbfUtils.RECORD_HEADER_LENGTH];
-
-        int start = memoHeader.getBlockSize() * offsetInBlocks;
-        this.memoByteBuffer.position(start);
-        this.memoByteBuffer.get(recordHeader);
-        // record type is at 0-3
-        int memoRecordLength = BitUtils.makeInt(recordHeader[7], recordHeader[6], recordHeader[5],
-                recordHeader[4]);
-
-        byte[] recordBody = new byte[memoRecordLength];
-        this.memoByteBuffer.get(recordBody);
-        return new MemoRecord(recordHeader, recordBody, memoHeader.getBlockSize(), offsetInBlocks);
+    @Override
+    public DbfMemoRecord read(int offsetInBlocks) {
+        byte[] recordBytes = this.rawMemoReader.read(offsetInBlocks);
+        System.out.println(Arrays.toString(recordBytes));
+        MemoRecordTypeEnum memoRecordType = MemoRecordTypeEnum.fromInt(BitUtils.makeInt(recordBytes[3], recordBytes[2], recordBytes[1],
+                recordBytes[0]));
+        int memoRecordLength = BitUtils.makeInt(recordBytes[7], recordBytes[6], recordBytes[5],
+                recordBytes[4]);
+        byte[] dataBytes = new byte[memoRecordLength];
+        System.arraycopy(recordBytes, 8, dataBytes, 0, memoRecordLength);
+        return new DbfMemoRecord(dataBytes, memoRecordType, memoRecordLength, offsetInBlocks);
     }
 }

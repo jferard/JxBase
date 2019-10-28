@@ -17,6 +17,8 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.XBaseField;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,38 +29,39 @@ import java.util.Map;
 
 
 /**
- * Represents the file meta data, read from the first part of the header
+ * Represents the file meta data, that is the first part of the header
  */
-public class DbfMetadata {
-    public static DbfMetadata create(DbfFileTypeEnum type, Date updateDate, int recordsQty,
+public class DbfMetadata implements XBaseMetadata<DbfMemoRecord> {
+    public static DbfMetadata create(XBaseFileTypeEnum type, Date updateDate, int recordsQty,
                                      int fullHeaderLength, int oneRecordLength,
                                      byte uncompletedTxFlag, byte encryptionFlag,
-                                     List<DbfField<?>> fields) {
-        Map<String, OffsetDbfField<?>> offsetFieldByName =
-                new LinkedHashMap<String, OffsetDbfField<?>>(fields.size() * 2);
+                                     List<XBaseField<?, DbfMemoRecord>> fields) {
+        Map<String, OffsetXBaseField<?, DbfMemoRecord>> offsetFieldByName =
+                new LinkedHashMap<String, OffsetXBaseField<?, DbfMemoRecord>>(fields.size() * 2);
         int offset = 1;
-        for (DbfField<?> f : fields) {
+        for (XBaseField<?, DbfMemoRecord> f : fields) {
             offsetFieldByName.put(f.getName(), f.withOffset(offset));
             offset += f.getLength();
         }
-        fields = new ArrayList<DbfField<?>>(fields);
+        fields = new ArrayList<XBaseField<?, DbfMemoRecord>>(fields);
         return new DbfMetadata(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
                 uncompletedTxFlag, encryptionFlag, fields, offsetFieldByName);
     }
 
-    private final DbfFileTypeEnum type;
+    private final XBaseFileTypeEnum type;
     private final Date updateDate;
     private final int recordsQty;
     private final int fullHeaderLength;
     private final int oneRecordLength;
     private final byte uncompletedTxFlag;
     private final byte encryptionFlag;
-    private final Map<String, OffsetDbfField<?>> offsetFieldByName;
-    private final List<DbfField<?>> fields;
+    private final Map<String, OffsetXBaseField<?, DbfMemoRecord>> offsetFieldByName;
+    private final List<XBaseField<?, DbfMemoRecord>> fields;
 
-    public DbfMetadata(DbfFileTypeEnum type, Date updateDate, int recordsQty, int fullHeaderLength,
-                       int oneRecordLength, byte uncompletedTxFlag, byte encryptionFlag,
-                       List<DbfField<?>> fields, Map<String, OffsetDbfField<?>> offsetFieldByName) {
+    public DbfMetadata(XBaseFileTypeEnum type, Date updateDate, int recordsQty,
+                       int fullHeaderLength, int oneRecordLength, byte uncompletedTxFlag,
+                       byte encryptionFlag, List<XBaseField<?, DbfMemoRecord>> fields,
+                       Map<String, OffsetXBaseField<?, DbfMemoRecord>> offsetFieldByName) {
         if (type == null) {
             throw new IllegalArgumentException("File type should not be null");
         }
@@ -73,7 +76,7 @@ public class DbfMetadata {
         this.offsetFieldByName = offsetFieldByName;
     }
 
-    public DbfFileTypeEnum getFileType() {
+    public XBaseFileTypeEnum getFileType() {
         return type;
     }
 
@@ -85,10 +88,12 @@ public class DbfMetadata {
         return recordsQty;
     }
 
+    @Override
     public int getFullHeaderLength() {
         return fullHeaderLength;
     }
 
+    @Override
     public int getOneRecordLength() {
         return oneRecordLength;
     }
@@ -101,15 +106,18 @@ public class DbfMetadata {
         return encryptionFlag;
     }
 
-    public OffsetDbfField<?> getOffsetField(String name) {
+    @Override
+    public OffsetXBaseField<?, DbfMemoRecord> getOffsetField(String name) {
         return offsetFieldByName.get(name);
     }
 
-    public Collection<OffsetDbfField<?>> getOffsetFields() {
+    @Override
+    public Collection<OffsetXBaseField<?, DbfMemoRecord>> getOffsetFields() {
         return offsetFieldByName.values();
     }
 
-    public Collection<DbfField<?>> getFields() {
+    @Override
+    public Collection<XBaseField<?, DbfMemoRecord>> getFields() {
         return fields;
     }
 
@@ -120,7 +128,7 @@ public class DbfMetadata {
         int i = offsetFieldByName.size();
         // i*64 - just to allocate enough space
         StringBuilder sb = new StringBuilder(i * 64);
-        for (OffsetDbfField<?> of : offsetFieldByName.values()) {
+        for (OffsetXBaseField<?, DbfMemoRecord> of : offsetFieldByName.values()) {
             sb.append(of.toString());
             i--;
             if (i > 0) {

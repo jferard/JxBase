@@ -17,12 +17,12 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldImpl;
-import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
-import com.github.jferard.jxbase.core.DbfFileTypeEnum;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
 import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.OffsetDbfField;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.field.DbfFieldFactory;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
@@ -31,20 +31,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 public class DbfMetadataReader {
+    public static DbfMetadataReader create() {
+        return new DbfMetadataReader(new DbfFieldFactory<DbfMemoRecord>());
+    }
 
-    private DbfFileTypeEnum type;
+    private byte encryptionFlag;
+    private List<XBaseField<?, DbfMemoRecord>> fields;
+    private DbfFieldFactory<DbfMemoRecord> dbfFieldFactory;
+    private XBaseFileTypeEnum type;
     private Date updateDate;
     private int recordsQty;
     private int fullHeaderLength;
     private int oneRecordLength;
     private byte uncompletedTxFlag;
-    private byte encryptionFlag;
-    private HashMap<String, OffsetDbfField<?>> offsetFieldByName;
-    private List<DbfField<?>> fields;
+
+    public DbfMetadataReader(DbfFieldFactory<DbfMemoRecord> dbfFieldFactory) {
+        this.dbfFieldFactory = dbfFieldFactory;
+    }
 
     public DbfMetadata read(InputStream dbfInputStream) throws IOException {
         this.parseHeaderFields(dbfInputStream);
@@ -65,7 +71,7 @@ public class DbfMetadataReader {
         if (IOUtils.readFully(dbfInputStream, headerBytes) != JdbfUtils.HEADER_FIELDS_SIZE) {
             throw new IOException("The file is corrupted or is not a dbf file");
         }
-        this.type = DbfFileTypeEnum.fromInt(headerBytes[0]);
+        this.type = XBaseFileTypeEnum.fromInt(headerBytes[0]);
         this.updateDate =
                 this.createHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3]);
         this.recordsQty =
@@ -93,7 +99,7 @@ public class DbfMetadataReader {
     }
 
     private void parseFieldDescriptorArray(InputStream inputStream) throws IOException {
-        this.fields = new ArrayList<DbfField<?>>();
+        this.fields = new ArrayList<XBaseField<?, DbfMemoRecord>>();
         byte[] fieldBytes = new byte[JdbfUtils.FIELD_RECORD_LENGTH];
         int headerLength = JdbfUtils.HEADER_FIELDS_SIZE;
         int recordLength = 0;
@@ -102,7 +108,7 @@ public class DbfMetadataReader {
                 throw new IOException("The file is corrupted or is not a dbf file");
             }
 
-            DbfField<?> field = createDbfField(fieldBytes);
+            XBaseField<?, DbfMemoRecord> field = this.createDbfField(fieldBytes);
             fields.add(field);
 
             recordLength += field.getLength();
@@ -117,7 +123,7 @@ public class DbfMetadataReader {
         this.checkLengths(headerLength, recordLength);
     }
 
-    private DbfField<?> createDbfField(byte[] fieldBytes) {
+    private XBaseField<?, DbfMemoRecord> createDbfField(byte[] fieldBytes) {
         // 1. name
         final String name = getName(fieldBytes);
         // 2. type
@@ -127,7 +133,7 @@ public class DbfMetadataReader {
         // 4. number of decimal places
         final byte numberOfDecimalPlaces = fieldBytes[17];
 
-        return DbfFieldImpl.getDbfField(name, type, length, numberOfDecimalPlaces);
+        return dbfFieldFactory.getDbfField(name, type, length, numberOfDecimalPlaces);
     }
 
     private String getName(byte[] fieldBytes) {

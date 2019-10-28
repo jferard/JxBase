@@ -16,10 +16,11 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldImpl;
-import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
-import com.github.jferard.jxbase.core.DbfFileTypeEnum;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.core.field.DefaultDbfField;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
 import com.github.jferard.jxbase.util.DbfMetadataUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
@@ -40,10 +41,10 @@ import java.util.Map;
 public class DbfWriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private String filePath;
-    private List<DbfField<?>> fields = new ArrayList<DbfField<?>>();
+    private List<XBaseField<?, DbfMemoRecord>> fields = new ArrayList<XBaseField<?, DbfMemoRecord>>();
 
-    public DbfField<?> addCharDBFField(String name, int length) {
-        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Character, length, 0);
+    public XBaseField<?, DbfMemoRecord> addCharDBFField(String name, int length) {
+        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Character, length, 0);
         fields.add(fld);
         return fld;
     }
@@ -51,14 +52,14 @@ public class DbfWriterIT {
   /*if(encoding.equals("UTF-8"))
   lenght *= 2;*/
 
-    public DbfField<?> addNumDBFField(String name, int length, int decimal) {
-        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Numeric, length, decimal);
+    public XBaseField<?, DbfMemoRecord> addNumDBFField(String name, int length, int decimal) {
+        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Numeric, length, decimal);
         fields.add(fld);
         return fld;
     }
 
-    public DbfField<?> addDateDBFField(String name) {
-        final DbfField<?> fld = new DbfFieldImpl(name, DbfFieldTypeEnum.Date, 0, 0);
+    public XBaseField<?, DbfMemoRecord> addDateDBFField(String name) {
+        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Date, 0, 0);
         fields.add(fld);
         return fld;
     }
@@ -84,7 +85,7 @@ public class DbfWriterIT {
 
     @Test
     public void test() throws IOException {
-        DbfMetadata dbfMetadata = DbfMetadata.create(DbfFileTypeEnum.FoxBASE2, new Date(), 0, 0, DbfMetadataUtils.calculateOneRecordLength(fields),
+        DbfMetadata dbfMetadata = DbfMetadata.create(XBaseFileTypeEnum.FoxBASE2, new Date(), 0, 0, DbfMetadataUtils.calculateOneRecordLength(fields),
                 JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
         FileOutputStream fos = null;
         DbfWriter dbfWriter = null;

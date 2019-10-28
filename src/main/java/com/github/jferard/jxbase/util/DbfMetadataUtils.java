@@ -17,10 +17,11 @@
 
 package com.github.jferard.jxbase.util;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFileTypeEnum;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.OffsetDbfField;
+import com.github.jferard.jxbase.core.OffsetXBaseField;
 
 import java.util.Date;
 import java.util.List;
@@ -28,14 +29,14 @@ import java.util.List;
 public class DbfMetadataUtils {
     public static final int BUFFER_SIZE = 8192;
 
-    public static DbfMetadata fromFieldsString(DbfFileTypeEnum fileType, Date updateDate,
+    public static DbfMetadata fromFieldsString(XBaseFileTypeEnum fileType, Date updateDate,
                                                int recordQty, String s) {
-        List<DbfField<?>> fields = JdbfUtils.createFieldsFromString(s);
+        List<XBaseField<?, DbfMemoRecord>> fields = JdbfUtils.createFieldsFromString(s);
         return fromFields(fileType, updateDate, recordQty, fields);
     }
 
-    public static DbfMetadata fromFields(DbfFileTypeEnum fileType, Date updateDate, int recordQty,
-                                         List<DbfField<?>> fields) {
+    public static DbfMetadata fromFields(XBaseFileTypeEnum fileType, Date updateDate, int recordQty,
+                                         List<XBaseField<?, DbfMemoRecord>> fields) {
         final int fullHeaderLength = calculateFullHeaderLength(fields);
         final int oneRecordLength = calculateOneRecordLength(fields);
 
@@ -44,21 +45,21 @@ public class DbfMetadataUtils {
                         JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
     }
 
-    public static int calculateOneRecordLength(List<DbfField<?>> fields) {
+    public static int calculateOneRecordLength(List<XBaseField<?, DbfMemoRecord>> fields) {
         int result = 0;
-        for (DbfField<?> field : fields) {
+        for (XBaseField<?, DbfMemoRecord> field : fields) {
             result += field.getLength();
         }
         return result + 1;
     }
 
-    private static int calculateFullHeaderLength(List<DbfField<?>> fields) {
+    private static int calculateFullHeaderLength(List<XBaseField<?, DbfMemoRecord>> fields) {
         int result = JdbfUtils.HEADER_FIELDS_SIZE;
         result += JdbfUtils.FIELD_RECORD_LENGTH * fields.size();
         return result + 1;
     }
 
-    public static void writeDbfField(OffsetDbfField<?> field, byte[] fieldBytes) {
+    public static void writeDbfField(OffsetXBaseField<?, DbfMemoRecord> field, byte[] fieldBytes) {
         BitUtils.memset(fieldBytes, 0);
         byte[] nameBytes = field.getName().getBytes();
         int nameLength = nameBytes.length;

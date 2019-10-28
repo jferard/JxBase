@@ -16,26 +16,38 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.DbfFieldFactory;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.field.DefaultDbfField;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class DbfFieldTest {
+    private DbfFieldFactory<DbfMemoRecord> dbfFieldFactory;
+
+    @Before
+    public void setUp() {
+        this.dbfFieldFactory = new DbfFieldFactory<DbfMemoRecord>();
+    }
+
     @Test
     public void testToString() {
-        DbfField<?> f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
+        XBaseField<?, DbfMemoRecord> f = new DefaultDbfField<DbfMemoRecord>("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals("DbfField[name=a, type=Character, length=10, numberOfDecimalPlaces=2]",
                 f.toString());
     }
 
     @Test
     public void testGetStringRepresentation() {
-        DbfField<?> f = new DbfFieldImpl("a", DbfFieldTypeEnum.Character, 10, 2);
+        XBaseField<?, DbfMemoRecord> f = new DefaultDbfField<DbfMemoRecord>("a", DbfFieldTypeEnum.Character, 10, 2);
         Assert.assertEquals("a,C,10,2", f.getStringRepresentation());
     }
 
     @Test
     public void testFromStringRepresentation() {
-        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("a,C,10,2");
+        XBaseField<?, DbfMemoRecord> f = dbfFieldFactory.fromStringRepresentation("a,C,10,2");
         Assert.assertEquals("a", f.getName());
         Assert.assertEquals(DbfFieldTypeEnum.Character, f.getType());
         Assert.assertEquals(10, f.getLength());
@@ -44,7 +56,7 @@ public class DbfFieldTest {
 
     @Test
     public void testFromStringRepresentation0() {
-        DbfField<?> f = DbfFieldImpl.fromStringRepresentation("a,0,1,2");
+        XBaseField<?, DbfMemoRecord> f = dbfFieldFactory.fromStringRepresentation("a,0,1,2");
         Assert.assertEquals("a", f.getName());
         Assert.assertEquals(DbfFieldTypeEnum.NullFlags, f.getType());
         Assert.assertEquals(1, f.getLength());

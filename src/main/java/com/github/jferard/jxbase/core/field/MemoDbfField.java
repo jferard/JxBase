@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
+
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
 import java.nio.charset.Charset;
-import java.text.ParseException;
 
-public class CharacterDbfField implements DbfField<String> {
-    private final String name;
-    private final int length;
+public class MemoDbfField<T extends XBaseMemoRecord> implements XBaseField<T, T> {
+    private String name;
 
-    public CharacterDbfField(final String name, final int length) {
+    public MemoDbfField(String name) {
         this.name = name;
-        this.length = length;
     }
 
     @Override
@@ -35,12 +36,12 @@ public class CharacterDbfField implements DbfField<String> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Character;
+        return DbfFieldTypeEnum.Memo;
     }
 
     @Override
     public int getLength() {
-        return this.length;
+        return 10;
     }
 
     @Override
@@ -50,16 +51,16 @@ public class CharacterDbfField implements DbfField<String> {
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",C," + this.length + ",0";
+        return this.name + ",M,10,0";
     }
 
     @Override
-    public String getValue(final DbfRecord dbfRecord, final Charset charset) throws ParseException {
-        return dbfRecord.getString(this.name, charset);
+    public T getValue(final XBaseRecord<T> dbfRecord, final Charset charset) {
+        return null;
     }
 
     @Override
-    public OffsetDbfField<String> withOffset(int offset) {
-        return new OffsetDbfField<String>(this, offset);
+    public OffsetXBaseField<T, T> withOffset(int offset) {
+        return new OffsetXBaseField<T, T>(this, offset);
     }
 }

@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
+
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.util.JdbfUtils;
 
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.util.Date;
 
-public class MemoDbfField<V> implements DbfField<V> {
-    private String name;
+public class DateDbfField<T extends XBaseMemoRecord> implements XBaseField<Date, T> {
+    private final String name;
 
-    public MemoDbfField(String name) {
+    public DateDbfField(final String name) {
         this.name = name;
     }
 
@@ -33,12 +39,12 @@ public class MemoDbfField<V> implements DbfField<V> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Memo;
+        return DbfFieldTypeEnum.Date;
     }
 
     @Override
     public int getLength() {
-        return 10;
+        return 8;
     }
 
     @Override
@@ -48,16 +54,21 @@ public class MemoDbfField<V> implements DbfField<V> {
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",M,10,0";
+        return this.name + ",D,8,0";
     }
 
     @Override
-    public V getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
-        return null;
+    public Date getValue(final XBaseRecord<T> dbfRecord, final Charset charset)
+            throws ParseException {
+        String s = dbfRecord.getASCIIString(this.name);
+        if (s == null) {
+            return null;
+        }
+        return JdbfUtils.parseDate(s);
     }
 
     @Override
-    public OffsetDbfField<V> withOffset(int offset) {
-        return new OffsetDbfField<V>(this, offset);
+    public OffsetXBaseField<Date, T> withOffset(final int offset) {
+        return new OffsetXBaseField<Date, T>(this, offset);
     }
 }

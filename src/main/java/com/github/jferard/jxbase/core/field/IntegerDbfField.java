@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
 
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 
 import java.nio.charset.Charset;
-import java.text.ParseException;
 
-public class IntegerDbfField implements DbfField<Integer> {
+public class IntegerDbfField<T extends XBaseMemoRecord> implements XBaseField<Integer, T> {
     private final String name;
     private final int length;
 
@@ -56,13 +58,13 @@ public class IntegerDbfField implements DbfField<Integer> {
     }
 
     @Override
-    public Integer getValue(final DbfRecord dbfRecord, final Charset charset) throws ParseException {
+    public Integer getValue(final XBaseRecord<T> dbfRecord, final Charset charset) {
         byte[] bytes = dbfRecord.getBytes(this.name);
         return BitUtils.makeInt(bytes[0], bytes[1], bytes[2], bytes[3]);
     }
 
     @Override
-    public OffsetDbfField<Integer> withOffset(int offset) {
-        return new OffsetDbfField<Integer>(this, offset);
+    public OffsetXBaseField<Integer, T> withOffset(int offset) {
+        return new OffsetXBaseField<Integer, T>(this, offset);
     }
 }

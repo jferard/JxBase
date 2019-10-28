@@ -17,7 +17,10 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.reader.MemoReader;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.field.NumericDbfField;
+import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
 
@@ -30,14 +33,13 @@ import java.util.IllegalFormatException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DbfRecord {
-
+public class XBaseRecord<T extends XBaseMemoRecord> {
     private final int recordNumber;
     private byte[] bytes;
-    private DbfMetadata metadata;
-    private MemoReader memoReader;
+    private XBaseMetadata<T> metadata;
+    private XBaseMemoReader<T> memoReader;
 
-    public DbfRecord(byte[] source, DbfMetadata metadata, MemoReader memoReader, int recordNumber) {
+    public XBaseRecord(byte[] source, XBaseMetadata<T> metadata, XBaseMemoReader<T> memoReader, int recordNumber) {
         this.recordNumber = recordNumber;
         this.bytes = new byte[source.length];
         System.arraycopy(source, 0, this.bytes, 0, source.length);
@@ -54,7 +56,7 @@ public class DbfRecord {
      * So, if record is preceded by 0x2A - it is considered to be deleted
      * All other cases: record is considered to be not deleted
      *
-     * @return
+     * @return true if the record is deleted
      */
     public boolean isDeleted() {
         return this.bytes[0] == 0x2A;
@@ -80,7 +82,7 @@ public class DbfRecord {
      * @return the trimmed string or null if the trimmed string is empty.
      */
     public String getString(String fieldName, Charset charset) {
-        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
+        OffsetXBaseField<?, T> of = metadata.getOffsetField(fieldName);
         int actualOffset = of.getOffset();
         int actualLength = of.getLength();
 
@@ -106,7 +108,7 @@ public class DbfRecord {
         if (offsetInBlocks == 0) {
             return new byte[] {};
         }
-        return memoReader.read(offsetInBlocks).getValue();
+        return memoReader.read(offsetInBlocks).getBytes();
     }
 
     public String getMemoAsString(String fieldName, Charset charset) throws IOException {
@@ -118,7 +120,7 @@ public class DbfRecord {
     }
 
     private int getOffsetInBlocks(String fieldName) throws IllegalFormatException {
-        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
+        OffsetXBaseField<?, T> of = metadata.getOffsetField(fieldName);
         if (of.getType() != DbfFieldTypeEnum.Memo) {
             throw new IllegalArgumentException("Field '" + fieldName + "' is not MEMO field!");
         }
@@ -142,32 +144,36 @@ public class DbfRecord {
         return new BigDecimal(s);
     }
 
-    public void setBoolean(String fieldName, Boolean value) {
-        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
+    /*
+    public void setBoolean(String fieldName, final Boolean value) {
+        OffsetXBaseField<?> of = metadata.getOffsetField(fieldName);
         // TODO: write boolean
     }
+    */
 
     public byte[] getBytes(String fieldName) {
-        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
+        OffsetXBaseField<?, T> of = metadata.getOffsetField(fieldName);
         byte[] b = new byte[of.getLength()];
         System.arraycopy(bytes, of.getOffset(), b, 0, of.getLength());
         return b;
     }
 
+    /*
     public void setBytes(String fieldName, byte[] fieldBytes) {
-        OffsetDbfField<?> of = metadata.getOffsetField(fieldName);
+        OffsetXBaseField<?> of = metadata.getOffsetField(fieldName);
         // TODO:
         // assert fieldBytes.length = f.getLength()
         System.arraycopy(fieldBytes, 0, bytes, of.getOffset(), of.getLength());
     }
+    */
 
-    public Collection<DbfField<?>> getFields() {
+    public Collection<XBaseField<?, T>> getFields() {
         return metadata.getFields();
     }
 
     public String getStringRepresentation(final Charset charset) throws Exception {
         StringBuilder sb = new StringBuilder(bytes.length * 10);
-        for (DbfField<?> f : getFields()) {
+        for (XBaseField<?, T> f : getFields()) {
             sb.append(f.getName()).append("=").append(f.getValue(this, charset));
             sb.append(", ");
         }
@@ -177,7 +183,7 @@ public class DbfRecord {
     public Map<String, Object> toMap(final Charset charset) throws ParseException {
         Map<String, Object> map = new LinkedHashMap<String, Object>(getFields().size() * 2);
 
-        for (DbfField<?> f : getFields()) {
+        for (XBaseField<?, T> f : getFields()) {
             String name = f.getName();
             final Object value = f.getValue(this, charset);
             if (value != null) {

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
 
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.util.Date;
 
-public class DateDbfField implements DbfField<Date> {
-    private String name;
+public class LogicalDbfField<T extends XBaseMemoRecord> implements XBaseField<Boolean, T> {
+    private final String name;
 
-    public DateDbfField(String name) {
+    public LogicalDbfField(final String name) {
         this.name = name;
     }
 
@@ -37,12 +36,12 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public DbfFieldTypeEnum getType() {
-        return DbfFieldTypeEnum.Date;
+        return DbfFieldTypeEnum.Logical;
     }
 
     @Override
     public int getLength() {
-        return 8;
+        return 1;
     }
 
     @Override
@@ -52,20 +51,26 @@ public class DateDbfField implements DbfField<Date> {
 
     @Override
     public String getStringRepresentation() {
-        return this.name + ",D,8,0";
+        return this.name + ",L,1,0";
     }
 
     @Override
-    public Date getValue(DbfRecord dbfRecord, Charset charset) throws ParseException {
+    public Boolean getValue(final XBaseRecord<T> dbfRecord, final Charset charset) {
         String s = dbfRecord.getASCIIString(this.name);
         if (s == null) {
             return null;
         }
-        return JdbfUtils.parseDate(s);
+        if (s.equalsIgnoreCase("t")) {
+            return Boolean.TRUE;
+        } else if (s.equalsIgnoreCase("f")) {
+            return Boolean.FALSE;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public OffsetDbfField<Date> withOffset(int offset) {
-        return new OffsetDbfField<Date>(this, offset);
+    public OffsetXBaseField<Boolean, T> withOffset(int offset) {
+        return new OffsetXBaseField<Boolean, T>(this, offset);
     }
 }

@@ -16,10 +16,11 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
-import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.DbfRecord;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.reader.DbfReader;
+import com.github.jferard.jxbase.reader.XBaseReader;
 import org.junit.Test;
 
 import java.io.File;
@@ -40,9 +41,9 @@ public class MemoIT {
         File memo = getResourceFile("memo1/texto.fpt");
 
         try {
-            DbfReader reader = DbfReader.create(dbf, memo);
+            XBaseReader reader = DbfReader.create(dbf, memo);
             try {
-                DbfMetadata meta = reader.getMetadata();
+                XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
                 assertEquals(5, meta.getOffsetField("TEXVER").getLength());
@@ -60,7 +61,7 @@ public class MemoIT {
                 assertEquals(254, meta.getOffsetField("TEXCAM").getLength());
                 assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXCAM").getType());
 
-                DbfRecord rec;
+                XBaseRecord rec;
                 while ((rec = reader.read()) != null) {
                     System.out.println("Record is DELETED: " + rec.isDeleted());
                     System.out.println("TEXVER: " +

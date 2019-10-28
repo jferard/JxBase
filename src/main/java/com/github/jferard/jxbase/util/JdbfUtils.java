@@ -17,9 +17,10 @@
 
 package com.github.jferard.jxbase.util;
 
-import com.github.jferard.jxbase.core.DbfField;
-import com.github.jferard.jxbase.core.DbfFieldImpl;
-import com.github.jferard.jxbase.core.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.field.DefaultDbfField;
+import com.github.jferard.jxbase.core.field.XBaseField;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -50,22 +51,23 @@ public class JdbfUtils {
     public static final Charset ASCII_CHARSET = Charset.forName("ASCII");
     public static int EMPTY = 0x20;
 
-    public static List<DbfField<?>> createFieldsFromString(String fieldsString) {
+    public static List<XBaseField<?, DbfMemoRecord>> createFieldsFromString(String fieldsString) {
         String[] a = fieldsString.split("\\|");
-        List<DbfField<?>> list = new ArrayList<DbfField<?>>(a.length);
+        List<XBaseField<?, DbfMemoRecord>> list =
+                new ArrayList<XBaseField<?, DbfMemoRecord>>(a.length);
         for (String b : a) {
             if (b.trim().length() == 0) {
                 continue;
             }
-            DbfField<?> f = createDbfFieldFromString(b);
+            XBaseField<?, DbfMemoRecord> f = createDbfFieldFromString(b);
             list.add(f);
         }
         return list;
     }
 
-    public static DbfField<?> createDbfFieldFromString(String s) {
+    public static XBaseField<?, DbfMemoRecord> createDbfFieldFromString(String s) {
         String[] a = s.split(",");
-        return new DbfFieldImpl(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)),
+        return new DefaultDbfField(a[0], DbfFieldTypeEnum.fromChar(a[1].charAt(0)),
                 Integer.parseInt(a[2]), Integer.parseInt(a[3]));
     }
 

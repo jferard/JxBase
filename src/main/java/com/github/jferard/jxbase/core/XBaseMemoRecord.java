@@ -16,23 +16,20 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
-import org.junit.Assert;
-import org.junit.Test;
+import java.nio.charset.Charset;
 
-public class DbfFieldTypeEnumTest {
-    @Test
-    public void testType() {
-        Assert.assertEquals('N', DbfFieldTypeEnum.Numeric.getType());
-    }
+public interface XBaseMemoRecord {
+    byte[] getBytes();
 
-    @Test
-    public void testByte() {
-        Assert.assertEquals((byte) 'D', DbfFieldTypeEnum.Date.toByte());
-    }
+    String getValueAsString(Charset charset);
 
-    @Test
-    public void testFromChar() {
-        Assert.assertEquals(DbfFieldTypeEnum.Integer, DbfFieldTypeEnum.fromChar('I'));
-    }
+    MemoRecordTypeEnum getMemoType();
+
+    /**
+     * Memo record length in bytes
+     * @return
+     */
+    int getLength();
+
+    int getOffsetInBlocks();
 }

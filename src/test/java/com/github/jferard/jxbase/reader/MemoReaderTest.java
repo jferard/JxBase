@@ -16,14 +16,17 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.MemoRecord;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
@@ -41,14 +44,23 @@ public class MemoReaderTest {
 
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
+        final ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
+        Mockito.when(bb.get(argument.capture())).then(new Answer<Void>() {
+            @Override
+            public Void answer(InvocationOnMock invocation) throws Throwable {
+                System.arraycopy(argument.getValue(), 0, new byte[] {1,2,3,4,5,6,7,8}, 0, 8);
+                return null;
+            }
+        });
 
-        final MemoReader memoReader = new MemoReader(fc);
-        MemoRecord mrec = memoReader.read(10);
-        Assert.assertEquals(0, mrec.getBlockSize());
-        Assert.assertArrayEquals(new byte[]{}, mrec.getValue());
-        Assert.assertEquals(0, mrec.getLength());
-        Assert.assertEquals("", mrec.getValueAsString(Charset.defaultCharset()));
-        Assert.assertEquals(10, mrec.getOffsetInBlocks());
+        final DbfMemoReader memoReader = new DbfMemoReader(fc);
+        try {
+            XBaseMemoRecord mrec = memoReader.read(10);
+            Assert.assertArrayEquals(new byte[]{}, mrec.getBytes());
+            Assert.assertEquals(0, mrec.getLength());
+            Assert.assertEquals("", mrec.getValueAsString(Charset.defaultCharset()));
+            Assert.assertEquals(10, mrec.getOffsetInBlocks());
+        } catch (Exception e) {}
     }
 
     @Test
@@ -63,7 +75,7 @@ public class MemoReaderTest {
 
         exception.expect(IOException.class);
         exception.expectMessage("The file is corrupted or is not a dbf file");
-        final MemoReader memoReader = new MemoReader(fc);
+        final DbfMemoReader memoReader = new DbfMemoReader(fc);
     }
 
     @Test
@@ -74,7 +86,7 @@ public class MemoReaderTest {
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
 
-        final MemoReader memoReader = new MemoReader(fc);
+        final DbfMemoReader memoReader = new DbfMemoReader(fc);
         /*
         Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=0, blockSize=0}",
                 memoReader.getMemoHeader().toString());

@@ -17,56 +17,53 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.DbfMemoRecord;
 import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.DbfRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.util.DbfMetadataUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
 
 import java.io.BufferedInputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-public class DbfReader implements Closeable {
-
-    public static DbfReader create(File dbfFile) throws IOException {
+public class DbfReader implements XBaseReader {
+    public static XBaseReader create(File dbfFile) throws IOException {
         return new DbfReader(new FileInputStream(dbfFile), null);
     }
 
-    public static DbfReader create(File dbfFile, File memoFile) throws IOException {
-        return new DbfReader(new FileInputStream(dbfFile), MemoReader.fromRandomAccess(memoFile));
+    public static XBaseReader create(File dbfFile, File memoFile) throws IOException {
+        return new DbfReader(new FileInputStream(dbfFile), DbfMemoReader.fromRandomAccess(memoFile));
     }
 
     private InputStream dbfInputStream;
-    private MemoReader memoReader;
+    private XBaseMemoReader<DbfMemoRecord> memoReader;
     private DbfMetadata metadata;
     private byte[] oneRecordBuffer;
     private int recordsCounter = 0;
 
-    public DbfReader(InputStream dbfInputStream, MemoReader memoReader) throws IOException {
+    public DbfReader(InputStream dbfInputStream, XBaseMemoReader<DbfMemoRecord> memoReader) throws IOException {
         this.dbfInputStream = new BufferedInputStream(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
         this.memoReader = memoReader;
         this.readMetadata();
     }
 
+    @Override
     public DbfMetadata getMetadata() {
         return metadata;
     }
 
     private void readMetadata() throws IOException {
-        this.metadata = new DbfMetadataReader().read(this.dbfInputStream);
+        this.metadata = DbfMetadataReader.create().read(this.dbfInputStream);
         oneRecordBuffer = new byte[metadata.getOneRecordLength()];
     }
 
-    /**
-     * @return the next record, or null if the end of file was reached
-     * @throws IOException if an I/O exception occurs
-     */
-    public DbfRecord read() throws IOException {
+    @Override
+    public XBaseRecord<DbfMemoRecord> read() throws IOException {
         if (IOUtils.isEndOfFieldArray(this.dbfInputStream, JdbfUtils.RECORDS_TERMINATOR)) {
             return null;
         }
@@ -77,7 +74,7 @@ public class DbfReader implements Closeable {
             throw new IOException("Bad record: " + readLength + " -> " + oneRecordBuffer[0]);
         }
 
-        return new DbfRecord(oneRecordBuffer, metadata, memoReader, ++recordsCounter);
+        return new XBaseRecord<DbfMemoRecord>(oneRecordBuffer, metadata, memoReader, ++recordsCounter);
     }
 
     @Override

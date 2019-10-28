@@ -27,17 +27,17 @@ public class DbfFileTypeEnumTest {
 
     @Test
     public void testFomInt() {
-        Assert.assertEquals(DbfFileTypeEnum.FoxBASE1, DbfFileTypeEnum.fromInt((byte) 0x02));
+        Assert.assertEquals(XBaseFileTypeEnum.FoxBASE1, XBaseFileTypeEnum.fromInt((byte) 0x02));
     }
 
     @Test
     public void testFomIntNoValue() {
         exception.expect(IllegalArgumentException.class);
-        DbfFileTypeEnum.fromInt((byte) 0xFF);
+        XBaseFileTypeEnum.fromInt((byte) 0xFF);
     }
 
     @Test
     public void testToByte() {
-        Assert.assertEquals((byte) 0x8B, DbfFileTypeEnum.dBASEIV3.toByte());
+        Assert.assertEquals((byte) 0x8B, XBaseFileTypeEnum.dBASEIV3.toByte());
     }
 }

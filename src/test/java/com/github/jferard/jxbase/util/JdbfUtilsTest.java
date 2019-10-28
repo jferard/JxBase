@@ -16,7 +16,8 @@
 
 package com.github.jferard.jxbase.util;
 
-import com.github.jferard.jxbase.core.DbfField;
+import com.github.jferard.jxbase.core.DbfMemoRecord;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ import java.util.Map;
 public class JdbfUtilsTest {
     @Test
     public void testCreateFieldsFromString() {
-        final List<DbfField<?>> fieldsFromString =
+        final List<XBaseField<?, DbfMemoRecord>> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
         Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",
@@ -41,7 +42,7 @@ public class JdbfUtilsTest {
 
     @Test
     public void testCreateFieldsFromStringWithEmptyOne() {
-        final List<DbfField<?>> fieldsFromString =
+        final List<XBaseField<?, DbfMemoRecord>> fieldsFromString =
                 JdbfUtils.createFieldsFromString("x,I,10,2|   |y,M,4,4");
         Assert.assertEquals(2, fieldsFromString.size());
         Assert.assertEquals("DbfField[name=x, type=Integer, length=10, numberOfDecimalPlaces=2]",

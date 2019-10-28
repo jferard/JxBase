@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.field;
+
+import com.github.jferard.jxbase.core.OffsetXBaseField;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public interface DbfField<V> {
+/**
+ * A XBase field
+ * @param <V> the Java type of the field
+ * @param <T> the type of the memo records.
+ */
+public interface XBaseField<V, T extends XBaseMemoRecord> {
     /**
      * @return the name of the field
      */
@@ -31,7 +40,7 @@ public interface DbfField<V> {
     DbfFieldTypeEnum getType();
 
     /**
-     * @return the length of the field
+     * @return the length of the field (the actual length, not necessarily the third field)
      */
     int getLength();
 
@@ -48,11 +57,15 @@ public interface DbfField<V> {
 
     /**
      * @param dbfRecord the current record
-     * @param charset the charset
+     * @param charset   the charset
      * @return the value of this field in the record
-     * @throws ParseException
+     * @throws ParseException if the value can't be parsed.
      */
-    V getValue(DbfRecord dbfRecord, Charset charset) throws ParseException;
+    V getValue(XBaseRecord<T> dbfRecord, Charset charset) throws ParseException;
 
-    OffsetDbfField<V> withOffset(final int offset);
+    /**
+     * @param offset the offset in the field array
+     * @return the field with an offset
+     */
+    OffsetXBaseField<V, T> withOffset(final int offset);
 }

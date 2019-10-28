@@ -16,23 +16,27 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
-import org.junit.Assert;
-import org.junit.Test;
+import com.github.jferard.jxbase.core.field.XBaseField;
 
-public class DbfFieldTypeEnumTest {
-    @Test
-    public void testType() {
-        Assert.assertEquals('N', DbfFieldTypeEnum.Numeric.getType());
-    }
+import java.util.Collection;
 
-    @Test
-    public void testByte() {
-        Assert.assertEquals((byte) 'D', DbfFieldTypeEnum.Date.toByte());
-    }
+/**
+ * The meta data of a file
+ */
+public interface XBaseMetadata<T extends XBaseMemoRecord> {
+    /**
+     * @return the length of the header
+     */
+    int getFullHeaderLength();
 
-    @Test
-    public void testFromChar() {
-        Assert.assertEquals(DbfFieldTypeEnum.Integer, DbfFieldTypeEnum.fromChar('I'));
-    }
+    /**
+     * @return the length of a record
+     */
+    int getOneRecordLength();
+
+    OffsetXBaseField<?, T> getOffsetField(String name);
+
+    Collection<OffsetXBaseField<?, T>> getOffsetFields();
+
+    Collection<XBaseField<?, T>> getFields();
 }
