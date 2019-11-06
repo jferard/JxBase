@@ -16,20 +16,33 @@
 
 package com.github.jferard.jxbase.core;
 
-import java.nio.charset.Charset;
-
-public interface XBaseMemoRecord {
+/**
+ * A record in the memo file
+ * @param <V> the value in the record
+ */
+public interface XBaseMemoRecord<V> {
+    /**
+     * @return get the data bytes of the record
+     */
     byte[] getBytes();
 
-    String getValueAsString(Charset charset);
+    /**
+     * @return the value of the record
+     */
+    V getValue();
 
+    /**
+     * @return the memo type
+     */
     MemoRecordTypeEnum getMemoType();
 
     /**
-     * Memo record length in bytes
-     * @return
+     * @return the memo record length in bytes
      */
     int getLength();
 
-    int getOffsetInBlocks();
+    /**
+     * @return the memo offset in blocks
+     */
+    long getOffsetInBlocks();
 }

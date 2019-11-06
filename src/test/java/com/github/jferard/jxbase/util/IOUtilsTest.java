@@ -35,7 +35,7 @@ public class IOUtilsTest {
 
     @Before
     public void setUp() {
-        byte[] bytes = new byte[10];
+        final byte[] bytes = new byte[10];
         Arrays.fill(bytes, (byte) 15);
         this.in = new ByteArrayInputStream(bytes);
     }
@@ -48,52 +48,52 @@ public class IOUtilsTest {
 
     @Test
     public void readFullyAVoidArray() throws Exception {
-        byte[] bs = new byte[0];
-        Assert.assertEquals(0, IOUtils.readFully(in, bs));
+        final byte[] bs = new byte[0];
+        Assert.assertEquals(0, IOUtils.readFully(this.in, bs));
 
-        byte[] ret = new byte[0];
+        final byte[] ret = new byte[0];
         Assert.assertArrayEquals(ret, bs);
     }
 
     @Test
     public void readFullyASmallArray() throws Exception {
-        byte[] bs = new byte[5];
-        Assert.assertEquals(5, IOUtils.readFully(in, bs));
+        final byte[] bs = new byte[5];
+        Assert.assertEquals(5, IOUtils.readFully(this.in, bs));
 
         Assert.assertArrayEquals(new byte[]{15, 15, 15, 15, 15}, bs);
     }
 
     @Test
     public void readFullyAFullSizeArray() throws Exception {
-        byte[] bs = new byte[10];
-        Assert.assertEquals(10, IOUtils.readFully(in, bs));
+        final byte[] bs = new byte[10];
+        Assert.assertEquals(10, IOUtils.readFully(this.in, bs));
 
         Assert.assertArrayEquals(new byte[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15}, bs);
     }
 
     @Test
     public void readFullyABigArray() throws Exception {
-        byte[] bs = new byte[100];
-        Assert.assertEquals(10, IOUtils.readFully(in, bs));
+        final byte[] bs = new byte[100];
+        Assert.assertEquals(10, IOUtils.readFully(this.in, bs));
 
-        byte[] ret = new byte[100];
+        final byte[] ret = new byte[100];
         Arrays.fill(ret, 0, 10, (byte) 15);
         Assert.assertArrayEquals(ret, bs);
     }
 
     @Test
     public void readFullyWithOffsetBigArray() throws Exception {
-        byte[] bs = new byte[100];
-        Assert.assertEquals(10, IOUtils.readFully(in, bs, 5, 10));
+        final byte[] bs = new byte[100];
+        Assert.assertEquals(10, IOUtils.readFully(this.in, bs, 5, 10));
 
-        byte[] ret = new byte[100];
+        final byte[] ret = new byte[100];
         Arrays.fill(ret, 5, 15, (byte) 15);
         Assert.assertArrayEquals(ret, bs);
     }
 
     @Test
     public void readFully() throws Exception {
-        byte[] bs = new byte[100];
+        final byte[] bs = new byte[100];
         final InputStream is = Mockito.mock(InputStream.class);
 
         Mockito.when(is.read(Mockito.eq(bs), Mockito.anyInt(), Mockito.anyInt())).thenReturn(1);

@@ -6,6 +6,36 @@ JxBase
 
 JxBase is a fork from [jdbf](https://github.com/iryndin/jdbf), a Java utility to read/write DBF files
 
+## Design of an xBase database
+The database is a simple set of files. See https://www.clicketyclick.dk/databases/xbase/format/
+
+### The DBF file
+The main file. Contains the header and the records.
+
+    +------- Header ---------+
+    |       Metadata         |
+    | Field Descriptor Array |
+    +------------------------+
+    |        Records         |
+    +------------------------+
+
+### DBT file (memo: optional)
+This file contains block of data.
+
+    +------------------------+
+    |         Header         |
+    +------------------------+
+    |        Records         |
+    +------------------------+
+
+### NDX file (index: optional)
+TODO
+
+## Design of JxBase
+### Writers
+JxBase provides 
+
+
 ## User Guide
 
 ### Read DBF file 

@@ -16,21 +16,31 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.text.ParseException;
 
-public interface XBaseReader<T extends XBaseMemoRecord> extends Closeable {
-    DbfMetadata getMetadata();
-
+public interface XBaseReader<T extends XBaseMemoRecord<?>> extends Closeable {
     /**
      * @return the next record, or null if the end of file was reached
      * @throws IOException if an I/O exception occurs
      */
-    XBaseRecord<T> read() throws IOException;
+    GenericRecord read() throws IOException, ParseException;
+
+    XBaseDialect getDialect();
+
+    XBaseMetadata getMetadata();
+
+    XBaseFieldDescriptorArray getFieldDescriptorArray();
+
+    XBaseOptional getOptional();
 
     @Override
     void close() throws IOException;

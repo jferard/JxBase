@@ -27,7 +27,7 @@ public class MemoFileHeader {
      * @param headerBytes the source bytes
      * @return the memo header
      */
-    public static MemoFileHeader create(byte[] headerBytes) {
+    public static MemoFileHeader create(final byte[] headerBytes) {
         final int nextFreeBlockLocation =
                 BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
         final int blockSize = BitUtils.makeInt(headerBytes[7], headerBytes[6]);
@@ -37,22 +37,22 @@ public class MemoFileHeader {
     private final int nextFreeBlockLocation;
     private final int blockSize;
 
-    public MemoFileHeader(int nextFreeBlockLocation, int blockSize) {
+    public MemoFileHeader(final int nextFreeBlockLocation, final int blockSize) {
         this.nextFreeBlockLocation = nextFreeBlockLocation;
         this.blockSize = blockSize;
     }
 
     public int getNextFreeBlockLocation() {
-        return nextFreeBlockLocation;
+        return this.nextFreeBlockLocation;
     }
 
     public int getBlockSize() {
-        return blockSize;
+        return this.blockSize;
     }
 
     @Override
     public String toString() {
-        return "MemoFileHeader[" + "nextFreeBlockLocation=" + nextFreeBlockLocation +
-                ", blockSize=" + blockSize + ']';
+        return "MemoFileHeader[" + "nextFreeBlockLocation=" + this.nextFreeBlockLocation +
+                ", blockSize=" + this.blockSize + ']';
     }
 }

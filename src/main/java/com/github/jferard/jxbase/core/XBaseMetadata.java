@@ -16,14 +16,15 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.XBaseField;
-
-import java.util.Collection;
-
 /**
- * The meta data of a file
+ * The meta data of a file. Contains
  */
-public interface XBaseMetadata<T extends XBaseMemoRecord> {
+public interface XBaseMetadata {
+    /**
+     * @return the file type
+     */
+    int getFileTypeByte();
+
     /**
      * @return the length of the header
      */
@@ -34,9 +35,11 @@ public interface XBaseMetadata<T extends XBaseMemoRecord> {
      */
     int getOneRecordLength();
 
-    OffsetXBaseField<?, T> getOffsetField(String name);
+    /**
+     * @param key the key
+     * @return the value mapped to the key
+     */
+    Object get(String key);
 
-    Collection<OffsetXBaseField<?, T>> getOffsetFields();
-
-    Collection<XBaseField<?, T>> getFields();
+    int getMetaLength();
 }

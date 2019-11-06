@@ -16,22 +16,22 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.DbfMemoRecord;
-import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.core.field.DefaultDbfField;
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
+import com.github.jferard.jxbase.core.GenericOptional;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.util.DbfMetadataUtils;
+import com.github.jferard.jxbase.core.field.CharacterField;
+import com.github.jferard.jxbase.core.field.NumericField;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.JdbfUtils;
-import com.github.jferard.jxbase.writer.DbfWriter;
+import com.github.jferard.jxbase.writer.GenericWriter;
+import com.github.jferard.jxbase.writer.XBaseWriter;
+import com.github.jferard.jxbase.writer.XBaseWriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,72 +40,43 @@ import java.util.Map;
 
 public class DbfWriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
-    private String filePath;
-    private List<XBaseField<?, DbfMemoRecord>> fields = new ArrayList<XBaseField<?, DbfMemoRecord>>();
-
-    public XBaseField<?, DbfMemoRecord> addCharDBFField(String name, int length) {
-        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Character, length, 0);
-        fields.add(fld);
-        return fld;
-    }
-
-  /*if(encoding.equals("UTF-8"))
-  lenght *= 2;*/
-
-    public XBaseField<?, DbfMemoRecord> addNumDBFField(String name, int length, int decimal) {
-        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Numeric, length, decimal);
-        fields.add(fld);
-        return fld;
-    }
-
-    public XBaseField<?, DbfMemoRecord> addDateDBFField(String name) {
-        final XBaseField<?, DbfMemoRecord> fld = new DefaultDbfField(name, DbfFieldTypeEnum.Date, 0, 0);
-        fields.add(fld);
-        return fld;
-    }
+    private final List<XBaseField> fields = new ArrayList<XBaseField>();
 
     @Before
     public void prepareData() {
-        valueMap.put("FIOISP", "Виноградова Ольга Евгеньевна");
-        valueMap.put("NAME", "Вячеслав");
-        valueMap.put("SURNAME", "Егоров");
-        valueMap.put("DATER", "30.06.1971");
-        valueMap.put("SECONDNAME", "Иванович");
-        valueMap.put("UNICODE", new BigDecimal(1001731864));
-        valueMap.put("NUMID", "6/14/19/69");
-        filePath = "G:\\test\\" + new Date().getTime() + ".dbf";
-        fields.add(addCharDBFField("FIOISP", 100));
-        fields.add(addCharDBFField("NAME", 250));
-        fields.add(addCharDBFField("SURNAME", 250));
-        fields.add(addCharDBFField("DATER", 10));
-        fields.add(addCharDBFField("SECONDNAME", 250));
-        fields.add(addNumDBFField("UNICODE", 10, 10));
-        fields.add(addCharDBFField("NUMID", 100));
+        this.fields.add(new CharacterField("FIOISP", 100));
+        this.fields.add(new CharacterField("NAME", 250));
+        this.fields.add(new CharacterField("SURNAME", 250));
+        this.fields.add(new CharacterField("DATER", 10));
+        this.fields.add(new CharacterField("SECONDNAME", 250));
+        this.fields.add(new NumericField("UNICODE", 10, 10));
+        this.fields.add(new CharacterField("NUMID", 100));
+        this.valueMap.put("FIOISP", "Виноградова Ольга Евгеньевна");
+        this.valueMap.put("NAME", "Вячеслав");
+        this.valueMap.put("SURNAME", "Егоров");
+        this.valueMap.put("DATER", "30.06.1971");
+        this.valueMap.put("SECONDNAME", "Иванович");
+        this.valueMap.put("UNICODE", new BigDecimal(1001731864));
+        this.valueMap.put("NUMID", "6/14/19/69");
     }
 
     @Test
     public void test() throws IOException {
-        DbfMetadata dbfMetadata = DbfMetadata.create(XBaseFileTypeEnum.FoxBASE2, new Date(), 0, 0, DbfMetadataUtils.calculateOneRecordLength(fields),
-                JdbfUtils.NULL_BYTE, JdbfUtils.NULL_BYTE, fields);
-        FileOutputStream fos = null;
-        DbfWriter dbfWriter = null;
+        final int fullHeaderLength =
+                JdbfUtils.METADATA_SIZE + this.fields.size() * JdbfUtils.FIELD_DESCRIPTOR_SIZE;
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date());
+        meta.put("recordsQty", 1);
+        meta.put("uncompletedTxFlag", JdbfUtils.NULL_BYTE);
+        meta.put("encryptionFlag", JdbfUtils.NULL_BYTE);
+
+        final XBaseWriter dbfWriter = new XBaseWriterFactory()
+                .create(XBaseFileTypeEnum.dBASEIV1, new File("111.dbf"), Charset.forName("UTF-8"),
+                        null, meta, this.fields, GenericOptional.EMPTY);
         try {
-            fos = new FileOutputStream("111.dbf");
-            dbfWriter = new DbfWriter(dbfMetadata, fos);
-            final String encoding = "CP866";
-            dbfWriter.setStringCharset(encoding);
-            dbfWriter.write(valueMap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            dbfWriter.write(this.valueMap);
         } finally {
-            if (dbfWriter != null) {
-                dbfWriter.close();
-            }
-            if (fos != null) {
-                fos.close();
-            }
+            dbfWriter.close();
         }
     }
 }

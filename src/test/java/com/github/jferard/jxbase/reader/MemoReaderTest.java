@@ -16,13 +16,13 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -31,62 +31,62 @@ import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 
 public class MemoReaderTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
+    private final DbfMemoRecordFactory dbfMemoRecordFactory = null;
 
     @Test
     public void testRead() throws IOException {
-        FileChannel fc = Mockito.mock(FileChannel.class);
-        MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = Mockito.mock(FileChannel.class);
+        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
 
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
         final ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
         Mockito.when(bb.get(argument.capture())).then(new Answer<Void>() {
             @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(final InvocationOnMock invocation) throws Throwable {
                 System.arraycopy(argument.getValue(), 0, new byte[] {1,2,3,4,5,6,7,8}, 0, 8);
                 return null;
             }
         });
 
-        final DbfMemoReader memoReader = new DbfMemoReader(fc);
+        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
         try {
-            XBaseMemoRecord mrec = memoReader.read(10);
+            final XBaseMemoRecord mrec = memoReader.read(10);
             Assert.assertArrayEquals(new byte[]{}, mrec.getBytes());
             Assert.assertEquals(0, mrec.getLength());
-            Assert.assertEquals("", mrec.getValueAsString(Charset.defaultCharset()));
+            Assert.assertEquals("", mrec.getValue());
             Assert.assertEquals(10, mrec.getOffsetInBlocks());
-        } catch (Exception e) {}
+        } catch (final Exception e) {}
     }
 
     @Test
     public void testBadFile() throws IOException {
-        FileChannel fc = Mockito.mock(FileChannel.class);
-        MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = Mockito.mock(FileChannel.class);
+        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
 
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
         Mockito.when(bb.get((byte[]) Mockito.anyObject()))
                 .thenThrow(new BufferUnderflowException());
 
-        exception.expect(IOException.class);
-        exception.expectMessage("The file is corrupted or is not a dbf file");
-        final DbfMemoReader memoReader = new DbfMemoReader(fc);
+        this.exception.expect(IOException.class);
+        this.exception.expectMessage("The file is corrupted or is not a dbf file");
+        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
     }
 
     @Test
     public void testOther() throws IOException {
-        FileChannel fc = Mockito.mock(FileChannel.class);
-        MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = Mockito.mock(FileChannel.class);
+        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
 
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
 
-        final DbfMemoReader memoReader = new DbfMemoReader(fc);
+        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
         /*
         Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=0, blockSize=0}",
                 memoReader.getMemoHeader().toString());

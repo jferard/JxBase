@@ -22,12 +22,12 @@ public enum MemoRecordTypeEnum {
 
     final int type;
 
-    MemoRecordTypeEnum(int type) {
+    MemoRecordTypeEnum(final int type) {
         this.type= type;
     }
 
-    public static MemoRecordTypeEnum fromInt(int type) {
-        for (MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
+    public static MemoRecordTypeEnum fromInt(final int type) {
+        for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
             if (e.type == type) {
                 return e;
             }

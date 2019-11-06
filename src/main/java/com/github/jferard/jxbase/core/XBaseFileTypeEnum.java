@@ -30,9 +30,9 @@ public enum XBaseFileTypeEnum {
     dBASEIVII4(0xCD, "dBASE VII SQL table files, with memo"),
     ;
 
-    public static XBaseFileTypeEnum fromInt(byte bType) {
-        int iType = 0xFF & bType;
-        for (XBaseFileTypeEnum e : XBaseFileTypeEnum.values()) {
+    public static XBaseFileTypeEnum fromInt(final byte bType) {
+        final int iType = 0xFF & bType;
+        for (final XBaseFileTypeEnum e : XBaseFileTypeEnum.values()) {
             if (e.type == iType) {
                 return e;
             }
@@ -40,10 +40,25 @@ public enum XBaseFileTypeEnum {
         throw new IllegalArgumentException("Unknown file type: " + bType);
     }
 
+    public static XBaseDialect getDialect(final XBaseFileTypeEnum type) {
+        final XBaseDialect dialect;
+        switch (type) {
+            case VisualFoxPro1:
+            case VisualFoxPro2:
+                dialect = new FoxProDialect(type);
+                break;
+            default:
+                dialect = new GenericDialect(type);
+                break;
+
+        }
+        return dialect;
+    }
+
     final int type;
     final String description;
 
-    XBaseFileTypeEnum(int type, String description) {
+    XBaseFileTypeEnum(final int type, final String description) {
         this.type = type;
         this.description = description;
     }

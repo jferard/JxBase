@@ -23,10 +23,8 @@ import java.io.IOException;
 
 /**
  * A reader for a memo file
- *
- * @param <T> the type of the memo record
  */
-public interface XBaseMemoReader<T extends XBaseMemoRecord> extends Closeable {
+public interface XBaseMemoReader extends Closeable {
 
     /**
      * Read a record
@@ -35,5 +33,5 @@ public interface XBaseMemoReader<T extends XBaseMemoRecord> extends Closeable {
      * @return the memo record
      * @throws IOException if an I/O error occurs
      */
-    T read(int offsetInBlocks) throws IOException;
+    XBaseMemoRecord<?> read(long offsetInBlocks) throws IOException;
 }

@@ -16,7 +16,10 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.reader.internal.GenericInternalReaderFactory;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.DbfMetadataUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 
@@ -24,27 +27,32 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 public class XBaseReaderFactory {
-    public static XBaseReader create(final File dbfFile) throws IOException {
-        return new XBaseReaderFactory().create(new FileInputStream(dbfFile), null);
+    public static XBaseReader create(final File dbfFile, final Charset charset) throws IOException {
+        return new XBaseReaderFactory().create(new FileInputStream(dbfFile), charset, null);
     }
 
-    public static XBaseReader create(final File dbfFile, final File memoFile) throws IOException {
-        return new XBaseReaderFactory().create(new FileInputStream(dbfFile), memoFile);
+    public static XBaseReader create(final File dbfFile, final Charset charset, final File memoFile)
+            throws IOException {
+        return new XBaseReaderFactory().create(new FileInputStream(dbfFile), charset, memoFile);
     }
 
-    private XBaseReader create(final InputStream dbfInputStream, final File memoFile) throws IOException {
+    private XBaseReader create(final InputStream dbfInputStream, final Charset charset,
+                               final File memoFile) throws IOException {
         final InputStream resettableInputStream =
                 IOUtils.resettable(dbfInputStream, DbfMetadataUtils.BUFFER_SIZE);
-        XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
-        switch (type) {
-            default:
-                return new DbfReader(dbfInputStream, MemoReaderFactory.fromRandomAccess(type, memoFile));
-        }
+        final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
+
+        final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
+        final XBaseInternalReaderFactory readerFactory = new GenericInternalReaderFactory(dialect);
+        return new GenericReader(dialect, resettableInputStream, charset, readerFactory,
+                GenericMemoReader.fromChannel(memoFile, charset));
     }
 
-    private XBaseFileTypeEnum getXBaseFileType(InputStream resettableInputStream) throws IOException {
+    private XBaseFileTypeEnum getXBaseFileType(final InputStream resettableInputStream)
+            throws IOException {
         resettableInputStream.mark(1);
         final int firstByte = resettableInputStream.read();
         resettableInputStream.reset();

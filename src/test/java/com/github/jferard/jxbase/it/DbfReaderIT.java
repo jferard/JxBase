@@ -16,21 +16,20 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.DbfMetadata;
-import com.github.jferard.jxbase.core.XBaseRecord;
-import com.github.jferard.jxbase.reader.DbfReader;
+import com.github.jferard.jxbase.core.GenericRecord;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.reader.XBaseReader;
+import com.github.jferard.jxbase.reader.XBaseReaderFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class DbfReaderIT {
     @Rule
@@ -38,24 +37,24 @@ public class DbfReaderIT {
 
     @Test
     public void test1() throws IOException, ParseException {
-        Charset stringCharset = Charset.forName("Cp866");
+        final Charset stringCharset = Charset.forName("Cp866");
 
-        InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/gds_im.dbf");
+        final File dbf = this.getResourceFile("data1/gds_im.dbf");
 
-        XBaseRecord rec;
-        XBaseReader reader = new DbfReader(dbf, null);
+        GenericRecord rec;
+        final XBaseReader reader = XBaseReaderFactory.create(dbf, stringCharset);
         try {
-            DbfMetadata meta = reader.getMetadata();
+            final XBaseMetadata meta = reader.getMetadata();
 
-            assertEquals(5, meta.getRecordsQty());
-            assertEquals(28, meta.getFields().size());
+            assertEquals(5, meta.get("recordsQty"));
+            assertEquals(28, reader.getFieldDescriptorArray().getFields().size());
 
             System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.toMap(stringCharset));
+                System.out.println(rec.getRecord());
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
@@ -67,24 +66,25 @@ public class DbfReaderIT {
 
     @Test
     public void test2() throws IOException, ParseException {
-        Charset stringCharset = Charset.forName("Cp866");
+        final Charset stringCharset = Charset.forName("Cp866");
 
-        InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/tir_im.dbf");
+        final String name = "data1/tir_im.dbf";
+        final File dbf = this.getResourceFile(name);
 
-        XBaseRecord rec;
-        XBaseReader reader = new DbfReader(dbf, null);
+        GenericRecord rec;
+        final XBaseReader reader = XBaseReaderFactory.create(dbf, stringCharset);
         try {
-            DbfMetadata meta = reader.getMetadata();
+            final XBaseMetadata meta = reader.getMetadata();
 
-            assertEquals(1, meta.getRecordsQty());
-            assertEquals(117, meta.getFields().size());
+            assertEquals(1, meta.get("recordsQty"));
+            assertEquals(117, reader.getFieldDescriptorArray().getFields().size());
 
             System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.toMap(stringCharset));
+                System.out.println(rec.getRecord());
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
@@ -92,5 +92,9 @@ public class DbfReaderIT {
         } finally {
             reader.close();
         }
+    }
+
+    private File getResourceFile(final String filename) {
+        return new File(this.getClass().getClassLoader().getResource(filename).getFile());
     }
 }

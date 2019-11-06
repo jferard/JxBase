@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 
 import java.io.File;
@@ -36,12 +37,13 @@ import java.io.RandomAccessFile;
  * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
 public class MemoReaderFactory {
-    public static XBaseMemoReader fromRandomAccess(final XBaseFileTypeEnum type, final File memoFile)
-            throws IOException {
-        RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
+    public static XBaseMemoReader fromRandomAccess(final XBaseFileTypeEnum type,
+                                                      final File memoFile) throws IOException {
+        final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
         switch (type) {
             default:
-                return new DbfMemoReader(randomAccessFile.getChannel());
+                final DbfMemoRecordFactory dbfMemoRecordFactory = null;
+                return new GenericMemoReader(randomAccessFile.getChannel(), dbfMemoRecordFactory);
         }
     }
 
@@ -50,7 +52,8 @@ public class MemoReaderFactory {
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
         switch (type) {
             default:
-                return new DbfMemoReader(fileInputStream.getChannel());
+                final DbfMemoRecordFactory dbfMemoRecordFactory = null;
+                return new GenericMemoReader(fileInputStream.getChannel(), dbfMemoRecordFactory);
         }
     }
 }

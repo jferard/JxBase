@@ -16,11 +16,18 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.field.DbfFieldTypeEnum;
-import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.core.GenericRecord;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
-import com.github.jferard.jxbase.reader.DbfReader;
+import com.github.jferard.jxbase.core.field.CharacterField;
+import com.github.jferard.jxbase.core.field.DateField;
+import com.github.jferard.jxbase.core.field.SmallMemoField;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseReader;
+import com.github.jferard.jxbase.reader.XBaseReaderFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -29,64 +36,62 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-import static org.junit.Assert.assertEquals;
-
 public class MemoIT {
-
     @Test
-    public void test1() throws FileNotFoundException {
-        Charset stringCharset = Charset.forName("cp1252");
+    public void test1() throws FileNotFoundException, ParseException {
+        final Charset stringCharset = Charset.forName("cp1252");
 
-        File dbf = getResourceFile("memo1/texto.dbf");
-        File memo = getResourceFile("memo1/texto.fpt");
+        final File dbf = this.getResourceFile("memo1/texto.dbf");
+        final File memo = this.getResourceFile("memo1/texto.fpt");
 
         try {
-            XBaseReader reader = DbfReader.create(dbf, memo);
+            final Charset charset = Charset.forName("cp1252");
+            final XBaseReader reader = XBaseReaderFactory.create(dbf, charset, memo);
             try {
-                XBaseMetadata meta = reader.getMetadata();
+                final XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
-                assertEquals(5, meta.getOffsetField("TEXVER").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXVER").getType());
+                final XBaseFieldDescriptorArray array = reader.getFieldDescriptorArray();
 
-                assertEquals(4, meta.getOffsetField("TEXTEX").getLength());
-                assertEquals(DbfFieldTypeEnum.Memo, meta.getOffsetField("TEXTEX").getType());
+                final XBaseDialect dialect = reader.getDialect();
+                for (final XBaseField field : array.getFields()) {
+                    final String name = field.getName();
+                    if (name.equals("TEXVER")) {
+                        Assert.assertEquals(5, field.getByteLength(dialect));
+                        Assert.assertEquals(CharacterField.class, field.getClass());
+                    } else if (name.equals("TEXTEX")) {
+                        Assert.assertEquals(4, field.getByteLength(dialect));
+                        Assert.assertEquals(SmallMemoField.class, field.getClass());
+                    } else if (name.equals("TEXDAT")) {
+                        Assert.assertEquals(8, field.getByteLength(dialect));
+                        Assert.assertEquals(DateField.class, field.getClass());
+                    } else if (name.equals("TEXSTA")) {
+                        Assert.assertEquals(1, field.getByteLength(dialect));
+                        Assert.assertEquals(CharacterField.class, field.getClass());
+                    } else if (name.equals("TEXCAM")) {
+                        Assert.assertEquals(254, field.getByteLength(dialect));
+                        Assert.assertEquals(CharacterField.class, field.getClass());
+                    }
+                }
 
-                assertEquals(8, meta.getOffsetField("TEXDAT").getLength());
-                assertEquals(DbfFieldTypeEnum.Date, meta.getOffsetField("TEXDAT").getType());
-
-                assertEquals(1, meta.getOffsetField("TEXSTA").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXSTA").getType());
-
-                assertEquals(254, meta.getOffsetField("TEXCAM").getLength());
-                assertEquals(DbfFieldTypeEnum.Character, meta.getOffsetField("TEXCAM").getType());
-
-                XBaseRecord rec;
+                GenericRecord rec;
                 while ((rec = reader.read()) != null) {
                     System.out.println("Record is DELETED: " + rec.isDeleted());
-                    System.out.println("TEXVER: " +
-                            meta.getOffsetField("TEXVER").getValue(rec, stringCharset));
-                    System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX", stringCharset));
-                    System.out.println("TEXDAT: " +
-                            meta.getOffsetField("TEXDAT").getValue(rec, stringCharset));
-                    System.out.println("TEXSTA: " +
-                            meta.getOffsetField("TEXSTA").getValue(rec, stringCharset));
-                    System.out.println("TEXCAM: " +
-                            meta.getOffsetField("TEXCAM").getValue(rec, stringCharset));
+                    System.out.println("Record: " + rec.getRecord());
                     System.out.println("++++++++++++++++++++++++++++++++++");
                 }
 
             } finally {
                 reader.close();
             }
-        } catch (IOException e) {
-            //e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
-        }
+        } /*catch (final ParseException e) {
+            e.printStackTrace();
+        }*/
     }
 
-    private File getResourceFile(String name) {
-        return new File(getClass().getClassLoader().getResource(name).getFile());
+    private File getResourceFile(final String name) {
+        return new File(this.getClass().getClassLoader().getResource(name).getFile());
     }
 }

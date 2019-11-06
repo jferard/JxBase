@@ -21,15 +21,14 @@ import java.nio.ByteBuffer;
 /**
  * A memo file has a header and a sequence of blocks terminated by a terminator
  */
-public class RawMemoReader {
+class RawMemoReader {
     private final ByteBuffer memoByteBuffer;
     private final int headerSize;
     private final int blockSize;
 
-    public RawMemoReader(final ByteBuffer memoByteBuffer, final int headerSize,
-                         final int blockSize) {
+    public RawMemoReader(final ByteBuffer memoByteBuffer, final int blockSize) {
         this.memoByteBuffer = memoByteBuffer;
-        this.headerSize = headerSize;
+        this.headerSize = blockSize;
         this.blockSize = blockSize;
     }
 
@@ -37,11 +36,19 @@ public class RawMemoReader {
      * @param offsetInBlocks the number of the record, 0 = header, 1 = first block, ...
      * @return the record
      */
-    public byte[] read(int offsetInBlocks) {
+    public byte[] read(final long offsetInBlocks) {
+        return this.read(offsetInBlocks, 0, this.blockSize);
+    }
+
+    /**
+     * @param offsetInBlocks the number of the record, 0 = header, 1 = first block, ...
+     * @return the record
+     */
+    public byte[] read(final long offsetInBlocks, final int from, final int length) {
         assert offsetInBlocks > 0;
-        int start = this.blockSize * (offsetInBlocks - 1) + this.headerSize;
-        byte[] memoBlock = new byte[this.blockSize];
-        this.memoByteBuffer.position(start);
+        final long start = this.blockSize * (offsetInBlocks - 1) + this.headerSize + from;
+        final byte[] memoBlock = new byte[length];
+        this.memoByteBuffer.position((int) start);
         this.memoByteBuffer.get(memoBlock);
         return memoBlock;
     }

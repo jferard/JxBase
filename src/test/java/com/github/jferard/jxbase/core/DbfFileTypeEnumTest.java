@@ -32,7 +32,7 @@ public class DbfFileTypeEnumTest {
 
     @Test
     public void testFomIntNoValue() {
-        exception.expect(IllegalArgumentException.class);
+        this.exception.expect(IllegalArgumentException.class);
         XBaseFileTypeEnum.fromInt((byte) 0xFF);
     }
 
