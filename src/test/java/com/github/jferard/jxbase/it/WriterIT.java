@@ -22,7 +22,6 @@ import com.github.jferard.jxbase.core.field.CharacterField;
 import com.github.jferard.jxbase.core.field.NumericField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.JdbfUtils;
-import com.github.jferard.jxbase.writer.GenericWriter;
 import com.github.jferard.jxbase.writer.XBaseWriter;
 import com.github.jferard.jxbase.writer.XBaseWriterFactory;
 import org.junit.Before;
@@ -38,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DbfWriterIT {
+public class WriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private final List<XBaseField> fields = new ArrayList<XBaseField>();
 
@@ -63,10 +62,8 @@ public class DbfWriterIT {
     @Test
     public void test() throws IOException {
         final int fullHeaderLength =
-                JdbfUtils.METADATA_SIZE + this.fields.size() * JdbfUtils.FIELD_DESCRIPTOR_SIZE;
+                JdbfUtils.METADATA_LENGTH + this.fields.size() * JdbfUtils.FIELD_DESCRIPTOR_SIZE;
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", new Date());
-        meta.put("recordsQty", 1);
         meta.put("uncompletedTxFlag", JdbfUtils.NULL_BYTE);
         meta.put("encryptionFlag", JdbfUtils.NULL_BYTE);
 

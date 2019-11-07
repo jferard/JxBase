@@ -25,7 +25,6 @@ import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.util.JdbfUtils;
 import com.github.jferard.jxbase.writer.internal.GenericInternalWriterFactory;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
@@ -50,12 +49,12 @@ public class XBaseWriterFactory {
                                 final XBaseOptional optional) throws IOException {
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
         final XBaseInternalWriterFactory writerFactory = new GenericInternalWriterFactory(dialect);
-        final RandomAccessFile file = null; /// new RandomAccessFile(dbfFile, "rw");
-        final OutputStream out = new BufferedOutputStream(new FileOutputStream(dbfFile));
+        final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
+        final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 
         final XBaseFieldDescriptorArray array = this.getFieldDescriptorArray(dialect, fields);
         final XBaseMetadata initialMetadata =
-                this.getInitialMetadata(type, dialect, meta, array, optional);
+                this.getInitialMetadata(type, dialect, meta, array);
 
         final XBaseMetadataWriter metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
@@ -88,9 +87,8 @@ public class XBaseWriterFactory {
     private XBaseMetadata getInitialMetadata(final XBaseFileTypeEnum type,
                                              final XBaseDialect dialect,
                                              final Map<String, Object> meta,
-                                             final XBaseFieldDescriptorArray array,
-                                             final XBaseOptional optional) {
-        final int optionalLength = optional.getLength();
+                                             final XBaseFieldDescriptorArray array) {
+        final int optionalLength = dialect.getOptionalLength();
         final int metaLength = dialect.getMetaDataLength();
         final int fullHeaderLength = metaLength + array.getArrayLength() + optionalLength;
         return new GenericMetadata(type.toByte(), metaLength, fullHeaderLength,

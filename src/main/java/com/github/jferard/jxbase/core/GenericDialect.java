@@ -180,11 +180,16 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public int getMetaDataLength() {
-        return JdbfUtils.METADATA_SIZE;
+        return JdbfUtils.METADATA_LENGTH;
     }
 
     @Override
     public int getFieldDescriptorLength() {
         return JdbfUtils.FIELD_RECORD_LENGTH;
+    }
+
+    @Override
+    public int getOptionalLength() {
+    return JdbfUtils.OPTIONAL_LENGTH;
     }
 }

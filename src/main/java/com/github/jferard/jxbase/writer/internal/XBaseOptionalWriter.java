@@ -22,4 +22,5 @@ import java.io.IOException;
 
 public interface XBaseOptionalWriter {
     void write(XBaseOptional optional) throws IOException;
+
 }

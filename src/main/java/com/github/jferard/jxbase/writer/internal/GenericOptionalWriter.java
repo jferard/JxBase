@@ -41,7 +41,7 @@ public class GenericOptionalWriter implements XBaseOptionalWriter {
 
     @Override
     public void write(final XBaseOptional optional) throws IOException {
-        final int length = optional.getLength();
+        final int length = this.dialect.getOptionalLength();
         if (length > 0) {
             final byte[] bytes = new byte[length];
             this.outputStream.write(bytes);

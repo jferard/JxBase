@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.util.BitUtils;
 
@@ -30,9 +31,11 @@ public class GenericMetadataWriter implements XBaseMetadataWriter {
     final OutputStream out;
     final Charset charset;
     private final RandomAccessFile file;
+    private final XBaseDialect dialect;
 
-    public GenericMetadataWriter(final RandomAccessFile file, final OutputStream out,
-                                 final Charset charset) {
+    public GenericMetadataWriter(final XBaseDialect dialect, final RandomAccessFile file,
+                                 final OutputStream out, final Charset charset) {
+        this.dialect = dialect;
         this.file = file;
         this.out = out;
         this.charset = charset;
@@ -70,12 +73,15 @@ public class GenericMetadataWriter implements XBaseMetadataWriter {
         } else {
             this.out.write(0);
         }
-        BitUtils.writeZeroes(this.out, metadata.getMetaLength() - 16);
+        BitUtils.writeZeroes(this.out, this.dialect.getMetaDataLength() - 16);
     }
 
     @Override
-    public void correctMetadata(final int recordQty) {
-        // file.seek(0), write date and record quantity
+    public void correctMetadata(final int recordQty) throws IOException {
+        this.out.flush();
+        this.file.seek(1);
+        this.writeHeaderDate(new Date());
+        BitUtils.writeLEByte4(this.out, recordQty);
     }
 
     @Override

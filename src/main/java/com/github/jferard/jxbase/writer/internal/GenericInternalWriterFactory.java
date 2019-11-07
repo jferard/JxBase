@@ -34,7 +34,7 @@ public class GenericInternalWriterFactory implements XBaseInternalWriterFactory 
                                                     final RandomAccessFile file,
                                                     final OutputStream outputStream,
                                                     final Charset charset) {
-        return new GenericMetadataWriter(file, outputStream, charset);
+        return new GenericMetadataWriter(dialect, file, outputStream, charset);
     }
 
     @Override

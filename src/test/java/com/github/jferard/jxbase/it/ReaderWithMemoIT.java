@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
-public class MemoIT {
+public class ReaderWithMemoIT {
     @Test
     public void test1() throws FileNotFoundException, ParseException {
         final Charset stringCharset = Charset.forName("cp1252");

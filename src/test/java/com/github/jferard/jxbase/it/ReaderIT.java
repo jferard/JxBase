@@ -31,7 +31,7 @@ import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
 
-public class DbfReaderIT {
+public class ReaderIT {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 

@@ -26,4 +26,6 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
     int getMetaDataLength();
 
     int getFieldDescriptorLength();
+
+    int getOptionalLength();
 }
