@@ -75,7 +75,7 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
 
     @Override
     public void writeMemoField(final String name, final int offset) throws IOException {
-
+        this.writeField(name, 'M', this.dialect.getMemoFieldLength(), 0, offset);
     }
 
     public void writeNumericField(final String name, final int length,

@@ -27,9 +27,9 @@ public class DbfImageMemoRecord implements XBaseMemoRecord<byte[]> {
     private final int length;
     private final long offsetInBlocks;
 
-    DbfImageMemoRecord(final byte[] bytes, final MemoRecordTypeEnum type, final int length, final long offsetInBlocks) {
+    DbfImageMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks) {
         this.bytes = bytes;
-        this.type = type;
+        this.type = MemoRecordTypeEnum.IMAGE;
         this.length = length;
         this.offsetInBlocks = offsetInBlocks;
     }

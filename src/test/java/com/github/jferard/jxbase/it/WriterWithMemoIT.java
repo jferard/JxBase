@@ -16,10 +16,11 @@
 
 package com.github.jferard.jxbase.it;
 
+import com.github.jferard.jxbase.core.DbfTextMemoRecord;
 import com.github.jferard.jxbase.core.GenericOptional;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.field.CharacterField;
-import com.github.jferard.jxbase.core.field.NumericField;
+import com.github.jferard.jxbase.core.field.MemoField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.JdbfUtils;
 import com.github.jferard.jxbase.writer.XBaseWriter;
@@ -29,34 +30,25 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WriterIT {
+public class WriterWithMemoIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
     private final List<XBaseField> fields = new ArrayList<XBaseField>();
 
     @Before
     public void prepareData() {
-        this.fields.add(new CharacterField("FIOISP", 100));
-        this.fields.add(new CharacterField("NAME", 250));
-        this.fields.add(new CharacterField("SURNAME", 250));
-        this.fields.add(new CharacterField("DATER", 10));
-        this.fields.add(new CharacterField("SECONDNAME", 250));
-        this.fields.add(new NumericField("UNICODE", 10, 10));
-        this.fields.add(new CharacterField("NUMID", 100));
-        this.valueMap.put("FIOISP", "Виноградова Ольга Евгеньевна");
-        this.valueMap.put("NAME", "Вячеслав");
-        this.valueMap.put("SURNAME", "Егоров");
-        this.valueMap.put("DATER", "30.06.1971");
-        this.valueMap.put("SECONDNAME", "Иванович");
-        this.valueMap.put("UNICODE", new BigDecimal(1001731864));
-        this.valueMap.put("NUMID", "6/14/19/69");
+        this.fields.add(new CharacterField("NAME", 20));
+        this.fields.add(new MemoField<DbfTextMemoRecord>("MEMO"));
+        // this.fields.add(new CharacterField("MEMO", 20));
+        this.valueMap.put("NAME", "some data");
+        final byte[] bytes = "in the memo".getBytes(JdbfUtils.UTF8_CHARSET);
+        this.valueMap.put("MEMO", new DbfTextMemoRecord(bytes, bytes.length, 1, JdbfUtils.UTF8_CHARSET));
+        // this.valueMap.put("MEMO", "in the memo");
     }
 
     @Test
@@ -66,8 +58,8 @@ public class WriterIT {
         meta.put("encryptionFlag", JdbfUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = new XBaseWriterFactory()
-                .create(XBaseFileTypeEnum.dBASEIV1, new File("111.dbf"), Charset.forName("UTF-8"),
-                        null, meta, this.fields, GenericOptional.EMPTY);
+                .create(XBaseFileTypeEnum.dBASEIV3, new File("112.dbf"), Charset.forName("UTF-8"),
+                        new File("112.dbt"), meta, this.fields, GenericOptional.EMPTY);
         try {
             dbfWriter.write(this.valueMap);
         } finally {

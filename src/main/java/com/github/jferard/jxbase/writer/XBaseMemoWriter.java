@@ -16,5 +16,10 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+
+import java.io.IOException;
+
 public interface XBaseMemoWriter {
+     void write(long offsetInBlocks, XBaseMemoRecord<?> memo) throws IOException;
 }

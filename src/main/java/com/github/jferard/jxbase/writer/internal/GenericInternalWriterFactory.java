@@ -59,6 +59,6 @@ public class GenericInternalWriterFactory implements XBaseInternalWriterFactory 
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional,
                                                 final XBaseMemoWriter memoWriter) {
-        return new GenericRecordWriter(dialect, outputStream, charset, array.getFields());
+        return new GenericRecordWriter(dialect, outputStream, charset, array.getFields(), memoWriter);
     }
 }

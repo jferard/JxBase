@@ -30,10 +30,10 @@ public class DbfMemoRecordFactory {
                                      final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:
-                return new DbfImageMemoRecord(dataBytes, memoRecordType, memoRecordLength,
+                return new DbfImageMemoRecord(dataBytes, memoRecordLength,
                         offsetInBlocks);
             case TEXT:
-                return new DbfTextMemoRecord(dataBytes, memoRecordType, memoRecordLength,
+                return new DbfTextMemoRecord(dataBytes, memoRecordLength,
                         offsetInBlocks, this.charset);
             default:
                 throw new IllegalArgumentException(memoRecordType.toString());

@@ -16,11 +16,62 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.reader.GenericMemoReader;
+import com.github.jferard.jxbase.util.BitUtils;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
 public class GenericMemoWriter implements XBaseMemoWriter {
-    public static GenericMemoWriter fromChannel(final File memoFile, final Charset charset) {
-        return null;
+    public static GenericMemoWriter fromRandomAccess(final File memoFile, final Charset charset)
+            throws IOException {
+        final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
+        return new GenericMemoWriter(randomAccessFile.getChannel(),
+                new DbfMemoRecordFactory(charset));
+    }
+
+    public static GenericMemoWriter fromChannel(final File memoFile, final Charset charset)
+            throws IOException {
+        if (memoFile == null) {
+            return null;
+        }
+        final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);
+        return new GenericMemoWriter(fileOutputStream.getChannel(),
+                new DbfMemoRecordFactory(charset));
+    }
+
+    private final FileChannel channel;
+    private final DbfMemoRecordFactory dbfMemoRecordFactory;
+
+    public GenericMemoWriter(final FileChannel channel, final DbfMemoRecordFactory dbfMemoRecordFactory)
+            throws IOException {
+        this.channel = channel;
+        this.dbfMemoRecordFactory = dbfMemoRecordFactory;
+        this.writeHeader();
+    }
+
+    private void writeHeader() throws IOException {
+        final byte[] bytes = new byte[512];
+        bytes[5] = 0x02;
+        this.channel.write(ByteBuffer.wrap(bytes));
+    }
+
+    @Override
+    public void write(final long offsetInBlocks, final XBaseMemoRecord<?> memo) throws IOException {
+        final int blockSize = 512;
+        final int headerSize = 512;
+        final int from = 0;
+        final long start = blockSize * (offsetInBlocks - 1) + headerSize + from;
+        this.channel.position(start);
+        this.channel.write(ByteBuffer.wrap(memo.getBytes()));
     }
 }

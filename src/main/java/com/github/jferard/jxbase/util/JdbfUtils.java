@@ -43,6 +43,7 @@ public class JdbfUtils {
     public static final int RECORDS_TERMINATOR = 0x1A;
     public static final Charset ASCII_CHARSET = Charset.forName("US-ASCII");
     public static final Charset LATIN1_CHARSET = Charset.forName("ISO-8859-1");
+    public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
     public static final int FIELD_DESCRIPTOR_SIZE = 32;
     public static final int OPTIONAL_LENGTH = 263;
     public static int EMPTY = 0x20;

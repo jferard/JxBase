@@ -29,10 +29,9 @@ public class DbfTextMemoRecord implements XBaseMemoRecord<String> {
     private final int offsetInBlocks;
     private final Charset charset;
 
-    DbfTextMemoRecord(final byte[] bytes, final MemoRecordTypeEnum type, final int length,
-                      final long offsetInBlocks, final Charset charset) {
+    public DbfTextMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks, final Charset charset) {
         this.bytes = bytes;
-        this.type = type;
+        this.type = MemoRecordTypeEnum.TEXT;
         this.length = length;
         this.offsetInBlocks = (int) offsetInBlocks;
         this.charset = charset;

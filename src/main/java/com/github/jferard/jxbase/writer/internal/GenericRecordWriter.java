@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -44,15 +45,18 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     final XBaseDialect dialect;
     final OutputStream out;
     final Charset charset;
+    private final XBaseMemoWriter memoWriter;
     private final Collection<XBaseField> fields;
     private int recordCount;
 
     public GenericRecordWriter(final XBaseDialect dialect, final OutputStream out,
-                               final Charset charset, final Collection<XBaseField> fields) {
+                               final Charset charset, final Collection<XBaseField> fields, final
+                               XBaseMemoWriter memoWriter) {
         this.dialect = dialect;
         this.fields = fields;
         this.out = out;
         this.charset = charset;
+        this.memoWriter = memoWriter;
         this.recordCount = 0;
     }
 
@@ -84,8 +88,16 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     }
 
     @Override
-    public <T extends XBaseMemoRecord<?>> void writeMemoValue(final T value) {
-        // TODO
+    public <T extends XBaseMemoRecord<?>> void writeMemoValue(final T value) throws IOException {
+        final int length = this.dialect.getMemoFieldLength();
+        if (value == null) {
+            BitUtils.writeEmpties(this.out, length);
+        } else {
+            final long offsetInBlocks = value.getOffsetInBlocks();
+            final String s = String.format("%10d", offsetInBlocks);
+            this.out.write(s.getBytes(JdbfUtils.ASCII_CHARSET));
+            this.memoWriter.write(offsetInBlocks, value);
+        }
     }
 
     @Override
