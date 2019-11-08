@@ -20,11 +20,10 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 
 public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorArrayWriter {
     final XBaseDialect dialect;
@@ -42,7 +41,7 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
             field.write(this, offset);
             offset += field.getByteLength(this.dialect);
         }
-        this.out.write(JdbfUtils.HEADER_TERMINATOR);
+        this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         return offset;
     }
 
@@ -87,7 +86,7 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
 
     private void writeField(final String name, final int type, final int length,
                             final int numberOfDecimalPlaces, final int offset) throws IOException {
-        final byte[] nameBytes = name.getBytes(JdbfUtils.ASCII_CHARSET);
+        final byte[] nameBytes = name.getBytes(JxBaseUtils.ASCII_CHARSET);
         final int nameLength = nameBytes.length;
         if (nameLength > 11) {
             throw new IOException("Name too long");
@@ -98,6 +97,6 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
         BitUtils.writeLEByte4(this.out, offset); // 12-15
         this.out.write(length & 0xFF); // 16
         this.out.write(numberOfDecimalPlaces); // 17
-        BitUtils.writeZeroes(this.out, JdbfUtils.FIELD_DESCRIPTOR_SIZE - 18);
+        BitUtils.writeZeroes(this.out, JxBaseUtils.FIELD_DESCRIPTOR_SIZE - 18);
     }
 }

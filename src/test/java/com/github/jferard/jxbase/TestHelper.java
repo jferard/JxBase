@@ -14,25 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase;import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseMetadata;
-import com.github.jferard.jxbase.reader.GenericReader;
-import com.github.jferard.jxbase.reader.XBaseReader;
-import com.github.jferard.jxbase.util.DbfMetadataUtils;
-import com.github.jferard.jxbase.util.JdbfUtils;
+package com.github.jferard.jxbase;
 
 
 public class TestHelper {

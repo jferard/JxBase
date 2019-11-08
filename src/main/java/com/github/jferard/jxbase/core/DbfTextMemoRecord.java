@@ -22,34 +22,31 @@ import java.nio.charset.Charset;
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
 public class DbfTextMemoRecord implements XBaseMemoRecord<String> {
-
-    private final byte[] bytes;
     private final MemoRecordTypeEnum type;
-    private final int length;
     private final int offsetInBlocks;
     private final Charset charset;
+    private final String s;
 
-    public DbfTextMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks, final Charset charset) {
-        this.bytes = bytes;
+    public DbfTextMemoRecord(final String s, final long offsetInBlocks, final Charset charset) {
+        this.s = s;
         this.type = MemoRecordTypeEnum.TEXT;
-        this.length = length;
         this.offsetInBlocks = (int) offsetInBlocks;
         this.charset = charset;
     }
 
     @Override
     public byte[] getBytes() {
-        return this.bytes;
+        return this.s.getBytes(this.charset);
     }
 
     @Override
     public String getValue() {
-        return new String(this.bytes, 0, this.bytes.length, this.charset);
+        return this.s;
     }
 
     @Override
     public int getLength() {
-        return this.length;
+        return this.s.getBytes(this.charset).length;
     }
 
     @Override

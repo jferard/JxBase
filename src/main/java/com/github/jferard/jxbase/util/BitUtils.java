@@ -75,7 +75,7 @@ public class BitUtils {
 
     public static void writeEmpties(final OutputStream out, final int length) throws IOException {
         for (int i = 0; i < length; i++) {
-            out.write(JdbfUtils.EMPTY);
+            out.write(JxBaseUtils.EMPTY);
         }
     }
 }

@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,10 +65,10 @@ public class GenericRecordReader implements XBaseRecordReader {
 
     @Override
     public GenericRecord read() throws IOException, ParseException {
-        if (IOUtils.isEndOfRecords(this.dbfInputStream, JdbfUtils.RECORDS_TERMINATOR)) {
+        if (IOUtils.isEndOfRecords(this.dbfInputStream, JxBaseUtils.RECORDS_TERMINATOR)) {
             return null;
         }
-        Arrays.fill(this.recordBuffer, JdbfUtils.NULL_BYTE);
+        Arrays.fill(this.recordBuffer, JxBaseUtils.NULL_BYTE);
         final int readLength = IOUtils.readFully(this.dbfInputStream, this.recordBuffer);
 
         if (readLength < this.recordLength) {
@@ -109,13 +109,13 @@ public class GenericRecordReader implements XBaseRecordReader {
         int actualLength = length;
 
         // check for empty strings
-        while (actualLength > 0 && (recordBuffer[actualOffset] == JdbfUtils.EMPTY)) {
+        while (actualLength > 0 && (recordBuffer[actualOffset] == JxBaseUtils.EMPTY)) {
             actualOffset++;
             actualLength--;
         }
 
         while (actualLength > 0 &&
-                (recordBuffer[actualOffset + actualLength - 1] == JdbfUtils.EMPTY)) {
+                (recordBuffer[actualOffset + actualLength - 1] == JxBaseUtils.EMPTY)) {
             actualLength--;
         }
 
@@ -129,7 +129,7 @@ public class GenericRecordReader implements XBaseRecordReader {
     @Override
     public String getTrimmedASCIIString(final byte[] recordBuffer, final int offset,
                                         final int length) {
-        return this.getTrimmedString(recordBuffer, offset, length, JdbfUtils.ASCII_CHARSET);
+        return this.getTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
     }
 
     @Override
@@ -148,6 +148,8 @@ public class GenericRecordReader implements XBaseRecordReader {
 
     @Override
     public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
+        // TODO
+        // https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
         return null;
     }
 

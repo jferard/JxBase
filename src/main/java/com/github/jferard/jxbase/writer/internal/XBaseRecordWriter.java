@@ -29,8 +29,6 @@ public interface XBaseRecordWriter {
     void write(Map<String, Object> objectByName)
             throws IOException;
 
-    <V> void writeValue(XBaseField field, V value) throws IOException;
-
     void writeCharacterValue(String value, int length) throws IOException;
 
     void writeDateValue(Date value) throws IOException;

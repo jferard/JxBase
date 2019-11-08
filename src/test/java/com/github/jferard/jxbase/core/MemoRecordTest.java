@@ -37,7 +37,7 @@ public class MemoRecordTest {
     @Test
     public void testCreateVoid() {
         final XBaseMemoRecord mr =
-                new DbfTextMemoRecord(new byte[]{}, 0, 0, this.charset);
+                new DbfTextMemoRecord("", 0, this.charset);
     }
 
     @Test
@@ -50,8 +50,8 @@ public class MemoRecordTest {
 
     @Test
     public void testGet() {
-        final byte[] value = {0, 1};
-        final XBaseMemoRecord mr = new DbfTextMemoRecord(value, 2, 3,
+        final byte[] value = {'A', 'B'};
+        final XBaseMemoRecord mr = new DbfTextMemoRecord("AB", 3,
                 this.charset);
         Assert.assertArrayEquals(value, mr.getBytes());
         Assert.assertEquals(MemoRecordTypeEnum.TEXT, mr.getMemoType());

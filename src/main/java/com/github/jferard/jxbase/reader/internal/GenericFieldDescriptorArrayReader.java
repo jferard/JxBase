@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.IOUtils;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +59,7 @@ public class GenericFieldDescriptorArrayReader implements XBaseFieldDescriptorAr
             arrayLength += fieldBytes.length;
             recordLength += field.getByteLength(this.dialect);
 
-            if (IOUtils.isEndOfFieldArray(this.inputStream, JdbfUtils.HEADER_TERMINATOR)) {
+            if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
                 arrayLength += 1;
                 break;
             }
@@ -81,7 +81,7 @@ public class GenericFieldDescriptorArrayReader implements XBaseFieldDescriptorAr
         while (nameLength < 11 && fieldBytes[nameLength] != 0x0) {
             nameLength++;
         }
-        return new String(fieldBytes, 0, nameLength, JdbfUtils.ASCII_CHARSET);
+        return new String(fieldBytes, 0, nameLength, JxBaseUtils.ASCII_CHARSET);
     }
 
     private int getLength(final byte lenByte) {

@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-public class JdbfUtils {
+public class JxBaseUtils {
 
     public static final int RECORD_HEADER_LENGTH = 8;
     public static final int FIELD_RECORD_LENGTH = 32;

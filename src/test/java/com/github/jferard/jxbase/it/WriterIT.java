@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.field.CharacterField;
 import com.github.jferard.jxbase.core.field.NumericField;
 import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseWriter;
 import com.github.jferard.jxbase.writer.XBaseWriterFactory;
 import org.junit.Before;
@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class WriterIT {
         this.fields.add(new CharacterField("SURNAME", 250));
         this.fields.add(new CharacterField("DATER", 10));
         this.fields.add(new CharacterField("SECONDNAME", 250));
-        this.fields.add(new NumericField("UNICODE", 10, 10));
+        this.fields.add(new NumericField("UNICODE", 10, 0));
         this.fields.add(new CharacterField("NUMID", 100));
         this.valueMap.put("FIOISP", "Виноградова Ольга Евгеньевна");
         this.valueMap.put("NAME", "Вячеслав");
@@ -62,8 +61,8 @@ public class WriterIT {
     @Test
     public void test() throws IOException {
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("uncompletedTxFlag", JdbfUtils.NULL_BYTE);
-        meta.put("encryptionFlag", JdbfUtils.NULL_BYTE);
+        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
+        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = new XBaseWriterFactory()
                 .create(XBaseFileTypeEnum.dBASEIV1, new File("111.dbf"), Charset.forName("UTF-8"),

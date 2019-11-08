@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.MemoFileHeader;
 import com.github.jferard.jxbase.core.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,7 +78,7 @@ public class GenericMemoReader implements XBaseMemoReader {
     }
 
     private void readMetadata() throws IOException {
-        final byte[] headerBytes = new byte[JdbfUtils.MEMO_HEADER_LENGTH];
+        final byte[] headerBytes = new byte[JxBaseUtils.MEMO_HEADER_LENGTH];
         try {
             this.memoByteBuffer.get(headerBytes);
         } catch (final BufferUnderflowException e) {

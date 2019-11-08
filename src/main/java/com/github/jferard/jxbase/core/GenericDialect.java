@@ -26,7 +26,7 @@ import com.github.jferard.jxbase.core.field.NumericField;
 import com.github.jferard.jxbase.core.field.SmallMemoField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.util.JdbfUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 public class GenericDialect implements XBaseDialect {
     private final XBaseFileTypeEnum type;
@@ -180,16 +180,16 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public int getMetaDataLength() {
-        return JdbfUtils.METADATA_LENGTH;
+        return JxBaseUtils.METADATA_LENGTH;
     }
 
     @Override
     public int getFieldDescriptorLength() {
-        return JdbfUtils.FIELD_RECORD_LENGTH;
+        return JxBaseUtils.FIELD_RECORD_LENGTH;
     }
 
     @Override
     public int getOptionalLength() {
-    return JdbfUtils.OPTIONAL_LENGTH;
+    return JxBaseUtils.OPTIONAL_LENGTH;
     }
 }
