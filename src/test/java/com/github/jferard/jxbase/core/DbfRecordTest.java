@@ -58,7 +58,7 @@ public class DbfRecordTest {
         final InputStream in = new ByteArrayInputStream("*abc".getBytes(ascii));
         final GenericRecordReader reader =
                 new GenericRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 4),
-                        null);
+                        null, null);
         final GenericRecord record = reader.read();
         Assert.assertTrue(record.isDeleted());
     }
@@ -69,7 +69,7 @@ public class DbfRecordTest {
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
         final GenericRecordReader reader =
                 new GenericRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3),
-                        null);
+                        null, null);
         final GenericRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals(1, record.getRecordNumber());

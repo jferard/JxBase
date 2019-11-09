@@ -23,15 +23,18 @@ import com.github.jferard.jxbase.reader.XBaseMemoReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
 /**
  * A factory to create internal readers.
  */
 public class GenericInternalReaderFactory implements XBaseInternalReaderFactory {
     private final XBaseDialect dialect;
+    private final TimeZone timezone;
 
-    public GenericInternalReaderFactory(final XBaseDialect dialect) {
+    public GenericInternalReaderFactory(final XBaseDialect dialect, final TimeZone timezone) {
         this.dialect = dialect;
+        this.timezone = timezone;
     }
 
     @Override
@@ -51,7 +54,8 @@ public class GenericInternalReaderFactory implements XBaseInternalReaderFactory 
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional,
                                                 final XBaseMemoReader memoReader) {
-        return new GenericRecordReader(this.dialect, inputStream, charset, array, memoReader);
+        return new GenericRecordReader(this.dialect, inputStream, charset, array, memoReader,
+                this.timezone);
     }
 
     @Override

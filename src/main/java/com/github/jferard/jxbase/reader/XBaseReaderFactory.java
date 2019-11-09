@@ -28,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
 public class XBaseReaderFactory {
     public static XBaseReader create(final File dbfFile, final Charset charset) throws IOException {
@@ -46,7 +47,8 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalReaderFactory readerFactory = new GenericInternalReaderFactory(dialect);
+        final XBaseInternalReaderFactory readerFactory =
+                new GenericInternalReaderFactory(dialect, TimeZone.getDefault());
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory,
                 GenericMemoReader.fromChannel(memoFile, charset));
     }

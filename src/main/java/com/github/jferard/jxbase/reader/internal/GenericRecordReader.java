@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class GenericRecordReader implements XBaseRecordReader {
     private static final CharSequence NUMERIC_OVERFLOW = "*";
@@ -47,18 +48,20 @@ public class GenericRecordReader implements XBaseRecordReader {
     private final int recordLength;
     private final Collection<XBaseField> fields;
     private final XBaseDialect dialect;
-    private int recordsCounter;
     private final XBaseMemoReader memoReader;
+    private int recordsCounter;
+    private final TimeZone timezone;
 
-    public GenericRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream, final Charset charset,
-                               final XBaseFieldDescriptorArray array,
-                               final XBaseMemoReader memoReader) {
+    public GenericRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
+                               final Charset charset, final XBaseFieldDescriptorArray array,
+                               final XBaseMemoReader memoReader, final TimeZone timezone) {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
         this.fields = array.getFields();
         this.memoReader = memoReader;
         this.dialect = dialect;
+        this.timezone = timezone;
         this.recordBuffer = new byte[this.recordLength];
         this.recordsCounter = -1;
     }
@@ -139,7 +142,9 @@ public class GenericRecordReader implements XBaseRecordReader {
             return null;
         }
         try {
-            return new SimpleDateFormat("yyyyMMdd").parse(s);
+            final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+            format.setTimeZone(this.timezone);
+            return format.parse(s);
         } catch (final ParseException e) {
             e.printStackTrace();
             return null;
@@ -149,7 +154,8 @@ public class GenericRecordReader implements XBaseRecordReader {
     @Override
     public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
         // TODO
-        // https://en.wikipedia.org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
+        // https://en.wikipedia
+        // .org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
         return null;
     }
 

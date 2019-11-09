@@ -36,10 +36,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class GenericRecordReaderTest {
     private XBaseMemoReader mr;
@@ -52,7 +54,8 @@ public class GenericRecordReaderTest {
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
         this.grr = new GenericRecordReader(new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
                 JxBaseUtils.UTF8_CHARSET, new GenericFieldDescriptorArray(
-                Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr);
+                Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr,
+                TimeZone.getTimeZone("Europe/Paris"));
     }
 
     @Test
