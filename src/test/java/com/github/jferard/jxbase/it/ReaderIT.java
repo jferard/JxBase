@@ -54,7 +54,7 @@ public class ReaderIT {
             while ((rec = reader.read()) != null) {
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.getRecord());
+                System.out.println(rec.getMap());
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
@@ -84,7 +84,7 @@ public class ReaderIT {
             while ((rec = reader.read()) != null) {
                 System.out.println("Record is DELETED: " + rec.isDeleted());
                 System.out.println(rec.getRecordNumber());
-                System.out.println(rec.getRecord());
+                System.out.println(rec.getMap());
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());

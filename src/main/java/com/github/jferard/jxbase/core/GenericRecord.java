@@ -44,7 +44,7 @@ public class GenericRecord {
         return this.recordNumber;
     }
 
-    public Map<String, Object> getRecord() {
+    public Map<String, Object> getMap() {
         return this.valueByFieldName;
     }
 }

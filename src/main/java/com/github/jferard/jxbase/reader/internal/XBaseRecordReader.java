@@ -47,7 +47,5 @@ public interface XBaseRecordReader {
 
     BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length, int numberOfDecimalPlaces);
 
-    void skip(int i) throws IOException;
-
     void close() throws IOException;
 }

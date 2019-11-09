@@ -17,14 +17,7 @@
 package com.github.jferard.jxbase.core;
 
 public enum MemoRecordTypeEnum {
-    IMAGE(0x0),
-    TEXT(0x1);
-
-    final int type;
-
-    MemoRecordTypeEnum(final int type) {
-        this.type= type;
-    }
+    IMAGE(0x0), TEXT(0x1);
 
     public static MemoRecordTypeEnum fromInt(final int type) {
         for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
@@ -33,5 +26,15 @@ public enum MemoRecordTypeEnum {
             }
         }
         return null;
+    }
+
+    public int getType() {
+        return this.type;
+    }
+
+    final int type;
+
+    MemoRecordTypeEnum(final int type) {
+        this.type = type;
     }
 }

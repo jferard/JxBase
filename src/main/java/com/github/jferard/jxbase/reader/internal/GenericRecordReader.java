@@ -139,7 +139,7 @@ public class GenericRecordReader implements XBaseRecordReader {
             return null;
         }
         try {
-            return new SimpleDateFormat("YYYYmmDD").parse(s);
+            return new SimpleDateFormat("yyyyMMdd").parse(s);
         } catch (final ParseException e) {
             e.printStackTrace();
             return null;
@@ -192,11 +192,6 @@ public class GenericRecordReader implements XBaseRecordReader {
             return null;
         }
         return new BigDecimal(s, mc);
-    }
-
-    @Override
-    public void skip(final int i) throws IOException {
-        this.dbfInputStream.skip(i);
     }
 
     @Override

@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
@@ -77,7 +76,7 @@ public class ReaderWithMemoIT {
                 GenericRecord rec;
                 while ((rec = reader.read()) != null) {
                     System.out.println("Record is DELETED: " + rec.isDeleted());
-                    System.out.println("Record: " + rec.getRecord());
+                    System.out.println("Record: " + rec.getMap());
                     System.out.println("++++++++++++++++++++++++++++++++++");
                 }
 
