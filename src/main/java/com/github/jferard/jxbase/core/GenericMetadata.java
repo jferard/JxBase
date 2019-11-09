@@ -17,9 +17,6 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.writer.XBaseWriter;
-
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,9 +28,9 @@ import java.util.Map;
  */
 public class GenericMetadata implements XBaseMetadata {
     public static GenericMetadata create(final XBaseFileTypeEnum type, final Date updateDate,
-                                         final int length, final int recordsQty,
-                                         final int fullHeaderLength, final int oneRecordLength,
-                                         final byte uncompletedTxFlag, final byte encryptionFlag) {
+                                         final int recordsQty, final int fullHeaderLength,
+                                         final int oneRecordLength, final byte uncompletedTxFlag,
+                                         final byte encryptionFlag) {
         if (type == null) {
             throw new IllegalArgumentException("File type should not be null");
         }
@@ -42,19 +39,17 @@ public class GenericMetadata implements XBaseMetadata {
         meta.put("recordsQty", recordsQty);
         meta.put("uncompletedTxFlag", uncompletedTxFlag);
         meta.put("encryptionFlag", encryptionFlag);
-        return new GenericMetadata(type.toByte(), length, fullHeaderLength, oneRecordLength, meta);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 
     private final byte typeByte;
-    private final int metaLength;
     private final int fullHeaderLength;
     private final int oneRecordLength;
     private final Map<String, Object> meta;
 
-    public GenericMetadata(final byte typeByte, final int metaLength, final int fullHeaderLength,
+    public GenericMetadata(final byte typeByte, final int fullHeaderLength,
                            final int oneRecordLength, final Map<String, Object> meta) {
         this.typeByte = typeByte;
-        this.metaLength = metaLength;
         this.fullHeaderLength = fullHeaderLength;
         this.oneRecordLength = oneRecordLength;
         this.meta = meta;
@@ -81,14 +76,8 @@ public class GenericMetadata implements XBaseMetadata {
     }
 
     @Override
-    public int getMetaLength() {
-        return this.metaLength;
-    }
-
-    @Override
     public String toString() {
-        return "GenericMetadata[type=" + this.typeByte + ", length=" + this.metaLength +
-                ", fullHeaderLength=" + this.
+        return "GenericMetadata[type=" + this.typeByte + ", fullHeaderLength=" + this.
                 fullHeaderLength + ", oneRecordLength=" + this.oneRecordLength + ", meta=" +
                 this.meta + "]";
     }

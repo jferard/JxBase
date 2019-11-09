@@ -38,10 +38,10 @@ public class DbfMetadataTest {
     @Test
     public void testToString() {
         final XBaseMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, 0,
+                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0,
                         JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
         Assert.assertEquals(
-                "GenericMetadata[type=3, length=0, fullHeaderLength=0, oneRecordLength=0, " +
+                "GenericMetadata[type=3, fullHeaderLength=0, oneRecordLength=0, " +
                         "meta={encryptionFlag=0, updateDate=1970-01-01, uncompletedTxFlag=0, " +
                         "recordsQty=0}]", metadata.toString());
     }
@@ -51,13 +51,13 @@ public class DbfMetadataTest {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("File type should not be null");
         GenericMetadata
-                .create(null, new Date(0), 0, 0, 0, 0, JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
+                .create(null, new Date(0), 0, 0, 0, JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
     }
 
     @Test
     public void testGetUpdateDate() {
         final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, 0,
+                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0,
                         JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
         Assert.assertEquals(new Date(0), metadata.get("updateDate"));
     }
@@ -65,7 +65,7 @@ public class DbfMetadataTest {
     @Test
     public void testGetRecordsQty() {
         final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 100, 0, 0,
+                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 100, 0, 0,
                         JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
         Assert.assertEquals(100, metadata.get("recordsQty"));
     }
@@ -73,7 +73,7 @@ public class DbfMetadataTest {
     @Test
     public void testGetUncompletedTxFlag() {
         final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, 0, (byte) 10,
+                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
                         JxBaseUtils.NULL_BYTE);
         Assert.assertEquals((byte) 10, metadata.get("uncompletedTxFlag"));
     }
@@ -81,7 +81,7 @@ public class DbfMetadataTest {
     @Test
     public void testGetEncryptionFlag() {
         final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, 0,
+                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0,
                         JxBaseUtils.NULL_BYTE, (byte) 10);
         Assert.assertEquals((byte) 10, metadata.get("encryptionFlag"));
     }

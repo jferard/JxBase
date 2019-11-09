@@ -23,7 +23,7 @@ public interface XBaseRepresentations {
 
     String datetimeFieldToStringRepresentation(String name);
 
-    String integerFieldToStringRepresentation(String name, int length);
+    String integerFieldToStringRepresentation(String name);
 
     String logicalFieldToStringRepresentation(String name);
 

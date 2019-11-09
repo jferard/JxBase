@@ -35,7 +35,7 @@ public interface XBaseRecordWriter {
 
     void writeDatetimeValue(Date value) throws IOException;
 
-    void writeIntegerValue(Long value, int length) throws IOException;
+    void writeIntegerValue(Long value) throws IOException;
 
     void writeLogicalValue(Boolean value) throws IOException;
 
@@ -44,4 +44,6 @@ public interface XBaseRecordWriter {
     void writeNumericValue(BigDecimal value, int length, int numberOfDecimalPlaces) throws IOException;
 
     int getRecordQty();
+
+    void writeNullFlagsValue(byte[] value, int length) throws IOException;
 }

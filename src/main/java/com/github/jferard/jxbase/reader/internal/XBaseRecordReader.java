@@ -48,4 +48,6 @@ public interface XBaseRecordReader {
     BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length, int numberOfDecimalPlaces);
 
     void close() throws IOException;
+
+    byte[] getNullFlagsValue(byte[] recordBuffer, int offset, int length);
 }

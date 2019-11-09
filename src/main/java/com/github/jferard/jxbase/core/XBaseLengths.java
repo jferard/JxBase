@@ -23,11 +23,15 @@ public interface XBaseLengths {
 
     int getDatetimeFieldLength();
 
-    int getIntegerFieldLength(int length);
+    int getIntegerFieldLength();
 
     int getLogicalFieldLength();
 
     int getMemoFieldLength();
 
     int getNumericFieldLength(int length);
+
+    int getNullFlagsFieldLength(int length);
+
+    int getSmallMemoFieldLength();
 }

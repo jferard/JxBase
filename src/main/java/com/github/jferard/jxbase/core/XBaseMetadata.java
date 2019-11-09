@@ -41,5 +41,4 @@ public interface XBaseMetadata {
      */
     Object get(String key);
 
-    int getMetaLength();
 }

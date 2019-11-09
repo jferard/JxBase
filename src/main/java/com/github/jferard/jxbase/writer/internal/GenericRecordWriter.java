@@ -216,11 +216,11 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     }
 
     @Override
-    public void writeIntegerValue(final Long i, final int length) throws IOException {
-        assert length == 4;
+    public void writeIntegerValue(final Long i) throws IOException {
         if (i == null) {
-            BitUtils.writeEmpties(this.out, length);
+            BitUtils.writeEmpties(this.out, this.dialect.getIntegerFieldLength());
         } else {
+            assert 4 == this.dialect.getIntegerFieldLength();
             BitUtils.writeLEByte4(this.out, i.intValue());
         }
     }
@@ -228,5 +228,10 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     @Override
     public int getRecordQty() {
         return this.recordCount;
+    }
+
+    @Override
+    public void writeNullFlagsValue(final byte[] value, final int length) throws IOException {
+        this.out.write(value);
     }
 }

@@ -91,7 +91,7 @@ public class XBaseWriterFactory {
         final int optionalLength = dialect.getOptionalLength();
         final int metaLength = dialect.getMetaDataLength();
         final int fullHeaderLength = metaLength + array.getArrayLength() + optionalLength;
-        return new GenericMetadata(type.toByte(), metaLength, fullHeaderLength,
+        return new GenericMetadata(type.toByte(), fullHeaderLength,
                 array.getRecordLength(), meta);
     }
 

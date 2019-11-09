@@ -49,8 +49,8 @@ public class GenericRecordReader implements XBaseRecordReader {
     private final Collection<XBaseField> fields;
     private final XBaseDialect dialect;
     private final XBaseMemoReader memoReader;
-    private int recordsCounter;
     private final TimeZone timezone;
+    private int recordsCounter;
 
     public GenericRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
                                final Charset charset, final XBaseFieldDescriptorArray array,
@@ -203,5 +203,12 @@ public class GenericRecordReader implements XBaseRecordReader {
     @Override
     public void close() throws IOException {
         this.dbfInputStream.close();
+    }
+
+    @Override
+    public byte[] getNullFlagsValue(final byte[] recordBuffer, final int offset, final int length) {
+        final byte[] bytes = new byte[length];
+        System.arraycopy(recordBuffer, offset, bytes, 0, length);
+        return bytes;
     }
 }

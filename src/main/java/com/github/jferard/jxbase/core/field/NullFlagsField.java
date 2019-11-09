@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class NullFlagsField implements XBaseField {
     private final String name;
-    private int length;
+    private final int length;
 
     public NullFlagsField(final String name, final int length) {
         this.name = name;
@@ -47,23 +47,23 @@ public class NullFlagsField implements XBaseField {
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-
+        writer.writeNullFlagsField(this.name, this.length, offset);
     }
 
     @Override
-    public Object getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
+    public byte[] getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
                            final int offset, final int length) throws IOException {
-        return null;
+        return reader.getNullFlagsValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-
+        writer.writeNullFlagsValue((byte[]) value, this.length);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return "";
+        return this.name + ",0," + this.length + ",0";
     }
 
     @Override

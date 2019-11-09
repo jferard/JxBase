@@ -29,11 +29,15 @@ public interface XBaseFieldDescriptorArrayWriter {
 
     void writeDatetimeField(String name, int offset) throws IOException;
 
-    void writeIntegerField(String name, int length, int offset) throws IOException;
+    void writeIntegerField(String name, int offset) throws IOException;
 
     void writeLogicalField(String name, int offset) throws IOException;
 
     void writeMemoField(String name, int offset) throws IOException;
 
     void writeNumericField(String name, int length, int numberOfDecimalPlaces, int offset) throws IOException;
+
+    void writeNullFlagsField(String name, int length, int offset) throws IOException;
+
+    void writeSmallMemoField(String memo, int offset) throws IOException;
 }

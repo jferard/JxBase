@@ -24,13 +24,14 @@ import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 
+/**
+ * A long in Java
+ */
 public class IntegerField implements XBaseField {
     private final String name;
-    private final int length;
 
-    public IntegerField(final String name, final int length) {
+    public IntegerField(final String name) {
         this.name = name;
-        this.length = length;
     }
 
     @Override
@@ -40,13 +41,13 @@ public class IntegerField implements XBaseField {
 
     @Override
     public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getIntegerFieldLength(this.length);
+        return dialect.getIntegerFieldLength();
     }
 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        writer.writeIntegerField(this.name, this.length, offset);
+        writer.writeIntegerField(this.name, offset);
     }
 
     @Override
@@ -57,16 +58,16 @@ public class IntegerField implements XBaseField {
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        writer.writeIntegerValue((Long) value, this.length);
+        writer.writeIntegerValue((Long) value);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.integerFieldToStringRepresentation(this.name, this.length);
+        return dialect.integerFieldToStringRepresentation(this.name);
     }
 
     @Override
     public String toString() {
-        return "IntegerField[name=" + this.name + ", length=" + this.length + "]";
+        return "IntegerField[name=" + this.name + "]";
     }
 }

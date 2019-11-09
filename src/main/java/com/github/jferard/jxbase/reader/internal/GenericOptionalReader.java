@@ -45,13 +45,14 @@ public class GenericOptionalReader implements XBaseOptionalReader {
 
     @Override
     public XBaseOptional read() throws IOException {
-        final int read = this.array.getArrayLength() + this.metadata.getMetaLength();
+        final int metaLength = this.dialect.getMetaDataLength();
+        final int read = this.array.getArrayLength() + metaLength;
         final int excess = this.metadata.getFullHeaderLength() - read;
         if (excess > 0) {
             Logger.getLogger(GenericReader.class.getName()).info(String
                     .format("Optional bytes in header: expected: %s, actual: %s + %s",
                             this.metadata.getFullHeaderLength(), this.array.getArrayLength(),
-                            this.metadata.getMetaLength()));
+                            metaLength));
 
             final byte[] bytes = new byte[excess];
             IOUtils.readFully(this.inputStream, bytes);

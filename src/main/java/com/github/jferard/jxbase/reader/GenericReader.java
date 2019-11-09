@@ -58,13 +58,14 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
     }
 
     private void checkLengths() throws IOException {
-        final int actualHeaderLength = this.array.getArrayLength() + this.metadata.getMetaLength() +
-                this.optional.getLength();
+        final int metaLength = this.dialect.getMetaDataLength();
+        final int actualHeaderLength =
+                this.array.getArrayLength() + metaLength + this.optional.getLength();
         if (actualHeaderLength != this.metadata.getFullHeaderLength()) {
             Logger.getLogger(GenericReader.class.getName()).severe(String
                     .format("Bad header length: expected: %s, actual: %s + %s + %s",
                             this.metadata.getFullHeaderLength(), this.array.getArrayLength(),
-                            this.metadata.getMetaLength(), this.optional.getLength()));
+                            metaLength, this.optional.getLength()));
         }
     }
 

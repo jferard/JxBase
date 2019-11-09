@@ -46,7 +46,7 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        writer.writeMemoField(this.name, offset);
+        writer.writeSmallMemoField(this.name, offset);
     }
 
     @Override

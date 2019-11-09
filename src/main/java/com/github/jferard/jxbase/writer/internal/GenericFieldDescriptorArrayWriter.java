@@ -62,9 +62,8 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
     }
 
     @Override
-    public void writeIntegerField(final String name, final int length, final int offset)
-            throws IOException {
-        this.writeField(name, 'I', this.dialect.getIntegerFieldLength(length), 0, offset);
+    public void writeIntegerField(final String name, final int offset) throws IOException {
+        this.writeField(name, 'I', this.dialect.getIntegerFieldLength(), 0, offset);
     }
 
     @Override
@@ -77,11 +76,22 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
         this.writeField(name, 'M', this.dialect.getMemoFieldLength(), 0, offset);
     }
 
+    @Override
+    public void writeSmallMemoField(final String name, final int offset) throws IOException {
+        this.writeField(name, 'M', this.dialect.getSmallMemoFieldLength(), 0, offset);
+    }
+
     public void writeNumericField(final String name, final int length,
                                   final int numberOfDecimalPlaces, final int offset)
             throws IOException {
         this.writeField(name, 'N', this.dialect.getNumericFieldLength(length),
                 numberOfDecimalPlaces, offset);
+    }
+
+    @Override
+    public void writeNullFlagsField(final String name, final int length, final int offset)
+            throws IOException {
+        this.writeField(name, '0', this.dialect.getNullFlagsFieldLength(length), 0, offset);
     }
 
     private void writeField(final String name, final int type, final int length,

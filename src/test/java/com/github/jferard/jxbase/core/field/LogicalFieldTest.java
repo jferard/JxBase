@@ -27,10 +27,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.math.BigDecimal;
+import java.util.Date;
 
-public class NumericFieldTest {
-    private NumericField f;
+public class LogicalFieldTest {
+    private LogicalField f;
     private GenericDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
     private XBaseRecordReader r;
@@ -42,53 +42,45 @@ public class NumericFieldTest {
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);
-        this.f = new NumericField("num", 10, 2);
+        this.f = new LogicalField("bool");
     }
 
     @Test
     public void getName() {
-        Assert.assertEquals("num", this.f.getName());
+        Assert.assertEquals("bool", this.f.getName());
     }
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(10, this.f.getByteLength(this.dialect));
-    }
-
-    @Test
-    public void getNumberOfDecimalPlaces() {
-        Assert.assertEquals(2, this.f.getNumberOfDecimalPlaces());
+        Assert.assertEquals(1, this.f.getByteLength(this.dialect));
     }
 
     @Test
     public void write() throws IOException {
         this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeNumericField("num", 10, 2, 5);
+        Mockito.verify(this.aw).writeLogicalField("bool", 5);
     }
 
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0};
-        final BigDecimal v = new BigDecimal(18.9);
-        Mockito.when(this.r.getNumericValue(bytes, 0, 10, 2)).thenReturn(v);
-        Assert.assertEquals(v, this.f.getValue(this.r, bytes, 0, 10));
+        Mockito.when(this.r.getLogicalValue(bytes, 0, 1)).thenReturn(true);
+        Assert.assertTrue(this.f.getValue(this.r, bytes, 0, 1));
     }
 
     @Test
     public void writeValue() throws IOException {
-        final BigDecimal v = new BigDecimal(18.9);
-        this.f.writeValue(this.w, v);
-        Mockito.verify(this.w).writeNumericValue(v, 10, 2);
+        this.f.writeValue(this.w, true);
+        Mockito.verify(this.w).writeLogicalValue(true);
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("num,N,10,2", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("bool,L,1,0", this.f.toStringRepresentation(this.dialect));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("NumericField[name=num, length=10, numberOfDecimalPlaces=2]",
-                this.f.toString());
+        Assert.assertEquals("LogicalField[name=bool]", this.f.toString());
     }
 }

@@ -66,13 +66,13 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public int getIntegerFieldLength(final int length) {
-        return length;
+    public int getIntegerFieldLength() {
+        return 4;
     }
 
     @Override
-    public String integerFieldToStringRepresentation(final String name, final int length) {
-        return name + ",I," + length + ",0";
+    public String integerFieldToStringRepresentation(final String name) {
+        return name + ",I,4,0";
     }
 
     @Override
@@ -92,12 +92,22 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public String memoFieldToStringRepresentation(final String name) {
-        return null;
+        return name + ",M,10,0";
     }
 
     @Override
     public int getNumericFieldLength(final int length) {
         return length;
+    }
+
+    @Override
+    public int getNullFlagsFieldLength(final int length) {
+        return length;
+    }
+
+    @Override
+    public int getSmallMemoFieldLength() {
+        return 4;
     }
 
     @Override
@@ -139,7 +149,7 @@ public class GenericDialect implements XBaseDialect {
                 }
                 return new LogicalField(name);
             case 'I':
-                return new IntegerField(name, length);
+                return new IntegerField(name);
             case 'M':
                 if (length == 4) {
                     return new SmallMemoField<T>(name);
@@ -167,8 +177,8 @@ public class GenericDialect implements XBaseDialect {
      * @param length
      * @return
      */
-    public long getOffsetInBlocks(final XBaseRecordReader recordReader,
-                                  final byte[] recordBuffer, final int offset, final int length) {
+    public long getOffsetInBlocks(final XBaseRecordReader recordReader, final byte[] recordBuffer,
+                                  final int offset, final int length) {
         final String s = recordReader.getTrimmedASCIIString(recordBuffer, offset, length);
         return Long.valueOf(s);
     }
@@ -190,6 +200,6 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public int getOptionalLength() {
-    return JxBaseUtils.OPTIONAL_LENGTH;
+        return JxBaseUtils.OPTIONAL_LENGTH;
     }
 }

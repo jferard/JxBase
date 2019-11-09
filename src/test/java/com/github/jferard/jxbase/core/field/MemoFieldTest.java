@@ -16,9 +16,12 @@
 
 package com.github.jferard.jxbase.core.field;
 
-import com.github.jferard.jxbase.core.GenericDialect;
+import com.github.jferard.jxbase.core.DbfTextMemoRecord;
+import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 import org.junit.Assert;
@@ -27,27 +30,26 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
-public class NumericFieldTest {
-    private NumericField f;
-    private GenericDialect dialect;
+public class MemoFieldTest {
+    private MemoField<DbfTextMemoRecord> f;
+    private FoxProDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
     private XBaseRecordReader r;
     private XBaseRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new GenericDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);
-        this.f = new NumericField("num", 10, 2);
+        this.f = new MemoField<DbfTextMemoRecord>("memo");
     }
 
     @Test
     public void getName() {
-        Assert.assertEquals("num", this.f.getName());
+        Assert.assertEquals("memo", this.f.getName());
     }
 
     @Test
@@ -56,39 +58,33 @@ public class NumericFieldTest {
     }
 
     @Test
-    public void getNumberOfDecimalPlaces() {
-        Assert.assertEquals(2, this.f.getNumberOfDecimalPlaces());
-    }
-
-    @Test
     public void write() throws IOException {
         this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeNumericField("num", 10, 2, 5);
+        Mockito.verify(this.aw).writeMemoField("memo", 5);
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = {0};
-        final BigDecimal v = new BigDecimal(18.9);
-        Mockito.when(this.r.getNumericValue(bytes, 0, 10, 2)).thenReturn(v);
-        Assert.assertEquals(v, this.f.getValue(this.r, bytes, 0, 10));
+        final byte[] bytes = {1, 2, 3, 4};
+        final DbfTextMemoRecord record = new DbfTextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
+        Mockito.<XBaseMemoRecord<?>>when(this.r.getMemoValue(bytes, 0, 4)).thenReturn(record);
+        Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
     }
 
     @Test
     public void writeValue() throws IOException {
-        final BigDecimal v = new BigDecimal(18.9);
-        this.f.writeValue(this.w, v);
-        Mockito.verify(this.w).writeNumericValue(v, 10, 2);
+        final DbfTextMemoRecord record = new DbfTextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
+        this.f.writeValue(this.w, record);
+        Mockito.verify(this.w).writeMemoValue(record);
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("num,N,10,2", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("memo,M,10,0", this.f.toStringRepresentation(this.dialect));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("NumericField[name=num, length=10, numberOfDecimalPlaces=2]",
-                this.f.toString());
+        Assert.assertEquals("MemoField[name=memo]", this.f.toString());
     }
 }
