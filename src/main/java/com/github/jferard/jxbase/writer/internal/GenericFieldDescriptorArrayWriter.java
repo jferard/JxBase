@@ -53,7 +53,7 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
 
     @Override
     public void writeDateField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'D', this.dialect.getLogicalFieldLength(), 0, offset);
+        this.writeField(name, 'D', this.dialect.getDateFieldLength(), 0, offset);
     }
 
     @Override
