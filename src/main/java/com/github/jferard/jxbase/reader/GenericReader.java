@@ -40,6 +40,14 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
     private final InputStream inputStream;
     private final XBaseMetadata metadata;
 
+    /**
+     * @param dialect
+     * @param inputStream
+     * @param charset
+     * @param readerFactory
+     * @param memoReader may be null
+     * @throws IOException
+     */
     public GenericReader(final XBaseDialect dialect, final InputStream inputStream,
                          final Charset charset, final XBaseInternalReaderFactory readerFactory,
                          final XBaseMemoReader memoReader) throws IOException {

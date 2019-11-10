@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.MemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 
 import java.io.File;
@@ -38,12 +38,12 @@ import java.io.RandomAccessFile;
  */
 public class MemoReaderFactory {
     public static XBaseMemoReader fromRandomAccess(final XBaseFileTypeEnum type,
-                                                      final File memoFile) throws IOException {
+                                                   final File memoFile) throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
         switch (type) {
             default:
-                final DbfMemoRecordFactory dbfMemoRecordFactory = null;
-                return new GenericMemoReader(randomAccessFile.getChannel(), dbfMemoRecordFactory);
+                final MemoRecordFactory memoRecordFactory = null;
+                return new GenericMemoReader(randomAccessFile.getChannel(), memoRecordFactory);
         }
     }
 
@@ -52,8 +52,8 @@ public class MemoReaderFactory {
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
         switch (type) {
             default:
-                final DbfMemoRecordFactory dbfMemoRecordFactory = null;
-                return new GenericMemoReader(fileInputStream.getChannel(), dbfMemoRecordFactory);
+                final MemoRecordFactory memoRecordFactory = null;
+                return new GenericMemoReader(fileInputStream.getChannel(), memoRecordFactory);
         }
     }
 }

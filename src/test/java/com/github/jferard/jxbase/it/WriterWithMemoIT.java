@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.DbfTextMemoRecord;
 import com.github.jferard.jxbase.core.GenericOptional;
+import com.github.jferard.jxbase.core.TextMemoRecord;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.field.CharacterField;
 import com.github.jferard.jxbase.core.field.MemoField;
@@ -28,7 +28,6 @@ import com.github.jferard.jxbase.writer.XBaseWriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -43,10 +42,9 @@ public class WriterWithMemoIT {
     @Before
     public void prepareData() {
         this.fields.add(new CharacterField("NAME", 20));
-        this.fields.add(new MemoField<DbfTextMemoRecord>("MEMO"));
+        this.fields.add(new MemoField<TextMemoRecord>("MEMO"));
         this.valueMap.put("NAME", "some data");
-        this.valueMap
-                .put("MEMO", new DbfTextMemoRecord("in the memo", 1, JxBaseUtils.UTF8_CHARSET));
+        this.valueMap.put("MEMO", new TextMemoRecord("in the memo", 1, JxBaseUtils.UTF8_CHARSET));
     }
 
     @Test
@@ -55,9 +53,9 @@ public class WriterWithMemoIT {
         meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
-        final XBaseWriter dbfWriter = new XBaseWriterFactory()
-                .create(XBaseFileTypeEnum.dBASEIV3, new File("112.dbf"), Charset.forName("UTF-8"),
-                        new File("112.dbt"), meta, this.fields, GenericOptional.EMPTY);
+        final XBaseWriter dbfWriter = XBaseWriterFactory
+                .createWriter(XBaseFileTypeEnum.dBASEIV3, "112", Charset.forName("UTF-8"), meta,
+                        this.fields, GenericOptional.EMPTY);
         try {
             dbfWriter.write(this.valueMap);
         } finally {

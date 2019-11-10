@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.MemoRecordFactory;
 import com.github.jferard.jxbase.core.MemoFileHeader;
 import com.github.jferard.jxbase.core.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
@@ -50,7 +50,7 @@ public class GenericMemoReader implements XBaseMemoReader {
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
         return new GenericMemoReader(randomAccessFile.getChannel(),
-                new DbfMemoRecordFactory(charset));
+                new MemoRecordFactory(charset));
     }
 
     public static GenericMemoReader fromChannel(final File memoFile, final Charset charset)
@@ -60,20 +60,20 @@ public class GenericMemoReader implements XBaseMemoReader {
         }
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
         return new GenericMemoReader(fileInputStream.getChannel(),
-                new DbfMemoRecordFactory(charset));
+                new MemoRecordFactory(charset));
     }
 
     private final ByteBuffer memoByteBuffer;
     private final FileChannel channel;
-    private final DbfMemoRecordFactory dbfMemoRecordFactory;
+    private final MemoRecordFactory memoRecordFactory;
     private MemoFileHeader memoHeader;
     private RawMemoReader rawMemoReader;
 
     public GenericMemoReader(final FileChannel channel,
-                             final DbfMemoRecordFactory dbfMemoRecordFactory) throws IOException {
+                             final MemoRecordFactory memoRecordFactory) throws IOException {
         this.channel = channel;
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
-        this.dbfMemoRecordFactory = dbfMemoRecordFactory;
+        this.memoRecordFactory = memoRecordFactory;
         this.readMetadata();
     }
 
@@ -108,7 +108,7 @@ public class GenericMemoReader implements XBaseMemoReader {
                 BitUtils.makeInt(recordHeaderBytes[7], recordHeaderBytes[6], recordHeaderBytes[5],
                         recordHeaderBytes[4]);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
-        return this.dbfMemoRecordFactory
+        return this.memoRecordFactory
                 .create(dataBytes, memoRecordType, memoRecordLength, offsetInBlocks);
     }
 }

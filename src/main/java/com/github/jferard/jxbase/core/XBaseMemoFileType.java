@@ -16,18 +16,16 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+public enum XBaseMemoFileType {
+    NO_MEMO_FILE(""), REGULAR_MEMO_FILE(".dbt"), FOXPRO_OBJECT_AND_MEMO_FILE(".fpt");
 
-public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {
-    long getOffsetInBlocks(XBaseRecordReader genericRecordReader, byte[] recordBuffer, int offset, int length);
+    private final String extension;
 
-    XBaseFileTypeEnum getType();
+    XBaseMemoFileType(final String extension) {
+        this.extension = extension;
+    }
 
-    int getMetaDataLength();
-
-    int getFieldDescriptorLength();
-
-    int getOptionalLength();
-
-    XBaseMemoFileType memoFileType();
+    public String getExtension() {
+        return this.extension;
+    }
 }

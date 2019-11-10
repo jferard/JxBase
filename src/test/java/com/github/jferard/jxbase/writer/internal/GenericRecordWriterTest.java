@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.core.DbfTextMemoRecord;
+import com.github.jferard.jxbase.core.TextMemoRecord;
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.field.LogicalField;
@@ -73,7 +73,7 @@ public class GenericRecordWriterTest {
 
     @Test
     public void writeMemoValue() throws IOException {
-        this.grw.writeMemoValue(new DbfTextMemoRecord("memo", 1, JxBaseUtils.UTF8_CHARSET));
+        this.grw.writeMemoValue(new TextMemoRecord("memo", 1, JxBaseUtils.UTF8_CHARSET));
         Assert.assertArrayEquals("         1".getBytes(JxBaseUtils.ASCII_CHARSET),
                 this.bos.toByteArray());
     }

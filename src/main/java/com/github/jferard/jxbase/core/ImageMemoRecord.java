@@ -21,13 +21,13 @@ import java.util.Arrays;
 /**
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
-public class DbfImageMemoRecord implements XBaseMemoRecord<byte[]> {
+public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
     private final byte[] bytes;
     private final MemoRecordTypeEnum type;
     private final int length;
     private final long offsetInBlocks;
 
-    DbfImageMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks) {
+    ImageMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks) {
         this.bytes = bytes;
         this.type = MemoRecordTypeEnum.IMAGE;
         this.length = length;

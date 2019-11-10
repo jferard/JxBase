@@ -43,18 +43,27 @@ import java.util.Collection;
 import java.util.Map;
 
 public class XBaseWriterFactory {
-    public GenericWriter create(final XBaseFileTypeEnum type, final File dbfFile,
-                                final Charset charset, final File memoFile,
-                                final Map<String, Object> meta, final Collection<XBaseField> fields,
-                                final XBaseOptional optional) throws IOException {
+    public static GenericWriter createWriter(final XBaseFileTypeEnum type,
+                                             final String databaseName, final Charset charset,
+                                             final Map<String, Object> meta,
+                                             final Collection<XBaseField> fields,
+                                             final XBaseOptional optional) throws IOException {
+        return new XBaseWriterFactory().create(type, databaseName, charset, meta, fields, optional);
+    }
+
+    public GenericWriter create(final XBaseFileTypeEnum type, final String databaseName,
+                                final Charset charset, final Map<String, Object> meta,
+                                final Collection<XBaseField> fields, final XBaseOptional optional)
+            throws IOException {
+        final File dbfFile = new File(databaseName + ".dbf");
+        final File memoFile = new File(databaseName + ".dbt");
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
         final XBaseInternalWriterFactory writerFactory = new GenericInternalWriterFactory(dialect);
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
         final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 
         final XBaseFieldDescriptorArray array = this.getFieldDescriptorArray(dialect, fields);
-        final XBaseMetadata initialMetadata =
-                this.getInitialMetadata(type, dialect, meta, array);
+        final XBaseMetadata initialMetadata = this.getInitialMetadata(type, dialect, meta, array);
 
         final XBaseMetadataWriter metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
@@ -91,8 +100,7 @@ public class XBaseWriterFactory {
         final int optionalLength = dialect.getOptionalLength();
         final int metaLength = dialect.getMetaDataLength();
         final int fullHeaderLength = metaLength + array.getArrayLength() + optionalLength;
-        return new GenericMetadata(type.toByte(), fullHeaderLength,
-                array.getRecordLength(), meta);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, array.getRecordLength(), meta);
     }
 
     private XBaseFieldDescriptorArray getFieldDescriptorArray(final XBaseDialect dialect,

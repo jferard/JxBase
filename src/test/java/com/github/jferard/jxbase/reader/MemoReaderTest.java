@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.MemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -35,7 +35,7 @@ import java.nio.channels.FileChannel;
 public class MemoReaderTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
-    private final DbfMemoRecordFactory dbfMemoRecordFactory = null;
+    private final MemoRecordFactory dbfMemoRecordFactory = null;
 
     @Test
     public void testRead() throws IOException {

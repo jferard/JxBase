@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.MemoRecordFactory;
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericRecord;
@@ -36,7 +36,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -116,7 +115,7 @@ public class GenericRecordReaderTest {
 
     @Test
     public void getMemoValue() throws IOException {
-        final DbfMemoRecordFactory factory = new DbfMemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
+        final MemoRecordFactory factory = new MemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
         final XBaseMemoRecord<byte[]> record = (XBaseMemoRecord<byte[]>) factory
                 .create(new byte[]{'A'}, MemoRecordTypeEnum.IMAGE, 1, 123);
         Mockito.when((XBaseMemoRecord<byte[]>) this.mr.read(123)).thenReturn(record);

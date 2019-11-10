@@ -16,14 +16,10 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.core.DbfMemoRecordFactory;
+import com.github.jferard.jxbase.core.MemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.GenericMemoReader;
-import com.github.jferard.jxbase.util.BitUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -36,7 +32,7 @@ public class GenericMemoWriter implements XBaseMemoWriter {
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
         return new GenericMemoWriter(randomAccessFile.getChannel(),
-                new DbfMemoRecordFactory(charset));
+                new MemoRecordFactory(charset));
     }
 
     public static GenericMemoWriter fromChannel(final File memoFile, final Charset charset)
@@ -46,13 +42,13 @@ public class GenericMemoWriter implements XBaseMemoWriter {
         }
         final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);
         return new GenericMemoWriter(fileOutputStream.getChannel(),
-                new DbfMemoRecordFactory(charset));
+                new MemoRecordFactory(charset));
     }
 
     private final FileChannel channel;
-    private final DbfMemoRecordFactory dbfMemoRecordFactory;
+    private final MemoRecordFactory dbfMemoRecordFactory;
 
-    public GenericMemoWriter(final FileChannel channel, final DbfMemoRecordFactory dbfMemoRecordFactory)
+    public GenericMemoWriter(final FileChannel channel, final MemoRecordFactory dbfMemoRecordFactory)
             throws IOException {
         this.channel = channel;
         this.dbfMemoRecordFactory = dbfMemoRecordFactory;

@@ -73,7 +73,7 @@ public class GenericFieldDescriptorArrayReader implements XBaseFieldDescriptorAr
         final int length = this.getLength(fieldBytes[16]);
         final byte numberOfDecimalPlaces = fieldBytes[17];
 
-        return this.dialect.getDbfField(name, typeByte, length, numberOfDecimalPlaces);
+        return this.dialect.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
     }
 
     private String getName(final byte[] fieldBytes) {

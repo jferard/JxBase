@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
-import java.util.Date;
 
 public class LogicalFieldTest {
     private LogicalField f;

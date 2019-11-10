@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.it;
 
+import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
@@ -40,12 +41,11 @@ public class ReaderWithMemoIT {
     public void test1() throws FileNotFoundException, ParseException {
         final Charset stringCharset = Charset.forName("cp1252");
 
-        final File dbf = this.getResourceFile("memo1/texto.dbf");
-        final File memo = this.getResourceFile("memo1/texto.fpt");
+        final String databaseName = TestHelper.getResourceBase("memo1/texto.dbf");
 
         try {
             final Charset charset = Charset.forName("cp1252");
-            final XBaseReader reader = XBaseReaderFactory.create(dbf, charset, memo);
+            final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, charset);
             try {
                 final XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);

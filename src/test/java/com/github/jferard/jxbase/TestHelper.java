@@ -17,7 +17,18 @@
 package com.github.jferard.jxbase;
 
 
+import java.net.URL;
+
 public class TestHelper {
+    public static String getResourceBase(final String filename) {
+        final URL resource = TestHelper.class.getClassLoader().getResource(filename);
+        if (resource == null) {
+            return null;
+        }
+        final String pathname = resource.getFile();
+        return pathname.substring(0, pathname.lastIndexOf('.'));
+    }
+
 	/*
 
 	static String gdsString = "KONTR,C,1,0|N_MDP,C,8,0|W_LIST_NO,N,2,0|G32,N,3,0|N_RECEIVER,N,1,0|G33,C,10,0|G312,C,250,0|G35,N,13,2|G311,C,9,0|G318,C,14,0|G315,N,11,2|G317C,C,3,0|G221,C,3,0|G221_BUK,C,3,0|G42,N,15,2|KODS_PT,C,3,0|KODS_ABC2,C,2,0|N_TTH,C,30,0|G442REGNU,C,28,0|DELIV_PPP,C,6,0|G40T,C,2,0|G40,C,35,0|G405,N,2,0|TOV_SIGN2,C,1,0|CREATEDATE,D,8,0|MODIFIED_D,D,8,0|ARM_ID,N,3,0|VERSION,C,4,0";

@@ -124,14 +124,14 @@ public class GenericDialect implements XBaseDialect {
         final byte typeByte = (byte) a[1].charAt(0);
         final int length = Integer.parseInt(a[2]);
         final int numberOfDecimalPlaces = Integer.parseInt(a[3]);
-        return this.getDbfField(name, typeByte, length, numberOfDecimalPlaces);
+        return this.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
     }
 
     @Override
-    public <T extends XBaseMemoRecord<?>> XBaseField getDbfField(final String name,
-                                                                 final byte typeByte,
-                                                                 final int length,
-                                                                 final int numberOfDecimalPlaces) {
+    public <T extends XBaseMemoRecord<?>> XBaseField getXBaseField(final String name,
+                                                                   final byte typeByte,
+                                                                   final int length,
+                                                                   final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'D':
                 if (length != 8) {
@@ -201,5 +201,10 @@ public class GenericDialect implements XBaseDialect {
     @Override
     public int getOptionalLength() {
         return JxBaseUtils.OPTIONAL_LENGTH;
+    }
+
+    @Override
+    public XBaseMemoFileType memoFileType() {
+        return this.type.memoFileType();
     }
 }

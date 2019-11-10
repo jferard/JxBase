@@ -17,7 +17,7 @@
 
 package com.github.jferard.jxbase.util;
 
-public class DbfMetadataUtils {
+public class XBaseMetadataUtils {
     public static final int BUFFER_SIZE = 8192;
 
     /*

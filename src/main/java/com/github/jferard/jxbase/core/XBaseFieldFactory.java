@@ -22,6 +22,6 @@ import com.github.jferard.jxbase.core.field.XBaseField;
 public interface XBaseFieldFactory {
     XBaseField fromStringRepresentation(String s);
 
-    <T extends XBaseMemoRecord<?>> XBaseField getDbfField(String name, byte type, int length,
-                                                          int numberOfDecimalPlaces);
+    <T extends XBaseMemoRecord<?>> XBaseField getXBaseField(String name, byte type, int length,
+                                                            int numberOfDecimalPlaces);
 }

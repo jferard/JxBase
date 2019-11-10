@@ -27,7 +27,6 @@ import com.github.jferard.jxbase.writer.XBaseWriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -65,8 +64,8 @@ public class WriterIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = new XBaseWriterFactory()
-                .create(XBaseFileTypeEnum.dBASEIV1, new File("111.dbf"), Charset.forName("UTF-8"),
-                        null, meta, this.fields, GenericOptional.EMPTY);
+                .createWriter(XBaseFileTypeEnum.dBASEIV1, "111", Charset.forName("UTF-8"), meta,
+                        this.fields, GenericOptional.EMPTY);
         try {
             dbfWriter.write(this.valueMap);
         } finally {

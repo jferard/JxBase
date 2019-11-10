@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.it;
 
+import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.reader.XBaseReader;
@@ -24,8 +25,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
@@ -39,10 +40,10 @@ public class ReaderIT {
     public void test1() throws IOException, ParseException {
         final Charset stringCharset = Charset.forName("Cp866");
 
-        final File dbf = this.getResourceFile("data1/gds_im.dbf");
+        final String databaseName = TestHelper.getResourceBase("data1/gds_im.dbf");
 
         GenericRecord rec;
-        final XBaseReader reader = XBaseReaderFactory.create(dbf, stringCharset);
+        final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
@@ -68,11 +69,10 @@ public class ReaderIT {
     public void test2() throws IOException, ParseException {
         final Charset stringCharset = Charset.forName("Cp866");
 
-        final String name = "data1/tir_im.dbf";
-        final File dbf = this.getResourceFile(name);
+        final String databaseName = TestHelper.getResourceBase("data1/tir_im.dbf");
 
         GenericRecord rec;
-        final XBaseReader reader = XBaseReaderFactory.create(dbf, stringCharset);
+        final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
@@ -94,7 +94,4 @@ public class ReaderIT {
         }
     }
 
-    private File getResourceFile(final String filename) {
-        return new File(this.getClass().getClassLoader().getResource(filename).getFile());
-    }
 }

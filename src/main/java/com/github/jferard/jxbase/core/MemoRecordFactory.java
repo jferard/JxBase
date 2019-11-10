@@ -18,10 +18,10 @@ package com.github.jferard.jxbase.core;
 
 import java.nio.charset.Charset;
 
-public class DbfMemoRecordFactory {
+public class MemoRecordFactory {
     final Charset charset;
 
-    public DbfMemoRecordFactory(final Charset charset) {
+    public MemoRecordFactory(final Charset charset) {
         this.charset = charset;
     }
 
@@ -30,9 +30,9 @@ public class DbfMemoRecordFactory {
                                      final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:
-                return new DbfImageMemoRecord(dataBytes, memoRecordLength, offsetInBlocks);
+                return new ImageMemoRecord(dataBytes, memoRecordLength, offsetInBlocks);
             case TEXT:
-                return new DbfTextMemoRecord(
+                return new TextMemoRecord(
                         new String(dataBytes, 0, memoRecordLength, this.charset), offsetInBlocks,
                         this.charset);
             default:

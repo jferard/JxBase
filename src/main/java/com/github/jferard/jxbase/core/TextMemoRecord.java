@@ -21,13 +21,13 @@ import java.nio.charset.Charset;
 /**
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
-public class DbfTextMemoRecord implements XBaseMemoRecord<String> {
+public class TextMemoRecord implements XBaseMemoRecord<String> {
     private final MemoRecordTypeEnum type;
     private final int offsetInBlocks;
     private final Charset charset;
     private final String s;
 
-    public DbfTextMemoRecord(final String s, final long offsetInBlocks, final Charset charset) {
+    public TextMemoRecord(final String s, final long offsetInBlocks, final Charset charset) {
         this.s = s;
         this.type = MemoRecordTypeEnum.TEXT;
         this.offsetInBlocks = (int) offsetInBlocks;
