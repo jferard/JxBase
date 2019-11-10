@@ -36,18 +36,24 @@ public interface XBaseRecordReader {
 
     Date getDateValue(byte[] recordBuffer, int offset, int length);
 
-    Date getDatetimeValue(byte[] recordBuffer, int offset, int length);
-
     Long getIntegerValue(byte[] recordBuffer, int offset, int length);
 
     Boolean getLogicalValue(byte[] recordBuffer, int offset, int length);
 
+    BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length,
+                               int numberOfDecimalPlaces);
+
     <T extends XBaseMemoRecord<?>> T getMemoValue(byte[] recordBuffer, int offset, int length)
             throws IOException;
 
-    BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length, int numberOfDecimalPlaces);
-
     void close() throws IOException;
 
+    /* FoxPro
+    Date getDatetimeValue(byte[] recordBuffer, int offset, int length);
+
+    <T extends XBaseMemoRecord<?>> T getSmallMemoValue(byte[] recordBuffer, int offset, int length)
+            throws IOException;
+
     byte[] getNullFlagsValue(byte[] recordBuffer, int offset, int length);
+    */
 }

@@ -45,13 +45,13 @@ import java.util.TimeZone;
 public class GenericRecordReaderTest {
     private XBaseMemoReader mr;
     private ByteArrayInputStream bis;
-    private GenericRecordReader grr;
+    private FoxProRecordReader grr;
 
     @Before
     public void setUp() {
         this.mr = Mockito.mock(XBaseMemoReader.class);
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
-        this.grr = new GenericRecordReader(new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
+        this.grr = new FoxProRecordReader(new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
                 JxBaseUtils.UTF8_CHARSET, new GenericFieldDescriptorArray(
                 Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr,
                 TimeZone.getTimeZone("Europe/Paris"));
@@ -121,7 +121,7 @@ public class GenericRecordReaderTest {
         Mockito.when((XBaseMemoRecord<byte[]>) this.mr.read(123)).thenReturn(record);
 
         final XBaseMemoRecord<?> m =
-                this.grr.getMemoValue("       123".getBytes(JxBaseUtils.ASCII_CHARSET), 0, 10);
+                this.grr.getSmallMemoValue("       123".getBytes(JxBaseUtils.ASCII_CHARSET), 0, 10);
 
         Assert.assertEquals(record, m);
     }

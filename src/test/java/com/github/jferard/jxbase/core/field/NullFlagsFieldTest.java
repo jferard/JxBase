@@ -18,7 +18,10 @@ package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 import org.junit.Assert;
@@ -31,16 +34,16 @@ import java.io.IOException;
 public class NullFlagsFieldTest {
     private NullFlagsField f;
     private FoxProDialect dialect;
-    private XBaseFieldDescriptorArrayWriter aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter w;
+    private FoxProFieldDescriptorArrayWriter aw;
+    private FoxProRecordReader r;
+    private FoxProRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.aw = Mockito.mock(FoxProFieldDescriptorArrayWriter.class);
+        this.r = Mockito.mock(FoxProRecordReader.class);
+        this.w = Mockito.mock(FoxProRecordWriter.class);
         this.f = new NullFlagsField("nf", 8);
     }
 

@@ -63,7 +63,7 @@ public class WriterIT {
         meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
-        final XBaseWriter dbfWriter = new XBaseWriterFactory()
+        final XBaseWriter dbfWriter = XBaseWriterFactory
                 .createWriter(XBaseFileTypeEnum.dBASEIV1, "111", Charset.forName("UTF-8"), meta,
                         this.fields, GenericOptional.EMPTY);
         try {

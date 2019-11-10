@@ -41,7 +41,7 @@ public class GenericInternalWriterFactory implements XBaseInternalWriterFactory 
     public XBaseFieldDescriptorArrayWriter createFieldDescriptorArrayWriter(
             final XBaseDialect dialect, final OutputStream outputStream,
             final XBaseMetadata metadata) {
-        return new GenericFieldDescriptorArrayWriter(dialect, outputStream);
+        return new FoxProFieldDescriptorArrayWriter(dialect, outputStream);
     }
 
     @Override
@@ -59,6 +59,6 @@ public class GenericInternalWriterFactory implements XBaseInternalWriterFactory 
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional,
                                                 final XBaseMemoWriter memoWriter) {
-        return new GenericRecordWriter(dialect, outputStream, charset, array.getFields(), memoWriter);
+        return new FoxProRecordWriter(dialect, outputStream, charset, array.getFields(), memoWriter);
     }
 }

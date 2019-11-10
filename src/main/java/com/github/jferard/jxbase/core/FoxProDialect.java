@@ -24,13 +24,27 @@ public class FoxProDialect extends GenericDialect {
         super(type);
     }
 
+    public int getDatetimeFieldLength() {
+        return 0;
+    }
+
+    public String datetimeFieldToStringRepresentation(final String name) {
+        return null;
+    }
+
     public int getNullFlagsFieldLength(final int length) {
         return length;
+    }
+
+    public String smallMemoFieldToStringRepresentation(final String name) {
+        return name + ",M,10,0";
     }
 
     public int getSmallMemoFieldLength() {
         return 4;
     }
+
+
 
     /**
      * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:

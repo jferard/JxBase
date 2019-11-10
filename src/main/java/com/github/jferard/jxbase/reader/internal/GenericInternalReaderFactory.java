@@ -54,7 +54,7 @@ public class GenericInternalReaderFactory implements XBaseInternalReaderFactory 
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional,
                                                 final XBaseMemoReader memoReader) {
-        return new GenericRecordReader(this.dialect, inputStream, charset, array, memoReader,
+        return new FoxProRecordReader(this.dialect, inputStream, charset, array, memoReader,
                 this.timezone);
     }
 

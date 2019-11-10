@@ -35,10 +35,11 @@ public class GenericFieldDescriptorArrayWriterTest {
     private ByteArrayOutputStream out;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.out = new ByteArrayOutputStream();
-        this.gfdaw = new GenericFieldDescriptorArrayWriter(
-                new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.out);
+        this.gfdaw =
+                new FoxProFieldDescriptorArrayWriter(new GenericDialect(XBaseFileTypeEnum.dBASEIV1),
+                        this.out);
     }
 
     @Test
@@ -90,23 +91,9 @@ public class GenericFieldDescriptorArrayWriterTest {
     }
 
     @Test
-    public void writeSmallMemoField() throws IOException {
-        this.gfdaw.writeSmallMemoField("memo", 5);
-        Assert.assertArrayEquals("memo\0\0\0\0\0\0\0M\5\0\0\0\4\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
-                .getBytes(JxBaseUtils.ASCII_CHARSET), this.out.toByteArray());
-    }
-
-    @Test
     public void writeNumericField() throws IOException {
         this.gfdaw.writeNumericField("numeric", 10, 4, 5);
         Assert.assertArrayEquals("numeric\0\0\0\0N\5\0\0\0\12\4\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
-                .getBytes(JxBaseUtils.ASCII_CHARSET), this.out.toByteArray());
-    }
-
-    @Test
-    public void writeNullFlagsField() throws IOException {
-        this.gfdaw.writeNullFlagsField("nf", 14, 5);
-        Assert.assertArrayEquals("nf\0\0\0\0\0\0\0\0\0\60\5\0\0\0\16\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
                 .getBytes(JxBaseUtils.ASCII_CHARSET), this.out.toByteArray());
     }
 }

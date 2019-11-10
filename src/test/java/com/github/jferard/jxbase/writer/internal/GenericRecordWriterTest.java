@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
+import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.TextMemoRecord;
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
@@ -45,14 +46,14 @@ public class GenericRecordWriterTest {
 
     private XBaseMemoWriter mw;
     private ByteArrayOutputStream bos;
-    private GenericRecordWriter grw;
+    private FoxProRecordWriter grw;
     private Map<String, Object> map;
 
     @Before
     public void setUp() {
         this.mw = Mockito.mock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
-        this.grw = new GenericRecordWriter(new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.bos,
+        this.grw = new FoxProRecordWriter(new FoxProDialect(XBaseFileTypeEnum.dBASEIV1), this.bos,
                 JxBaseUtils.UTF8_CHARSET,
                 Collections.<XBaseField>singleton(new LogicalField("bool")), this.mw);
         this.map = new HashMap<String, Object>();
@@ -73,7 +74,7 @@ public class GenericRecordWriterTest {
 
     @Test
     public void writeMemoValue() throws IOException {
-        this.grw.writeMemoValue(new TextMemoRecord("memo", 1, JxBaseUtils.UTF8_CHARSET));
+        this.grw.writeSmallMemoValue(new TextMemoRecord("memo", 1, JxBaseUtils.UTF8_CHARSET));
         Assert.assertArrayEquals("         1".getBytes(JxBaseUtils.ASCII_CHARSET),
                 this.bos.toByteArray());
     }

@@ -21,8 +21,6 @@ public interface XBaseLengths {
 
     int getDateFieldLength();
 
-    int getDatetimeFieldLength();
-
     int getIntegerFieldLength();
 
     int getLogicalFieldLength();
@@ -31,7 +29,11 @@ public interface XBaseLengths {
 
     int getNumericFieldLength(int length);
 
+    /* FoxPro
+    int getDatetimeFieldLength();
+
     int getNullFlagsFieldLength(int length);
 
     int getSmallMemoFieldLength();
+    */
 }

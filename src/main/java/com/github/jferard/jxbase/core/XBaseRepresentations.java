@@ -21,13 +21,17 @@ public interface XBaseRepresentations {
 
     String dateFieldToStringRepresentation(String name);
 
-    String datetimeFieldToStringRepresentation(String name);
-
     String integerFieldToStringRepresentation(String name);
 
     String logicalFieldToStringRepresentation(String name);
 
-    String memoFieldToStringRepresentation(String name);
-
     String numericFieldToStringRepresentation(String name, int length, int numberOfDecimalPlaces);
+
+    /* FoxPro
+    String datetimeFieldToStringRepresentation(String name);
+
+    String smallMemoFieldToStringRepresentation(String name);
+
+    String nullFlagsFieldToStringRepresentation(String name);
+    */
 }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.core.field;
 
+import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
@@ -61,7 +62,7 @@ public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.memoFieldToStringRepresentation(this.name);
+        return ((FoxProDialect) dialect).smallMemoFieldToStringRepresentation(this.name);
     }
 
     @Override

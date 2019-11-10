@@ -16,14 +16,14 @@
 
 package com.github.jferard.jxbase.core.field;
 
-import com.github.jferard.jxbase.core.TextMemoRecord;
 import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.core.TextMemoRecord;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,16 +34,16 @@ import java.io.IOException;
 public class SmallMemoFieldTest {
     private SmallMemoField<TextMemoRecord> f;
     private FoxProDialect dialect;
-    private XBaseFieldDescriptorArrayWriter aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter w;
+    private FoxProFieldDescriptorArrayWriter aw;
+    private FoxProRecordReader r;
+    private FoxProRecordWriter w;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.aw = Mockito.mock(FoxProFieldDescriptorArrayWriter.class);
+        this.r = Mockito.mock(FoxProRecordReader.class);
+        this.w = Mockito.mock(FoxProRecordWriter.class);
         this.f = new SmallMemoField<TextMemoRecord>("memo");
     }
 
@@ -67,7 +67,7 @@ public class SmallMemoFieldTest {
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
         final TextMemoRecord record = new TextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
-        Mockito.<XBaseMemoRecord<?>>when(this.r.getMemoValue(bytes, 0, 4)).thenReturn(record);
+        Mockito.<XBaseMemoRecord<?>>when(this.r.getSmallMemoValue(bytes, 0, 4)).thenReturn(record);
         Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
     }
 
@@ -75,7 +75,7 @@ public class SmallMemoFieldTest {
     public void writeValue() throws IOException {
         final TextMemoRecord record = new TextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
         this.f.writeValue(this.w, record);
-        Mockito.verify(this.w).writeMemoValue(record);
+        Mockito.verify(this.w).writeSmallMemoValue(record);
     }
 
     @Test

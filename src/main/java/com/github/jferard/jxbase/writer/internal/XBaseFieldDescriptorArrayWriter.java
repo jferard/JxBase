@@ -27,8 +27,6 @@ public interface XBaseFieldDescriptorArrayWriter {
 
     void writeDateField(String name, int offset) throws IOException;
 
-    void writeDatetimeField(String name, int offset) throws IOException;
-
     void writeIntegerField(String name, int offset) throws IOException;
 
     void writeLogicalField(String name, int offset) throws IOException;
@@ -37,7 +35,11 @@ public interface XBaseFieldDescriptorArrayWriter {
 
     void writeNumericField(String name, int length, int numberOfDecimalPlaces, int offset) throws IOException;
 
+    /* FoxPro
+    void writeDatetimeField(String name, int offset) throws IOException;
+
     void writeNullFlagsField(String name, int length, int offset) throws IOException;
 
     void writeSmallMemoField(String memo, int offset) throws IOException;
+    */
 }

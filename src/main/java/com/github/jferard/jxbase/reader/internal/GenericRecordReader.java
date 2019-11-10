@@ -42,15 +42,15 @@ import java.util.TimeZone;
 
 public class GenericRecordReader implements XBaseRecordReader {
     private static final CharSequence NUMERIC_OVERFLOW = "*";
-    private final InputStream dbfInputStream;
-    private final Charset charset;
-    private final byte[] recordBuffer;
-    private final int recordLength;
-    private final Collection<XBaseField> fields;
-    private final XBaseDialect dialect;
-    private final XBaseMemoReader memoReader;
-    private final TimeZone timezone;
-    private int recordsCounter;
+    protected final InputStream dbfInputStream;
+    protected final Charset charset;
+    protected final byte[] recordBuffer;
+    protected final int recordLength;
+    protected final Collection<XBaseField> fields;
+    protected final XBaseDialect dialect;
+    protected final XBaseMemoReader memoReader;
+    protected final TimeZone timezone;
+    protected int recordsCounter;
 
     public GenericRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
                                final Charset charset, final XBaseFieldDescriptorArray array,
@@ -58,11 +58,11 @@ public class GenericRecordReader implements XBaseRecordReader {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
-        this.fields = array.getFields();
-        this.memoReader = memoReader;
-        this.dialect = dialect;
-        this.timezone = timezone;
         this.recordBuffer = new byte[this.recordLength];
+        this.fields = array.getFields();
+        this.dialect = dialect;
+        this.memoReader = memoReader;
+        this.timezone = timezone;
         this.recordsCounter = -1;
     }
 
@@ -152,14 +152,6 @@ public class GenericRecordReader implements XBaseRecordReader {
     }
 
     @Override
-    public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
-        // TODO
-        // https://en.wikipedia
-        // .org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
-        return null;
-    }
-
-    @Override
     public Long getIntegerValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 4;
         return Long.valueOf(BitUtils.makeInt(recordBuffer[offset], recordBuffer[offset + 1],
@@ -182,14 +174,6 @@ public class GenericRecordReader implements XBaseRecordReader {
     }
 
     @Override
-    public XBaseMemoRecord<?> getMemoValue(final byte[] recordBuffer, final int offset,
-                                           final int length) throws IOException {
-        final long offsetInBlocks =
-                this.dialect.getOffsetInBlocks(this, recordBuffer, offset, length);
-        return this.memoReader.read(offsetInBlocks);
-    }
-
-    @Override
     public BigDecimal getNumericValue(final byte[] recordBuffer, final int offset, final int length,
                                       final int numberOfDecimalPlaces) {
         final String s = this.getTrimmedASCIIString(recordBuffer, offset, length);
@@ -201,14 +185,15 @@ public class GenericRecordReader implements XBaseRecordReader {
     }
 
     @Override
-    public void close() throws IOException {
-        this.dbfInputStream.close();
+    public XBaseMemoRecord<?> getMemoValue(final byte[] recordBuffer, final int offset,
+                                           final int length) throws IOException {
+        final long offsetInBlocks =
+                this.dialect.getOffsetInBlocks(this, recordBuffer, offset, length);
+        return this.memoReader.read(offsetInBlocks);
     }
 
     @Override
-    public byte[] getNullFlagsValue(final byte[] recordBuffer, final int offset, final int length) {
-        final byte[] bytes = new byte[length];
-        System.arraycopy(recordBuffer, offset, bytes, 0, length);
-        return bytes;
+    public void close() throws IOException {
+        this.dbfInputStream.close();
     }
 }

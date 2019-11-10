@@ -56,16 +56,6 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public int getDatetimeFieldLength() {
-        return 0;
-    }
-
-    @Override
-    public String datetimeFieldToStringRepresentation(final String name) {
-        return null;
-    }
-
-    @Override
     public int getIntegerFieldLength() {
         return 4;
     }
@@ -91,23 +81,8 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public String memoFieldToStringRepresentation(final String name) {
-        return name + ",M,10,0";
-    }
-
-    @Override
     public int getNumericFieldLength(final int length) {
         return length;
-    }
-
-    @Override
-    public int getNullFlagsFieldLength(final int length) {
-        return length;
-    }
-
-    @Override
-    public int getSmallMemoFieldLength() {
-        return 4;
     }
 
     @Override

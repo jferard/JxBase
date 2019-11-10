@@ -57,11 +57,6 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
     }
 
     @Override
-    public void writeDatetimeField(final String name, final int offset) throws IOException {
-
-    }
-
-    @Override
     public void writeIntegerField(final String name, final int offset) throws IOException {
         this.writeField(name, 'I', this.dialect.getIntegerFieldLength(), 0, offset);
     }
@@ -76,11 +71,6 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
         this.writeField(name, 'M', this.dialect.getMemoFieldLength(), 0, offset);
     }
 
-    @Override
-    public void writeSmallMemoField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'M', this.dialect.getSmallMemoFieldLength(), 0, offset);
-    }
-
     public void writeNumericField(final String name, final int length,
                                   final int numberOfDecimalPlaces, final int offset)
             throws IOException {
@@ -88,14 +78,9 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
                 numberOfDecimalPlaces, offset);
     }
 
-    @Override
-    public void writeNullFlagsField(final String name, final int length, final int offset)
+    protected void writeField(final String name, final int type, final int length,
+                              final int numberOfDecimalPlaces, final int offset)
             throws IOException {
-        this.writeField(name, '0', this.dialect.getNullFlagsFieldLength(length), 0, offset);
-    }
-
-    private void writeField(final String name, final int type, final int length,
-                            final int numberOfDecimalPlaces, final int offset) throws IOException {
         final byte[] nameBytes = name.getBytes(JxBaseUtils.ASCII_CHARSET);
         final int nameLength = nameBytes.length;
         if (nameLength > 11) {

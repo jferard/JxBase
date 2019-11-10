@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericMemoReader;
-import com.github.jferard.jxbase.reader.internal.GenericRecordReader;
+import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,8 +56,8 @@ public class DbfRecordTest {
     public void testDeleted() throws IOException, ParseException {
         final Charset ascii = Charset.forName("ASCII");
         final InputStream in = new ByteArrayInputStream("*abc".getBytes(ascii));
-        final GenericRecordReader reader =
-                new GenericRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 4),
+        final FoxProRecordReader reader =
+                new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 4),
                         null, null);
         final GenericRecord record = reader.read();
         Assert.assertTrue(record.isDeleted());
@@ -67,8 +67,8 @@ public class DbfRecordTest {
     public void testNotDeleted() throws IOException, ParseException {
         final Charset ascii = Charset.forName("ASCII");
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
-        final GenericRecordReader reader =
-                new GenericRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3),
+        final FoxProRecordReader reader =
+                new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3),
                         null, null);
         final GenericRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
