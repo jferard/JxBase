@@ -56,19 +56,19 @@ public class ReaderWithMemoIT {
                 for (final XBaseField field : array.getFields()) {
                     final String name = field.getName();
                     if (name.equals("TEXVER")) {
-                        Assert.assertEquals(5, field.getByteLength(dialect));
+                        Assert.assertEquals(5, field.getValueByteLength(dialect));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXTEX")) {
-                        Assert.assertEquals(4, field.getByteLength(dialect));
+                        Assert.assertEquals(4, field.getValueByteLength(dialect));
                         Assert.assertEquals(SmallMemoField.class, field.getClass());
                     } else if (name.equals("TEXDAT")) {
-                        Assert.assertEquals(8, field.getByteLength(dialect));
+                        Assert.assertEquals(8, field.getValueByteLength(dialect));
                         Assert.assertEquals(DateField.class, field.getClass());
                     } else if (name.equals("TEXSTA")) {
-                        Assert.assertEquals(1, field.getByteLength(dialect));
+                        Assert.assertEquals(1, field.getValueByteLength(dialect));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXCAM")) {
-                        Assert.assertEquals(254, field.getByteLength(dialect));
+                        Assert.assertEquals(254, field.getValueByteLength(dialect));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     }
                 }

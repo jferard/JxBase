@@ -17,23 +17,18 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
-
 import java.util.Map;
 
 public class GenericRecord {
     private final boolean isDeleted;
     private final int recordNumber;
     private final Map<String, Object> valueByFieldName;
-    private final XBaseMemoReader memoReader;
 
     public GenericRecord(final boolean isDeleted, final int recordNumber,
-                         final Map<String, Object> valueByFieldName,
-                         final XBaseMemoReader memoReader) {
+                         final Map<String, Object> valueByFieldName) {
         this.isDeleted = isDeleted;
         this.recordNumber = recordNumber;
         this.valueByFieldName = valueByFieldName;
-        this.memoReader = memoReader;
     }
 
     public boolean isDeleted() {

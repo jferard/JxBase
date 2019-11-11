@@ -19,11 +19,8 @@ package com.github.jferard.jxbase.core.field;
 import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +51,7 @@ public class NullFlagsFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(8, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
@@ -42,51 +42,35 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        if (dialect instanceof FoxProDialect) {
-            return ((FoxProDialect) dialect).getSmallMemoFieldLength();
-        } else {
-            throw new IllegalArgumentException();
-        }
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return ((FoxProDialect) dialect).getSmallMemoFieldLength();
     }
 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        if (writer instanceof FoxProFieldDescriptorArrayWriter) {
-            ((FoxProFieldDescriptorArrayWriter) writer).writeSmallMemoField(this.name, offset);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProFieldDescriptorArrayWriter) writer).writeSmallMemoField(this.name, offset);
     }
 
     @Override
     public T getValue(final XBaseRecordReader reader, final byte[] recordBuffer, final int offset,
                       final int length) throws IOException {
-        if (reader instanceof FoxProRecordReader) {
-            return (T) ((FoxProRecordReader) reader)
-                    .getSmallMemoValue(recordBuffer, offset, length);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return (T) ((FoxProRecordReader) reader).getSmallMemoValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        if (writer instanceof FoxProRecordWriter) {
-            ((FoxProRecordWriter) writer).writeSmallMemoValue((T) value);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProRecordWriter) writer).writeSmallMemoValue((T) value);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        if (dialect instanceof FoxProDialect) {
-            return ((FoxProDialect) dialect).smallMemoFieldToStringRepresentation(this.name);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return this.toRepresentation(dialect).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return ((FoxProDialect) dialect).getSmallMemoFieldRepresentation(this.name);
     }
 
     @Override

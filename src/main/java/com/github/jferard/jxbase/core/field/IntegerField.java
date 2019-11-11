@@ -40,8 +40,8 @@ public class IntegerField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getIntegerFieldLength();
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getIntegerValueLength();
     }
 
     @Override
@@ -63,7 +63,12 @@ public class IntegerField implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.integerFieldToStringRepresentation(this.name);
+        return dialect.getIntegerFieldRepresentation(this.name).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getIntegerFieldRepresentation(this.name);
     }
 
     @Override

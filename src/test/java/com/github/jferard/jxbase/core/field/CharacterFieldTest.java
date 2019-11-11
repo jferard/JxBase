@@ -51,7 +51,7 @@ public class CharacterFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(20, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(20, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

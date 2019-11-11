@@ -17,9 +17,9 @@
 package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.FoxProDialect;
-import com.github.jferard.jxbase.core.TextMemoRecord;
+import com.github.jferard.jxbase.core.memo.TextMemoRecord;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
@@ -54,7 +54,7 @@ public class SmallMemoFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class SmallMemoFieldTest {
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("memo,M,10,0", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("memo,M,4,0", this.f.toStringRepresentation(this.dialect));
     }
 
     @Test

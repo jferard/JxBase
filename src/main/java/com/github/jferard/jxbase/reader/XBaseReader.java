@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.Closeable;

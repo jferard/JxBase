@@ -51,7 +51,7 @@ public class IntegerFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

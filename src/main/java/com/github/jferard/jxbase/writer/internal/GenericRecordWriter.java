@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -133,7 +133,7 @@ public class GenericRecordWriter implements XBaseRecordWriter {
 
     @Override
     public <T extends XBaseMemoRecord<?>> void writeMemoValue(final T value) throws IOException {
-        final int length = this.dialect.getMemoFieldLength();
+        final int length = this.dialect.getMemoValueLength();
         if (value == null) {
             BitUtils.writeEmpties(this.out, length);
         } else {
@@ -169,9 +169,9 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     @Override
     public void writeIntegerValue(final Long i) throws IOException {
         if (i == null) {
-            BitUtils.writeEmpties(this.out, this.dialect.getIntegerFieldLength());
+            BitUtils.writeEmpties(this.out, this.dialect.getIntegerValueLength());
         } else {
-            assert 4 == this.dialect.getIntegerFieldLength();
+            assert 4 == this.dialect.getIntegerValueLength();
             BitUtils.writeLEByte4(this.out, i.intValue());
         }
     }

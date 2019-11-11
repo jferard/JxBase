@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
 public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {

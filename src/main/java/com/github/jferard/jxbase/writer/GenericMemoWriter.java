@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.core.MemoRecordFactory;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -18,6 +18,7 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.core.field.CharacterField;
 import com.github.jferard.jxbase.core.field.DateField;
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
 import com.github.jferard.jxbase.core.field.IntegerField;
 import com.github.jferard.jxbase.core.field.LogicalField;
 import com.github.jferard.jxbase.core.field.MemoField;
@@ -25,6 +26,7 @@ import com.github.jferard.jxbase.core.field.NullFlagsField;
 import com.github.jferard.jxbase.core.field.NumericField;
 import com.github.jferard.jxbase.core.field.SmallMemoField;
 import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -36,59 +38,67 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public int getCharacterFieldLength(final int length) {
+    public int getCharacterValueLength(final int length) {
         return length;
     }
 
     @Override
-    public String characterFieldToStringRepresentation(final String name, final int length) {
-        return name + ",C," + length + ",0";
+    public FieldRepresentation getCharacterFieldRepresentation(final String name, final int dataSize) {
+        if (dataSize > 254) {
+            throw new IllegalArgumentException("Use FoxPro for long character fields");
+        }
+        return new FieldRepresentation(name, 'C', dataSize,0);
     }
 
     @Override
-    public int getDateFieldLength() {
+    public int getDateValueLength() {
         return 8;
     }
 
     @Override
-    public String dateFieldToStringRepresentation(final String name) {
-        return name + ",D,8,0";
+    public FieldRepresentation getDateFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'D', 8,0);
     }
 
     @Override
-    public int getIntegerFieldLength() {
+    public int getIntegerValueLength() {
         return 4;
     }
 
     @Override
-    public String integerFieldToStringRepresentation(final String name) {
-        return name + ",I,4,0";
+    public FieldRepresentation getIntegerFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'I', 4,0);
     }
 
     @Override
-    public int getLogicalFieldLength() {
+    public int getLogicalValueLength() {
         return 1;
     }
 
     @Override
-    public String logicalFieldToStringRepresentation(final String name) {
-        return name + ",L,1,0";
+    public FieldRepresentation getLogicalFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'L', 1,0);
     }
 
     @Override
-    public int getMemoFieldLength() {
+    public int getMemoValueLength() {
         return 10;
     }
 
     @Override
-    public int getNumericFieldLength(final int length) {
+    public FieldRepresentation getMemoFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'M', 10,0);
+    }
+
+    @Override
+    public int getNumericValueLength(final int length) {
         return length;
     }
 
     @Override
-    public String numericFieldToStringRepresentation(final String name, final int length,
-                                                     final int numberOfDecimalPlaces) {
-        return name + ",N," + length + "," + numberOfDecimalPlaces;
+    public FieldRepresentation getNumericFieldRepresentation(final String name, final int dataSize,
+                                                final int numberOfDecimalPlaces) {
+        return new FieldRepresentation(name, 'N', dataSize,numberOfDecimalPlaces);
     }
 
     @Override

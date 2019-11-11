@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.MemoRecordFactory;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 
 import java.io.File;

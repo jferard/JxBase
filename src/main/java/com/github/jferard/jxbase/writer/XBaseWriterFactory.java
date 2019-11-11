@@ -114,7 +114,7 @@ public class XBaseWriterFactory {
                                          final XBaseLengths dialect) {
         int result = 0;
         for (final XBaseField field : fields) {
-            result += field.getByteLength(dialect);
+            result += field.getValueByteLength(dialect);
         }
         return result + 1;
     }

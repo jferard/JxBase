@@ -1,5 +1,5 @@
 /*
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,39 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.memo;
 
-import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
-public class TextMemoRecord implements XBaseMemoRecord<String> {
+public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
+    private final byte[] bytes;
     private final MemoRecordTypeEnum type;
-    private final int offsetInBlocks;
-    private final Charset charset;
-    private final String s;
+    private final int length;
+    private final long offsetInBlocks;
 
-    public TextMemoRecord(final String s, final long offsetInBlocks, final Charset charset) {
-        this.s = s;
-        this.type = MemoRecordTypeEnum.TEXT;
-        this.offsetInBlocks = (int) offsetInBlocks;
-        this.charset = charset;
+    public ImageMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks) {
+        this.bytes = bytes;
+        this.type = MemoRecordTypeEnum.IMAGE;
+        this.length = length;
+        this.offsetInBlocks = offsetInBlocks;
     }
 
     @Override
     public byte[] getBytes() {
-        return this.s.getBytes(this.charset);
+        return this.bytes;
     }
 
     @Override
-    public String getValue() {
-        return this.s;
+    public byte[] getValue() {
+        return this.bytes;
     }
 
     @Override
     public int getLength() {
-        return this.s.getBytes(this.charset).length;
+        return this.length;
     }
 
     @Override
@@ -61,6 +61,6 @@ public class TextMemoRecord implements XBaseMemoRecord<String> {
 
     @Override
     public String toString() {
-        return "ImageMemoRecord[bytes=" + this.getValue() + "]";
+        return "ImageMemoRecord[bytes=" + Arrays.toString(this.bytes) + "]";
     }
 }

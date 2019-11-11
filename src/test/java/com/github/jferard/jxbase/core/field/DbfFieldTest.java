@@ -50,7 +50,7 @@ public class DbfFieldTest {
     public void testFromStringRepresentation() {
         final XBaseField f = this.dialect.fromStringRepresentation("a,C,10,0");
         Assert.assertEquals("a", f.getName());
-        Assert.assertEquals(10, f.getByteLength(this.dialect));
+        Assert.assertEquals(10, f.getValueByteLength(this.dialect));
         Assert.assertEquals("CharacterField[name=a, length=10]", f.toString());
         Assert.assertEquals("a,C,10,0", f.toStringRepresentation(this.dialect));
     }

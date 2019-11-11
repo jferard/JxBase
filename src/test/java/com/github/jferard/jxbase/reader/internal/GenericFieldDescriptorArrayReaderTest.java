@@ -48,6 +48,6 @@ public class GenericFieldDescriptorArrayReaderTest {
         Assert.assertTrue(field instanceof CharacterField);
         final CharacterField cf = (CharacterField) field;
         Assert.assertEquals("abc", cf.getName());
-        Assert.assertEquals(10, cf.getByteLength(dialect));
+        Assert.assertEquals(10, cf.getValueByteLength(dialect));
     }
 }

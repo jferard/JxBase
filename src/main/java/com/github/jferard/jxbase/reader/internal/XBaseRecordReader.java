@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.math.BigDecimal;

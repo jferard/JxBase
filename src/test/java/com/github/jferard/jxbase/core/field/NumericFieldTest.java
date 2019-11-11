@@ -52,7 +52,7 @@ public class NumericFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(10, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(10, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

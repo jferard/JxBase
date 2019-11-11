@@ -17,17 +17,17 @@
 package com.github.jferard.jxbase.core;
 
 public interface XBaseLengths {
-    int getCharacterFieldLength(int length);
+    int getCharacterValueLength(int length);
 
-    int getDateFieldLength();
+    int getDateValueLength();
 
-    int getIntegerFieldLength();
+    int getIntegerValueLength();
 
-    int getLogicalFieldLength();
+    int getLogicalValueLength();
 
-    int getMemoFieldLength();
+    int getMemoValueLength();
 
-    int getNumericFieldLength(int length);
+    int getNumericValueLength(int length);
 
     /* FoxPro
     int getDatetimeFieldLength();

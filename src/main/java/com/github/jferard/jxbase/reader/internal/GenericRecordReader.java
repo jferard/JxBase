@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.reader.internal;
 import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.BitUtils;
@@ -92,12 +92,12 @@ public class GenericRecordReader implements XBaseRecordReader {
         int offset = 1;
         for (final XBaseField field : this.fields) {
             final Object value = field.getValue(this, this.recordBuffer, offset,
-                    field.getByteLength(this.dialect));
+                    field.getValueByteLength(this.dialect));
             final String name = field.getName();
             valueByFieldName.put(name, value);
-            offset += field.getByteLength(this.dialect);
+            offset += field.getValueByteLength(this.dialect);
         }
-        return new GenericRecord(isDeleted, this.recordsCounter + 1, valueByFieldName, null);
+        return new GenericRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }
 
     @Override

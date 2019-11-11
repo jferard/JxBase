@@ -52,7 +52,7 @@ public class DateFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getByteLength(this.dialect));
+        Assert.assertEquals(8, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

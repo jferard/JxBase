@@ -37,8 +37,8 @@ public class LogicalField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getLogicalFieldLength();
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getLogicalValueLength();
     }
 
     @Override
@@ -60,7 +60,12 @@ public class LogicalField implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.logicalFieldToStringRepresentation(this.name);
+        return dialect.getLogicalFieldRepresentation(this.name).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getLogicalFieldRepresentation(this.name);
     }
 
     @Override

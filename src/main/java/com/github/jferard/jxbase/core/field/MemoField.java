@@ -16,10 +16,9 @@
 
 package com.github.jferard.jxbase.core.field;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
@@ -39,8 +38,8 @@ public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getMemoFieldLength();
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getMemoValueLength();
     }
 
     @Override
@@ -62,7 +61,12 @@ public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return ((FoxProDialect) dialect).smallMemoFieldToStringRepresentation(this.name);
+        return dialect.getMemoFieldRepresentation(this.name).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getMemoFieldRepresentation(this.name);
     }
 
     @Override

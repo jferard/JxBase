@@ -42,49 +42,34 @@ public class DatetimeField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        if (dialect instanceof FoxProDialect) {
-            return ((FoxProDialect) dialect).getDatetimeFieldLength();
-        } else {
-            throw new IllegalArgumentException();
-        }
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return ((FoxProDialect) dialect).getDatetimeValueLength();
     }
 
     @Override
     public Date getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
                          final int offset, final int length) throws IOException {
-        if (reader instanceof FoxProRecordReader) {
-            return ((FoxProRecordReader) reader).getDatetimeValue(recordBuffer, offset, length);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return ((FoxProRecordReader) reader).getDatetimeValue(recordBuffer, offset, length);
     }
 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        if (writer instanceof FoxProFieldDescriptorArrayWriter) {
-            ((FoxProFieldDescriptorArrayWriter) writer).writeDatetimeField(this.name, offset);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProFieldDescriptorArrayWriter) writer).writeDatetimeField(this.name, offset);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        if (writer instanceof FoxProRecordWriter) {
-            ((FoxProRecordWriter) writer).writeDatetimeValue((Date) value);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProRecordWriter) writer).writeDatetimeValue((Date) value);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        if (dialect instanceof FoxProDialect) {
-            return ((FoxProDialect) dialect).datetimeFieldToStringRepresentation(this.name);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return this.toRepresentation(dialect).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return ((FoxProDialect) dialect).getDatetimeFieldRepresentation(this.name);
     }
 }

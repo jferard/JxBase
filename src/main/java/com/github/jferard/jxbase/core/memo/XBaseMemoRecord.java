@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.memo;
+
+import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
 
 /**
  * A record in the memo file

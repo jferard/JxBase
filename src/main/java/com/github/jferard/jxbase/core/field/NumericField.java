@@ -46,8 +46,8 @@ public class NumericField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getNumericFieldLength(this.length);
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getNumericValueLength(this.length);
     }
 
     @Override
@@ -69,7 +69,13 @@ public class NumericField implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.numericFieldToStringRepresentation(this.name, this.length,
+        return dialect.getNumericFieldRepresentation(this.name, this.length,
+                this.numberOfDecimalPlaces).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getNumericFieldRepresentation(this.name, this.length,
                 this.numberOfDecimalPlaces);
     }
 

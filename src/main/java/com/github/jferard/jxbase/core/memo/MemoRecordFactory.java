@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.memo;
 
 import java.nio.charset.Charset;
 

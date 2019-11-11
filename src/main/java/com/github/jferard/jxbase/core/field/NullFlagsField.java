@@ -43,43 +43,36 @@ public class NullFlagsField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
+    public int getValueByteLength(final XBaseLengths dialect) {
         return ((FoxProDialect) dialect).getNullFlagsFieldLength(this.length);
     }
 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        if (writer instanceof FoxProFieldDescriptorArrayWriter) {
-            ((FoxProFieldDescriptorArrayWriter) writer)
-                    .writeNullFlagsField(this.name, this.length, offset);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProFieldDescriptorArrayWriter) writer)
+                .writeNullFlagsField(this.name, this.length, offset);
     }
 
     @Override
     public byte[] getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
                            final int offset, final int length) throws IOException {
-        if (reader instanceof FoxProRecordReader) {
-            return ((FoxProRecordReader) reader).getNullFlagsValue(recordBuffer, offset, length);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return ((FoxProRecordReader) reader).getNullFlagsValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        if (writer instanceof FoxProRecordWriter) {
-            ((FoxProRecordWriter) writer).writeNullFlagsValue((byte[]) value, this.length);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        ((FoxProRecordWriter) writer).writeNullFlagsValue((byte[]) value, this.length);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return this.name + ",0," + this.length + ",0";
+        return this.toRepresentation(dialect).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return ((FoxProDialect) dialect).getNullFlagsFieldRepresentation(this.name, this.length);
     }
 
     @Override

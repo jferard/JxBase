@@ -24,13 +24,16 @@ import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 
+/**
+ * Independent of the dialect
+ */
 public interface XBaseField {
     String getName();
 
     /**
      * @return the length of the field (the actual length, not necessarily the third field)
      */
-    int getByteLength(XBaseLengths dialect);
+    int getValueByteLength(XBaseLengths dialect);
 
     void write(XBaseFieldDescriptorArrayWriter writer, int offset) throws IOException;
 
@@ -40,4 +43,6 @@ public interface XBaseField {
     void writeValue(XBaseRecordWriter writer, Object value) throws IOException;
 
     String toStringRepresentation(XBaseRepresentations dialect);
+
+    FieldRepresentation toRepresentation(XBaseRepresentations dialect);
 }

@@ -25,12 +25,12 @@ import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 import java.io.IOException;
 
 public class CharacterField implements XBaseField {
-    private final int length;
+    private final int dataSize;
     private final String name;
 
-    public CharacterField(final String name, final int length) {
+    public CharacterField(final String name, final int dataSize) {
         this.name = name;
-        this.length = length;
+        this.dataSize = dataSize;
     }
 
     @Override
@@ -39,14 +39,14 @@ public class CharacterField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getCharacterFieldLength(this.length);
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getCharacterValueLength(this.dataSize);
     }
 
     @Override
     public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
             throws IOException {
-        writer.writeCharacterField(this.name, this.length, offset);
+        writer.writeCharacterField(this.name, this.dataSize, offset);
     }
 
     @Override
@@ -57,16 +57,21 @@ public class CharacterField implements XBaseField {
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        writer.writeCharacterValue((String) value, this.length);
+        writer.writeCharacterValue((String) value, this.dataSize);
     }
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.characterFieldToStringRepresentation(this.name, this.length);
+        return dialect.getCharacterFieldRepresentation(this.name, this.dataSize).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getCharacterFieldRepresentation(this.name, this.dataSize);
     }
 
     @Override
     public String toString() {
-        return "CharacterField[name=" + this.name + ", length=" + this.length + "]";
+        return "CharacterField[name=" + this.name + ", length=" + this.dataSize + "]";
     }
 }

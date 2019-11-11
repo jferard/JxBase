@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 

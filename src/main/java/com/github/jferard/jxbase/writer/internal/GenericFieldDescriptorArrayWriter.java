@@ -18,6 +18,7 @@ package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -39,42 +40,44 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
         int offset = 0;
         for (final XBaseField field : array.getFields()) {
             field.write(this, offset);
-            offset += field.getByteLength(this.dialect);
+            offset += field.getValueByteLength(this.dialect);
         }
         this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         return offset;
     }
 
     @Override
-    public void writeCharacterField(final String name, final int length, final int offset)
+    public void writeCharacterField(final String name, final int dataSize, final int offset)
             throws IOException {
-        this.writeField(name, 'C', this.dialect.getCharacterFieldLength(length), 0, offset);
+        this.writeField(name, 'C', this.dialect.getCharacterValueLength(dataSize), 0, offset);
     }
 
     @Override
     public void writeDateField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'D', this.dialect.getDateFieldLength(), 0, offset);
+        this.writeField(name, 'D', this.dialect.getDateValueLength(), 0, offset);
     }
 
     @Override
     public void writeIntegerField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'I', this.dialect.getIntegerFieldLength(), 0, offset);
+        final FieldRepresentation fieldRepresentation =
+                new FieldRepresentation(name, 'I', this.dialect.getIntegerValueLength(), 0);
+        this.writeField(fieldRepresentation, offset);
     }
 
     @Override
     public void writeLogicalField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'L', this.dialect.getLogicalFieldLength(), 0, offset);
+        this.writeField(name, 'L', this.dialect.getLogicalValueLength(), 0, offset);
     }
 
     @Override
     public void writeMemoField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'M', this.dialect.getMemoFieldLength(), 0, offset);
+        this.writeField(name, 'M', this.dialect.getMemoValueLength(), 0, offset);
     }
 
-    public void writeNumericField(final String name, final int length,
+    public void writeNumericField(final String name, final int dataSize,
                                   final int numberOfDecimalPlaces, final int offset)
             throws IOException {
-        this.writeField(name, 'N', this.dialect.getNumericFieldLength(length),
+        this.writeField(name, 'N', this.dialect.getNumericValueLength(dataSize),
                 numberOfDecimalPlaces, offset);
     }
 
@@ -93,5 +96,10 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
         this.out.write(length & 0xFF); // 16
         this.out.write(numberOfDecimalPlaces); // 17
         BitUtils.writeZeroes(this.out, JxBaseUtils.FIELD_DESCRIPTOR_SIZE - 18);
+    }
+
+    protected void writeField(final FieldRepresentation dialectField, final int offset)
+            throws IOException {
+        dialectField.write(this.out, offset);
     }
 }

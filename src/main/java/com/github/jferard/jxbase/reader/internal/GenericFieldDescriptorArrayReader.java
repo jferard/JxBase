@@ -57,7 +57,7 @@ public class GenericFieldDescriptorArrayReader implements XBaseFieldDescriptorAr
             fields.add(field);
 
             arrayLength += fieldBytes.length;
-            recordLength += field.getByteLength(this.dialect);
+            recordLength += field.getValueByteLength(this.dialect);
 
             if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
                 arrayLength += 1;
@@ -70,6 +70,7 @@ public class GenericFieldDescriptorArrayReader implements XBaseFieldDescriptorAr
     private XBaseField createDbfField(final byte[] fieldBytes) {
         final String name = this.getName(fieldBytes);
         final byte typeByte = fieldBytes[11];
+        // read offset
         final int length = this.getLength(fieldBytes[16]);
         final byte numberOfDecimalPlaces = fieldBytes[17];
 

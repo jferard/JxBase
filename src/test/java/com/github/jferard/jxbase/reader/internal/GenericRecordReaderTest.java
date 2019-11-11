@@ -16,13 +16,13 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.MemoRecordFactory;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.field.LogicalField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;

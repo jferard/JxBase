@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.memo.MemoFileHeader;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -16,22 +16,20 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
+
 public interface XBaseRepresentations {
-    String characterFieldToStringRepresentation(String name, int length);
+    FieldRepresentation getCharacterFieldRepresentation(String name, int dataSize);
 
-    String dateFieldToStringRepresentation(String name);
+    FieldRepresentation getDateFieldRepresentation(String name);
 
-    String integerFieldToStringRepresentation(String name);
+    FieldRepresentation getIntegerFieldRepresentation(String name);
 
-    String logicalFieldToStringRepresentation(String name);
+    FieldRepresentation getLogicalFieldRepresentation(String name);
 
-    String numericFieldToStringRepresentation(String name, int length, int numberOfDecimalPlaces);
+    FieldRepresentation getMemoFieldRepresentation(String name);
 
-    /* FoxPro
-    String datetimeFieldToStringRepresentation(String name);
+    FieldRepresentation getNumericFieldRepresentation(String name, int dataSize, int numberOfDecimalPlaces);
 
-    String smallMemoFieldToStringRepresentation(String name);
-
-    String nullFlagsFieldToStringRepresentation(String name);
-    */
+    /* FoxPro: dateTime, smallMemo, nullFlags */
 }

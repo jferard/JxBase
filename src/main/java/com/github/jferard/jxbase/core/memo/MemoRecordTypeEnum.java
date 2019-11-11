@@ -1,5 +1,5 @@
 /*
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.memo;
 
 public enum MemoRecordTypeEnum {
     IMAGE(0x0), TEXT(0x1);

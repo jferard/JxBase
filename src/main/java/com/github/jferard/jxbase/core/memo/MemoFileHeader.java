@@ -1,6 +1,5 @@
 /*
  * JxBase - Copyright (c) 2019 Julien Férard
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.core.memo;
 
 import com.github.jferard.jxbase.util.BitUtils;
 

@@ -16,10 +16,10 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.MemoRecordFactory;
-import com.github.jferard.jxbase.core.MemoFileHeader;
-import com.github.jferard.jxbase.core.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.core.XBaseMemoRecord;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.core.memo.MemoFileHeader;
+import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 

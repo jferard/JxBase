@@ -38,8 +38,8 @@ public class DateField implements XBaseField {
     }
 
     @Override
-    public int getByteLength(final XBaseLengths dialect) {
-        return dialect.getDateFieldLength();
+    public int getValueByteLength(final XBaseLengths dialect) {
+        return dialect.getDateValueLength();
     }
 
     @Override
@@ -61,7 +61,12 @@ public class DateField implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.dateFieldToStringRepresentation(this.name);
+        return dialect.getDateFieldRepresentation(this.name).toString();
+    }
+
+    @Override
+    public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
+        return dialect.getDateFieldRepresentation(this.name);
     }
 
     @Override

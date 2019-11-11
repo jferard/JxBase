@@ -16,5 +16,8 @@
 
 /**
  * Contains the field classes. Field classes are dialect independent.
+ *
+ * Note: a field has three length: the repLength (third element of: name,type,repLength,numberOfDecimalPlaces),
+ * the byteLength of the value (usually the same as the previous), and the dataSize.
  */
 package com.github.jferard.jxbase.core.field;

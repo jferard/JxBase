@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.BitUtils;
 
@@ -24,26 +25,36 @@ public class FoxProDialect extends GenericDialect {
         super(type);
     }
 
-    public int getDatetimeFieldLength() {
-        return 0;
+    @Override
+    public FieldRepresentation getCharacterFieldRepresentation(final String name,
+                                                               final int dataSize) {
+        return new FieldRepresentation(name, 'C', dataSize & 0xFF, dataSize >> 8);
     }
 
-    public String datetimeFieldToStringRepresentation(final String name) {
-        return null;
+    public int getDatetimeValueLength() {
+        return 8;
+    }
+
+    public FieldRepresentation getDatetimeFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'T', 8, 0);
     }
 
     public int getNullFlagsFieldLength(final int length) {
         return length;
     }
 
-    public String smallMemoFieldToStringRepresentation(final String name) {
-        return name + ",M,10,0";
+    public FieldRepresentation getNullFlagsFieldRepresentation(final String name,
+                                                               final int length) {
+        return new FieldRepresentation(name, '0', length, 0);
+    }
+
+    public FieldRepresentation getSmallMemoFieldRepresentation(final String name) {
+        return new FieldRepresentation(name, 'M', 4, 0);
     }
 
     public int getSmallMemoFieldLength() {
         return 4;
     }
-
 
 
     /**
@@ -58,10 +69,13 @@ public class FoxProDialect extends GenericDialect {
      * @return
      */
     @Override
-    public long getOffsetInBlocks(final XBaseRecordReader recordReader,
-                                  final byte[] recordBuffer, final int offset, final int length) {
+    public long getOffsetInBlocks(final XBaseRecordReader recordReader, final byte[] recordBuffer,
+                                  final int offset, final int length) {
         assert length == 4;
-        return BitUtils.makeInt(recordBuffer[offset], recordBuffer[offset+1], recordBuffer[offset+2], recordBuffer[offset+3]);
+        return BitUtils
+                .makeInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
+                        recordBuffer[offset + 3]);
     }
+
 }
 

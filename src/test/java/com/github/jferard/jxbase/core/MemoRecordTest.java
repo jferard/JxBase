@@ -16,6 +16,13 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.core.memo.ImageMemoRecord;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.core.memo.TextMemoRecord;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.util.JxBaseUtils;
+import com.sun.prism.Image;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,14 +43,12 @@ public class MemoRecordTest {
 
     @Test
     public void testCreateVoid() {
-        final XBaseMemoRecord mr =
-                new TextMemoRecord("", 0, this.charset);
+        final XBaseMemoRecord<?> mr = new TextMemoRecord("", 0, this.charset);
     }
 
     @Test
     public void testCreate() {
-        final XBaseMemoRecord mr =
-                new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096, 0);
+        final XBaseMemoRecord<?> mr = new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096, 0);
         Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
         Assert.assertEquals(84281096, mr.getLength());
     }
@@ -51,8 +56,7 @@ public class MemoRecordTest {
     @Test
     public void testGet() {
         final byte[] value = {'A', 'B'};
-        final XBaseMemoRecord mr = new TextMemoRecord("AB", 3,
-                this.charset);
+        final XBaseMemoRecord<?> mr = new TextMemoRecord("AB", 3, this.charset);
         Assert.assertArrayEquals(value, mr.getBytes());
         Assert.assertEquals(MemoRecordTypeEnum.TEXT, mr.getMemoType());
         Assert.assertEquals(2, mr.getLength());
