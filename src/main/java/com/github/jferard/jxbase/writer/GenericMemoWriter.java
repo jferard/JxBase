@@ -18,13 +18,14 @@ package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.util.BitUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 
 public class GenericMemoWriter implements XBaseMemoWriter {
@@ -43,29 +44,41 @@ public class GenericMemoWriter implements XBaseMemoWriter {
         return new GenericMemoWriter(fileOutputStream.getChannel(), new MemoRecordFactory(charset));
     }
 
-    private final FileChannel channel;
+    private final SeekableByteChannel channel;
     private final MemoRecordFactory dbfMemoRecordFactory;
+    private long curOffsetInBlocks;
 
-    public GenericMemoWriter(final FileChannel channel,
+    public GenericMemoWriter(final SeekableByteChannel channel,
                              final MemoRecordFactory dbfMemoRecordFactory) throws IOException {
         this.channel = channel;
         this.dbfMemoRecordFactory = dbfMemoRecordFactory;
+        this.curOffsetInBlocks = 1;
         this.writeHeader();
     }
 
     private void writeHeader() throws IOException {
         final byte[] bytes = new byte[512];
         bytes[5] = 0x02;
-        this.channel.write(ByteBuffer.wrap(bytes));
+        this.writeBytes(bytes);
     }
 
     @Override
-    public void write(final long offsetInBlocks, final XBaseMemoRecord<?> memo) throws IOException {
+    public long write(final XBaseMemoRecord<?> memo) throws IOException {
         final int blockSize = 512;
         final int headerSize = 512;
         final int from = 0;
+        final long offsetInBlocks = this.curOffsetInBlocks;
         final long start = blockSize * (offsetInBlocks - 1) + headerSize + from;
         this.channel.position(start);
-        this.channel.write(ByteBuffer.wrap(memo.getBytes()));
+        this.writeBytes(BitUtils.makeByte4(memo.getMemoType().getType()));
+        this.writeBytes(BitUtils.makeByte4(memo.getLength()));
+        final byte[] bytes = memo.getBytes();
+        this.writeBytes(bytes);
+        this.curOffsetInBlocks += (8 + bytes.length) / blockSize;
+        return offsetInBlocks;
+    }
+
+    private int writeBytes(final byte[] bytes) throws IOException {
+        return this.channel.write(ByteBuffer.wrap(bytes));
     }
 }

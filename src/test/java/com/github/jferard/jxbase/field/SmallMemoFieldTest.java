@@ -61,14 +61,14 @@ public class SmallMemoFieldTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        final TextMemoRecord record = new TextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
+        final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         Mockito.<XBaseMemoRecord<?>>when(this.r.getSmallMemoValue(bytes, 0, 4)).thenReturn(record);
         Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
     }
 
     @Test
     public void writeValue() throws IOException {
-        final TextMemoRecord record = new TextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);
+        final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         this.f.writeValue(this.w, record);
         Mockito.verify(this.w).writeSmallMemoValue(record);
     }

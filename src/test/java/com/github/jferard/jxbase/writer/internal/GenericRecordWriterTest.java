@@ -16,12 +16,12 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.memo.TextMemoRecord;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
 import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
+import com.github.jferard.jxbase.memo.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 import org.junit.Assert;
@@ -74,9 +74,12 @@ public class GenericRecordWriterTest {
 
     @Test
     public void writeMemoValue() throws IOException {
-        this.grw.writeSmallMemoValue(new TextMemoRecord("memo", 1, JxBaseUtils.UTF8_CHARSET));
-        Assert.assertArrayEquals("         1".getBytes(JxBaseUtils.ASCII_CHARSET),
-                this.bos.toByteArray());
+        final TextMemoRecord memo = new TextMemoRecord("memo", JxBaseUtils.UTF8_CHARSET);
+        Mockito.when(this.mw.write(memo)).thenReturn(10L);
+
+        this.grw.writeSmallMemoValue(memo);
+        Assert.assertEquals("        10",
+                new String(this.bos.toByteArray(), JxBaseUtils.UTF8_CHARSET));
     }
 
     @Test
@@ -92,13 +95,15 @@ public class GenericRecordWriterTest {
     @Test
     public void writeDateValue() throws IOException {
         this.grw.writeDateValue(new Date(0));
-        Assert.assertArrayEquals("19700101".getBytes(JxBaseUtils.ASCII_CHARSET), this.bos.toByteArray());
+        Assert.assertArrayEquals("19700101".getBytes(JxBaseUtils.ASCII_CHARSET),
+                this.bos.toByteArray());
     }
 
     @Test
     public void writeNumericValue() throws IOException {
         this.grw.writeNumericValue(new BigDecimal("-1103.5"), 18, 3);
-        Assert.assertArrayEquals("         -1103.500".getBytes(JxBaseUtils.ASCII_CHARSET), this.bos.toByteArray());
+        Assert.assertArrayEquals("         -1103.500".getBytes(JxBaseUtils.ASCII_CHARSET),
+                this.bos.toByteArray());
     }
 
     @Test
@@ -110,7 +115,7 @@ public class GenericRecordWriterTest {
     @Test
     public void writeDatetimeValue() throws IOException {
         this.grw.writeDatetimeValue(new Date(0));
-//        System.out.println(Arrays.toString(this.bos.toByteArray()));
+        //        System.out.println(Arrays.toString(this.bos.toByteArray()));
     }
 
     @Test

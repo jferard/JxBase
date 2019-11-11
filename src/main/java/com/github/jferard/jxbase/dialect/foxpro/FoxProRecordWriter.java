@@ -74,11 +74,9 @@ public class FoxProRecordWriter extends GenericRecordWriter {
         if (value == null) {
             BitUtils.writeEmpties(this.out, length);
         } else {
-            // TODO: FIXME
-            final long offsetInBlocks = value.getOffsetInBlocks();
+            final long offsetInBlocks = this.memoWriter.write(value);
             final String s = String.format("%10d", offsetInBlocks);
             this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
-            this.memoWriter.write(offsetInBlocks, value);
         }
     }
 

@@ -30,10 +30,10 @@ public class MemoRecordFactory {
                                      final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:
-                return new ImageMemoRecord(dataBytes, memoRecordLength, offsetInBlocks);
+                return new ImageMemoRecord(dataBytes, memoRecordLength);
             case TEXT:
                 return new TextMemoRecord(new String(dataBytes, 0, memoRecordLength, this.charset),
-                        offsetInBlocks, this.charset);
+                        this.charset);
             default:
                 throw new IllegalArgumentException(memoRecordType.toString());
         }

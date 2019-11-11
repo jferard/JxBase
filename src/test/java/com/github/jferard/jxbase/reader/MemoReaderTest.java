@@ -55,11 +55,10 @@ public class MemoReaderTest {
 
         final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
         try {
-            final XBaseMemoRecord mrec = memoReader.read(10);
+            final XBaseMemoRecord<?> mrec = memoReader.read(10);
             Assert.assertArrayEquals(new byte[]{}, mrec.getBytes());
             Assert.assertEquals(0, mrec.getLength());
             Assert.assertEquals("", mrec.getValue());
-            Assert.assertEquals(10, mrec.getOffsetInBlocks());
         } catch (final Exception e) {}
     }
 

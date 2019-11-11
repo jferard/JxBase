@@ -40,13 +40,13 @@ public class MemoRecordTest {
 
     @Test
     public void testCreateVoid() {
-        final XBaseMemoRecord<?> mr = new TextMemoRecord("", 0, this.charset);
+        final XBaseMemoRecord<?> mr = new TextMemoRecord("", this.charset);
     }
 
     @Test
     public void testCreate() {
         final XBaseMemoRecord<?> mr =
-                new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096, 0);
+                new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096);
         Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
         Assert.assertEquals(84281096, mr.getLength());
     }
@@ -54,10 +54,9 @@ public class MemoRecordTest {
     @Test
     public void testGet() {
         final byte[] value = {'A', 'B'};
-        final XBaseMemoRecord<?> mr = new TextMemoRecord("AB", 3, this.charset);
+        final XBaseMemoRecord<?> mr = new TextMemoRecord("AB", this.charset);
         Assert.assertArrayEquals(value, mr.getBytes());
         Assert.assertEquals(MemoRecordTypeEnum.TEXT, mr.getMemoType());
         Assert.assertEquals(2, mr.getLength());
-        Assert.assertEquals(3, mr.getOffsetInBlocks());
     }
 }

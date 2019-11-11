@@ -44,7 +44,7 @@ public class WriterWithMemoIT {
         this.fields.add(new CharacterField("NAME", 20));
         this.fields.add(new MemoField<TextMemoRecord>("MEMO"));
         this.valueMap.put("NAME", "some data");
-        this.valueMap.put("MEMO", new TextMemoRecord("in the memo", 1, JxBaseUtils.UTF8_CHARSET));
+        this.valueMap.put("MEMO", new TextMemoRecord("in the memo", JxBaseUtils.UTF8_CHARSET));
     }
 
     @Test

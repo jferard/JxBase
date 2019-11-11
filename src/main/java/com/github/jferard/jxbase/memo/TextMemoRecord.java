@@ -23,14 +23,12 @@ import java.nio.charset.Charset;
  */
 public class TextMemoRecord implements XBaseMemoRecord<String> {
     private final MemoRecordTypeEnum type;
-    private final int offsetInBlocks;
     private final Charset charset;
     private final String s;
 
-    public TextMemoRecord(final String s, final long offsetInBlocks, final Charset charset) {
+    public TextMemoRecord(final String s, final Charset charset) {
         this.s = s;
         this.type = MemoRecordTypeEnum.TEXT;
-        this.offsetInBlocks = (int) offsetInBlocks;
         this.charset = charset;
     }
 
@@ -52,11 +50,6 @@ public class TextMemoRecord implements XBaseMemoRecord<String> {
     @Override
     public MemoRecordTypeEnum getMemoType() {
         return this.type;
-    }
-
-    @Override
-    public long getOffsetInBlocks() {
-        return this.offsetInBlocks;
     }
 
     @Override

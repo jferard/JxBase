@@ -25,13 +25,11 @@ public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
     private final byte[] bytes;
     private final MemoRecordTypeEnum type;
     private final int length;
-    private final long offsetInBlocks;
 
-    public ImageMemoRecord(final byte[] bytes, final int length, final long offsetInBlocks) {
+    public ImageMemoRecord(final byte[] bytes, final int length) {
         this.bytes = bytes;
         this.type = MemoRecordTypeEnum.IMAGE;
         this.length = length;
-        this.offsetInBlocks = offsetInBlocks;
     }
 
     @Override
@@ -52,11 +50,6 @@ public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
     @Override
     public MemoRecordTypeEnum getMemoType() {
         return this.type;
-    }
-
-    @Override
-    public long getOffsetInBlocks() {
-        return this.offsetInBlocks;
     }
 
     @Override

@@ -42,8 +42,4 @@ public interface XBaseMemoRecord<V> {
      */
     int getLength();
 
-    /**
-     * @return the memo offset in blocks
-     */
-    long getOffsetInBlocks();
 }
