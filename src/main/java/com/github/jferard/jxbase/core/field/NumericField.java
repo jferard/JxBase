@@ -19,7 +19,6 @@ package com.github.jferard.jxbase.core.field;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -51,12 +50,6 @@ public class NumericField implements XBaseField {
     }
 
     @Override
-    public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
-            throws IOException {
-        writer.writeNumericField(this.name, this.length, this.numberOfDecimalPlaces, offset);
-    }
-
-    @Override
     public BigDecimal getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
                                final int offset, final int length) throws IOException {
         return reader.getNumericValue(recordBuffer, offset, length, this.numberOfDecimalPlaces);
@@ -69,14 +62,15 @@ public class NumericField implements XBaseField {
 
     @Override
     public String toStringRepresentation(final XBaseRepresentations dialect) {
-        return dialect.getNumericFieldRepresentation(this.name, this.length,
-                this.numberOfDecimalPlaces).toString();
+        return dialect
+                .getNumericFieldRepresentation(this.name, this.length, this.numberOfDecimalPlaces)
+                .toString();
     }
 
     @Override
     public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
-        return dialect.getNumericFieldRepresentation(this.name, this.length,
-                this.numberOfDecimalPlaces);
+        return dialect
+                .getNumericFieldRepresentation(this.name, this.length, this.numberOfDecimalPlaces);
     }
 
     @Override

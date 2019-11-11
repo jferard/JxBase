@@ -18,13 +18,11 @@ package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -44,12 +42,6 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
     @Override
     public int getValueByteLength(final XBaseLengths dialect) {
         return ((FoxProDialect) dialect).getSmallMemoFieldLength();
-    }
-
-    @Override
-    public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
-            throws IOException {
-        ((FoxProFieldDescriptorArrayWriter) writer).writeSmallMemoField(this.name, offset);
     }
 
     @Override

@@ -43,11 +43,12 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public FieldRepresentation getCharacterFieldRepresentation(final String name, final int dataSize) {
+    public FieldRepresentation getCharacterFieldRepresentation(final String name,
+                                                               final int dataSize) {
         if (dataSize > 254) {
             throw new IllegalArgumentException("Use FoxPro for long character fields");
         }
-        return new FieldRepresentation(name, 'C', dataSize,0);
+        return new FieldRepresentation(name, 'C', dataSize, 0);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public FieldRepresentation getDateFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'D', 8,0);
+        return new FieldRepresentation(name, 'D', 8, 0);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public FieldRepresentation getIntegerFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'I', 4,0);
+        return new FieldRepresentation(name, 'I', 4, 0);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public FieldRepresentation getLogicalFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'L', 1,0);
+        return new FieldRepresentation(name, 'L', 1, 0);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'M', 10,0);
+        return new FieldRepresentation(name, 'M', 10, 0);
     }
 
     @Override
@@ -97,8 +98,8 @@ public class GenericDialect implements XBaseDialect {
 
     @Override
     public FieldRepresentation getNumericFieldRepresentation(final String name, final int dataSize,
-                                                final int numberOfDecimalPlaces) {
-        return new FieldRepresentation(name, 'N', dataSize,numberOfDecimalPlaces);
+                                                             final int numberOfDecimalPlaces) {
+        return new FieldRepresentation(name, 'N', dataSize, numberOfDecimalPlaces);
     }
 
     @Override

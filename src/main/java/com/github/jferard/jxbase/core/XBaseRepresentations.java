@@ -29,7 +29,8 @@ public interface XBaseRepresentations {
 
     FieldRepresentation getMemoFieldRepresentation(String name);
 
-    FieldRepresentation getNumericFieldRepresentation(String name, int dataSize, int numberOfDecimalPlaces);
+    FieldRepresentation getNumericFieldRepresentation(String name, int dataSize,
+                                                      int numberOfDecimalPlaces);
 
     /* FoxPro: dateTime, smallMemo, nullFlags */
 }

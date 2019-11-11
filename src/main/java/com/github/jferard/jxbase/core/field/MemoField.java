@@ -20,7 +20,6 @@ import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -40,12 +39,6 @@ public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
     @Override
     public int getValueByteLength(final XBaseLengths dialect) {
         return dialect.getMemoValueLength();
-    }
-
-    @Override
-    public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
-            throws IOException {
-        writer.writeMemoField(this.name, offset);
     }
 
     @Override

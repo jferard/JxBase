@@ -31,8 +31,7 @@ public class GenericMemoWriter implements XBaseMemoWriter {
     public static GenericMemoWriter fromRandomAccess(final File memoFile, final Charset charset)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
-        return new GenericMemoWriter(randomAccessFile.getChannel(),
-                new MemoRecordFactory(charset));
+        return new GenericMemoWriter(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
     }
 
     public static GenericMemoWriter fromChannel(final File memoFile, final Charset charset)
@@ -41,15 +40,14 @@ public class GenericMemoWriter implements XBaseMemoWriter {
             return null;
         }
         final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);
-        return new GenericMemoWriter(fileOutputStream.getChannel(),
-                new MemoRecordFactory(charset));
+        return new GenericMemoWriter(fileOutputStream.getChannel(), new MemoRecordFactory(charset));
     }
 
     private final FileChannel channel;
     private final MemoRecordFactory dbfMemoRecordFactory;
 
-    public GenericMemoWriter(final FileChannel channel, final MemoRecordFactory dbfMemoRecordFactory)
-            throws IOException {
+    public GenericMemoWriter(final FileChannel channel,
+                             final MemoRecordFactory dbfMemoRecordFactory) throws IOException {
         this.channel = channel;
         this.dbfMemoRecordFactory = dbfMemoRecordFactory;
         this.writeHeader();

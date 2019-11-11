@@ -21,5 +21,5 @@ import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import java.io.IOException;
 
 public interface XBaseMemoWriter {
-     void write(long offsetInBlocks, XBaseMemoRecord<?> memo) throws IOException;
+    void write(long offsetInBlocks, XBaseMemoRecord<?> memo) throws IOException;
 }

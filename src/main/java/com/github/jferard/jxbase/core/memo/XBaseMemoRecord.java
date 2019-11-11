@@ -16,10 +16,9 @@
 
 package com.github.jferard.jxbase.core.memo;
 
-import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
-
 /**
  * A record in the memo file
+ *
  * @param <V> the value in the record
  */
 public interface XBaseMemoRecord<V> {

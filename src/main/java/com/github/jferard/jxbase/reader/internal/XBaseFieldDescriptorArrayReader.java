@@ -20,6 +20,6 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
-public interface XBaseFieldDescriptorArrayReader  {
+public interface XBaseFieldDescriptorArrayReader {
     XBaseFieldDescriptorArray read() throws IOException;
 }

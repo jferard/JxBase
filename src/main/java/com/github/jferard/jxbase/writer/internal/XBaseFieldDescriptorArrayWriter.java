@@ -23,18 +23,6 @@ import java.io.IOException;
 public interface XBaseFieldDescriptorArrayWriter {
     int write(XBaseFieldDescriptorArray array) throws IOException;
 
-    void writeCharacterField(String name, int dataSize, int offset) throws IOException;
-
-    void writeDateField(String name, int offset) throws IOException;
-
-    void writeIntegerField(String name, int offset) throws IOException;
-
-    void writeLogicalField(String name, int offset) throws IOException;
-
-    void writeMemoField(String name, int offset) throws IOException;
-
-    void writeNumericField(String name, int dataSize, int numberOfDecimalPlaces, int offset) throws IOException;
-
     /* FoxPro
     void writeDatetimeField(String name, int offset) throws IOException;
 

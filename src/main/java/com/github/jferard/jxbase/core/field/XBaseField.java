@@ -19,7 +19,6 @@ package com.github.jferard.jxbase.core.field;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -34,8 +33,6 @@ public interface XBaseField {
      * @return the length of the field (the actual length, not necessarily the third field)
      */
     int getValueByteLength(XBaseLengths dialect);
-
-    void write(XBaseFieldDescriptorArrayWriter writer, int offset) throws IOException;
 
     Object getValue(XBaseRecordReader reader, byte[] recordBuffer, int offset, int length)
             throws IOException;

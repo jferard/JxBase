@@ -61,12 +61,6 @@ public class NumericFieldTest {
     }
 
     @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeNumericField("num", 10, 2, 5);
-    }
-
-    @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0};
         final BigDecimal v = new BigDecimal(18.9);

@@ -59,8 +59,8 @@ public class GenericMetadataReader implements XBaseMetadataReader {
         final byte encryptionFlag = headerBytes[15];
         // next 16 bytes: for most DBF types these are reserved bytes
         return GenericMetadata
-                .create(type, updateDate, recordsQty, fullHeaderLength,
-                        oneRecordLength, uncompletedTxFlag, encryptionFlag);
+                .create(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
+                        uncompletedTxFlag, encryptionFlag);
     }
 
     // TODO: make a different reader for foxpro

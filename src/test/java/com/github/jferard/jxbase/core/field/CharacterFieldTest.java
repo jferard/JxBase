@@ -55,12 +55,6 @@ public class CharacterFieldTest {
     }
 
     @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeCharacterField("char", 20, 5);
-    }
-
-    @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0};
         Mockito.when(this.r.getCharacterValue(bytes, 0, 20)).thenReturn("some text");

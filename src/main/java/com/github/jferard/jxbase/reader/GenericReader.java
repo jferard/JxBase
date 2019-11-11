@@ -20,9 +20,9 @@ package com.github.jferard.jxbase.reader;
 import com.github.jferard.jxbase.core.GenericRecord;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
@@ -45,7 +45,7 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
      * @param inputStream
      * @param charset
      * @param readerFactory
-     * @param memoReader may be null
+     * @param memoReader    may be null
      * @throws IOException
      */
     public GenericReader(final XBaseDialect dialect, final InputStream inputStream,

@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.memo.MemoFileHeader;
+import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
@@ -49,8 +49,7 @@ public class GenericMemoReader implements XBaseMemoReader {
     public static GenericMemoReader fromRandomAccess(final File memoFile, final Charset charset)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new GenericMemoReader(randomAccessFile.getChannel(),
-                new MemoRecordFactory(charset));
+        return new GenericMemoReader(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
     }
 
     public static GenericMemoReader fromChannel(final File memoFile, final Charset charset)
@@ -59,8 +58,7 @@ public class GenericMemoReader implements XBaseMemoReader {
             return null;
         }
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new GenericMemoReader(fileInputStream.getChannel(),
-                new MemoRecordFactory(charset));
+        return new GenericMemoReader(fileInputStream.getChannel(), new MemoRecordFactory(charset));
     }
 
     private final ByteBuffer memoByteBuffer;
@@ -69,8 +67,8 @@ public class GenericMemoReader implements XBaseMemoReader {
     private MemoFileHeader memoHeader;
     private RawMemoReader rawMemoReader;
 
-    public GenericMemoReader(final FileChannel channel,
-                             final MemoRecordFactory memoRecordFactory) throws IOException {
+    public GenericMemoReader(final FileChannel channel, final MemoRecordFactory memoRecordFactory)
+            throws IOException {
         this.channel = channel;
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
         this.memoRecordFactory = memoRecordFactory;

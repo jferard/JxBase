@@ -55,12 +55,6 @@ public class IntegerFieldTest {
     }
 
     @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeIntegerField("int", 5);
-    }
-
-    @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
         Mockito.when(this.r.getIntegerValue(bytes, 0, 4)).thenReturn(19L);

@@ -39,46 +39,11 @@ public class GenericFieldDescriptorArrayWriter implements XBaseFieldDescriptorAr
     public int write(final XBaseFieldDescriptorArray array) throws IOException {
         int offset = 0;
         for (final XBaseField field : array.getFields()) {
-            field.write(this, offset);
+            this.writeField(field.toRepresentation(this.dialect), offset);
             offset += field.getValueByteLength(this.dialect);
         }
         this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         return offset;
-    }
-
-    @Override
-    public void writeCharacterField(final String name, final int dataSize, final int offset)
-            throws IOException {
-        this.writeField(name, 'C', this.dialect.getCharacterValueLength(dataSize), 0, offset);
-    }
-
-    @Override
-    public void writeDateField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'D', this.dialect.getDateValueLength(), 0, offset);
-    }
-
-    @Override
-    public void writeIntegerField(final String name, final int offset) throws IOException {
-        final FieldRepresentation fieldRepresentation =
-                new FieldRepresentation(name, 'I', this.dialect.getIntegerValueLength(), 0);
-        this.writeField(fieldRepresentation, offset);
-    }
-
-    @Override
-    public void writeLogicalField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'L', this.dialect.getLogicalValueLength(), 0, offset);
-    }
-
-    @Override
-    public void writeMemoField(final String name, final int offset) throws IOException {
-        this.writeField(name, 'M', this.dialect.getMemoValueLength(), 0, offset);
-    }
-
-    public void writeNumericField(final String name, final int dataSize,
-                                  final int numberOfDecimalPlaces, final int offset)
-            throws IOException {
-        this.writeField(name, 'N', this.dialect.getNumericValueLength(dataSize),
-                numberOfDecimalPlaces, offset);
     }
 
     protected void writeField(final String name, final int type, final int length,

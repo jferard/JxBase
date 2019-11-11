@@ -17,13 +17,13 @@
 package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.FoxProDialect;
-import com.github.jferard.jxbase.core.memo.TextMemoRecord;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.memo.TextMemoRecord;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
+import com.github.jferard.jxbase.writer.internal.GenericFieldDescriptorArrayWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,14 +34,14 @@ import java.io.IOException;
 public class SmallMemoFieldTest {
     private SmallMemoField<TextMemoRecord> f;
     private FoxProDialect dialect;
-    private FoxProFieldDescriptorArrayWriter aw;
+    private GenericFieldDescriptorArrayWriter aw;
     private FoxProRecordReader r;
     private FoxProRecordWriter w;
 
     @Before
     public void setUp() {
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
-        this.aw = Mockito.mock(FoxProFieldDescriptorArrayWriter.class);
+        this.aw = Mockito.mock(GenericFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(FoxProRecordReader.class);
         this.w = Mockito.mock(FoxProRecordWriter.class);
         this.f = new SmallMemoField<TextMemoRecord>("memo");
@@ -55,12 +55,6 @@ public class SmallMemoFieldTest {
     @Test
     public void getByteLength() {
         Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
-    }
-
-    @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeSmallMemoField("memo", 5);
     }
 
     @Test

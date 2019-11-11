@@ -58,12 +58,6 @@ public class MemoFieldTest {
     }
 
     @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeMemoField("memo", 5);
-    }
-
-    @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
         final TextMemoRecord record = new TextMemoRecord("a", 1, JxBaseUtils.ASCII_CHARSET);

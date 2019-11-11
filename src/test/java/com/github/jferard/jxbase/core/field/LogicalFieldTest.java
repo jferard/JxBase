@@ -55,12 +55,6 @@ public class LogicalFieldTest {
     }
 
     @Test
-    public void write() throws IOException {
-        this.f.write(this.aw, 5);
-        Mockito.verify(this.aw).writeLogicalField("bool", 5);
-    }
-
-    @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0};
         Mockito.when(this.r.getLogicalValue(bytes, 0, 1)).thenReturn(true);

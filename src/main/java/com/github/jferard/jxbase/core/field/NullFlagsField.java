@@ -21,9 +21,7 @@ import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -45,13 +43,6 @@ public class NullFlagsField implements XBaseField {
     @Override
     public int getValueByteLength(final XBaseLengths dialect) {
         return ((FoxProDialect) dialect).getNullFlagsFieldLength(this.length);
-    }
-
-    @Override
-    public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
-            throws IOException {
-        ((FoxProFieldDescriptorArrayWriter) writer)
-                .writeNullFlagsField(this.name, this.length, offset);
     }
 
     @Override

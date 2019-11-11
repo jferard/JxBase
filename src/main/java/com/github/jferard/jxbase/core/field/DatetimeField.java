@@ -21,9 +21,7 @@ import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
 import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.FoxProFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
@@ -50,12 +48,6 @@ public class DatetimeField implements XBaseField {
     public Date getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
                          final int offset, final int length) throws IOException {
         return ((FoxProRecordReader) reader).getDatetimeValue(recordBuffer, offset, length);
-    }
-
-    @Override
-    public void write(final XBaseFieldDescriptorArrayWriter writer, final int offset)
-            throws IOException {
-        ((FoxProFieldDescriptorArrayWriter) writer).writeDatetimeField(this.name, offset);
     }
 
     @Override
