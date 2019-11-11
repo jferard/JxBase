@@ -17,6 +17,9 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseMetadata;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;

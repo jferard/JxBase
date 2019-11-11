@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import org.junit.Before;
 
 import java.io.ByteArrayOutputStream;

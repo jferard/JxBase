@@ -16,9 +16,9 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.IOException;

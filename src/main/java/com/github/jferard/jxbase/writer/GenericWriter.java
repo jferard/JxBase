@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 

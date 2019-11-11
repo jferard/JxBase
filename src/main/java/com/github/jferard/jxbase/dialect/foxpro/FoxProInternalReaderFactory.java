@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.internal.GenericInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;

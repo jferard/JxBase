@@ -18,10 +18,9 @@ package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.field.CharacterField;
-import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.util.JxBaseUtils;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.field.CharacterField;
+import com.github.jferard.jxbase.field.XBaseField;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

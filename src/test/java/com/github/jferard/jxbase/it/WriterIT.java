@@ -16,14 +16,14 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.core.GenericOptional;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.field.CharacterField;
-import com.github.jferard.jxbase.core.field.NumericField;
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.GenericOptional;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.field.CharacterField;
+import com.github.jferard.jxbase.field.NumericField;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseWriter;
-import com.github.jferard.jxbase.writer.XBaseWriterFactory;
+import com.github.jferard.jxbase.XBaseWriter;
+import com.github.jferard.jxbase.XBaseWriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 

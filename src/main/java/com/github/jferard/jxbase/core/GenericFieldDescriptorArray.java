@@ -16,7 +16,8 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.field.XBaseField;
 
 import java.util.Collection;
 

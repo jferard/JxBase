@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.IOException;
 

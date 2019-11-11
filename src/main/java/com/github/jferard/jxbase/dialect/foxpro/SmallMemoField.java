@@ -16,11 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.field.FieldRepresentation;
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 

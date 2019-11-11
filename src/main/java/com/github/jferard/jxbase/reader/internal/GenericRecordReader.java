@@ -16,11 +16,11 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -67,7 +67,7 @@ public class GenericRecordReader implements XBaseRecordReader {
     }
 
     @Override
-    public GenericRecord read() throws IOException, ParseException {
+    public XBaseRecord read() throws IOException, ParseException {
         if (IOUtils.isEndOfRecords(this.dbfInputStream, JxBaseUtils.RECORDS_TERMINATOR)) {
             return null;
         }
@@ -97,7 +97,7 @@ public class GenericRecordReader implements XBaseRecordReader {
             valueByFieldName.put(name, value);
             offset += field.getValueByteLength(this.dialect);
         }
-        return new GenericRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
+        return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }
 
     @Override

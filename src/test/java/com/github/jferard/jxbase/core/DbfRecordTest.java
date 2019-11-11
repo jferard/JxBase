@@ -16,7 +16,9 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericMemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
@@ -59,7 +61,7 @@ public class DbfRecordTest {
         final FoxProRecordReader reader =
                 new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 4),
                         null, null);
-        final GenericRecord record = reader.read();
+        final XBaseRecord record = reader.read();
         Assert.assertTrue(record.isDeleted());
     }
 
@@ -70,7 +72,7 @@ public class DbfRecordTest {
         final FoxProRecordReader reader =
                 new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3),
                         null, null);
-        final GenericRecord record = reader.read();
+        final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals(1, record.getRecordNumber());
     }

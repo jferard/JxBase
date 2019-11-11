@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.math.BigDecimal;

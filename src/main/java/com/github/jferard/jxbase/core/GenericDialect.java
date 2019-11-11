@@ -16,17 +16,19 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.CharacterField;
-import com.github.jferard.jxbase.core.field.DateField;
-import com.github.jferard.jxbase.core.field.FieldRepresentation;
-import com.github.jferard.jxbase.core.field.IntegerField;
-import com.github.jferard.jxbase.core.field.LogicalField;
-import com.github.jferard.jxbase.core.field.MemoField;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.field.CharacterField;
+import com.github.jferard.jxbase.field.DateField;
+import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.IntegerField;
+import com.github.jferard.jxbase.field.LogicalField;
+import com.github.jferard.jxbase.field.MemoField;
 import com.github.jferard.jxbase.dialect.foxpro.NullFlagsField;
-import com.github.jferard.jxbase.core.field.NumericField;
+import com.github.jferard.jxbase.field.NumericField;
 import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
-import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.GenericInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;

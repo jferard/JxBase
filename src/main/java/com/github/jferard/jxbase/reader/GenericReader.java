@@ -17,12 +17,13 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
@@ -98,7 +99,7 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
     }
 
     @Override
-    public GenericRecord read() throws IOException, ParseException {
+    public XBaseRecord read() throws IOException, ParseException {
         return this.recordReader.read();
     }
 

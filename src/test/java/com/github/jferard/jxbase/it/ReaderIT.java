@@ -17,16 +17,15 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.XBaseMetadata;
-import com.github.jferard.jxbase.reader.XBaseReader;
-import com.github.jferard.jxbase.reader.XBaseReaderFactory;
+import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.XBaseReaderFactory;
+import com.github.jferard.jxbase.XBaseRecord;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 
@@ -42,7 +41,7 @@ public class ReaderIT {
 
         final String databaseName = TestHelper.getResourceBase("data1/gds_im.dbf");
 
-        GenericRecord rec;
+        XBaseRecord rec;
         final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
@@ -71,7 +70,7 @@ public class ReaderIT {
 
         final String databaseName = TestHelper.getResourceBase("data1/tir_im.dbf");
 
-        GenericRecord rec;
+        XBaseRecord rec;
         final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();

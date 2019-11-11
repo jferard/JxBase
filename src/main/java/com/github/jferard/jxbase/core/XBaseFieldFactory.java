@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.XBaseField;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 public interface XBaseFieldFactory {
     XBaseField fromStringRepresentation(String s);

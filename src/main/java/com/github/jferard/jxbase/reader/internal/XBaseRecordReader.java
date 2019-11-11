@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 public interface XBaseRecordReader {
-    GenericRecord read() throws IOException, ParseException;
+    XBaseRecord read() throws IOException, ParseException;
 
     String getCharacterValue(byte[] recordBuffer, int offset, int length);
 

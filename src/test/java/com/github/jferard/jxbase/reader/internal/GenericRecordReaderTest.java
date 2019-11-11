@@ -16,15 +16,15 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
-import com.github.jferard.jxbase.core.GenericRecord;
-import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.core.field.LogicalField;
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.field.LogicalField;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -60,7 +60,7 @@ public class GenericRecordReaderTest {
 
     @Test
     public void read() throws IOException, ParseException {
-        final GenericRecord record = this.grr.read();
+        final XBaseRecord record = this.grr.read();
         Assert.assertEquals(1, record.getRecordNumber());
         Assert.assertFalse(record.isDeleted());
         final Map<String, Object> expected = new HashMap<String, Object>();

@@ -17,10 +17,10 @@
 package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMetadata;
-import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 

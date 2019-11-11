@@ -17,9 +17,8 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.core.GenericDialect;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.field.FieldRepresentation;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProInternalReaderFactory;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.BitUtils;

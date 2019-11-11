@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.Closeable;
 import java.io.IOException;

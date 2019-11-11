@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.FieldRepresentation;
 
 public interface XBaseRepresentations {
     FieldRepresentation getCharacterFieldRepresentation(String name, int dataSize);

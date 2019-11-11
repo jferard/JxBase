@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
