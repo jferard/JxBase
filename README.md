@@ -8,97 +8,87 @@ JxBase
 
 JxBase is a fork from [jdbf](https://github.com/iryndin/jdbf), a Java utility to read/write DBF files
 
+## User Guide
+
+### Read a DBF file 
+
+TODO
+
+See [the integration test example](src/test/java/com/github/jferard/jxbase/it/ReaderIT.java)
+
+### Read a DBF file with MEMO fields
+
+TODO
+
+See [the integration test example](src/test/java/com/github/jferard/jxbase/it/ReaderWithMemoIT.java)
+
+### Write a DBF file 
+
+TODO
+
+See [the integration test example](src/test/java/com/github/jferard/jxbase/it/WriterIT.java)
+
+### Write a DBF file with MEMO fields
+
+TODO
+
+See [the integration test example](src/test/java/com/github/jferard/jxbase/it/WriterWithMemoIT.java)
+
 ## Design of an xBase database
-The database is a simple set of files. See https://www.clicketyclick.dk/databases/xbase/format/
+The database is a simple set of files.
+
+### References
+See:
+* https://www.clicketyclick.dk/databases/xbase/format/
+* http://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm
+* http://devzone.advantagedatabase.com/dz/webhelp/Advantage12/index.html?master_advantage_isam_file_types.htm
+* https://dbfread.readthedocs.io/en/latest/field_types.html
 
 ### The DBF file
 The main file. Contains the header and the records.
 
     +------- Header ---------+
-    |       Metadata         |
-    | Field Descriptor Array |
+    |       Metadata         |   <- XBaseMetaDataReader/Writer    
+    | Field Descriptor Array |   <- XBaseFieldDescriptorArrayReader/Writer
+    |        Optional        |   <- XBaseOptionalReader/Writer
     +------------------------+
-    |        Records         |
+    |        Records         |   <- XBaseRecordReader/Writer
     +------------------------+
 
 ### DBT file (memo: optional)
 This file contains block of data.
 
-    +------------------------+
-    |         Header         |
-    +------------------------+
-    |        Records         |
-    +------------------------+
+    +------------------------+  \
+    |         Header         |   |
+    +------------------------+   } <- XBaseMemoReader/Writer
+    |        Records         |   |
+    +------------------------+  /
 
 ### NDX file (index: optional)
 TODO
 
 ## Design of JxBase
-### Writers
-JxBase provides 
+###
+JxBase aims to build DBF format reader and writer by layers. Each dialect derives an existing format 
+and adds fields, formats, files.  
 
+### The covariance parameter problem
+Whereas a `GenericRecordReader` has a `GenericDialect` parameter, a `FoxProRecordReader` needs 
+a `FoxProDialect` parameter. A covariant parameter (the parameters type varies with the class type)
+is a real problem because it violates the Liskov substitution principle: the subclass 
+`FoxProRecordReader` won't work with a `GenericDialect` parameter (see https://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science)#Covariant_method_parameter_type).
+Usually, one solves this problem with generics:
 
-## User Guide
-
-### Read DBF file 
-
-Piece of code that reads file from classpath. Single DBF record is represented here as a Map.
-
-See [TestDbfReader.java](src/test/java/com/github/jferard/jxbase/TestDbfReader.java)
-
-```java
-    public void readDBF() throws IOException, ParseException {
-        Charset stringCharset = Charset.forName("Cp866");
-
-        InputStream dbf = getClass().getClassLoader().getResourceAsStream("data1/gds_im.dbf");
-
-        DbfRecord rec;
-        try (DbfReader reader = new DbfReader(dbf)) {
-            DbfMetadata meta = reader.getMetadata();
-
-            System.out.println("Read DBF Metadata: " + meta);
-            while ((rec = reader.read()) != null) {
-                rec.setStringCharset(stringCharset);
-                System.out.println("Record #" + rec.getRecordNumber() + ": " + rec.toMap());
-            }
-        }
+```
+    class GenericRecordReader<D extends GenericDialect> {
+        ...
+    }
+    
+    class FoxProRecordReader extends GenericRecordReader<FoxProDialect> {
+        ...
     }
 ```
 
-### Read DBF file with MEMO fields
+Currently, JxBase doesn't use generics for covariance because this would lead to a really complex situation. The fallaback used to achieve the covariance is 
+a simple cast: we accept a `GenericDialect` and try to cast the instance into a `FoxProDialect` 
 
-Piece of code that reads DBF and MEMO fields. 
-
-See [TestMemo.java](src/test/java/com/github/jferard/jxbase/TestMemo.java)
-
-```java
-    public void test1() {
-        Charset stringCharset = Charset.forName("cp1252");
-
-        InputStream dbf = getClass().getClassLoader().getResourceAsStream("memo1/texto.dbf");
-        InputStream memo = getClass().getClassLoader().getResourceAsStream("memo1/texto.fpt");
-
-        try (DbfReader reader = new DbfReader(dbf, memo)) {
-            DbfMetadata meta = reader.getMetadata();
-            System.out.println("Read DBF Metadata: " + meta);
-
-            DbfRecord rec;
-            while ((rec = reader.read()) != null) {
-                rec.setStringCharset(stringCharset);
-
-                System.out.println("TEXVER: " + rec.getString("TEXVER"));
-                // this reads MEMO field
-                System.out.println("TEXTEX: " + rec.getMemoAsString("TEXTEX"));
-                System.out.println("TEXDAT: " + rec.getDate("TEXDAT"));
-                System.out.println("TEXSTA: " + rec.getString("TEXSTA"));
-                System.out.println("TEXCAM: " + rec.getString("TEXCAM"));
-                System.out.println("++++++++++++++++++++++++++++++++++");
-            }
-
-        } catch (IOException e) {
-            //e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-```

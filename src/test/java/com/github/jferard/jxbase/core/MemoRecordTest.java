@@ -17,12 +17,9 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.core.memo.ImageMemoRecord;
-import com.github.jferard.jxbase.core.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.core.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.core.memo.TextMemoRecord;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.sun.prism.Image;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,7 +45,8 @@ public class MemoRecordTest {
 
     @Test
     public void testCreate() {
-        final XBaseMemoRecord<?> mr = new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096, 0);
+        final XBaseMemoRecord<?> mr =
+                new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096, 0);
         Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
         Assert.assertEquals(84281096, mr.getLength());
     }

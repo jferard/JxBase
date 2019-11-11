@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericMemoReader;
-import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import org.junit.Assert;
 import org.junit.Before;

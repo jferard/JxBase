@@ -23,7 +23,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.field.CharacterField;
 import com.github.jferard.jxbase.core.field.DateField;
-import com.github.jferard.jxbase.core.field.SmallMemoField;
+import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseReader;
 import com.github.jferard.jxbase.reader.XBaseReaderFactory;

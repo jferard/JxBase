@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.dialect.foxpro;
 
+import com.github.jferard.jxbase.core.GenericDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.field.FieldRepresentation;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProInternalReaderFactory;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.BitUtils;
+
+import java.util.TimeZone;
 
 public class FoxProDialect extends GenericDialect {
     public FoxProDialect(final XBaseFileTypeEnum type) {
@@ -77,5 +83,9 @@ public class FoxProDialect extends GenericDialect {
                         recordBuffer[offset + 3]);
     }
 
+    @Override
+    public XBaseInternalReaderFactory getReaderFactory(final TimeZone timeZone) {
+        return new FoxProInternalReaderFactory(this, timeZone);
+    }
 }
 

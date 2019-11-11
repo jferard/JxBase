@@ -16,7 +16,10 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+
+import java.util.TimeZone;
 
 public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {
     long getOffsetInBlocks(XBaseRecordReader genericRecordReader, byte[] recordBuffer, int offset,
@@ -31,4 +34,6 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
     int getOptionalLength();
 
     XBaseMemoFileType memoFileType();
+
+    XBaseInternalReaderFactory getReaderFactory(TimeZone timeZone);
 }

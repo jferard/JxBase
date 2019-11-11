@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.writer.internal;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
 import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 
 import java.io.OutputStream;

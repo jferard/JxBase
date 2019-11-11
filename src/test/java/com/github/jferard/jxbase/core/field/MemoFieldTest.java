@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.core.field;
 
 import com.github.jferard.jxbase.core.memo.TextMemoRecord;
-import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;

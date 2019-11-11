@@ -25,6 +25,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.core.field.LogicalField;
 import com.github.jferard.jxbase.core.field.XBaseField;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.writer.internal;
+package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseMemoWriter;
+import com.github.jferard.jxbase.writer.internal.GenericRecordWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,7 +33,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class FoxProRecordWriter extends GenericRecordWriter {
-
     // cf. www.nr.com/julian.html
     private static int dateToJulian(final Date date) {
         final GregorianCalendar calendar = new GregorianCalendar();
@@ -54,6 +53,12 @@ public class FoxProRecordWriter extends GenericRecordWriter {
         calendar.setTime(date);
         return ((calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
                 calendar.get(Calendar.SECOND)) * 1000;
+    }
+
+    public FoxProRecordWriter(final XBaseDialect dialect, final OutputStream out,
+                              final Charset charset, final XBaseMemoWriter memoWriter,
+                              final Collection<XBaseField> fields) {
+        super(dialect, out, charset, memoWriter, fields);
     }
 
 

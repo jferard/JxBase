@@ -16,16 +16,11 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
-import com.github.jferard.jxbase.core.GenericDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class FoxProFieldDescriptorArrayWriterTest {
     private GenericFieldDescriptorArrayWriter fpfdaw;

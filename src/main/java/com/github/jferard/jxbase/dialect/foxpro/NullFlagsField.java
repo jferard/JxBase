@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core.field;
+package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
-import java.util.Date;
 
-public class DatetimeField implements XBaseField {
+public class NullFlagsField implements XBaseField {
     private final String name;
+    private final int length;
 
-    public DatetimeField(final String name) {
+    public NullFlagsField(final String name, final int length) {
         this.name = name;
+        this.length = length;
     }
 
     @Override
@@ -41,18 +41,18 @@ public class DatetimeField implements XBaseField {
 
     @Override
     public int getValueByteLength(final XBaseLengths dialect) {
-        return ((FoxProDialect) dialect).getDatetimeValueLength();
+        return ((FoxProDialect) dialect).getNullFlagsFieldLength(this.length);
     }
 
     @Override
-    public Date getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
-                         final int offset, final int length) throws IOException {
-        return ((FoxProRecordReader) reader).getDatetimeValue(recordBuffer, offset, length);
+    public byte[] getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
+                           final int offset, final int length) throws IOException {
+        return ((FoxProRecordReader) reader).getNullFlagsValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        ((FoxProRecordWriter) writer).writeDatetimeValue((Date) value);
+        ((FoxProRecordWriter) writer).writeNullFlagsValue((byte[]) value, this.length);
     }
 
     @Override
@@ -62,6 +62,11 @@ public class DatetimeField implements XBaseField {
 
     @Override
     public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
-        return ((FoxProDialect) dialect).getDatetimeFieldRepresentation(this.name);
+        return ((FoxProDialect) dialect).getNullFlagsFieldRepresentation(this.name, this.length);
+    }
+
+    @Override
+    public String toString() {
+        return "NullFlagsField[name=" + this.name + ", length=" + this.length + "]";
     }
 }

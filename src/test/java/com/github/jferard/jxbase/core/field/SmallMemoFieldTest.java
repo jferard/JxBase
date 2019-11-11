@@ -16,13 +16,14 @@
 
 package com.github.jferard.jxbase.core.field;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.memo.TextMemoRecord;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
+import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
 import com.github.jferard.jxbase.writer.internal.GenericFieldDescriptorArrayWriter;
 import org.junit.Assert;
 import org.junit.Before;

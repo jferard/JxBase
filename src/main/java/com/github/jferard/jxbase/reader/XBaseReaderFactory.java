@@ -45,8 +45,7 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalReaderFactory readerFactory =
-                new GenericInternalReaderFactory(dialect, TimeZone.getDefault());
+        final XBaseInternalReaderFactory readerFactory = dialect.getReaderFactory(TimeZone.getDefault());
         final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset, dialect);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory,
                 memoReader);

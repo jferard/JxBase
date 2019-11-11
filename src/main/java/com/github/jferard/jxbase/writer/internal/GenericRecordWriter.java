@@ -46,8 +46,8 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
     protected final XBaseMemoWriter memoWriter;
     protected final Collection<XBaseField> fields;
-    final XBaseDialect dialect;
-    final OutputStream out;
+    protected final XBaseDialect dialect;
+    protected final OutputStream out;
     final Charset charset;
     protected int recordCount;
 

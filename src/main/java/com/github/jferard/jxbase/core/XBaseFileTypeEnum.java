@@ -16,6 +16,8 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+
 /**
  * dBASE IV bit flags:
  * 0-2  Version no. i.e. 0-7

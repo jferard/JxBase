@@ -22,13 +22,17 @@ import com.github.jferard.jxbase.core.field.FieldRepresentation;
 import com.github.jferard.jxbase.core.field.IntegerField;
 import com.github.jferard.jxbase.core.field.LogicalField;
 import com.github.jferard.jxbase.core.field.MemoField;
-import com.github.jferard.jxbase.core.field.NullFlagsField;
+import com.github.jferard.jxbase.dialect.foxpro.NullFlagsField;
 import com.github.jferard.jxbase.core.field.NumericField;
-import com.github.jferard.jxbase.core.field.SmallMemoField;
+import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
 import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.reader.internal.GenericInternalReaderFactory;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+
+import java.util.TimeZone;
 
 public class GenericDialect implements XBaseDialect {
     private final XBaseFileTypeEnum type;
@@ -192,5 +196,10 @@ public class GenericDialect implements XBaseDialect {
     @Override
     public XBaseMemoFileType memoFileType() {
         return this.type.memoFileType();
+    }
+
+    @Override
+    public XBaseInternalReaderFactory getReaderFactory(final TimeZone timeZone) {
+        return new GenericInternalReaderFactory(this, timeZone);
     }
 }

@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core.field;
+package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.FoxProDialect;
+import com.github.jferard.jxbase.core.field.FieldRepresentation;
+import com.github.jferard.jxbase.core.field.XBaseField;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.core.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.internal.FoxProRecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.FoxProRecordWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
+import java.util.Date;
 
-public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
+public class DatetimeField implements XBaseField {
     private final String name;
 
-    public SmallMemoField(final String name) {
+    public DatetimeField(final String name) {
         this.name = name;
     }
 
@@ -41,18 +40,18 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
 
     @Override
     public int getValueByteLength(final XBaseLengths dialect) {
-        return ((FoxProDialect) dialect).getSmallMemoFieldLength();
+        return ((FoxProDialect) dialect).getDatetimeValueLength();
     }
 
     @Override
-    public T getValue(final XBaseRecordReader reader, final byte[] recordBuffer, final int offset,
-                      final int length) throws IOException {
-        return (T) ((FoxProRecordReader) reader).getSmallMemoValue(recordBuffer, offset, length);
+    public Date getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
+                         final int offset, final int length) throws IOException {
+        return ((FoxProRecordReader) reader).getDatetimeValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        ((FoxProRecordWriter) writer).writeSmallMemoValue((T) value);
+        ((FoxProRecordWriter) writer).writeDatetimeValue((Date) value);
     }
 
     @Override
@@ -62,11 +61,6 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
 
     @Override
     public FieldRepresentation toRepresentation(final XBaseRepresentations dialect) {
-        return ((FoxProDialect) dialect).getSmallMemoFieldRepresentation(this.name);
-    }
-
-    @Override
-    public String toString() {
-        return "SmallMemoField[name=" + this.name + "]";
+        return ((FoxProDialect) dialect).getDatetimeFieldRepresentation(this.name);
     }
 }
