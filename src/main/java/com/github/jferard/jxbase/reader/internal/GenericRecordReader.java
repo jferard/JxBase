@@ -142,7 +142,7 @@ public class GenericRecordReader implements XBaseRecordReader {
             return null;
         }
         try {
-            final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+            final SimpleDateFormat format = JxBaseUtils.DATE_FORMAT.get();
             format.setTimeZone(this.timezone);
             return format.parse(s);
         } catch (final ParseException e) {

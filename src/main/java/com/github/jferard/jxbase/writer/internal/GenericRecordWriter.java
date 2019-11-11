@@ -29,20 +29,12 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
 public class GenericRecordWriter implements XBaseRecordWriter {
-    public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
-            new ThreadLocal<SimpleDateFormat>() {
-                @Override
-                protected SimpleDateFormat initialValue() {
-                    return new SimpleDateFormat("yyyyMMdd");
-                }
-            };
     private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
     protected final XBaseMemoWriter memoWriter;
     protected final Collection<XBaseField> fields;
@@ -108,7 +100,7 @@ public class GenericRecordWriter implements XBaseRecordWriter {
 
             BitUtils.writeZeroes(this.out, fieldLength);
         } else {
-            final String s = DATE_FORMAT.get().format(value);
+            final String s = JxBaseUtils.DATE_FORMAT.get().format(value);
             this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
         }
     }

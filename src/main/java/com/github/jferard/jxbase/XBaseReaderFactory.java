@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.reader.GenericReader;
 import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
-import com.github.jferard.jxbase.util.XBaseMetadataUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,7 +41,7 @@ public class XBaseReaderFactory {
             throws IOException {
         final InputStream dbfInputStream = new FileInputStream(databaseName + ".dbf");
         final InputStream resettableInputStream =
-                IOUtils.resettable(dbfInputStream, XBaseMetadataUtils.BUFFER_SIZE);
+                IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
