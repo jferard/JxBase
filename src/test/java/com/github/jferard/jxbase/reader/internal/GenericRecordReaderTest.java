@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -52,7 +52,7 @@ public class GenericRecordReaderTest {
     public void setUp() {
         this.mr = Mockito.mock(XBaseMemoReader.class);
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
-        this.grr = new FoxProRecordReader(new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
+        this.grr = new FoxProRecordReader(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
                 JxBaseUtils.UTF8_CHARSET, new GenericFieldDescriptorArray(
                 Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr,
                 TimeZone.getTimeZone("Europe/Paris"));

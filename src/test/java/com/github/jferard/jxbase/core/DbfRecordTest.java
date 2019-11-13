@@ -18,9 +18,9 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseRecord;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.dialect.memo.GenericMemoReader;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
 import org.junit.Assert;
@@ -46,13 +46,13 @@ public class DbfRecordTest {
 
     private XBaseMemoReader mr;
     private GenericMetadata md;
-    private WithMemoDialect dbfFieldFactory;
+    private DB3MemoDialect dbfFieldFactory;
 
     @Before
     public void setUp() {
-        this.mr = Mockito.mock(GenericMemoReader.class);
+        this.mr = Mockito.mock(DB3MemoReader.class);
         this.md = Mockito.mock(GenericMetadata.class);
-        this.dbfFieldFactory = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
     }
 
     @Test

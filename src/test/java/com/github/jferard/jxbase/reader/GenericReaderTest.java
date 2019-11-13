@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.reader;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.dialect.memo.WithMemoInternalReaderFactory;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
@@ -41,7 +41,7 @@ public class GenericReaderTest {
     private InputStream is;
     private GenericReader gr;
     private XBaseMemoReader mr;
-    private WithMemoDialect dialect;
+    private DB3MemoDialect dialect;
     private XBaseMetadataReader mdr;
     private XBaseMetadata metadata;
     private XBaseFieldDescriptorArray array;
@@ -61,7 +61,7 @@ public class GenericReaderTest {
         this.optional = Mockito.mock(XBaseOptional.class);
         this.rr = Mockito.mock(XBaseRecordReader.class);
 
-        this.dialect = Mockito.mock(WithMemoDialect.class);
+        this.dialect = Mockito.mock(DB3MemoDialect.class);
         this.rf = Mockito.mock(WithMemoInternalReaderFactory.class);
         this.mr = Mockito.mock(XBaseMemoReader.class);
 

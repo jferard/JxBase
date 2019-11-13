@@ -16,7 +16,8 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.dialect.memo.GenericMemoReader;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
+import com.github.jferard.jxbase.dialect.db4memo.DB4MemoReader;
 import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
 import org.junit.Assert;
@@ -54,7 +55,7 @@ public class MemoReaderTest {
             }
         });
 
-        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
+        final DB4MemoReader memoReader = new DB4MemoReader(fc, this.dbfMemoRecordFactory);
         try {
             final XBaseMemoRecord mrec = memoReader.read(10);
             Assert.assertArrayEquals(new byte[]{}, mrec.getBytes());
@@ -76,7 +77,7 @@ public class MemoReaderTest {
 
         this.exception.expect(IOException.class);
         this.exception.expectMessage("The file is corrupted or is not a dbf file");
-        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
+        final DB3MemoReader memoReader = new DB3MemoReader(fc, this.dbfMemoRecordFactory);
     }
 
     @Test
@@ -87,7 +88,7 @@ public class MemoReaderTest {
         Mockito.when(fc.size()).thenReturn(100L);
         Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
 
-        final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
+        final DB3MemoReader memoReader = new DB3MemoReader(fc, this.dbfMemoRecordFactory);
         /*
         Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=0, blockSize=0}",
                 memoReader.getMemoHeader().toString());

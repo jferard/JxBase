@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,11 +31,11 @@ import java.sql.Date;
 public class DbfMetadataTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
-    private WithMemoDialect dbfFieldFactory;
+    private DB3MemoDialect dbfFieldFactory;
 
     @Before
     public void setUp() {
-        this.dbfFieldFactory = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
     }
 
     @Test

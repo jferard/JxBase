@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
@@ -30,14 +30,14 @@ import java.io.IOException;
 
 public class LogicalFieldTest {
     private LogicalField f;
-    private WithMemoDialect dialect;
+    private DB3MemoDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
     private XBaseRecordReader r;
     private XBaseRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);

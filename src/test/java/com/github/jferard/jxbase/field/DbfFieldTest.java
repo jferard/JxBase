@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.field;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,11 +28,11 @@ import org.junit.rules.ExpectedException;
 public class DbfFieldTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
-    private WithMemoDialect dialect;
+    private DB3MemoDialect dialect;
 
     @Before
     public void setUp() {
-        this.dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
     }
 
     @Test

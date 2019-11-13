@@ -20,9 +20,6 @@ import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.memo.GenericMemoWriter;
-import com.github.jferard.jxbase.dialect.memo.WithMemoInternalWriterFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.writer.GenericWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
@@ -40,7 +37,6 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
-import java.util.TimeZone;
 
 public class XBaseWriterFactory {
     public static XBaseWriter createWriter(final XBaseFileTypeEnum type,

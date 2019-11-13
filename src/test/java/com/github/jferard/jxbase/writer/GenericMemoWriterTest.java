@@ -17,7 +17,8 @@
 package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.dialect.memo.GenericMemoWriter;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoWriter;
+import com.github.jferard.jxbase.dialect.db4memo.DB4MemoWriter;
 import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
 import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -34,14 +35,14 @@ public class GenericMemoWriterTest {
     private ByteBuffer bb;
     private SeekableByteChannel channel;
     private MemoRecordFactory mrf;
-    private GenericMemoWriter mw;
+    private DB4MemoWriter mw;
 
     @Before
     public void setUp() throws Exception {
         this.bb = ByteBuffer.allocate(1024);
         this.channel = TestHelper.fromByteBuffer(this.bb);
         this.mrf = new MemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
-        this.mw = new GenericMemoWriter(this.channel, this.mrf);
+        this.mw = new DB4MemoWriter(this.channel, this.mrf, 512);
     }
 
     @Test

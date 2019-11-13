@@ -21,14 +21,15 @@ import java.nio.ByteBuffer;
 /**
  * A memo file has a header and a sequence of blocks terminated by a terminator
  */
-class RawMemoReader {
+public class RawMemoReader {
     private final ByteBuffer memoByteBuffer;
     private final int headerSize;
     private final int blockSize;
 
-    public RawMemoReader(final ByteBuffer memoByteBuffer, final int blockSize) {
+    public RawMemoReader(final ByteBuffer memoByteBuffer, final int headerSize,
+                         final int blockSize) {
         this.memoByteBuffer = memoByteBuffer;
-        this.headerSize = blockSize;
+        this.headerSize = headerSize;
         this.blockSize = blockSize;
     }
 

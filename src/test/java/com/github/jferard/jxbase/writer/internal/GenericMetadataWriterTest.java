@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -42,7 +42,7 @@ public class GenericMetadataWriterTest {
         this.raf = Mockito.mock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
         this.gmw =
-                new GenericMetadataWriter(new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1), this.raf,
+                new GenericMetadataWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1), this.raf,
                         this.out, JxBaseUtils.ASCII_CHARSET);
     }
 

@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.dialect.db4memo;
 
+import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.dialect.memo.RawMemoReader;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -41,29 +46,29 @@ import java.nio.charset.Charset;
  * <p>
  * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
-public class GenericMemoReader implements XBaseMemoReader {
-    public static GenericMemoReader fromRandomAccess(final File memoFile, final Charset charset)
+public class DB4MemoReader implements XBaseMemoReader {
+    public static DB4MemoReader fromRandomAccess(final File memoFile, final Charset charset)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new GenericMemoReader(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
+        return new DB4MemoReader(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
     }
 
-    public static GenericMemoReader fromChannel(final File memoFile, final Charset charset)
+    public static DB4MemoReader fromChannel(final File memoFile, final Charset charset)
             throws IOException {
         if (memoFile == null) {
             return null;
         }
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new GenericMemoReader(fileInputStream.getChannel(), new MemoRecordFactory(charset));
+        return new DB4MemoReader(fileInputStream.getChannel(), new MemoRecordFactory(charset));
     }
 
     private final ByteBuffer memoByteBuffer;
     private final FileChannel channel;
     private final MemoRecordFactory memoRecordFactory;
-    private MemoFileHeader memoHeader;
+    private DB4MemoFileHeader memoHeader;
     private RawMemoReader rawMemoReader;
 
-    public GenericMemoReader(final FileChannel channel, final MemoRecordFactory memoRecordFactory)
+    public DB4MemoReader(final FileChannel channel, final MemoRecordFactory memoRecordFactory)
             throws IOException {
         this.channel = channel;
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
@@ -79,8 +84,9 @@ public class GenericMemoReader implements XBaseMemoReader {
             throw new IOException("The file is corrupted or is not a dbf file", e);
         }
 
-        this.memoHeader = MemoFileHeader.create(headerBytes);
-        this.rawMemoReader = new RawMemoReader(this.memoByteBuffer, this.memoHeader.getBlockSize());
+        this.memoHeader = DB4MemoFileHeader.create(headerBytes);
+        this.rawMemoReader =
+                new RawMemoReader(this.memoByteBuffer, 512, this.memoHeader.getBlockSize());
     }
 
     @Override

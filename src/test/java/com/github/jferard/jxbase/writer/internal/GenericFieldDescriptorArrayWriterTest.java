@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.field.CharacterField;
@@ -37,7 +37,7 @@ public class GenericFieldDescriptorArrayWriterTest {
     public void setUp() {
         this.out = new ByteArrayOutputStream();
         this.gfdaw =
-                new GenericFieldDescriptorArrayWriter(new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1),
+                new GenericFieldDescriptorArrayWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1),
                         this.out);
     }
 

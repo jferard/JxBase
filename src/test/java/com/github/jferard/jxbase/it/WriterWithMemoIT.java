@@ -43,7 +43,7 @@ public class WriterWithMemoIT {
     @Before
     public void prepareData() {
         this.fields.add(new CharacterField("NAME", 20));
-        this.fields.add(new SmallMemoField("MEMO"));
+        this.fields.add(new MemoField("MEMO"));
         this.valueMap.put("NAME", "some data");
         this.valueMap.put("MEMO", new TextMemoRecord("in the memo", JxBaseUtils.UTF8_CHARSET));
     }
@@ -55,7 +55,7 @@ public class WriterWithMemoIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
-                .createWriter(XBaseFileTypeEnum.VisualFoxPro1, "112", Charset.forName("UTF-8"), meta,
+                .createWriter(XBaseFileTypeEnum.FoxBASEPlus2, "112", Charset.forName("UTF-8"), meta,
                         this.fields, GenericOptional.EMPTY);
         try {
             dbfWriter.write(this.valueMap);

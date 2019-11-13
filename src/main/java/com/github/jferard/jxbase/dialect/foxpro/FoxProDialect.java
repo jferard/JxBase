@@ -18,8 +18,8 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseReader;
-import com.github.jferard.jxbase.dialect.memo.GenericMemoWriter;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoWriter;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.FieldRepresentation;
@@ -36,7 +36,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class FoxProDialect extends WithMemoDialect {
+public class FoxProDialect extends DB3MemoDialect {
     public FoxProDialect(final XBaseFileTypeEnum type) {
         super(type);
     }
@@ -123,7 +123,7 @@ public class FoxProDialect extends WithMemoDialect {
                                                                final Charset charset)
             throws IOException {
         final File memoFile = new File(databaseName + ".dbt");
-        final XBaseMemoWriter memoWriter = GenericMemoWriter.fromChannel(memoFile, charset);
+        final XBaseMemoWriter memoWriter = DB3MemoWriter.fromChannel(memoFile, charset);
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
     }
 }

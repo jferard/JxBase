@@ -14,44 +14,40 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.dialect.db3memo;
 
 import com.github.jferard.jxbase.util.BitUtils;
 
 /**
+ * Should be a generic object
  * See http://msdn.microsoft.com/en-US/library/8599s21w(v=vs.80).aspx
  */
-public class MemoFileHeader {
+public class DB3MemoFileHeader {
+    static final int SIZE = 512;
+
     /**
      * @param headerBytes the source bytes
      * @return the memo header
      */
-    public static MemoFileHeader create(final byte[] headerBytes) {
+    public static DB3MemoFileHeader create(final byte[] headerBytes) {
         final int nextFreeBlockLocation =
                 BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
-        final int blockSize = BitUtils.makeInt(headerBytes[7], headerBytes[6]);
-        return new MemoFileHeader(nextFreeBlockLocation, blockSize);
+        // assert headerBytes[16] == 0x03;
+        return new DB3MemoFileHeader(nextFreeBlockLocation);
     }
 
     private final int nextFreeBlockLocation;
-    private final int blockSize;
 
-    public MemoFileHeader(final int nextFreeBlockLocation, final int blockSize) {
+    public DB3MemoFileHeader(final int nextFreeBlockLocation) {
         this.nextFreeBlockLocation = nextFreeBlockLocation;
-        this.blockSize = blockSize;
     }
 
     public int getNextFreeBlockLocation() {
         return this.nextFreeBlockLocation;
     }
 
-    public int getBlockSize() {
-        return this.blockSize;
-    }
-
     @Override
     public String toString() {
-        return "MemoFileHeader[" + "nextFreeBlockLocation=" + this.nextFreeBlockLocation +
-                ", blockSize=" + this.blockSize + ']';
+        return "DB3MemoFileHeader[" + "nextFreeBlockLocation=" + this.nextFreeBlockLocation + "]";
     }
 }

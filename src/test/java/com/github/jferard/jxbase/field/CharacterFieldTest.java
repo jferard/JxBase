@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.field;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.BasicDialect;
-import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
@@ -38,7 +38,7 @@ public class CharacterFieldTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);
