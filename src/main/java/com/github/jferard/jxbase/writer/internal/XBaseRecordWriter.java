@@ -16,8 +16,6 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,9 +36,13 @@ public interface XBaseRecordWriter {
     void writeNumericValue(BigDecimal value, int length, int numberOfDecimalPlaces)
             throws IOException;
 
-    <T extends XBaseMemoRecord<?>> void writeMemoValue(T value) throws IOException;
+    /* With memo
+    void writeMemoValue(XBaseMemoRecord value) throws IOException;
+    */
 
     int getRecordQty();
+
+    void close() throws IOException;
 
     /* FoxPro
     void writeDatetimeValue(Date value) throws IOException;

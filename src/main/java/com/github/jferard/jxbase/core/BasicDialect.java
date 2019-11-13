@@ -18,28 +18,30 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.field.CharacterField;
 import com.github.jferard.jxbase.field.DateField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.IntegerField;
 import com.github.jferard.jxbase.field.LogicalField;
-import com.github.jferard.jxbase.field.MemoField;
-import com.github.jferard.jxbase.dialect.foxpro.NullFlagsField;
 import com.github.jferard.jxbase.field.NumericField;
-import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.internal.GenericInternalReaderFactory;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.GenericReader;
+import com.github.jferard.jxbase.reader.internal.BasicInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import com.github.jferard.jxbase.writer.internal.BasicInternalWriterFactory;
+import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class GenericDialect implements XBaseDialect {
-    private final XBaseFileTypeEnum type;
+public class BasicDialect implements XBaseDialect {
+    protected final XBaseFileTypeEnum type;
 
-    public GenericDialect(final XBaseFileTypeEnum type) {
+    public BasicDialect(final XBaseFileTypeEnum type) {
         this.type = type;
     }
 
@@ -120,10 +122,8 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public <T extends XBaseMemoRecord<?>> XBaseField getXBaseField(final String name,
-                                                                   final byte typeByte,
-                                                                   final int length,
-                                                                   final int numberOfDecimalPlaces) {
+    public XBaseField getXBaseField(final String name, final byte typeByte, final int length,
+                                    final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'D':
                 if (length != 8) {
@@ -142,16 +142,6 @@ public class GenericDialect implements XBaseDialect {
                 return new LogicalField(name);
             case 'I':
                 return new IntegerField(name);
-            case 'M':
-                if (length == 4) {
-                    return new SmallMemoField<T>(name);
-                } else if (length == 10) {
-                    return new MemoField<T>(name);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            case '0':
-                return new NullFlagsField(name, length);
             default:
                 throw new IllegalArgumentException(
                         String.format("'%c' (%d) is not a dbf field type", typeByte, typeByte));
@@ -196,12 +186,17 @@ public class GenericDialect implements XBaseDialect {
     }
 
     @Override
-    public XBaseMemoFileType memoFileType() {
-        return this.type.memoFileType();
+    public XBaseReader getReader(final String databaseName, final InputStream resettableInputStream,
+                                 final Charset charset) throws IOException {
+        final BasicInternalReaderFactory readerFactory =
+                new BasicInternalReaderFactory(this, TimeZone.getDefault());
+        return new GenericReader(this, resettableInputStream, charset, readerFactory);
     }
 
     @Override
-    public XBaseInternalReaderFactory getReaderFactory(final TimeZone timeZone) {
-        return new GenericInternalReaderFactory(this, timeZone);
+    public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
+                                                               final Charset charset)
+            throws IOException {
+        return new BasicInternalWriterFactory(this, TimeZone.getDefault());
     }
 }

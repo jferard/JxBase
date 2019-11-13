@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase.dialect.memo;
 
-import java.util.Arrays;
+import java.nio.charset.Charset;
 
 /**
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
-public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
-    private final byte[] bytes;
+public class TextMemoRecord implements XBaseMemoRecord {
     private final MemoRecordTypeEnum type;
-    private final int length;
+    private final Charset charset;
+    private final String s;
 
-    public ImageMemoRecord(final byte[] bytes, final int length) {
-        this.bytes = bytes;
-        this.type = MemoRecordTypeEnum.IMAGE;
-        this.length = length;
+    public TextMemoRecord(final String s, final Charset charset) {
+        this.s = s;
+        this.type = MemoRecordTypeEnum.TEXT;
+        this.charset = charset;
     }
 
     @Override
     public byte[] getBytes() {
-        return this.bytes;
+        return this.s.getBytes(this.charset);
     }
 
     @Override
-    public byte[] getValue() {
-        return this.bytes;
+    public String getValue() {
+        return this.s;
     }
 
     @Override
     public int getLength() {
-        return this.length;
+        return this.s.getBytes(this.charset).length;
     }
 
     @Override
@@ -54,6 +54,6 @@ public class ImageMemoRecord implements XBaseMemoRecord<byte[]> {
 
     @Override
     public String toString() {
-        return "ImageMemoRecord[bytes=" + Arrays.toString(this.bytes) + "]";
+        return "ImageMemoRecord[bytes=" + this.getValue() + "]";
     }
 }

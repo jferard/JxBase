@@ -14,22 +14,28 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.memo;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.dialect.memo.WithMemoInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.reader.internal.BasicInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class FoxProInternalReaderFactory extends WithMemoInternalReaderFactory {
-    public FoxProInternalReaderFactory(final FoxProDialect dialect, final TimeZone timeZone,
-                                       final XBaseMemoReader memoReader) {
-        super(dialect, timeZone, memoReader);
+/**
+ * A factory to create internal readers.
+ */
+public class WithMemoInternalReaderFactory extends BasicInternalReaderFactory {
+    protected final XBaseMemoReader memoReader;
+
+    public WithMemoInternalReaderFactory(final XBaseDialect dialect, final TimeZone timezone,
+                                         final XBaseMemoReader memoReader) {
+        super(dialect, timezone);
+        this.memoReader = memoReader;
     }
 
     @Override
@@ -37,7 +43,7 @@ public class FoxProInternalReaderFactory extends WithMemoInternalReaderFactory {
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional) {
-        return new FoxProRecordReader(this.dialect, inputStream, charset, array, this.memoReader,
+        return new WithMemoRecordReader(this.dialect, inputStream, charset, array, this.memoReader,
                 this.timezone);
     }
 }

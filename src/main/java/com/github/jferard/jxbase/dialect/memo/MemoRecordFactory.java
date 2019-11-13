@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase.dialect.memo;
 
 import java.nio.charset.Charset;
 
@@ -25,9 +25,9 @@ public class MemoRecordFactory {
         this.charset = charset;
     }
 
-    public XBaseMemoRecord<?> create(final byte[] dataBytes,
-                                     final MemoRecordTypeEnum memoRecordType,
-                                     final int memoRecordLength, final long offsetInBlocks) {
+    public XBaseMemoRecord create(final byte[] dataBytes,
+                                  final MemoRecordTypeEnum memoRecordType,
+                                  final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:
                 return new ImageMemoRecord(dataBytes, memoRecordLength);

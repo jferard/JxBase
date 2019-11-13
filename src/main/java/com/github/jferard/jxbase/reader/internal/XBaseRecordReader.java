@@ -17,7 +17,6 @@
 package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.XBaseRecord;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -43,10 +42,12 @@ public interface XBaseRecordReader {
     BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length,
                                int numberOfDecimalPlaces);
 
+    void close() throws IOException;
+
+    /* With memo
     <T extends XBaseMemoRecord<?>> T getMemoValue(byte[] recordBuffer, int offset, int length)
             throws IOException;
-
-    void close() throws IOException;
+    */
 
     /* FoxPro
     Date getDatetimeValue(byte[] recordBuffer, int offset, int length);

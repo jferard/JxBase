@@ -16,8 +16,9 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.BasicDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
@@ -30,14 +31,14 @@ import java.io.IOException;
 
 public class CharacterFieldTest {
     private CharacterField f;
-    private GenericDialect dialect;
+    private BasicDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
     private XBaseRecordReader r;
     private XBaseRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new GenericDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);
@@ -74,7 +75,6 @@ public class CharacterFieldTest {
 
     @Test
     public void testToString() {
-        Assert.assertEquals("CharacterField[name=char, length=20]",
-                this.f.toString());
+        Assert.assertEquals("CharacterField[name=char, length=20]", this.f.toString());
     }
 }

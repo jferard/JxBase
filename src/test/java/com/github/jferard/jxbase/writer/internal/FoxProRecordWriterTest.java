@@ -19,11 +19,11 @@ package com.github.jferard.jxbase.writer.internal;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
+import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,7 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericRecordWriterTest {
+public class FoxProRecordWriterTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -53,9 +53,10 @@ public class GenericRecordWriterTest {
     public void setUp() {
         this.mw = Mockito.mock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
-        this.grw = new FoxProRecordWriter(new FoxProDialect(XBaseFileTypeEnum.dBASEIV1), this.bos,
-                JxBaseUtils.UTF8_CHARSET,
-                Collections.<XBaseField>singleton(new LogicalField("bool")), this.mw);
+        this.grw =
+                new FoxProRecordWriter(new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro1), this.bos,
+                        JxBaseUtils.UTF8_CHARSET,
+                        Collections.<XBaseField>singleton(new LogicalField("bool")), this.mw);
         this.map = new HashMap<String, Object>();
         this.map.put("bool", true);
     }
@@ -78,8 +79,7 @@ public class GenericRecordWriterTest {
         Mockito.when(this.mw.write(memo)).thenReturn(10L);
 
         this.grw.writeSmallMemoValue(memo);
-        Assert.assertEquals("        10",
-                new String(this.bos.toByteArray(), JxBaseUtils.UTF8_CHARSET));
+        Assert.assertArrayEquals(new byte[]{10, 0, 0, 0}, this.bos.toByteArray());
     }
 
     @Test

@@ -17,12 +17,11 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoRecordWriter;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
-import com.github.jferard.jxbase.writer.internal.GenericRecordWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,7 +31,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class FoxProRecordWriter extends GenericRecordWriter {
+public class FoxProRecordWriter extends WithMemoRecordWriter {
     // cf. www.nr.com/julian.html
     private static int dateToJulian(final Date date) {
         final GregorianCalendar calendar = new GregorianCalendar();
@@ -58,25 +57,23 @@ public class FoxProRecordWriter extends GenericRecordWriter {
     public FoxProRecordWriter(final XBaseDialect dialect, final OutputStream out,
                               final Charset charset, final XBaseMemoWriter memoWriter,
                               final Collection<XBaseField> fields) {
-        super(dialect, out, charset, memoWriter, fields);
+        super(dialect, out, charset, fields, memoWriter);
     }
 
 
     public FoxProRecordWriter(final XBaseDialect dialect, final OutputStream out,
                               final Charset charset, final Collection<XBaseField> fields,
                               final XBaseMemoWriter memoWriter) {
-        super(dialect, out, charset, memoWriter, fields);
+        super(dialect, out, charset, fields, memoWriter);
     }
 
-    public <T extends XBaseMemoRecord<?>> void writeSmallMemoValue(final T value)
-            throws IOException {
+    public void writeSmallMemoValue(final XBaseMemoRecord value) throws IOException {
         final int length = ((FoxProDialect) this.dialect).getSmallMemoFieldLength();
         if (value == null) {
             BitUtils.writeEmpties(this.out, length);
         } else {
             final long offsetInBlocks = this.memoWriter.write(value);
-            final String s = String.format("%10d", offsetInBlocks);
-            this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
+            BitUtils.writeLEByte4(this.out, (int) offsetInBlocks);
         }
     }
 

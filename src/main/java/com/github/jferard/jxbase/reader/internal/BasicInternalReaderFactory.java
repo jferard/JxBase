@@ -19,8 +19,6 @@ package com.github.jferard.jxbase.reader.internal;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -29,37 +27,31 @@ import java.util.TimeZone;
 /**
  * A factory to create internal readers.
  */
-public class GenericInternalReaderFactory implements XBaseInternalReaderFactory {
+public class BasicInternalReaderFactory implements XBaseInternalReaderFactory {
     protected final XBaseDialect dialect;
     protected final TimeZone timezone;
 
-    public GenericInternalReaderFactory(final XBaseDialect dialect, final TimeZone timezone) {
+    public BasicInternalReaderFactory(final XBaseDialect dialect, final TimeZone timezone) {
         this.dialect = dialect;
         this.timezone = timezone;
     }
 
-    @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
         return new GenericMetadataReader(this.dialect, inputStream);
     }
 
-    @Override
     public XBaseFieldDescriptorArrayReader createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
         return new GenericFieldDescriptorArrayReader(this.dialect, inputStream, metadata);
     }
 
-    @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray array,
-                                                final Object optional,
-                                                final XBaseMemoReader memoReader) {
-        return new FoxProRecordReader(this.dialect, inputStream, charset, array, memoReader,
-                this.timezone);
+                                                final Object optional) {
+        return new BasicRecordReader(this.dialect, inputStream, charset, array, this.timezone);
     }
 
-    @Override
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,

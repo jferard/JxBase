@@ -19,15 +19,14 @@ package com.github.jferard.jxbase.writer.internal;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
-public class GenericInternalWriterFactory implements XBaseInternalWriterFactory {
-    public GenericInternalWriterFactory(final XBaseDialect dialect) {
+public class BasicInternalWriterFactory implements XBaseInternalWriterFactory {
+    public BasicInternalWriterFactory(final XBaseDialect dialect, TimeZone aDefault) {
     }
 
     @Override
@@ -58,9 +57,7 @@ public class GenericInternalWriterFactory implements XBaseInternalWriterFactory 
                                                 final OutputStream outputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray array,
-                                                final Object optional,
-                                                final XBaseMemoWriter memoWriter) {
-        return new FoxProRecordWriter(dialect, outputStream, charset, array.getFields(),
-                memoWriter);
+                                                final Object optional) {
+        return new BasicRecordWriter(dialect, outputStream, charset, array.getFields());
     }
 }

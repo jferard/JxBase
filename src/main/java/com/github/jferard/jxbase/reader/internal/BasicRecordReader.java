@@ -16,12 +16,10 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -40,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class GenericRecordReader implements XBaseRecordReader {
+public class BasicRecordReader implements XBaseRecordReader {
     private static final CharSequence NUMERIC_OVERFLOW = "*";
     protected final InputStream dbfInputStream;
     protected final Charset charset;
@@ -48,20 +46,18 @@ public class GenericRecordReader implements XBaseRecordReader {
     protected final int recordLength;
     protected final Collection<XBaseField> fields;
     protected final XBaseDialect dialect;
-    protected final XBaseMemoReader memoReader;
     protected final TimeZone timezone;
     protected int recordsCounter;
 
-    public GenericRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
-                               final Charset charset, final XBaseFieldDescriptorArray array,
-                               final XBaseMemoReader memoReader, final TimeZone timezone) {
+    public BasicRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
+                             final Charset charset, final XBaseFieldDescriptorArray array,
+                             final TimeZone timezone) {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
         this.recordBuffer = new byte[this.recordLength];
         this.fields = array.getFields();
         this.dialect = dialect;
-        this.memoReader = memoReader;
         this.timezone = timezone;
         this.recordsCounter = -1;
     }
@@ -178,18 +174,10 @@ public class GenericRecordReader implements XBaseRecordReader {
                                       final int numberOfDecimalPlaces) {
         final String s = this.getTrimmedASCIIString(recordBuffer, offset, length);
         final MathContext mc = new MathContext(numberOfDecimalPlaces);
-        if (s == null || s.contains(GenericRecordReader.NUMERIC_OVERFLOW)) {
+        if (s == null || s.contains(BasicRecordReader.NUMERIC_OVERFLOW)) {
             return null;
         }
         return new BigDecimal(s, mc);
-    }
-
-    @Override
-    public XBaseMemoRecord<?> getMemoValue(final byte[] recordBuffer, final int offset,
-                                           final int length) throws IOException {
-        final long offsetInBlocks =
-                this.dialect.getOffsetInBlocks(this, recordBuffer, offset, length);
-        return this.memoReader.read(offsetInBlocks);
     }
 
     @Override

@@ -17,13 +17,13 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseReader;
-import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.reader.internal.BasicInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
@@ -33,7 +33,7 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
-public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
+public class GenericReader implements XBaseReader {
     private final XBaseFieldDescriptorArray array;
     private final XBaseRecordReader recordReader;
     private final XBaseOptional optional;
@@ -46,12 +46,11 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
      * @param inputStream
      * @param charset
      * @param readerFactory
-     * @param memoReader    may be null
      * @throws IOException
      */
     public GenericReader(final XBaseDialect dialect, final InputStream inputStream,
-                         final Charset charset, final XBaseInternalReaderFactory readerFactory,
-                         final XBaseMemoReader memoReader) throws IOException {
+                         final Charset charset, final XBaseInternalReaderFactory readerFactory)
+            throws IOException {
         this.dialect = dialect;
         this.inputStream = inputStream;
         this.metadata = readerFactory.createMetadataReader(inputStream).read();
@@ -61,8 +60,7 @@ public class GenericReader implements XBaseReader<XBaseMemoRecord<Void>> {
                 readerFactory.createOptionalReader(inputStream, charset, this.metadata, this.array)
                         .read();
         this.recordReader = readerFactory
-                .createRecordReader(inputStream, charset, this.metadata, this.array, this.optional,
-                        memoReader);
+                .createRecordReader(inputStream, charset, this.metadata, this.array, this.optional);
         this.checkLengths();
     }
 

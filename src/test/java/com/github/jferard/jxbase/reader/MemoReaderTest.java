@@ -16,8 +16,9 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.GenericMemoReader;
+import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,9 +34,9 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 public class MemoReaderTest {
+    private final MemoRecordFactory dbfMemoRecordFactory = null;
     @Rule
     public ExpectedException exception = ExpectedException.none();
-    private final MemoRecordFactory dbfMemoRecordFactory = null;
 
     @Test
     public void testRead() throws IOException {
@@ -48,18 +49,19 @@ public class MemoReaderTest {
         Mockito.when(bb.get(argument.capture())).then(new Answer<Void>() {
             @Override
             public Void answer(final InvocationOnMock invocation) throws Throwable {
-                System.arraycopy(argument.getValue(), 0, new byte[] {1,2,3,4,5,6,7,8}, 0, 8);
+                System.arraycopy(argument.getValue(), 0, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, 0, 8);
                 return null;
             }
         });
 
         final GenericMemoReader memoReader = new GenericMemoReader(fc, this.dbfMemoRecordFactory);
         try {
-            final XBaseMemoRecord<?> mrec = memoReader.read(10);
+            final XBaseMemoRecord mrec = memoReader.read(10);
             Assert.assertArrayEquals(new byte[]{}, mrec.getBytes());
             Assert.assertEquals(0, mrec.getLength());
             Assert.assertEquals("", mrec.getValue());
-        } catch (final Exception e) {}
+        } catch (final Exception e) {
+        }
     }
 
     @Test

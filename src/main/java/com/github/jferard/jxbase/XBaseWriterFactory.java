@@ -20,11 +20,11 @@ import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.dialect.memo.GenericMemoWriter;
+import com.github.jferard.jxbase.dialect.memo.WithMemoInternalWriterFactory;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.writer.GenericMemoWriter;
 import com.github.jferard.jxbase.writer.GenericWriter;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
-import com.github.jferard.jxbase.writer.internal.GenericInternalWriterFactory;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
@@ -40,9 +40,10 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class XBaseWriterFactory {
-    public static GenericWriter createWriter(final XBaseFileTypeEnum type,
+    public static XBaseWriter createWriter(final XBaseFileTypeEnum type,
                                              final String databaseName, final Charset charset,
                                              final Map<String, Object> meta,
                                              final Collection<XBaseField> fields,
@@ -50,14 +51,15 @@ public class XBaseWriterFactory {
         return new XBaseWriterFactory().create(type, databaseName, charset, meta, fields, optional);
     }
 
-    public GenericWriter create(final XBaseFileTypeEnum type, final String databaseName,
+    public XBaseWriter create(final XBaseFileTypeEnum type, final String databaseName,
                                 final Charset charset, final Map<String, Object> meta,
                                 final Collection<XBaseField> fields, final XBaseOptional optional)
             throws IOException {
-        final File dbfFile = new File(databaseName + ".dbf");
-        final File memoFile = new File(databaseName + ".dbt");
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalWriterFactory writerFactory = new GenericInternalWriterFactory(dialect);
+        final XBaseInternalWriterFactory writerFactory =
+                dialect.getInternalWriterFactory(databaseName, charset);
+        final File dbfFile = new File(databaseName + ".dbf");
+
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
         final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 
@@ -67,11 +69,9 @@ public class XBaseWriterFactory {
         final XBaseMetadataWriter metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
                         optional);
-        final XBaseMemoWriter memoWriter = GenericMemoWriter.fromChannel(memoFile, charset);
         final XBaseRecordWriter recordWriter = writerFactory
-                .createRecordWriter(dialect, out, charset, initialMetadata, array, optional,
-                        memoWriter);
-        return new GenericWriter(metadataWriter, recordWriter, memoWriter);
+                .createRecordWriter(dialect, out, charset, initialMetadata, array, optional);
+        return new GenericWriter(metadataWriter, recordWriter);
     }
 
     private XBaseMetadataWriter writeHeader(final XBaseDialect dialect, final RandomAccessFile file,

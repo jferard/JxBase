@@ -29,9 +29,15 @@ public class BitUtils {
                 ((b4 << 24) & 0xFF000000);
     }
 
-    public static byte[] makeByte4(final int i) {
+    public static byte[] makeLEByte4(final int i) {
         final byte[] b = {(byte) (i & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) ((i >> 16) & 0xFF),
                 (byte) ((i >> 24) & 0xFF)};
+        return b;
+    }
+
+    public static byte[] makeBEByte4(final int i) {
+        final byte[] b = {(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF),
+                (byte) (i & 0xFF)};
         return b;
     }
 

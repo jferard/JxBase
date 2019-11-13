@@ -16,11 +16,13 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.memo.TextMemoRecord;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.memo.MemoField;
+import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.WithMemoRecordWriter;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.WithMemoRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
@@ -35,15 +37,15 @@ public class MemoFieldTest {
     private MemoField<TextMemoRecord> f;
     private FoxProDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter w;
+    private WithMemoRecordReader r;
+    private WithMemoRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.r = Mockito.mock(WithMemoRecordReader.class);
+        this.w = Mockito.mock(WithMemoRecordWriter.class);
         this.f = new MemoField<TextMemoRecord>("memo");
     }
 
@@ -61,7 +63,7 @@ public class MemoFieldTest {
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
-        Mockito.<XBaseMemoRecord<?>>when(this.r.getMemoValue(bytes, 0, 4)).thenReturn(record);
+        Mockito.<XBaseMemoRecord>when(this.r.getMemoValue(bytes, 0, 4)).thenReturn(record);
         Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
     }
 

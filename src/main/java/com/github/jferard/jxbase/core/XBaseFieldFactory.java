@@ -17,11 +17,9 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 public interface XBaseFieldFactory {
     XBaseField fromStringRepresentation(String s);
 
-    <T extends XBaseMemoRecord<?>> XBaseField getXBaseField(String name, byte type, int length,
-                                                            int numberOfDecimalPlaces);
+    XBaseField getXBaseField(String name, byte type, int length, int numberOfDecimalPlaces);
 }

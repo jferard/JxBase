@@ -16,17 +16,17 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.core.GenericDialect;
-import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseRecord;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
+import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class GenericRecordReaderTest {
     public void setUp() {
         this.mr = Mockito.mock(XBaseMemoReader.class);
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
-        this.grr = new FoxProRecordReader(new GenericDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
+        this.grr = new FoxProRecordReader(new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
                 JxBaseUtils.UTF8_CHARSET, new GenericFieldDescriptorArray(
                 Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr,
                 TimeZone.getTimeZone("Europe/Paris"));
@@ -117,11 +117,11 @@ public class GenericRecordReaderTest {
     @Test
     public void getMemoValue() throws IOException {
         final MemoRecordFactory factory = new MemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
-        final XBaseMemoRecord<byte[]> record = (XBaseMemoRecord<byte[]>) factory
-                .create(new byte[]{'A'}, MemoRecordTypeEnum.IMAGE, 1, 123);
-        Mockito.when((XBaseMemoRecord<byte[]>) this.mr.read(123)).thenReturn(record);
+        final XBaseMemoRecord record =
+                factory.create(new byte[]{'A'}, MemoRecordTypeEnum.IMAGE, 1, 123);
+        Mockito.when(this.mr.read(123)).thenReturn(record);
 
-        final XBaseMemoRecord<?> m =
+        final XBaseMemoRecord m =
                 this.grr.getSmallMemoValue("       123".getBytes(JxBaseUtils.ASCII_CHARSET), 0, 10);
 
         Assert.assertEquals(record, m);

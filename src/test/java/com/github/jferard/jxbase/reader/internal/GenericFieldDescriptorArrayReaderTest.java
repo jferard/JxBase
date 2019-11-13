@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.core.GenericDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.field.CharacterField;
@@ -37,7 +37,7 @@ public class GenericFieldDescriptorArrayReaderTest {
                         0x0, 0x0, 10, 0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
                         0x0, 0x0, 0x0D};
         Assert.assertEquals(33, bytes.length);
-        final GenericDialect dialect = new GenericDialect(XBaseFileTypeEnum.dBASEIV1);
+        final WithMemoDialect dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
         this.gfdar = new GenericFieldDescriptorArrayReader(dialect, new ByteArrayInputStream(bytes),
                 null);
         final XBaseFieldDescriptorArray array = this.gfdar.read();

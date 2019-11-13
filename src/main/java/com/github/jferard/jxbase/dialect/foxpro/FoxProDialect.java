@@ -16,16 +16,27 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.dialect.memo.GenericMemoWriter;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.reader.GenericReader;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class FoxProDialect extends GenericDialect {
+public class FoxProDialect extends WithMemoDialect {
     public FoxProDialect(final XBaseFileTypeEnum type) {
         super(type);
     }
@@ -83,8 +94,37 @@ public class FoxProDialect extends GenericDialect {
     }
 
     @Override
-    public XBaseInternalReaderFactory getReaderFactory(final TimeZone timeZone) {
-        return new FoxProInternalReaderFactory(this, timeZone);
+    public XBaseReader getReader(final String databaseName, final InputStream resettableInputStream,
+                                 final Charset charset) throws IOException {
+        final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset);
+        final XBaseInternalReaderFactory readerFactory =
+                new FoxProInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
+        return new GenericReader(this, resettableInputStream, charset, readerFactory);
+    }
+
+    @Override
+    public XBaseField getXBaseField(final String name, final byte typeByte, final int length,
+                                    final int numberOfDecimalPlaces) {
+        switch (typeByte) {
+            case 'M':
+                if (length != 4) {
+                    throw new IllegalArgumentException();
+                }
+                return new SmallMemoField(name);
+            case '0':
+                return new NullFlagsField(name, length);
+            default:
+                return super.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+        }
+    }
+
+    @Override
+    public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
+                                                               final Charset charset)
+            throws IOException {
+        final File memoFile = new File(databaseName + ".dbt");
+        final XBaseMemoWriter memoWriter = GenericMemoWriter.fromChannel(memoFile, charset);
+        return new FoxProInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
     }
 }
 

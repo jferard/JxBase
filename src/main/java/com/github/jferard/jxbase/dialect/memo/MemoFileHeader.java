@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase.dialect.memo;
 
 import com.github.jferard.jxbase.util.BitUtils;
 

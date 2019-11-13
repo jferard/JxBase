@@ -18,7 +18,6 @@ package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -35,5 +34,5 @@ public interface XBaseInternalReaderFactory {
 
     XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
                                          XBaseMetadata metadata, XBaseFieldDescriptorArray array,
-                                         Object optional, XBaseMemoReader memoReader);
+                                         Object optional);
 }

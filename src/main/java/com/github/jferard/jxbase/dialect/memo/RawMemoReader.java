@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader;
+package com.github.jferard.jxbase.dialect.memo;
 
 import java.nio.ByteBuffer;
 

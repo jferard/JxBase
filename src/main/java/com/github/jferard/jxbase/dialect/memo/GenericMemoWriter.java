@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.writer;
+package com.github.jferard.jxbase.dialect.memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 
 import java.io.File;
@@ -63,15 +61,15 @@ public class GenericMemoWriter implements XBaseMemoWriter {
     }
 
     @Override
-    public long write(final XBaseMemoRecord<?> memo) throws IOException {
+    public long write(final XBaseMemoRecord memo) throws IOException {
         final int blockSize = 512;
         final int headerSize = 512;
         final int from = 0;
         final long offsetInBlocks = this.curOffsetInBlocks;
         final long start = blockSize * (offsetInBlocks - 1) + headerSize + from;
         this.channel.position(start);
-        this.writeBytes(BitUtils.makeByte4(memo.getMemoType().getType()));
-        this.writeBytes(BitUtils.makeByte4(memo.getLength()));
+        this.writeBytes(BitUtils.makeBEByte4(memo.getMemoType().getType()));
+        this.writeBytes(BitUtils.makeBEByte4(memo.getLength()));
         final byte[] bytes = memo.getBytes();
         this.writeBytes(bytes);
         this.curOffsetInBlocks += (8 + bytes.length) / blockSize;

@@ -16,28 +16,21 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.core.XBaseMemoFileType;
-import com.github.jferard.jxbase.reader.GenericMemoReader;
-import com.github.jferard.jxbase.reader.GenericReader;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.TimeZone;
 
 public class XBaseReaderFactory {
-    public static XBaseReader<?> createReader(final String databaseName, final Charset charset)
+    public static XBaseReader createReader(final String databaseName, final Charset charset)
             throws IOException {
         return new XBaseReaderFactory().create(databaseName, charset);
     }
 
-    private XBaseReader<?> create(final String databaseName, final Charset charset)
+    private XBaseReader create(final String databaseName, final Charset charset)
             throws IOException {
         final InputStream dbfInputStream = new FileInputStream(databaseName + ".dbf");
         final InputStream resettableInputStream =
@@ -45,10 +38,7 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalReaderFactory readerFactory = dialect.getReaderFactory(TimeZone.getDefault());
-        final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset, dialect);
-        return new GenericReader(dialect, resettableInputStream, charset, readerFactory,
-                memoReader);
+        return dialect.getReader(databaseName, resettableInputStream, charset);
     }
 
     private XBaseFileTypeEnum getXBaseFileType(final InputStream resettableInputStream)
@@ -60,16 +50,5 @@ public class XBaseReaderFactory {
             throw new IOException("Stream is empty");
         }
         return XBaseFileTypeEnum.fromInt((byte) firstByte);
-    }
-
-    private XBaseMemoReader getMemoReader(final String databaseName, final Charset charset,
-                                          final XBaseDialect dialect) throws IOException {
-        if (dialect.memoFileType() != XBaseMemoFileType.NO_MEMO_FILE) {
-            // TODO: handle cases with a factory
-            final File memoFile = new File(databaseName + dialect.memoFileType().getExtension());
-            return GenericMemoReader.fromChannel(memoFile, charset);
-        }
-
-        return null;
     }
 }

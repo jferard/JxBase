@@ -42,7 +42,7 @@ public class ReaderIT {
         final String databaseName = TestHelper.getResourceBase("data1/gds_im.dbf");
 
         XBaseRecord rec;
-        final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
+        final XBaseReader reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
@@ -71,7 +71,7 @@ public class ReaderIT {
         final String databaseName = TestHelper.getResourceBase("data1/tir_im.dbf");
 
         XBaseRecord rec;
-        final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
+        final XBaseReader reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
 

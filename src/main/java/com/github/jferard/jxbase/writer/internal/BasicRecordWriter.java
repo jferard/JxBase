@@ -18,10 +18,8 @@ package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -34,22 +32,19 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-public class GenericRecordWriter implements XBaseRecordWriter {
+public class BasicRecordWriter implements XBaseRecordWriter {
     private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
-    protected final XBaseMemoWriter memoWriter;
     protected final Collection<XBaseField> fields;
     protected final XBaseDialect dialect;
     protected final OutputStream out;
     final Charset charset;
     protected int recordCount;
 
-    public GenericRecordWriter(final XBaseDialect dialect, final OutputStream out,
-                               final Charset charset, final XBaseMemoWriter memoWriter,
-                               final Collection<XBaseField> fields) {
+    public BasicRecordWriter(final XBaseDialect dialect, final OutputStream out,
+                             final Charset charset, final Collection<XBaseField> fields) {
         this.dialect = dialect;
         this.out = out;
         this.charset = charset;
-        this.memoWriter = memoWriter;
         this.fields = fields;
         this.recordCount = 0;
     }
@@ -123,18 +118,6 @@ public class GenericRecordWriter implements XBaseRecordWriter {
         }
     }
 
-    @Override
-    public <T extends XBaseMemoRecord<?>> void writeMemoValue(final T value) throws IOException {
-        final int length = this.dialect.getMemoValueLength();
-        if (value == null) {
-            BitUtils.writeEmpties(this.out, length);
-        } else {
-            final long offsetInBlocks = this.memoWriter.write(value);
-            final String s = String.format("%10d", offsetInBlocks);
-            this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
-        }
-    }
-
     private void writeNumeric(final byte[] numberBytes, final int missingCount, final int length)
             throws IOException {
         final byte[] bytes = new byte[length];
@@ -170,5 +153,11 @@ public class GenericRecordWriter implements XBaseRecordWriter {
     @Override
     public int getRecordQty() {
         return this.recordCount;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.out.write(0x1A);
+        this.out.flush();
     }
 }

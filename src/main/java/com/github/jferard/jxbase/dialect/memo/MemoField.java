@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.field;
+package com.github.jferard.jxbase.dialect.memo;
 
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 
-public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
+public class MemoField<T extends XBaseMemoRecord> implements XBaseField {
     private final String name;
 
     public MemoField(final String name) {
@@ -42,14 +43,14 @@ public class MemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
     }
 
     @Override
-    public T getValue(final XBaseRecordReader reader, final byte[] recordBuffer, final int offset,
-                      final int length) throws IOException {
-        return reader.getMemoValue(recordBuffer, offset, length);
+    public T getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
+                                    final int offset, final int length) throws IOException {
+        return (T) ((WithMemoRecordReader) reader).getMemoValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        writer.writeMemoValue((T) value);
+        ((WithMemoRecordWriter) writer).writeMemoValue((T) value);
     }
 
     @Override

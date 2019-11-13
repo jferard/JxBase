@@ -16,17 +16,17 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 
-public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField {
+public class SmallMemoField implements XBaseField {
     private final String name;
 
     public SmallMemoField(final String name) {
@@ -44,14 +44,14 @@ public class SmallMemoField<T extends XBaseMemoRecord<?>> implements XBaseField 
     }
 
     @Override
-    public T getValue(final XBaseRecordReader reader, final byte[] recordBuffer, final int offset,
-                      final int length) throws IOException {
-        return (T) ((FoxProRecordReader) reader).getSmallMemoValue(recordBuffer, offset, length);
+    public XBaseMemoRecord getValue(final XBaseRecordReader reader, final byte[] recordBuffer,
+                                    final int offset, final int length) throws IOException {
+        return ((FoxProRecordReader) reader).getSmallMemoValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final XBaseRecordWriter writer, final Object value) throws IOException {
-        ((FoxProRecordWriter) writer).writeSmallMemoValue((T) value);
+        ((FoxProRecordWriter) writer).writeSmallMemoValue((XBaseMemoRecord) value);
     }
 
     @Override

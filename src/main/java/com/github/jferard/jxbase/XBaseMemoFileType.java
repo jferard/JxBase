@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase;
 
-public enum MemoRecordTypeEnum {
-    IMAGE(0x0), TEXT(0x1);
+public enum XBaseMemoFileType {
+    NO_MEMO_FILE(""), REGULAR_MEMO_FILE(".dbt"), FOXPRO_OBJECT_AND_MEMO_FILE(".fpt");
 
-    public static MemoRecordTypeEnum fromInt(final int type) {
-        for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
-            if (e.type == type) {
-                return e;
-            }
-        }
-        return null;
+    private final String extension;
+
+    XBaseMemoFileType(final String extension) {
+        this.extension = extension;
     }
 
-    public int getType() {
-        return this.type;
-    }
-
-    final int type;
-
-    MemoRecordTypeEnum(final int type) {
-        this.type = type;
+    public String getExtension() {
+        return this.extension;
     }
 }

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.memo.MemoFileHeader;
+import com.github.jferard.jxbase.dialect.memo.MemoFileHeader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,14 +25,17 @@ import java.nio.charset.Charset;
 public class MemoFileHeaderTest {
     @Test
     public void testBlockAndNext() {
-        final MemoFileHeader memoFileHeader = MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
+        final MemoFileHeader memoFileHeader =
+                MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
         Assert.assertEquals(26472, memoFileHeader.getBlockSize());
         Assert.assertEquals(1633837924, memoFileHeader.getNextFreeBlockLocation());
     }
 
     @Test
     public void testToString() {
-        final MemoFileHeader memoFileHeader = MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
-        Assert.assertEquals("MemoFileHeader[nextFreeBlockLocation=1633837924, blockSize=26472]", memoFileHeader.toString());
+        final MemoFileHeader memoFileHeader =
+                MemoFileHeader.create("abcdefgh".getBytes(Charset.forName("ASCII")));
+        Assert.assertEquals("MemoFileHeader[nextFreeBlockLocation=1633837924, blockSize=26472]",
+                memoFileHeader.toString());
     }
 }

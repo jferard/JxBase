@@ -26,13 +26,11 @@ import java.util.Map;
 public class GenericWriter implements XBaseWriter {
     private final XBaseMetadataWriter metadataWriter;
     private final XBaseRecordWriter recordWriter;
-    private final XBaseMemoWriter memoWriter;
 
     public GenericWriter(final XBaseMetadataWriter metadataWriter,
-                         final XBaseRecordWriter recordWriter, final XBaseMemoWriter memoWriter) {
+                         final XBaseRecordWriter recordWriter) {
         this.metadataWriter = metadataWriter;
         this.recordWriter = recordWriter;
-        this.memoWriter = memoWriter;
     }
 
     @Override
@@ -42,6 +40,7 @@ public class GenericWriter implements XBaseWriter {
 
     @Override
     public void close() throws IOException {
+        this.recordWriter.close();
         this.metadataWriter.correctMetadata(this.recordWriter.getRecordQty());
         this.metadataWriter.close();
     }

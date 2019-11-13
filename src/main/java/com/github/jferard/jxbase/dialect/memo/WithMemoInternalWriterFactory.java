@@ -14,30 +14,35 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.memo;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.dialect.memo.WithMemoInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.writer.internal.BasicInternalWriterFactory;
+import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
-import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class FoxProInternalReaderFactory extends WithMemoInternalReaderFactory {
-    public FoxProInternalReaderFactory(final FoxProDialect dialect, final TimeZone timeZone,
-                                       final XBaseMemoReader memoReader) {
-        super(dialect, timeZone, memoReader);
+public class WithMemoInternalWriterFactory extends BasicInternalWriterFactory {
+    protected final XBaseMemoWriter memoWriter;
+
+    public WithMemoInternalWriterFactory(final XBaseDialect dialect, final TimeZone timezone,
+                                         final XBaseMemoWriter memoWriter) {
+        super(dialect, TimeZone.getDefault());
+        // TODO : fix timezone
+        this.memoWriter = memoWriter;
     }
 
     @Override
-    public XBaseRecordReader createRecordReader(final InputStream inputStream,
+    public XBaseRecordWriter createRecordWriter(final XBaseDialect dialect,
+                                                final OutputStream outputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional) {
-        return new FoxProRecordReader(this.dialect, inputStream, charset, array, this.memoReader,
-                this.timezone);
+        return new WithMemoRecordWriter(dialect, outputStream, charset, array.getFields(),
+                this.memoWriter);
     }
 }

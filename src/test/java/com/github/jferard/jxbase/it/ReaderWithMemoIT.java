@@ -44,7 +44,7 @@ public class ReaderWithMemoIT {
 
         try {
             final Charset charset = Charset.forName("cp1252");
-            final XBaseReader<?> reader = XBaseReaderFactory.createReader(databaseName, charset);
+            final XBaseReader reader = XBaseReaderFactory.createReader(databaseName, charset);
             try {
                 final XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);

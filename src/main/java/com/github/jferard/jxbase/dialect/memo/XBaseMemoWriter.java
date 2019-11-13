@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader;
+package com.github.jferard.jxbase.dialect.memo;
 
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-
-import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * A reader for a memo file
- */
-public interface XBaseMemoReader extends Closeable {
-
-    /**
-     * Read a record
-     *
-     * @param offsetInBlocks 1 for the first block, 2 for the second. 0 is forbidden
-     * @return the memo record
-     * @throws IOException if an I/O error occurs
-     */
-    XBaseMemoRecord<?> read(long offsetInBlocks) throws IOException;
+public interface XBaseMemoWriter {
+    long write(XBaseMemoRecord memo) throws IOException;
 }

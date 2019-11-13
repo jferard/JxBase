@@ -1,5 +1,5 @@
 /*
- * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader;
+package com.github.jferard.jxbase.dialect.memo;
 
-import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -97,7 +93,7 @@ public class GenericMemoReader implements XBaseMemoReader {
      * @return the record
      */
     @Override
-    public XBaseMemoRecord<?> read(final long offsetInBlocks) {
+    public XBaseMemoRecord read(final long offsetInBlocks) {
         final byte[] recordHeaderBytes = this.rawMemoReader.read(offsetInBlocks, 0, 8);
         final MemoRecordTypeEnum memoRecordType = MemoRecordTypeEnum.fromInt(
                 BitUtils.makeInt(recordHeaderBytes[3], recordHeaderBytes[2], recordHeaderBytes[1],

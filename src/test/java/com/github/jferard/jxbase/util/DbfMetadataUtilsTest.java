@@ -16,10 +16,10 @@
 
 package com.github.jferard.jxbase.util;
 
-import com.github.jferard.jxbase.core.GenericDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
 
 public class DbfMetadataUtilsTest {
-    private GenericDialect dbfFieldFactory;
+    private WithMemoDialect dbfFieldFactory;
 
     /*
     @Before

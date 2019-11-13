@@ -21,7 +21,6 @@ import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.reader.GenericReader;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;
@@ -49,7 +48,7 @@ public class GenericOptionalReader implements XBaseOptionalReader {
         final int read = this.array.getArrayLength() + metaLength;
         final int excess = this.metadata.getFullHeaderLength() - read;
         if (excess > 0) {
-            Logger.getLogger(GenericReader.class.getName()).info(String
+            Logger.getLogger(this.getClass().getName()).info(String
                     .format("Optional bytes in header: expected: %s, actual: %s + %s",
                             this.metadata.getFullHeaderLength(), this.array.getArrayLength(),
                             metaLength));

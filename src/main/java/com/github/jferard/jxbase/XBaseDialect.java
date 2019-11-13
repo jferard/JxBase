@@ -18,12 +18,19 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.XBaseFieldFactory;
 import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseMemoFileType;
+import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
-import java.util.TimeZone;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Map;
 
 public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {
     long getOffsetInBlocks(XBaseRecordReader genericRecordReader, byte[] recordBuffer, int offset,
@@ -37,7 +44,11 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
 
     int getOptionalLength();
 
-    XBaseMemoFileType memoFileType();
+    //    XBaseMemoFileType memoFileType();
 
-    XBaseInternalReaderFactory getReaderFactory(TimeZone timeZone);
+    XBaseReader getReader(String databaseName, InputStream resettableInputStream, Charset charset)
+            throws IOException;
+
+    XBaseInternalWriterFactory getInternalWriterFactory(String databaseName, Charset charset)
+            throws IOException;
 }

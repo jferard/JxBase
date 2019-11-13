@@ -18,9 +18,9 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.reader.XBaseMemoReader;
-import com.github.jferard.jxbase.reader.internal.GenericRecordReader;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.dialect.memo.WithMemoRecordReader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class FoxProRecordReader extends GenericRecordReader {
+public class FoxProRecordReader extends WithMemoRecordReader {
 
     public FoxProRecordReader(final XBaseDialect dialect, final InputStream dbfInputStream,
                               final Charset charset, final XBaseFieldDescriptorArray array,
@@ -43,8 +43,8 @@ public class FoxProRecordReader extends GenericRecordReader {
         return null;
     }
 
-    public XBaseMemoRecord<?> getSmallMemoValue(final byte[] recordBuffer, final int offset,
-                                                final int length) throws IOException {
+    public XBaseMemoRecord getSmallMemoValue(final byte[] recordBuffer, final int offset,
+                                             final int length) throws IOException {
         final long offsetInBlocks =
                 this.dialect.getOffsetInBlocks(this, recordBuffer, offset, length);
         return this.memoReader.read(offsetInBlocks);

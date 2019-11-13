@@ -19,7 +19,6 @@ package com.github.jferard.jxbase.writer.internal;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.writer.XBaseMemoWriter;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
@@ -39,6 +38,5 @@ public interface XBaseInternalWriterFactory {
 
     XBaseRecordWriter createRecordWriter(final XBaseDialect dialect, OutputStream outputStream,
                                          Charset charset, XBaseMetadata metadata,
-                                         XBaseFieldDescriptorArray array, Object optional,
-                                         XBaseMemoWriter memoWriter);
+                                         XBaseFieldDescriptorArray array, Object optional);
 }

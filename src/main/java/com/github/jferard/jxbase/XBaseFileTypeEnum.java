@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.core.GenericDialect;
-import com.github.jferard.jxbase.core.XBaseMemoFileType;
+import com.github.jferard.jxbase.core.BasicDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 
 /**
@@ -124,9 +124,12 @@ public enum XBaseFileTypeEnum {
                 dialect = new FoxProDialect(type);
                 break;
             default:
-                dialect = new GenericDialect(type);
+                if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
+                    dialect = new WithMemoDialect(type);
+                } else {
+                    dialect = new BasicDialect(type);
+                }
                 break;
-
         }
         return dialect;
     }

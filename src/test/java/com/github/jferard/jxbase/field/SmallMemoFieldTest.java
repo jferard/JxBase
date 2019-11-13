@@ -16,14 +16,13 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.memo.TextMemoRecord;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
-import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
+import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
+import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.GenericFieldDescriptorArrayWriter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,7 +32,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 public class SmallMemoFieldTest {
-    private SmallMemoField<TextMemoRecord> f;
+    private SmallMemoField f;
     private FoxProDialect dialect;
     private GenericFieldDescriptorArrayWriter aw;
     private FoxProRecordReader r;
@@ -45,7 +44,7 @@ public class SmallMemoFieldTest {
         this.aw = Mockito.mock(GenericFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(FoxProRecordReader.class);
         this.w = Mockito.mock(FoxProRecordWriter.class);
-        this.f = new SmallMemoField<TextMemoRecord>("memo");
+        this.f = new SmallMemoField("memo");
     }
 
     @Test
@@ -62,7 +61,7 @@ public class SmallMemoFieldTest {
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
-        Mockito.<XBaseMemoRecord<?>>when(this.r.getSmallMemoValue(bytes, 0, 4)).thenReturn(record);
+        Mockito.when(this.r.getSmallMemoValue(bytes, 0, 4)).thenReturn(record);
         Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
     }
 

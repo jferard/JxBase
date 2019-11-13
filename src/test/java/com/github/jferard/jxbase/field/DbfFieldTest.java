@@ -16,8 +16,9 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,11 +28,11 @@ import org.junit.rules.ExpectedException;
 public class DbfFieldTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
-    private GenericDialect dialect;
+    private WithMemoDialect dialect;
 
     @Before
     public void setUp() {
-        this.dialect = new GenericDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new WithMemoDialect(XBaseFileTypeEnum.dBASEIV1);
     }
 
     @Test
@@ -57,6 +58,7 @@ public class DbfFieldTest {
 
     @Test
     public void testFromStringRepresentation0() {
-        final XBaseField f = this.dialect.fromStringRepresentation("a,0,10,0");
+        final XBaseField f = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro1)
+                .fromStringRepresentation("a,0,10,0");
     }
 }

@@ -17,12 +17,12 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.core.GenericDialect;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.dialect.memo.WithMemoDialect;
+import com.github.jferard.jxbase.dialect.memo.WithMemoInternalReaderFactory;
+import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.internal.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
@@ -32,17 +32,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 
 public class GenericReaderTest {
-    private XBaseInternalReaderFactory rf;
+    private WithMemoInternalReaderFactory rf;
     private InputStream is;
     private GenericReader gr;
     private XBaseMemoReader mr;
-    private GenericDialect dialect;
+    private WithMemoDialect dialect;
     private XBaseMetadataReader mdr;
     private XBaseMetadata metadata;
     private XBaseFieldDescriptorArray array;
@@ -62,8 +61,8 @@ public class GenericReaderTest {
         this.optional = Mockito.mock(XBaseOptional.class);
         this.rr = Mockito.mock(XBaseRecordReader.class);
 
-        this.dialect = Mockito.mock(GenericDialect.class);
-        this.rf = Mockito.mock(XBaseInternalReaderFactory.class);
+        this.dialect = Mockito.mock(WithMemoDialect.class);
+        this.rf = Mockito.mock(WithMemoInternalReaderFactory.class);
         this.mr = Mockito.mock(XBaseMemoReader.class);
 
         Mockito.when(this.rf.createMetadataReader(this.is)).thenReturn(this.mdr);
@@ -71,14 +70,13 @@ public class GenericReaderTest {
         Mockito.when(this.rf.createFieldDescriptorArrayReader(this.is, this.metadata))
                 .thenReturn(this.ar);
         Mockito.when(this.ar.read()).thenReturn(this.array);
-        Mockito.when(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata, this.array))
-                .thenReturn(this.or);
+        Mockito.when(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+                this.array)).thenReturn(this.or);
         Mockito.when(this.or.read()).thenReturn(this.optional);
-        Mockito.when(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata, this.array, this.optional, this.mr))
-                .thenReturn(this.rr);
+        Mockito.when(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+                this.array, this.optional)).thenReturn(this.rr);
 
-        this.gr = new GenericReader(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf,
-                this.mr);
+        this.gr = new GenericReader(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
     }
 
     @Test

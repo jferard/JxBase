@@ -17,13 +17,12 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.text.ParseException;
 
-public interface XBaseReader<T extends XBaseMemoRecord<?>> extends Closeable {
+public interface XBaseReader extends Closeable {
     /**
      * @return the next record, or null if the end of file was reached
      * @throws IOException if an I/O exception occurs
