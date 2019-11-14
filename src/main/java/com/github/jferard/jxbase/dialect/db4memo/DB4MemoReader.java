@@ -16,11 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.db4memo;
 
-import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.dialect.memo.RawMemoReader;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.RawMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 

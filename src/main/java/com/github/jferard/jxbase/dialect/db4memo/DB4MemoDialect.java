@@ -19,9 +19,9 @@ package com.github.jferard.jxbase.dialect.db4memo;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMemoFileType;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.dialect.memo.WithMemoInternalWriterFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
+import com.github.jferard.jxbase.memo.WithMemoInternalWriterFactory;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
 import java.io.File;

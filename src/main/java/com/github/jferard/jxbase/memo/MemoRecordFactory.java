@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.memo;
 
 import java.nio.charset.Charset;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.core;
+package com.github.jferard.jxbase.dialect.basic;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
@@ -27,10 +27,8 @@ import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.NumericField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericReader;
-import com.github.jferard.jxbase.reader.internal.BasicInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.BasicInternalWriterFactory;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
 import java.io.IOException;

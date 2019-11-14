@@ -18,9 +18,9 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.dialect.memo.WithMemoRecordReader;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.WithMemoRecordReader;
 
 import java.io.IOException;
 import java.io.InputStream;

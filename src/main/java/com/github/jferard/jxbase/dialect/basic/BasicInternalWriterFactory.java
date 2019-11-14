@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.writer.internal;
+package com.github.jferard.jxbase.dialect.basic;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.writer.internal.GenericFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.internal.GenericMetadataWriter;
+import com.github.jferard.jxbase.writer.internal.GenericOptionalWriter;
+import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.internal.XBaseOptionalWriter;
+import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;

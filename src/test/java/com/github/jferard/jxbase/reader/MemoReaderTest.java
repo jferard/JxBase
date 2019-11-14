@@ -18,8 +18,8 @@ package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db4memo.DB4MemoReader;
-import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

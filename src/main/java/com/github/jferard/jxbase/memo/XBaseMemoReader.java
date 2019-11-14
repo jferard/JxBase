@@ -14,27 +14,22 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.memo;
 
-public enum MemoRecordTypeEnum {
-    IMAGE(0x0), TEXT(0x1);
+import java.io.Closeable;
+import java.io.IOException;
 
-    public static MemoRecordTypeEnum fromInt(final int type) {
-        for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
-            if (e.type == type) {
-                return e;
-            }
-        }
-        return null;
-    }
+/**
+ * A reader for a memo file
+ */
+public interface XBaseMemoReader extends Closeable {
 
-    public int getType() {
-        return this.type;
-    }
-
-    final int type;
-
-    MemoRecordTypeEnum(final int type) {
-        this.type = type;
-    }
+    /**
+     * Read a record
+     *
+     * @param offsetInBlocks 1 for the first block, 2 for the second. 0 is forbidden
+     * @return the memo record
+     * @throws IOException if an I/O error occurs
+     */
+    XBaseMemoRecord read(long offsetInBlocks) throws IOException;
 }

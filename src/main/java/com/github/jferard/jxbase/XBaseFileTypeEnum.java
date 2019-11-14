@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.core.BasicDialect;
+import com.github.jferard.jxbase.dialect.basic.BasicDialect;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.dialect.db4memo.DB4MemoDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;

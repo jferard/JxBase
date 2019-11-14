@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.field;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.BasicDialect;
+import com.github.jferard.jxbase.dialect.basic.BasicDialect;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;

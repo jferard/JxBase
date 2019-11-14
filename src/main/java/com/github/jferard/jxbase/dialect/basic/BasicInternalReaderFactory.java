@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.dialect.basic;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.reader.internal.GenericFieldDescriptorArrayReader;
+import com.github.jferard.jxbase.reader.internal.GenericMetadataReader;
+import com.github.jferard.jxbase.reader.internal.GenericOptionalReader;
+import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
+import com.github.jferard.jxbase.reader.internal.XBaseOptionalReader;
+import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;

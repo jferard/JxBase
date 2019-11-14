@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.memo;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.reader.internal.BasicInternalReaderFactory;
+import com.github.jferard.jxbase.dialect.basic.BasicInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
 import java.io.InputStream;

@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
 import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
-import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
+import com.github.jferard.jxbase.memo.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.GenericFieldDescriptorArrayWriter;
 import org.junit.Assert;

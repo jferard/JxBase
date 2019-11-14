@@ -16,10 +16,10 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.dialect.memo.ImageMemoRecord;
-import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.ImageMemoRecord;
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.TextMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

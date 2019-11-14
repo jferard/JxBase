@@ -17,9 +17,9 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.dialect.memo.WithMemoRecordWriter;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
+import com.github.jferard.jxbase.memo.WithMemoRecordWriter;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 

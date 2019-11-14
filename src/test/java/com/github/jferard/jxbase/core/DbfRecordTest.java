@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

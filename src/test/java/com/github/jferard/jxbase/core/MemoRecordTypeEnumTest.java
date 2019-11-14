@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.dialect.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import org.junit.Assert;
 import org.junit.Test;
 

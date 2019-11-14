@@ -16,9 +16,9 @@
 
 package com.github.jferard.jxbase.dialect.db4memo;
 
-import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.dialect.memo.XBaseMemoWriter;
+import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 

@@ -17,10 +17,9 @@
 package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoWriter;
 import com.github.jferard.jxbase.dialect.db4memo.DB4MemoWriter;
-import com.github.jferard.jxbase.dialect.memo.MemoRecordFactory;
-import com.github.jferard.jxbase.dialect.memo.TextMemoRecord;
+import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;

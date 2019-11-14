@@ -14,29 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.memo;
+package com.github.jferard.jxbase.memo;
 
-/**
- * A record in the memo file
- */
-public interface XBaseMemoRecord {
-    /**
-     * @return get the data bytes of the record
-     */
-    byte[] getBytes();
+import java.io.IOException;
 
-    /**
-     * @return the value of the record
-     */
-    Object getValue();
-
-    /**
-     * @return the memo type
-     */
-    MemoRecordTypeEnum getMemoType();
-
-    /**
-     * @return the memo record length in bytes
-     */
-    int getLength();
+public interface XBaseMemoWriter {
+    long write(XBaseMemoRecord memo) throws IOException;
 }
