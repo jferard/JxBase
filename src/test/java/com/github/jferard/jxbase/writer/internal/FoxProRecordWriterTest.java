@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.writer.internal;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
-import com.github.jferard.jxbase.memo.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.XBaseField;

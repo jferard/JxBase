@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase.dialect.foxpro;
+
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.util.Arrays;
 

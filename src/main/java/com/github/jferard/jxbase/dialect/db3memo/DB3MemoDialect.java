@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.memo.MemoField;
 import com.github.jferard.jxbase.memo.WithMemoInternalReaderFactory;
 import com.github.jferard.jxbase.memo.WithMemoInternalWriterFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericReader;
@@ -34,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class DB3MemoDialect extends BasicDialect {
@@ -54,7 +56,6 @@ public class DB3MemoDialect extends BasicDialect {
             throws IOException {
         final XBaseMemoFileType memoFileType = this.type.memoFileType();
         if (memoFileType != XBaseMemoFileType.NO_MEMO_FILE) {
-            // TODO: handle cases with a factory
             final File memoFile = new File(databaseName + memoFileType.getExtension());
             return DB3MemoReader.fromChannel(memoFile, charset);
         }
@@ -70,7 +71,7 @@ public class DB3MemoDialect extends BasicDialect {
                 if (length != 10) {
                     throw new IllegalArgumentException();
                 }
-                return new MemoField(name);
+                return new MemoField<XBaseMemoRecord>(name);
             default:
                 return super.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
         }
@@ -78,10 +79,11 @@ public class DB3MemoDialect extends BasicDialect {
 
     @Override
     public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
-                                                               final Charset charset)
+                                                               final Charset charset,
+                                                               final Map<String, Object> headerMeta)
             throws IOException {
         final File memoFile = new File(databaseName + ".dbt");
-        final XBaseMemoWriter memoWriter = DB3MemoWriter.fromChannel(memoFile, charset);
+        final XBaseMemoWriter memoWriter = DB3MemoWriter.fromChannel(memoFile, charset, headerMeta);
         return new WithMemoInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
     }
 }

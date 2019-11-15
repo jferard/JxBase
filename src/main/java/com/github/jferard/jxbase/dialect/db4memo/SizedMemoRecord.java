@@ -14,46 +14,44 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.memo;
+package com.github.jferard.jxbase.dialect.db4memo;
 
-import java.nio.charset.Charset;
+import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
-/**
- * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
- */
-public class TextMemoRecord implements XBaseMemoRecord {
-    private final MemoRecordTypeEnum type;
-    private final Charset charset;
-    private final String s;
+import java.util.Arrays;
 
-    public TextMemoRecord(final String s, final Charset charset) {
-        this.s = s;
-        this.type = MemoRecordTypeEnum.TEXT;
-        this.charset = charset;
+public class SizedMemoRecord implements XBaseMemoRecord {
+    private final byte[] bytes;
+    private final int length;
+
+    public SizedMemoRecord(final byte[] bytes, final int length) {
+        this.bytes = bytes;
+        this.length = length;
     }
 
     @Override
     public byte[] getBytes() {
-        return this.s.getBytes(this.charset);
+        return this.bytes;
     }
 
     @Override
-    public String getValue() {
-        return this.s;
+    public byte[] getValue() {
+        return this.bytes;
     }
 
     @Override
     public int getLength() {
-        return this.s.getBytes(this.charset).length;
+        return this.length;
     }
 
     @Override
     public MemoRecordTypeEnum getMemoType() {
-        return this.type;
+        return MemoRecordTypeEnum.NO_TYPE;
     }
 
     @Override
     public String toString() {
-        return "ImageMemoRecord[bytes=" + this.getValue() + "]";
+        return "ByteMemoRecord[bytes=" + Arrays.toString(this.bytes) + "]";
     }
 }

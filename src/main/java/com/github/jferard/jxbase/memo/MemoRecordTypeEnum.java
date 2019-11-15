@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.memo;
 
 public enum MemoRecordTypeEnum {
-    IMAGE(0x0), TEXT(0x1);
+    IMAGE(0x0), TEXT(0x1), OBJECT(0x2), NO_TYPE(0xff);
 
     public static MemoRecordTypeEnum fromInt(final int type) {
         for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {

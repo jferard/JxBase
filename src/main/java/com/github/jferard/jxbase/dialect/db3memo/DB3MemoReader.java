@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3memo;
 
-import com.github.jferard.jxbase.memo.ImageMemoRecord;
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.ByteMemoRecord;
+import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
@@ -53,7 +53,7 @@ public class DB3MemoReader implements XBaseMemoReader {
     public static DB3MemoReader fromRandomAccess(final File memoFile, final Charset charset)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new DB3MemoReader(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
+        return new DB3MemoReader(randomAccessFile.getChannel());
     }
 
     public static DB3MemoReader fromChannel(final File memoFile, final Charset charset)
@@ -62,34 +62,17 @@ public class DB3MemoReader implements XBaseMemoReader {
             return null;
         }
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new DB3MemoReader(fileInputStream.getChannel(), new MemoRecordFactory(charset));
+        return new DB3MemoReader(fileInputStream.getChannel());
     }
 
     private final ByteBuffer memoByteBuffer;
-    private final FileChannel channel;
-    private final MemoRecordFactory memoRecordFactory;
-    private DB3MemoFileHeader memoHeader;
-    private RawMemoReader rawMemoReader;
+    private final RawMemoReader rawMemoReader;
 
-    public DB3MemoReader(final FileChannel channel, final MemoRecordFactory memoRecordFactory)
-            throws IOException {
-        this.channel = channel;
+    public DB3MemoReader(final FileChannel channel) throws IOException {
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
-        this.memoRecordFactory = memoRecordFactory;
-        this.readMetadata();
-    }
-
-    private void readMetadata() throws IOException {
-        final byte[] headerBytes = new byte[JxBaseUtils.MEMO_HEADER_LENGTH];
-        try {
-            this.memoByteBuffer.get(headerBytes);
-        } catch (final BufferUnderflowException e) {
-            throw new IOException("The file is corrupted or is not a dbf file", e);
-        }
-
-        this.memoHeader = DB3MemoFileHeader.create(headerBytes);
-        this.rawMemoReader =
-                new RawMemoReader(this.memoByteBuffer, DB3MemoFileHeader.SIZE, BLOCK_SIZE);
+        final MemoFileHeader header = DB3MemoFileHeaderReader.read(this.memoByteBuffer);
+        this.rawMemoReader = new RawMemoReader(this.memoByteBuffer, this.memoByteBuffer.position(),
+                header.getBlockLength());
     }
 
     @Override
@@ -118,7 +101,7 @@ public class DB3MemoReader implements XBaseMemoReader {
             lastBlockSize = BLOCK_SIZE;
         }
         final byte[] bytes = this.mergeBlocks(blocks, lastBlockSize);
-        return new ImageMemoRecord(bytes, bytes.length);
+        return new ByteMemoRecord(bytes, bytes.length);
     }
 
     private int findTerminator(final byte[] blockBytes) {

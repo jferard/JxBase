@@ -27,6 +27,7 @@ import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class DB4MemoDialect extends DB3MemoDialect {
@@ -48,7 +49,8 @@ public class DB4MemoDialect extends DB3MemoDialect {
 
     @Override
     public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
-                                                               final Charset charset)
+                                                               final Charset charset,
+                                                               final Map<String, Object> headerMeta)
             throws IOException {
         final File memoFile = new File(databaseName + ".dbt");
         final XBaseMemoWriter memoWriter = DB4MemoWriter.fromChannel(memoFile, charset);

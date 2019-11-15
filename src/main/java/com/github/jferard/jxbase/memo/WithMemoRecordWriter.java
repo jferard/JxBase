@@ -48,4 +48,10 @@ public class WithMemoRecordWriter extends BasicRecordWriter {
             this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
         }
     }
+
+    public void close() throws IOException {
+        this.memoWriter.fixMetadata();
+        this.memoWriter.close();
+        super.close();
+    }
 }

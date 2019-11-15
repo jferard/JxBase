@@ -20,4 +20,8 @@ import java.io.IOException;
 
 public interface XBaseMemoWriter {
     long write(XBaseMemoRecord memo) throws IOException;
+
+    void close() throws IOException;
+
+    void fixMetadata() throws IOException;
 }

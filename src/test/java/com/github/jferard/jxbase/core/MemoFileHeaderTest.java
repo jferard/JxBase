@@ -16,28 +16,33 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.dialect.db4memo.DB4MemoFileHeader;
+import com.github.jferard.jxbase.TestHelper;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db4memo.DB4MemoFileHeaderReader;
+import com.github.jferard.jxbase.memo.MemoFileHeader;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
 
 public class MemoFileHeaderTest {
     @Test
     public void testBlockAndNext() {
-        final DB4MemoFileHeader memoFileHeader = DB4MemoFileHeader
-                .create("abcdefghijklmnop\0qrstuvw".getBytes(Charset.forName("ASCII")));
-        Assert.assertEquals(1701209960, memoFileHeader.getBlockSize());
+        final byte[] bytes = TestHelper
+                .getBytes("abcdefghijklmnop\0qrstuvw", DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH);
+        final MemoFileHeader memoFileHeader = DB4MemoFileHeaderReader.read(ByteBuffer.wrap(bytes));
+        Assert.assertEquals(1701209960, memoFileHeader.getBlockLength());
         Assert.assertEquals(1633837924, memoFileHeader.getNextFreeBlockLocation());
     }
 
     @Test
     public void testToString() {
-        final DB4MemoFileHeader memoFileHeader = DB4MemoFileHeader
-                .create("abcdefghijklmnop\0qrstuvw".getBytes(Charset.forName("ASCII")));
+        final byte[] bytes = TestHelper
+                .getBytes("abcdefghijklmnop\0qrstuvw", DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH);
+        final MemoFileHeader memoFileHeader = DB4MemoFileHeaderReader.read(ByteBuffer.wrap(bytes));
         Assert.assertEquals(
-                "MemoFileHeader[nextFreeBlockLocation=1633837924, blockSize=1701209960, " +
-                        "dbfName=ijklmnop, blockLength=29813]",
+                "MemoFileHeader[blockLength=1701209960, nextFreeBlockLocation=1633837924, " +
+                        "meta={dbfName=ijklmnop}]",
                 memoFileHeader.toString());
     }
 }

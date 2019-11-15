@@ -16,10 +16,11 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.memo.ImageMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.ImageMemoRecord;
 import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
-import com.github.jferard.jxbase.memo.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +36,7 @@ public class MemoRecordTest {
 
     @Before
     public void setUp() {
-        this.charset = Charset.forName("ASCII");
+        this.charset = JxBaseUtils.ASCII_CHARSET;
     }
 
     @Test

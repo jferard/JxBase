@@ -34,6 +34,7 @@ import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class BasicDialect implements XBaseDialect {
@@ -193,7 +194,8 @@ public class BasicDialect implements XBaseDialect {
 
     @Override
     public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
-                                                               final Charset charset)
+                                                               final Charset charset,
+                                                               Map<String, Object> headerMeta)
             throws IOException {
         return new BasicInternalWriterFactory(this, TimeZone.getDefault());
     }

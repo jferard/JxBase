@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 public class JxBaseUtils {
     public static final int FIELD_RECORD_LENGTH = 32;
     public static final int HEADER_TERMINATOR = 0x0D;
-    public static final int MEMO_HEADER_LENGTH = 0x200; // 512 bytes
     public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
             new ThreadLocal<SimpleDateFormat>() {
                 @Override

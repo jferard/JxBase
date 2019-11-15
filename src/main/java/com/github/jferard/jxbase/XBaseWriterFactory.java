@@ -39,22 +39,25 @@ import java.util.Collection;
 import java.util.Map;
 
 public class XBaseWriterFactory {
-    public static XBaseWriter createWriter(final XBaseFileTypeEnum type,
-                                             final String databaseName, final Charset charset,
-                                             final Map<String, Object> meta,
-                                             final Collection<XBaseField> fields,
-                                             final XBaseOptional optional) throws IOException {
-        return new XBaseWriterFactory().create(type, databaseName, charset, meta, fields, optional);
+    public static XBaseWriter createWriter(final XBaseFileTypeEnum type, final String databaseName,
+                                           final Charset charset, final Map<String, Object> meta,
+                                           final Collection<XBaseField> fields,
+                                           final XBaseOptional optional,
+                                           final Map<String, Object> headerMeta)
+            throws IOException {
+        return new XBaseWriterFactory()
+                .create(type, databaseName, charset, meta, fields, optional, headerMeta);
     }
 
     public XBaseWriter create(final XBaseFileTypeEnum type, final String databaseName,
-                                final Charset charset, final Map<String, Object> meta,
-                                final Collection<XBaseField> fields, final XBaseOptional optional)
-            throws IOException {
+                              final Charset charset, final Map<String, Object> meta,
+                              final Collection<XBaseField> fields, final XBaseOptional optional,
+                              final Map<String, Object> headerMeta) throws IOException {
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
         final XBaseInternalWriterFactory writerFactory =
-                dialect.getInternalWriterFactory(databaseName, charset);
+                dialect.getInternalWriterFactory(databaseName, charset, headerMeta);
         final File dbfFile = new File(databaseName + ".dbf");
+        dbfFile.delete();
 
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
         final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));

@@ -23,7 +23,7 @@ import java.io.IOException;
 public interface XBaseMetadataWriter {
     void write(XBaseMetadata metadata) throws IOException;
 
-    void correctMetadata(int recordQty) throws IOException;
+    void fixMetadata(int recordQty) throws IOException;
 
     void close() throws IOException;
 

@@ -17,6 +17,8 @@
 package com.github.jferard.jxbase;
 
 
+import com.github.jferard.jxbase.util.JxBaseUtils;
+
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -89,6 +91,12 @@ public class TestHelper {
         };
     }
 
+    public static byte[] getBytes(final String s, final int length) {
+        final byte[] bytes = new byte[length];
+        final byte[] memo = s.getBytes(JxBaseUtils.ASCII_CHARSET);
+        System.arraycopy(memo, 0, bytes, 0, memo.length);
+        return bytes;
+    }
 	/*
 
 	static String gdsString = "KONTR,C,1,0|N_MDP,C,8,0|W_LIST_NO,N,2,0|G32,N,3,0|N_RECEIVER,N,1,

@@ -16,19 +16,18 @@
 
 package com.github.jferard.jxbase.dialect.db4memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.memo.MemoFileHeader;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -50,7 +49,7 @@ public class DB4MemoReader implements XBaseMemoReader {
     public static DB4MemoReader fromRandomAccess(final File memoFile, final Charset charset)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new DB4MemoReader(randomAccessFile.getChannel(), new MemoRecordFactory(charset));
+        return new DB4MemoReader(randomAccessFile.getChannel(), new FoxProMemoRecordFactory(charset));
     }
 
     public static DB4MemoReader fromChannel(final File memoFile, final Charset charset)
@@ -59,34 +58,23 @@ public class DB4MemoReader implements XBaseMemoReader {
             return null;
         }
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new DB4MemoReader(fileInputStream.getChannel(), new MemoRecordFactory(charset));
+        return new DB4MemoReader(fileInputStream.getChannel(), new FoxProMemoRecordFactory(charset));
     }
 
     private final ByteBuffer memoByteBuffer;
     private final FileChannel channel;
-    private final MemoRecordFactory memoRecordFactory;
-    private DB4MemoFileHeader memoHeader;
-    private RawMemoReader rawMemoReader;
+    private final FoxProMemoRecordFactory memoRecordFactory;
+    private final MemoFileHeader memoHeader;
+    private final RawMemoReader rawMemoReader;
 
-    public DB4MemoReader(final FileChannel channel, final MemoRecordFactory memoRecordFactory)
+    public DB4MemoReader(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory)
             throws IOException {
         this.channel = channel;
         this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
         this.memoRecordFactory = memoRecordFactory;
-        this.readMetadata();
-    }
-
-    private void readMetadata() throws IOException {
-        final byte[] headerBytes = new byte[JxBaseUtils.MEMO_HEADER_LENGTH];
-        try {
-            this.memoByteBuffer.get(headerBytes);
-        } catch (final BufferUnderflowException e) {
-            throw new IOException("The file is corrupted or is not a dbf file", e);
-        }
-
-        this.memoHeader = DB4MemoFileHeader.create(headerBytes);
-        this.rawMemoReader =
-                new RawMemoReader(this.memoByteBuffer, 512, this.memoHeader.getBlockSize());
+        this.memoHeader = DB4MemoFileHeaderReader.read(this.memoByteBuffer);
+        this.rawMemoReader = new RawMemoReader(this.memoByteBuffer, this.memoByteBuffer.position(),
+                this.memoHeader.getBlockLength());
     }
 
     @Override

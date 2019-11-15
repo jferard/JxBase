@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
-import com.github.jferard.jxbase.memo.MemoRecordFactory;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
@@ -116,7 +116,7 @@ public class GenericRecordReaderTest {
 
     @Test
     public void getMemoValue() throws IOException {
-        final MemoRecordFactory factory = new MemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
+        final FoxProMemoRecordFactory factory = new FoxProMemoRecordFactory(JxBaseUtils.UTF8_CHARSET);
         final XBaseMemoRecord record =
                 factory.create(new byte[]{'A'}, MemoRecordTypeEnum.IMAGE, 1, 123);
         Mockito.when(this.mr.read(123)).thenReturn(record);

@@ -23,6 +23,7 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -38,9 +39,6 @@ import java.text.ParseException;
 import java.util.Collections;
 
 public class DbfRecordTest {
-    private static final Charset ASCII = Charset.forName("ASCII");
-    private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -57,7 +55,7 @@ public class DbfRecordTest {
 
     @Test
     public void testDeleted() throws IOException, ParseException {
-        final Charset ascii = Charset.forName("ASCII");
+        final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream("*abc".getBytes(ascii));
         final FoxProRecordReader reader =
                 new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 4),
@@ -68,7 +66,7 @@ public class DbfRecordTest {
 
     @Test
     public void testNotDeleted() throws IOException, ParseException {
-        final Charset ascii = Charset.forName("ASCII");
+        final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
         final FoxProRecordReader reader =
                 new FoxProRecordReader(null, in, ascii, new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3),

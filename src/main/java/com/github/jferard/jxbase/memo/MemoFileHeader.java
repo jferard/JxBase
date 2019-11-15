@@ -14,40 +14,40 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db3memo;
+package com.github.jferard.jxbase.memo;
 
-import com.github.jferard.jxbase.util.BitUtils;
+import java.util.Map;
 
 /**
- * Should be a generic object
- * See http://msdn.microsoft.com/en-US/library/8599s21w(v=vs.80).aspx
+ * See https://www.clicketyclick.dk/databases/xbase/format/dbt.html
  */
-public class DB3MemoFileHeader {
-    static final int SIZE = 512;
-
-    /**
-     * @param headerBytes the source bytes
-     * @return the memo header
-     */
-    public static DB3MemoFileHeader create(final byte[] headerBytes) {
-        final int nextFreeBlockLocation =
-                BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
-        // assert headerBytes[16] == 0x03;
-        return new DB3MemoFileHeader(nextFreeBlockLocation);
-    }
-
+public class MemoFileHeader {
     private final int nextFreeBlockLocation;
+    private final int blockLength;
+    private final Map<String, Object> meta;
 
-    public DB3MemoFileHeader(final int nextFreeBlockLocation) {
+    public MemoFileHeader(final int blockLength, final int nextFreeBlockLocation,
+                          final Map<String, Object> meta) {
         this.nextFreeBlockLocation = nextFreeBlockLocation;
+        this.blockLength = blockLength;
+        this.meta = meta;
     }
 
     public int getNextFreeBlockLocation() {
         return this.nextFreeBlockLocation;
     }
 
+    public int getBlockLength() {
+        return this.blockLength;
+    }
+
+    public Object get(final String key) {
+        return this.meta.get(key);
+    }
+
     @Override
     public String toString() {
-        return "DB3MemoFileHeader[" + "nextFreeBlockLocation=" + this.nextFreeBlockLocation + "]";
+        return "MemoFileHeader[blockLength=" + this.blockLength + ", nextFreeBlockLocation=" +
+                this.nextFreeBlockLocation + ", meta=" + this.meta + ']';
     }
 }

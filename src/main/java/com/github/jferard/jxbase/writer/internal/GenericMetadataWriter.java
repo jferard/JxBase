@@ -77,7 +77,7 @@ public class GenericMetadataWriter implements XBaseMetadataWriter {
     }
 
     @Override
-    public void correctMetadata(final int recordQty) throws IOException {
+    public void fixMetadata(final int recordQty) throws IOException {
         this.out.flush();
         this.file.seek(1);
         this.writeHeaderDate(new Date());

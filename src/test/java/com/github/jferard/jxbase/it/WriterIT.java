@@ -18,19 +18,19 @@ package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.GenericOptional;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.XBaseWriter;
+import com.github.jferard.jxbase.XBaseWriterFactory;
 import com.github.jferard.jxbase.field.CharacterField;
 import com.github.jferard.jxbase.field.NumericField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.XBaseWriter;
-import com.github.jferard.jxbase.XBaseWriterFactory;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,8 +64,8 @@ public class WriterIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
-                .createWriter(XBaseFileTypeEnum.dBASEIV1, "111", Charset.forName("UTF-8"), meta,
-                        this.fields, GenericOptional.EMPTY);
+                .createWriter(XBaseFileTypeEnum.dBASEIV1, "111", JxBaseUtils.UTF8_CHARSET, meta,
+                        this.fields, GenericOptional.EMPTY, Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);
         } finally {

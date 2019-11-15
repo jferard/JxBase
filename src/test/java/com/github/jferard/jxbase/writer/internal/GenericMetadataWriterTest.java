@@ -60,7 +60,7 @@ public class GenericMetadataWriterTest {
 
     @Test
     public void correctMetadata() throws IOException {
-        this.gmw.correctMetadata(12);
+        this.gmw.fixMetadata(12);
         final byte[] bytes = this.out.toByteArray();
         Assert.assertEquals(7, bytes.length);
         Assert.assertEquals(12, bytes[3]);

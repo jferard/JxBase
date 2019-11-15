@@ -18,6 +18,7 @@ package com.github.jferard.jxbase.memo;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,8 +43,8 @@ public class MemoReaderFactory {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
         switch (type) {
             default:
-                final MemoRecordFactory memoRecordFactory = null;
-                return new DB3MemoReader(randomAccessFile.getChannel(), memoRecordFactory);
+                final FoxProMemoRecordFactory memoRecordFactory = null;
+                return new DB3MemoReader(randomAccessFile.getChannel());
         }
     }
 
@@ -52,8 +53,8 @@ public class MemoReaderFactory {
         final FileInputStream fileInputStream = new FileInputStream(memoFile);
         switch (type) {
             default:
-                final MemoRecordFactory memoRecordFactory = null;
-                return new DB3MemoReader(fileInputStream.getChannel(), memoRecordFactory);
+                final FoxProMemoRecordFactory memoRecordFactory = null;
+                return new DB3MemoReader(fileInputStream.getChannel());
         }
     }
 }

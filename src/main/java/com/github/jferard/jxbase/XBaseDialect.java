@@ -18,18 +18,13 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.XBaseFieldFactory;
 import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Collection;
 import java.util.Map;
 
 public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {
@@ -49,6 +44,7 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
     XBaseReader getReader(String databaseName, InputStream resettableInputStream, Charset charset)
             throws IOException;
 
-    XBaseInternalWriterFactory getInternalWriterFactory(String databaseName, Charset charset)
+    XBaseInternalWriterFactory getInternalWriterFactory(String databaseName, Charset charset,
+                                                        Map<String, Object> headerMeta)
             throws IOException;
 }

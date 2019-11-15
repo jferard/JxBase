@@ -41,7 +41,7 @@ public class GenericWriter implements XBaseWriter {
     @Override
     public void close() throws IOException {
         this.recordWriter.close();
-        this.metadataWriter.correctMetadata(this.recordWriter.getRecordQty());
+        this.metadataWriter.fixMetadata(this.recordWriter.getRecordQty());
         this.metadataWriter.close();
     }
 }
