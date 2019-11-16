@@ -53,7 +53,7 @@ public class DB4MemoDialect extends DB3MemoDialect {
                                                                final Map<String, Object> headerMeta)
             throws IOException {
         final File memoFile = new File(databaseName + ".dbt");
-        final XBaseMemoWriter memoWriter = DB4MemoWriter.fromChannel(memoFile, charset);
+        final XBaseMemoWriter memoWriter = DB4MemoWriter.fromChannel(memoFile, headerMeta);
         return new WithMemoInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
     }
 }

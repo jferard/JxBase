@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3memo;
 
-import com.github.jferard.jxbase.memo.MemoFileHeader;
+import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.BitUtils;
@@ -25,69 +25,56 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
 
 public class DB3MemoWriter implements XBaseMemoWriter {
     public static DB3MemoWriter fromRandomAccess(final File memoFile, final Charset charset,
-                                                 final Map<String, Object> headerMeta) throws IOException {
+                                                 final Map<String, Object> headerMeta)
+            throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
         return new DB3MemoWriter(randomAccessFile.getChannel(), headerMeta);
     }
 
     public static DB3MemoWriter fromChannel(final File memoFile, final Charset charset,
-                                            final Map<String, Object> headerMeta) throws IOException {
-        if (memoFile == null) {
-            return null;
-        }
+                                            final Map<String, Object> headerMeta)
+            throws IOException {
         final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);
         return new DB3MemoWriter(fileOutputStream.getChannel(), headerMeta);
     }
 
-    private final SeekableByteChannel channel;
+    private final RawMemoWriter rawMemoWriter;
     private long curOffsetInBlocks;
 
     public DB3MemoWriter(final SeekableByteChannel channel, final Map<String, Object> headerMeta)
             throws IOException {
-        this.channel = channel;
-        this.curOffsetInBlocks = 1;
+        this.rawMemoWriter = new RawMemoWriter(channel, DB3MemoFileHeaderReader.BLOCK_LENGTH,
+                DB3MemoReader.BLOCK_SIZE);
         this.writeHeader(headerMeta);
     }
 
     private void writeHeader(final Map<String, Object> headerMeta) throws IOException {
         final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
         headerBytes[16] = 0x03;
-        this.writeBytes(headerBytes);
+        this.rawMemoWriter.write(0, 0, headerBytes);
+        this.curOffsetInBlocks = 1;
     }
 
     @Override
     public long write(final XBaseMemoRecord memo) throws IOException {
-        final int blockSize = DB3MemoFileHeaderReader.BLOCK_LENGTH;
-        final int headerSize = DB3MemoReader.BLOCK_SIZE;
-        final int from = 0;
-        final long offsetInBlocks = this.curOffsetInBlocks;
-        final long start = blockSize * (offsetInBlocks - 1) + headerSize + from;
-        this.channel.position(start);
-        final byte[] bytes = memo.getBytes();
-        this.writeBytes(bytes);
-        this.curOffsetInBlocks += bytes.length / blockSize;
-        return offsetInBlocks;
+        this.curOffsetInBlocks =
+                this.rawMemoWriter.write(this.curOffsetInBlocks, 0, memo.getBytes());
+        return this.curOffsetInBlocks;
     }
 
     @Override
     public void close() throws IOException {
-        this.channel.close();
+        this.rawMemoWriter.close();
     }
 
     @Override
     public void fixMetadata() throws IOException {
-        this.channel.position(0);
-        this.writeBytes(BitUtils.makeLEByte4((int) this.curOffsetInBlocks));
-    }
-
-    private int writeBytes(final byte[] bytes) throws IOException {
-        return this.channel.write(ByteBuffer.wrap(bytes));
+        this.rawMemoWriter.write(0, 0, BitUtils.makeLEByte4((int) this.curOffsetInBlocks));
     }
 }

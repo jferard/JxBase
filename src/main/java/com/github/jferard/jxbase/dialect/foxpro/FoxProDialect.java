@@ -19,7 +19,6 @@ package com.github.jferard.jxbase.dialect.foxpro;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoWriter;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -125,7 +124,7 @@ public class FoxProDialect extends DB3MemoDialect {
                                                                final Map<String, Object> headerMeta)
             throws IOException {
         final File memoFile = new File(databaseName + ".dbt");
-        final XBaseMemoWriter memoWriter = DB3MemoWriter.fromChannel(memoFile, charset, headerMeta);
+        final XBaseMemoWriter memoWriter = FoxProMemoWriter.fromChannel(memoFile, headerMeta);
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
     }
 }
