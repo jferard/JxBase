@@ -78,7 +78,7 @@ public class FoxProRecordWriterTest {
         final TextMemoRecord memo = new TextMemoRecord("memo", JxBaseUtils.UTF8_CHARSET);
         Mockito.when(this.mw.write(memo)).thenReturn(10L);
 
-        this.grw.writeSmallMemoValue(memo);
+        this.grw.writeMemoValue(memo);
         Assert.assertArrayEquals(new byte[]{10, 0, 0, 0}, this.bos.toByteArray());
     }
 

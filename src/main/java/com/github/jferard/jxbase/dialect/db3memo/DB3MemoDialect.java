@@ -18,22 +18,19 @@ package com.github.jferard.jxbase.dialect.db3memo;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMemoFileType;
-import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.dialect.basic.BasicDialect;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.MemoField;
 import com.github.jferard.jxbase.memo.WithMemoInternalReaderFactory;
 import com.github.jferard.jxbase.memo.WithMemoInternalWriterFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.GenericReader;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
@@ -44,12 +41,11 @@ public class DB3MemoDialect extends BasicDialect {
     }
 
     @Override
-    public XBaseReader getReader(final String databaseName, final InputStream resettableInputStream,
-                                 final Charset charset) throws IOException {
+    public XBaseInternalReaderFactory getInternalReaderFactory(final String databaseName,
+                                                               final Charset charset)
+            throws IOException {
         final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset);
-        final XBaseInternalReaderFactory readerFactory =
-                new WithMemoInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
-        return new GenericReader(this, resettableInputStream, charset, readerFactory);
+        return new WithMemoInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
     }
 
     protected XBaseMemoReader getMemoReader(final String databaseName, final Charset charset)

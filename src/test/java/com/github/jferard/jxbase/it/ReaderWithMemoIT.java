@@ -24,10 +24,10 @@ import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.XBaseRecord;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.SmallMemoField;
 import com.github.jferard.jxbase.field.CharacterField;
 import com.github.jferard.jxbase.field.DateField;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.MemoField;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class ReaderWithMemoIT {
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXTEX")) {
                         Assert.assertEquals(4, field.getValueByteLength(dialect));
-                        Assert.assertEquals(SmallMemoField.class, field.getClass());
+                        Assert.assertEquals(MemoField.class, field.getClass());
                     } else if (name.equals("TEXDAT")) {
                         Assert.assertEquals(8, field.getValueByteLength(dialect));
                         Assert.assertEquals(DateField.class, field.getClass());

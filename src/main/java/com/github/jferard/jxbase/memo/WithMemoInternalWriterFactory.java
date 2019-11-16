@@ -20,6 +20,7 @@ import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.basic.BasicInternalWriterFactory;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoRecordWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.OutputStream;
@@ -42,7 +43,7 @@ public class WithMemoInternalWriterFactory extends BasicInternalWriterFactory {
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray array,
                                                 final Object optional) {
-        return new WithMemoRecordWriter(dialect, outputStream, charset, array.getFields(),
+        return new DB3MemoRecordWriter(dialect, outputStream, charset, array.getFields(),
                 this.memoWriter);
     }
 }

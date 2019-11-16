@@ -16,42 +16,8 @@
 
 package com.github.jferard.jxbase.memo;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.dialect.basic.BasicRecordWriter;
-
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.Collection;
 
-public class WithMemoRecordWriter extends BasicRecordWriter {
-    private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
-    protected final XBaseMemoWriter memoWriter;
-
-    public WithMemoRecordWriter(final XBaseDialect dialect, final OutputStream out,
-                                final Charset charset, final Collection<XBaseField> fields,
-                                final XBaseMemoWriter memoWriter) {
-        super(dialect, out, charset, fields);
-        this.memoWriter = memoWriter;
-    }
-
-    public void writeMemoValue(final XBaseMemoRecord value) throws IOException {
-        final int length = this.dialect.getMemoValueLength();
-        if (value == null) {
-            BitUtils.writeEmpties(this.out, length);
-        } else {
-            final long offsetInBlocks = this.memoWriter.write(value);
-            final String s = String.format("%10d", offsetInBlocks);
-            this.out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
-        }
-    }
-
-    public void close() throws IOException {
-        this.memoWriter.fixMetadata();
-        this.memoWriter.close();
-        super.close();
-    }
+public interface WithMemoRecordWriter {
+    void writeMemoValue(XBaseMemoRecord value) throws IOException;
 }

@@ -17,13 +17,13 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.MemoField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.reader.GenericReader;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.BitUtils;
@@ -31,7 +31,6 @@ import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
@@ -68,10 +67,10 @@ public class FoxProDialect extends DB3MemoDialect {
         return new FieldRepresentation(name, 'M', 4, 0);
     }
 
-    public int getSmallMemoFieldLength() {
+    @Override
+    public int getMemoValueLength() {
         return 4;
     }
-
 
     /**
      * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:
@@ -94,12 +93,11 @@ public class FoxProDialect extends DB3MemoDialect {
     }
 
     @Override
-    public XBaseReader getReader(final String databaseName, final InputStream resettableInputStream,
-                                 final Charset charset) throws IOException {
+    public XBaseInternalReaderFactory getInternalReaderFactory(final String databaseName,
+                                                               final Charset charset)
+            throws IOException {
         final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset);
-        final XBaseInternalReaderFactory readerFactory =
-                new FoxProInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
-        return new GenericReader(this, resettableInputStream, charset, readerFactory);
+        return new FoxProInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
     }
 
     @Override
@@ -110,7 +108,7 @@ public class FoxProDialect extends DB3MemoDialect {
                 if (length != 4) {
                     throw new IllegalArgumentException();
                 }
-                return new SmallMemoField(name);
+                return new MemoField<XBaseMemoRecord>(name);
             case '0':
                 return new NullFlagsField(name, length);
             default:
@@ -126,6 +124,10 @@ public class FoxProDialect extends DB3MemoDialect {
         final File memoFile = new File(databaseName + ".dbt");
         final XBaseMemoWriter memoWriter = FoxProMemoWriter.fromChannel(memoFile, headerMeta);
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
+    }
+
+    public int getMemoFieldLength() {
+        return 4;
     }
 }
 

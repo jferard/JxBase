@@ -19,6 +19,7 @@ package com.github.jferard.jxbase;
 import com.github.jferard.jxbase.core.XBaseFieldFactory;
 import com.github.jferard.jxbase.core.XBaseLengths;
 import com.github.jferard.jxbase.core.XBaseRepresentations;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
@@ -41,7 +42,7 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
 
     //    XBaseMemoFileType memoFileType();
 
-    XBaseReader getReader(String databaseName, InputStream resettableInputStream, Charset charset)
+    XBaseInternalReaderFactory getInternalReaderFactory(String databaseName, Charset charset)
             throws IOException;
 
     XBaseInternalWriterFactory getInternalWriterFactory(String databaseName, Charset charset,

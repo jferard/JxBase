@@ -27,6 +27,7 @@ import com.github.jferard.jxbase.field.LogicalField;
 import com.github.jferard.jxbase.field.NumericField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.GenericReader;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
@@ -185,17 +186,16 @@ public class BasicDialect implements XBaseDialect {
     }
 
     @Override
-    public XBaseReader getReader(final String databaseName, final InputStream resettableInputStream,
-                                 final Charset charset) throws IOException {
-        final BasicInternalReaderFactory readerFactory =
-                new BasicInternalReaderFactory(this, TimeZone.getDefault());
-        return new GenericReader(this, resettableInputStream, charset, readerFactory);
+    public XBaseInternalReaderFactory getInternalReaderFactory(final String databaseName,
+                                                               final Charset charset)
+            throws IOException {
+        return new BasicInternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
                                                                final Charset charset,
-                                                               Map<String, Object> headerMeta)
+                                                               final Map<String, Object> headerMeta)
             throws IOException {
         return new BasicInternalWriterFactory(this, TimeZone.getDefault());
     }

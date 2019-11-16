@@ -56,7 +56,7 @@ public class WriterWithMemoIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
-                .createWriter(XBaseFileTypeEnum.FoxBASEPlus2, "112", JxBaseUtils.UTF8_CHARSET, meta,
+                .createWriter(XBaseFileTypeEnum.dBASEIV3, "112", JxBaseUtils.UTF8_CHARSET, meta,
                         this.fields, GenericOptional.EMPTY, Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);

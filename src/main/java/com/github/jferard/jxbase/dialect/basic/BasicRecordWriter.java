@@ -93,7 +93,6 @@ public class BasicRecordWriter implements XBaseRecordWriter {
     public void writeDateValue(final Date value) throws IOException {
         final int fieldLength = 8;
         if (value == null) {
-
             BitUtils.writeZeroes(this.out, fieldLength);
         } else {
             final String s = JxBaseUtils.DATE_FORMAT.get().format(value);

@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.memo.MemoField;
 import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
-import com.github.jferard.jxbase.memo.WithMemoRecordWriter;
+import com.github.jferard.jxbase.dialect.db3memo.DB3MemoRecordWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.WithMemoRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -37,14 +37,14 @@ public class MemoFieldTest {
     private FoxProDialect dialect;
     private XBaseFieldDescriptorArrayWriter aw;
     private WithMemoRecordReader r;
-    private WithMemoRecordWriter w;
+    private DB3MemoRecordWriter w;
 
     @Before
     public void setUp() throws Exception {
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(WithMemoRecordReader.class);
-        this.w = Mockito.mock(WithMemoRecordWriter.class);
+        this.w = Mockito.mock(DB3MemoRecordWriter.class);
         this.f = new MemoField<TextMemoRecord>("memo");
     }
 
@@ -55,7 +55,7 @@ public class MemoFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(10, this.f.getValueByteLength(this.dialect));
+        Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
     }
 
     @Test

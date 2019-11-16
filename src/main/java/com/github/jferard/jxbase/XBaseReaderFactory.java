@@ -16,6 +16,8 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.reader.GenericReader;
+import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -38,7 +40,9 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        return dialect.getReader(databaseName, resettableInputStream, charset);
+        final XBaseInternalReaderFactory readerFactory =
+                dialect.getInternalReaderFactory(databaseName, charset);
+        return new GenericReader(dialect, resettableInputStream, charset, readerFactory);
     }
 
     private XBaseFileTypeEnum getXBaseFileType(final InputStream resettableInputStream)
