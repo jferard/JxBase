@@ -52,7 +52,7 @@ public class GenericRecordReaderTest {
     public void setUp() {
         this.mr = Mockito.mock(XBaseMemoReader.class);
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
-        this.grr = new FoxProRecordReader(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1), this.bis,
+        this.grr = new FoxProRecordReader(new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable), this.bis,
                 JxBaseUtils.UTF8_CHARSET, new GenericFieldDescriptorArray(
                 Collections.<XBaseField>singleton(new LogicalField("bool")), 11, 2), this.mr,
                 TimeZone.getTimeZone("Europe/Paris"));

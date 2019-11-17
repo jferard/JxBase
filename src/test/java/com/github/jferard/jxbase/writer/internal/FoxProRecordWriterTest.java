@@ -54,7 +54,7 @@ public class FoxProRecordWriterTest {
         this.mw = Mockito.mock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
         this.grw =
-                new FoxProRecordWriter(new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro1), this.bos,
+                new FoxProRecordWriter(new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro), this.bos,
                         JxBaseUtils.UTF8_CHARSET,
                         Collections.<XBaseField>singleton(new LogicalField("bool")), this.mw);
         this.map = new HashMap<String, Object>();

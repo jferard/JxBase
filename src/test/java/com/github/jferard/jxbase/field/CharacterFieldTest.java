@@ -38,7 +38,7 @@ public class CharacterFieldTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(XBaseRecordReader.class);
         this.w = Mockito.mock(XBaseRecordWriter.class);

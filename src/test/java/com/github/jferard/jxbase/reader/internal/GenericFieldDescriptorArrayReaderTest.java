@@ -37,7 +37,7 @@ public class GenericFieldDescriptorArrayReaderTest {
                         0x0, 0x0, 10, 0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
                         0x0, 0x0, 0x0D};
         Assert.assertEquals(33, bytes.length);
-        final DB3MemoDialect dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        final DB3MemoDialect dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
         this.gfdar = new GenericFieldDescriptorArrayReader(dialect, new ByteArrayInputStream(bytes),
                 null);
         final XBaseFieldDescriptorArray array = this.gfdar.read();

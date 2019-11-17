@@ -32,7 +32,7 @@ public class DbfFieldTest {
 
     @Before
     public void setUp() {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class DbfFieldTest {
 
     @Test
     public void testFromStringRepresentation0() {
-        final XBaseField f = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro1)
+        final XBaseField f = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro)
                 .fromStringRepresentation("a,0,10,0");
     }
 }

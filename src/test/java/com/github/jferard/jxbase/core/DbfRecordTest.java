@@ -50,7 +50,7 @@ public class DbfRecordTest {
     public void setUp() {
         this.mr = Mockito.mock(DB3MemoReader.class);
         this.md = Mockito.mock(GenericMetadata.class);
-        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
     }
 
     @Test

@@ -30,7 +30,7 @@ public class FoxProFieldDescriptorArrayWriterTest {
     public void setUp() {
         this.out = new ByteArrayOutputStream();
         this.fpfdaw =
-                new GenericFieldDescriptorArrayWriter(new FoxProDialect(XBaseFileTypeEnum.dBASEIV1),
+                new GenericFieldDescriptorArrayWriter(new FoxProDialect(XBaseFileTypeEnum.dBASE4SQLTable),
                         this.out);
     }
 

@@ -35,7 +35,7 @@ public class DbfMetadataTest {
 
     @Before
     public void setUp() {
-        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dbfFieldFactory = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
     }
 
     @Test

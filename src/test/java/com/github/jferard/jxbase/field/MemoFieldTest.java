@@ -41,7 +41,7 @@ public class MemoFieldTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASE4SQLTable);
         this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(WithMemoRecordReader.class);
         this.w = Mockito.mock(DB3MemoRecordWriter.class);

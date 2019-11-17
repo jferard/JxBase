@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +55,7 @@ public class WriterWithMemoIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
-                .createWriter(XBaseFileTypeEnum.dBASEIV3, "112", JxBaseUtils.UTF8_CHARSET, meta,
+                .createWriter(XBaseFileTypeEnum.dBASE4Memo, "112", JxBaseUtils.UTF8_CHARSET, meta,
                         this.fields, GenericOptional.EMPTY, Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);

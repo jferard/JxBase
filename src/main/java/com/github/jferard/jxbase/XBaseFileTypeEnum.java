@@ -33,79 +33,103 @@ public enum XBaseFileTypeEnum {
      * '00000010'
      */
     FoxBASE1(0x02, XBaseMemoFileType.NO_MEMO_FILE, "FoxBASE/Dbase II"),
+
+    /**
+     * '00000010'
+     */
+    dBASE2(0x02, XBaseMemoFileType.NO_MEMO_FILE, "FoxBASE/Dbase II"),
+
     /**
      * '00000011'
      */
     FoxBASEPlus1(0x03, XBaseMemoFileType.NO_MEMO_FILE, "FoxBASE+/Dbase III plus, no memo"),
+
+    /**
+     * '00000011'
+     */
+    dBASE3plus(0x03, XBaseMemoFileType.NO_MEMO_FILE, "FoxBASE+/Dbase III plus, no memo"),
+
     /**
      * '00000100'
      */
-    dBASEIV0(0x04, XBaseMemoFileType.NO_MEMO_FILE, "Dbase IV, no memo"),
+    dBASE4(0x04, XBaseMemoFileType.NO_MEMO_FILE, "Dbase IV, no memo"),
 
     /**
      * '00000101'
      */
-    dBASEV(0x05, XBaseMemoFileType.NO_MEMO_FILE, "Dbase V, no memo"),
+    dBASE5(0x05, XBaseMemoFileType.NO_MEMO_FILE, "Dbase V, no memo"),
 
     /**
      * '00000111'
      */
-    VisualObjectsDbaseIII(0x07, XBaseMemoFileType.NO_MEMO_FILE,
-            "VISUAL OBJECTS (first 1.0 versions) for the Dbase III files " + "w/o memo file"),
+    VisualObjectsDBASE3(0x07, XBaseMemoFileType.NO_MEMO_FILE,
+            "VISUAL OBJECTS (first 1.0 versions) for the Dbase III files w/o memo file"),
+
     /**
      * '00110000'
      */
-    VisualFoxPro1(0x30, XBaseMemoFileType.FOXPRO_OBJECT_AND_MEMO_FILE, "Visual FoxPro"),
+    VisualFoxPro(0x30, XBaseMemoFileType.FOXPRO_OBJECT_AND_MEMO_FILE, "Visual FoxPro"),
+
     /**
      * '00110001'
      */
-    VisualFoxPro2(0x31, XBaseMemoFileType.FOXPRO_OBJECT_AND_MEMO_FILE,
+    VisualFoxProAutoIncrement(0x31, XBaseMemoFileType.FOXPRO_OBJECT_AND_MEMO_FILE,
             "Visual FoxPro, autoincrement enabled"),
+
     /**
      * 01000011 - 0x43
      */
-    dBASEIV1(0x43, XBaseMemoFileType.NO_MEMO_FILE, "dBASE IV SQL table files, no memo"),
+    dBASE4SQLTable(0x43, XBaseMemoFileType.NO_MEMO_FILE, "dBASE IV SQL table files, no memo"),
+
     /**
      * 01000100 - 0x44
      */
-    dBASEVII1(0x44, XBaseMemoFileType.NO_MEMO_FILE, "dBASE VII SQL table files, no memo"),
+    dBASE7SQLTable(0x44, XBaseMemoFileType.NO_MEMO_FILE, "dBASE VII SQL table files, no memo"),
+
     /**
      * 01100011 - 0x63
      */
-    dBASEIV2(0x63, XBaseMemoFileType.NO_MEMO_FILE, "dBASE IV SQL system files, no memo"),
+    dBASE4SQLSystem(0x63, XBaseMemoFileType.NO_MEMO_FILE, "dBASE IV SQL system files, no memo"),
+
     /**
      * 01100100 - 0x64
      */
-    dBASEVII2(0x64, XBaseMemoFileType.NO_MEMO_FILE, "dBASE VII SQL system files, no memo"),
+    dBASE7SQLSystem(0x64, XBaseMemoFileType.NO_MEMO_FILE, "dBASE VII SQL system files, no memo"),
+
     /**
      * 10000011 - 0x83
      */
-    FoxBASEPlus2(0x83, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxBASE+/dBASE III PLUS, with memo"),
+    dBASE3plusMemo(0x83, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxBASE+/dBASE III PLUS, with memo"),
+
     /**
      * 10001011 - 0x8b
      */
-    dBASEIV3(0x8B, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE IV with memo"),
+    dBASE4Memo(0x8B, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE IV with memo"),
+
     /**
      * 10001101 - 0x8d
      */
-    dBASEIVII3(0x8D, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE VII with memo"),
+    dBASE7Memo(0x8D, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE VII with memo"),
+
     /**
      * 11001011 - 0xcb
      */
-    dBASEIV4(0xCB, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE IV SQL table files, with memo"),
+    dBASE4SQLTableMemo(0xCB, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE IV SQL table files, with memo"),
+
     /**
      * 11001101 - 0xcd
      */
-    dBASEIVII4(0xCD, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE VII SQL table files, with memo"),
+    dBASE7SQLTableMemo(0xCD, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE VII SQL table files, with memo"),
+
     /**
      * 11110101 - 0xf5
      */
-    FoxPro2x(0xF5, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxPro 2.x (or earlier) with memo"),
+    FoxPro2xMemo(0xF5, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxPro 2.x (or earlier) with memo"),
+
     /**
      * 11111011 - 0xfb
      */
-    FoxBASE2(0xFB, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxBASE"),
-    ;
+    FoxBASEMemo(0xFB, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxBASE");
 
     public static XBaseFileTypeEnum fromInt(final byte bType) {
         final int iType = 0xFF & bType;
@@ -120,14 +144,14 @@ public enum XBaseFileTypeEnum {
     public static XBaseDialect getDialect(final XBaseFileTypeEnum type) {
         final XBaseDialect dialect;
         switch (type) {
-            case FoxBASEPlus2:
+            case dBASE3plusMemo:
                 dialect = new DB3MemoDialect(type);
                 break;
-            case dBASEIV3:
+            case dBASE4Memo:
                 dialect = new DB4MemoDialect(type);
                 break;
-            case VisualFoxPro1:
-            case VisualFoxPro2:
+            case VisualFoxPro:
+            case VisualFoxProAutoIncrement:
                 dialect = new FoxProDialect(type);
                 break;
             default:

@@ -38,7 +38,7 @@ public class NullFlagsFieldTest {
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASEIV1);
+        this.dialect = new FoxProDialect(XBaseFileTypeEnum.dBASE4SQLTable);
         this.aw = Mockito.mock(GenericFieldDescriptorArrayWriter.class);
         this.r = Mockito.mock(FoxProRecordReader.class);
         this.w = Mockito.mock(FoxProRecordWriter.class);

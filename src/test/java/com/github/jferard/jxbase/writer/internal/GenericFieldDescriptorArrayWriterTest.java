@@ -37,7 +37,7 @@ public class GenericFieldDescriptorArrayWriterTest {
     public void setUp() {
         this.out = new ByteArrayOutputStream();
         this.gfdaw =
-                new GenericFieldDescriptorArrayWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1),
+                new GenericFieldDescriptorArrayWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable),
                         this.out);
     }
 

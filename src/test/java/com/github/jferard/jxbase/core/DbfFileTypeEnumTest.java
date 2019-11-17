@@ -39,6 +39,6 @@ public class DbfFileTypeEnumTest {
 
     @Test
     public void testToByte() {
-        Assert.assertEquals((byte) 0x8B, XBaseFileTypeEnum.dBASEIV3.toByte());
+        Assert.assertEquals((byte) 0x8B, XBaseFileTypeEnum.dBASE4Memo.toByte());
     }
 }

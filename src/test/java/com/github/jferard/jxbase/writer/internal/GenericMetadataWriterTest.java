@@ -42,7 +42,7 @@ public class GenericMetadataWriterTest {
         this.raf = Mockito.mock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
         this.gmw =
-                new GenericMetadataWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASEIV1), this.raf,
+                new GenericMetadataWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable), this.raf,
                         this.out, JxBaseUtils.ASCII_CHARSET);
     }
 
@@ -52,7 +52,7 @@ public class GenericMetadataWriterTest {
         meta.put("updateDate", new Date(0));
         meta.put("dummy", "dummy");
 
-        this.gmw.write(new GenericMetadata(XBaseFileTypeEnum.dBASEIV1.toByte(), 200, 150, meta));
+        this.gmw.write(new GenericMetadata(XBaseFileTypeEnum.dBASE4SQLTable.toByte(), 200, 150, meta));
         Assert.assertArrayEquals(
                 new byte[]{67, 70, 1, 1, 0, 0, 0, 0, -56, 0, -106, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, this.out.toByteArray());
