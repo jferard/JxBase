@@ -25,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Collections;
 
 public class XBaseReaderFactory {
     public static XBaseReader createReader(final String databaseName, final Charset charset)
@@ -39,8 +40,9 @@ public class XBaseReaderFactory {
                 IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
-        final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalReaderFactory readerFactory =
+        final XBaseDialect<?, ?> dialect = XBaseFileTypeEnum
+                .getDialect(type, databaseName, charset, null);
+        final XBaseInternalReaderFactory<?, ?> readerFactory =
                 dialect.getInternalReaderFactory(databaseName, charset);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory);
     }

@@ -16,118 +16,167 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
+import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
+import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
+import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
+import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
+import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
+import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
+import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
+import com.github.jferard.jxbase.dialect.db2.field.NumericField;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
+import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
+import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
+import com.github.jferard.jxbase.dialect.db3.field.DateField;
+import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
+import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
+import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
+import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
+import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
+import com.github.jferard.jxbase.dialect.db4.field.FloatField;
+import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProMemoAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
+import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
+import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
+import com.github.jferard.jxbase.field.RawRecordReader;
+import com.github.jferard.jxbase.field.RawRecordWriter;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.MemoField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class FoxProDialect extends DB3MemoDialect {
-    public FoxProDialect(final XBaseFileTypeEnum type) {
-        super(type);
-    }
-
-    @Override
-    public FieldRepresentation getCharacterFieldRepresentation(final String name,
-                                                               final int dataSize) {
-        return new FieldRepresentation(name, 'C', dataSize & 0xFF, dataSize >> 8);
-    }
-
-    public int getDatetimeValueLength() {
-        return 8;
-    }
-
-    public FieldRepresentation getDatetimeFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'T', 8, 0);
-    }
-
-    public int getNullFlagsFieldLength(final int length) {
-        return length;
-    }
-
-    public FieldRepresentation getNullFlagsFieldRepresentation(final String name,
-                                                               final int length) {
-        return new FieldRepresentation(name, '0', length, 0);
-    }
-
-    public FieldRepresentation getSmallMemoFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'M', 4, 0);
-    }
-
-    @Override
-    public int getMemoValueLength() {
-        return 4;
-    }
-
-    /**
-     * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:
-     * > Pointer to ASCII text field in memo file 10 digits representing a pointer to a DBT block
-     * (default is blanks).
-     *
-     * @param recordReader
-     * @param recordBuffer
-     * @param offset
-     * @param length
-     * @return
-     */
-    @Override
-    public long getOffsetInBlocks(final XBaseRecordReader recordReader, final byte[] recordBuffer,
-                                  final int offset, final int length) {
-        assert length == 4;
-        return BitUtils
-                .makeInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
-                        recordBuffer[offset + 3]);
-    }
-
-    @Override
-    public XBaseInternalReaderFactory getInternalReaderFactory(final String databaseName,
-                                                               final Charset charset)
+public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> {
+    public static FoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
+                                       final TimeZone timeZone, final FileChannel memoChannel,
+                                       final Map<String, Object> memoHeaderMetadata)
             throws IOException {
-        final XBaseMemoReader memoReader = this.getMemoReader(databaseName, charset);
-        return new FoxProInternalReaderFactory(this, TimeZone.getDefault(), memoReader);
+        final RawRecordReader rawRecordReader = new RawRecordReader(charset);
+        final RawRecordWriter rawRecordWriter = new RawRecordWriter(charset);
+        final CharacterAccess characterAccess =
+                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
+        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
+        final FloatAccess floatAccess = new DB4FloatAccess();
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        final XBaseMemoReader memoReader;
+        final XBaseMemoWriter memoWriter;
+        if (memoHeaderMetadata == null) {
+            memoReader = new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(charset),
+                    new FoxProMemoFileHeaderReader());
+            memoWriter = null;
+        } else {
+            memoReader = null;
+            memoWriter = new DB4MemoWriter(memoChannel, 512, memoHeaderMetadata);
+        }
+        final MemoAccess memoAccess =
+                new FoxProMemoAccess(memoReader, memoWriter, new RawRecordReader(charset));
+        final DatetimeAccess datetimeAccess = new FoxProDatetimeAccess();
+        final NullFlagsAccess nullFlagsAccess = new FoxProNullFlagsAccess();
+        final IntegerAccess integerAccess = new FoxProIntegerAccess();
+        final FoxProAccess access =
+                new FoxProAccess(characterAccess, dateAccess, datetimeAccess, floatAccess,
+                        integerAccess, logicalAccess, memoAccess, nullFlagsAccess, numericAccess);
+        return new FoxProDialect(type, access);
     }
 
+    protected final XBaseFileTypeEnum type;
+    private final FoxProAccess access;
+
+    public FoxProDialect(final XBaseFileTypeEnum type, final FoxProAccess access) {
+        this.type = type;
+        this.access = access;
+    }
+
+
     @Override
-    public XBaseField getXBaseField(final String name, final byte typeByte, final int length,
-                                    final int numberOfDecimalPlaces) {
+    public XBaseField<? super FoxProAccess> getXBaseField(final String name, final byte typeByte,
+                                                          final int length,
+                                                          final int numberOfDecimalPlaces) {
         switch (typeByte) {
-            case 'M':
-                if (length != 4) {
-                    throw new IllegalArgumentException();
+            case 'C':
+                return new CharacterField(name, length);
+            case 'D':
+                if (length != 8) {
+                    throw new IllegalArgumentException("A date has 8 chars");
                 }
-                return new MemoField<XBaseMemoRecord>(name);
+                return new DateField(name);
+            case 'F':
+                if (length != 20) {
+                    throw new IllegalArgumentException("A float has 20 chars");
+                }
+                return new FloatField(name);
+            case 'L':
+                if (length != 1) {
+                    throw new IllegalArgumentException("A boolean has one char");
+                }
+                return new LogicalField(name);
+            case 'M':
+                return new MemoField(name);
+            case 'N':
+                return new NumericField(name, length, numberOfDecimalPlaces);
             case '0':
                 return new NullFlagsField(name, length);
             default:
-                return super.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+                throw new IllegalArgumentException(
+                        String.format("'%c' (%d) is not a dbf field type", typeByte, typeByte));
         }
     }
 
     @Override
-    public XBaseInternalWriterFactory getInternalWriterFactory(final String databaseName,
-                                                               final Charset charset,
-                                                               final Map<String, Object> headerMeta)
-            throws IOException {
-        final File memoFile = new File(databaseName + ".dbt");
-        final XBaseMemoWriter memoWriter = FoxProMemoWriter.fromChannel(memoFile, headerMeta);
-        return new FoxProInternalWriterFactory(this, TimeZone.getDefault(), memoWriter);
+    public XBaseFileTypeEnum getType() {
+        return this.type;
     }
 
-    public int getMemoFieldLength() {
-        return 4;
+    @Override
+    public int getMetaDataLength() {
+        return JxBaseUtils.METADATA_LENGTH;
+    }
+
+    @Override
+    public int getFieldDescriptorLength() {
+        return DB3Utils.DB3_FIELD_DESCRIPTOR_LENGTH;
+    }
+
+    @Override
+    public int getOptionalLength() {
+        return JxBaseUtils.OPTIONAL_LENGTH;
+    }
+
+    @Override
+    public FoxProAccess getAccess() {
+        return this.access;
+    }
+
+    @Override
+    public XBaseInternalReaderFactory<FoxProDialect, FoxProAccess> getInternalReaderFactory(
+            final String databaseName, final Charset charset) throws IOException {
+        return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
+    }
+
+    @Override
+    public XBaseInternalWriterFactory<FoxProDialect, FoxProAccess> getInternalWriterFactory(
+            final String databaseName, final Charset charset, final Map<String, Object> headerMeta)
+            throws IOException {
+        return new FoxProInternalWriterFactory(this, TimeZone.getDefault());
     }
 }
 

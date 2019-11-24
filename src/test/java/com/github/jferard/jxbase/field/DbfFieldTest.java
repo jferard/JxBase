@@ -16,16 +16,8 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 public class DbfFieldTest {
+    /*
     @Rule
     public ExpectedException exception = ExpectedException.none();
     private DB3MemoDialect dialect;
@@ -61,4 +53,6 @@ public class DbfFieldTest {
         final XBaseField f = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro)
                 .fromStringRepresentation("a,0,10,0");
     }
+
+     */
 }

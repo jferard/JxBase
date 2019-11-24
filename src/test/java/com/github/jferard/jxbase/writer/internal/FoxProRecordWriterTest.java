@@ -16,31 +16,8 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProRecordWriter;
-import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
-import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.field.LogicalField;
-import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 public class FoxProRecordWriterTest {
+    /*
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -131,4 +108,6 @@ public class FoxProRecordWriterTest {
         this.grw.write(this.map);
         Assert.assertEquals(2, this.grw.getRecordQty());
     }
+
+     */
 }

@@ -16,32 +16,29 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
+import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
+import com.github.jferard.jxbase.dialect.db3.field.DateField;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateFieldTest {
     private DateField f;
-    private DB3MemoDialect dialect;
-    private XBaseFieldDescriptorArrayWriter aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter w;
+    private DateAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.access = new DB3DateAccess(new RawRecordReader(JxBaseUtils.ASCII_CHARSET),
+                new RawRecordWriter(JxBaseUtils.ASCII_CHARSET), TimeZone.getTimeZone("UTC"));
         this.f = new DateField("date");
     }
 
@@ -52,27 +49,28 @@ public class DateFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getValueByteLength(this.dialect));
+        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = {1, 2, 3, 4};
+        final byte[] bytes = "19700101".getBytes(JxBaseUtils.ASCII_CHARSET);
         final Date date = new Date(0);
-        Mockito.when(this.r.getDateValue(bytes, 0, 4)).thenReturn(date);
-        Assert.assertEquals(date, this.f.getValue(this.r, bytes, 0, 4));
+        Assert.assertEquals(date, this.f.getValue(this.access, bytes, 0, 8));
     }
 
     @Test
     public void writeValue() throws IOException {
         final Date value = new Date(0);
-        this.f.writeValue(this.w, value);
-        Mockito.verify(this.w).writeDateValue(value);
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, out, value);
+        Assert.assertEquals("19700101",
+                out.toString(String.valueOf(JxBaseUtils.ASCII_CHARSET)));
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("date,D,8,0", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("date,D,8,0", this.f.toStringRepresentation(this.access));
     }
 
     @Test

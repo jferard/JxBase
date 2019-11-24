@@ -16,12 +16,14 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.GenericOptional;
+import com.github.jferard.jxbase.core.GenericOptional;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.XBaseWriterFactory;
-import com.github.jferard.jxbase.field.CharacterField;
-import com.github.jferard.jxbase.field.NumericField;
+import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
+import com.github.jferard.jxbase.dialect.db2.field.NumericField;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Before;
@@ -37,7 +39,8 @@ import java.util.Map;
 
 public class WriterIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
-    private final List<XBaseField> fields = new ArrayList<XBaseField>();
+    private final List<XBaseField<? super DB4Access>> fields =
+            new ArrayList<XBaseField<? super DB4Access>>();
 
     @Before
     public void prepareData() {
@@ -63,9 +66,10 @@ public class WriterIT {
         meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
-        final XBaseWriter dbfWriter = XBaseWriterFactory
-                .createWriter(XBaseFileTypeEnum.dBASE4SQLTable, "111", JxBaseUtils.UTF8_CHARSET, meta,
-                        this.fields, GenericOptional.EMPTY, Collections.<String, Object>emptyMap());
+        final XBaseWriter dbfWriter =
+                XBaseWriterFactory.<DB4Dialect, DB4Access>createWriter(XBaseFileTypeEnum.dBASE4SQLTableMemo, "111",
+                        JxBaseUtils.UTF8_CHARSET, meta, this.fields, new GenericOptional(new byte[263]),
+                        Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);
         } finally {

@@ -28,6 +28,22 @@ import java.io.OutputStream;
  * It's dialect dependent
  */
 public class FieldRepresentation {
+    public String getName() {
+        return this.name;
+    }
+
+    public byte getType() {
+        return this.type;
+    }
+
+    public int getRepLength() {
+        return this.repLength;
+    }
+
+    public int getNumberOfDecimalPlaces() {
+        return this.numberOfDecimalPlaces;
+    }
+
     private final String name;
     private final byte type;
     private final int repLength;
@@ -41,6 +57,7 @@ public class FieldRepresentation {
         this.numberOfDecimalPlaces = numberOfDecimalPlaces;
     }
 
+    /*
     public void write(final OutputStream out, final int offset) throws IOException {
         final byte[] nameBytes = this.name.getBytes(JxBaseUtils.ASCII_CHARSET);
         final int nameLength = nameBytes.length;
@@ -54,7 +71,7 @@ public class FieldRepresentation {
         out.write(this.repLength & 0xFF); // 16
         out.write(this.numberOfDecimalPlaces); // 17
         BitUtils.writeZeroes(out, JxBaseUtils.FIELD_DESCRIPTOR_SIZE - 18);
-    }
+    }*/
 
     @Override
     public String toString() {

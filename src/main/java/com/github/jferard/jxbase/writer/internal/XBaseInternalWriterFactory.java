@@ -17,26 +17,24 @@
 package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
-public interface XBaseInternalWriterFactory {
-    XBaseMetadataWriter createMetadataWriter(final XBaseDialect dialect, RandomAccessFile file,
-                                             OutputStream outputStream, Charset charset);
+public interface XBaseInternalWriterFactory<D extends XBaseDialect<D, A>, A> {
+    XBaseMetadataWriter<D, A> createMetadataWriter(RandomAccessFile file, OutputStream outputStream,
+                                                   Charset charset);
 
-    XBaseFieldDescriptorArrayWriter createFieldDescriptorArrayWriter(final XBaseDialect dialect,
-                                                                     OutputStream outputStream,
-                                                                     XBaseMetadata metadata);
+    XBaseFieldDescriptorArrayWriter<D, A> createFieldDescriptorArrayWriter(OutputStream outputStream,
+                                                                        XBaseMetadata metadata);
 
-    XBaseOptionalWriter createOptionalWriter(final XBaseDialect dialect, OutputStream outputStream,
-                                             XBaseMetadata metadata,
-                                             XBaseFieldDescriptorArray array);
+    XBaseOptionalWriter<D> createOptionalWriter(OutputStream outputStream, XBaseMetadata metadata,
+                                                XBaseFieldDescriptorArray<D, A> array);
 
-    XBaseRecordWriter createRecordWriter(final XBaseDialect dialect, OutputStream outputStream,
-                                         Charset charset, XBaseMetadata metadata,
-                                         XBaseFieldDescriptorArray array, Object optional);
+    XBaseRecordWriter<D> createRecordWriter(OutputStream outputStream, Charset charset,
+                                            XBaseMetadata metadata,
+                                            XBaseFieldDescriptorArray<D, A> array, Object optional);
 }

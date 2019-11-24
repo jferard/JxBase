@@ -17,11 +17,15 @@
 
 package com.github.jferard.jxbase.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class JxBaseUtils {
-    public static final int FIELD_RECORD_LENGTH = 32;
     public static final int HEADER_TERMINATOR = 0x0D;
     public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
             new ThreadLocal<SimpleDateFormat>() {
@@ -36,8 +40,34 @@ public class JxBaseUtils {
     public static final Charset ASCII_CHARSET = Charset.forName("US-ASCII");
     public static final Charset LATIN1_CHARSET = Charset.forName("ISO-8859-1");
     public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    public static final int FIELD_DESCRIPTOR_SIZE = 32;
     public static final int OPTIONAL_LENGTH = 263;
     public static final int BUFFER_SIZE = 8192;
+    public static final int MAX_FIELD_NAME_SIZE = 11;
+    private static final CharSequence NUMERIC_OVERFLOW = "*";
     public static int EMPTY = 0x20;
+
+    // helpers
+    public static void readFieldBytes(final InputStream inputStream, final byte[] fieldBytes) throws
+            IOException {
+        if (IOUtils.readFully(inputStream, fieldBytes) != fieldBytes.length) {
+            throw new IOException("The file is corrupted or is not a dbf file");
+        }
+    }
+
+    public static String getName(final byte[] fieldBytes) {
+        int nameLength = 0;
+        while (nameLength < MAX_FIELD_NAME_SIZE && fieldBytes[nameLength] != 0x0) {
+            nameLength++;
+        }
+        return new String(fieldBytes, 0, nameLength, ASCII_CHARSET);
+    }
+
+    public static int getLength(final byte lenByte) {
+        int length = lenByte;
+        if (length < 0) {
+            length += 256;
+        }
+        return length;
+    }
+
 }

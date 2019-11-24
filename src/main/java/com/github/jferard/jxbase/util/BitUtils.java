@@ -21,11 +21,11 @@ import java.io.OutputStream;
 
 public class BitUtils {
     public static int makeInt(final byte b1, final byte b2) {
-        return ((b1) & 0xFF) + ((b2 << 8) & 0x0000FF00);
+        return ((b1) & 0x00FF) + ((b2 << 8) & 0xFF00);
     }
 
     public static int makeInt(final byte b1, final byte b2, final byte b3, final byte b4) {
-        return ((b1) & 0xFF) + ((b2 << 8) & 0x0000FF00) + ((b3 << 16) & 0x00FF0000) +
+        return ((b1) & 0x000000FF) + ((b2 << 8) & 0x0000FF00) + ((b3 << 16) & 0x00FF0000) +
                 ((b4 << 24) & 0xFF000000);
     }
 

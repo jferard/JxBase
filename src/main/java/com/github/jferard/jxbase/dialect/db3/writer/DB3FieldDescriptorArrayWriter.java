@@ -1,0 +1,72 @@
+/*
+ * JxBase - Copyright (c) 2019 Julien Férard
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.jferard.jxbase.dialect.db3.writer;
+
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
+import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
+import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+public class DB3FieldDescriptorArrayWriter<D extends XBaseDialect<D, A>, A>
+        implements XBaseFieldDescriptorArrayWriter<D, A> {
+    final D dialect;
+    final OutputStream out;
+
+    public DB3FieldDescriptorArrayWriter(final D dialect, final OutputStream out) {
+        this.dialect = dialect;
+        this.out = out;
+    }
+
+    @Override
+    public int write(final XBaseFieldDescriptorArray<D, A> array) throws IOException {
+        int offset = 0;
+        for (final XBaseField<? super A> field : array.getFields()) {
+            this.writeField(field.toRepresentation(this.dialect.getAccess()));
+            offset += field.getValueByteLength(this.dialect.getAccess());
+        }
+        this.out.write(JxBaseUtils.HEADER_TERMINATOR);
+        return offset;
+    }
+
+    private void writeField(final FieldRepresentation fieldRepresentation) throws IOException {
+        final byte[] nameBytes = fieldRepresentation.getName().getBytes(JxBaseUtils.ASCII_CHARSET);
+        final int nameLength = nameBytes.length;
+        if (nameLength > JxBaseUtils.MAX_FIELD_NAME_SIZE) {
+            throw new IOException("Name too long");
+        }
+        this.out.write(nameBytes);
+        BitUtils.writeZeroes(this.out, JxBaseUtils.MAX_FIELD_NAME_SIZE - nameLength);
+        this.out.write(fieldRepresentation.getType()); // 11
+        // 12-15: RAM address
+        BitUtils.writeZeroes(this.out, 4);
+        this.out.write(fieldRepresentation.getRepLength() & 0xFF); // 16
+        this.out.write(fieldRepresentation.getNumberOfDecimalPlaces()); // 17
+        // 18-19: Reserved for db3+ on a LAN
+        // 20: Work area ID
+        // 21-22: Reserved for db3+ on a LAN
+        // 23: SET FIELDS flags
+        // 24-31: Reserved
+        BitUtils.writeZeroes(this.out, DB3Utils.DB3_FIELD_DESCRIPTOR_SIZE - 18);
+    }
+}

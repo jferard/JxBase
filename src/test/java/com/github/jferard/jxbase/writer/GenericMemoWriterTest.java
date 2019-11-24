@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.dialect.db4memo.DB4MemoWriter;
+import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;

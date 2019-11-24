@@ -16,28 +16,18 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.field.CharacterField;
-import com.github.jferard.jxbase.field.XBaseField;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Collections;
-
 public class GenericFieldDescriptorArrayWriterTest {
-    private XBaseFieldDescriptorArrayWriter gfdaw;
+    /*
+    private XBaseFieldDescriptorArrayWriter<D> gfdaw;
     private ByteArrayOutputStream out;
 
     @Before
     public void setUp() {
         this.out = new ByteArrayOutputStream();
         this.gfdaw =
-                new GenericFieldDescriptorArrayWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable),
+                new GenericFieldDescriptorArrayWriter(new DB3MemoDialect(XBaseFileTypeEnum
+                .dBASE4SQLTable),
+     */ /*
                         this.out);
     }
 

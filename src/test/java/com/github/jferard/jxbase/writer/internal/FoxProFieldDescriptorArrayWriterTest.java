@@ -16,13 +16,8 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import org.junit.Before;
-
-import java.io.ByteArrayOutputStream;
-
 public class FoxProFieldDescriptorArrayWriterTest {
+    /*
     private GenericFieldDescriptorArrayWriter fpfdaw;
     private ByteArrayOutputStream out;
 
@@ -30,7 +25,9 @@ public class FoxProFieldDescriptorArrayWriterTest {
     public void setUp() {
         this.out = new ByteArrayOutputStream();
         this.fpfdaw =
-                new GenericFieldDescriptorArrayWriter(new FoxProDialect(XBaseFileTypeEnum.dBASE4SQLTable),
+                new GenericFieldDescriptorArrayWriter(new FoxProDialect(XBaseFileTypeEnum
+                .dBASE4SQLTable),
+     *//*
                         this.out);
     }
 

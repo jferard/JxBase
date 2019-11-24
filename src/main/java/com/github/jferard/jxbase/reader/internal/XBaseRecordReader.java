@@ -16,17 +16,15 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Date;
 
 public interface XBaseRecordReader {
     XBaseRecord read() throws IOException, ParseException;
 
+    /*
     String getCharacterValue(byte[] recordBuffer, int offset, int length);
 
     String getTrimmedString(byte[] recordBuffer, int offset, int length, Charset charset);
@@ -42,6 +40,8 @@ public interface XBaseRecordReader {
     BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length,
                                int numberOfDecimalPlaces);
 
+
+     */
     void close() throws IOException;
 
     /* With memo

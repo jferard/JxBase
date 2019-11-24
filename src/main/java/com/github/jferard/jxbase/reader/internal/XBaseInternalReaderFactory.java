@@ -16,23 +16,24 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-public interface XBaseInternalReaderFactory {
+public interface XBaseInternalReaderFactory<D extends XBaseDialect<D, A>, A> {
     XBaseMetadataReader createMetadataReader(InputStream inputStream);
 
-    XBaseFieldDescriptorArrayReader createFieldDescriptorArrayReader(InputStream inputStream,
-                                                                     XBaseMetadata metadata);
+    XBaseFieldDescriptorArrayReader<D, A> createFieldDescriptorArrayReader(InputStream inputStream,
+                                                                        XBaseMetadata metadata);
 
     XBaseOptionalReader createOptionalReader(InputStream inputStream, Charset charset,
-                                             XBaseMetadata metadata,
-                                             XBaseFieldDescriptorArray array);
+                                                XBaseMetadata metadata,
+                                                XBaseFieldDescriptorArray<D, A> array);
 
     XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
-                                         XBaseMetadata metadata, XBaseFieldDescriptorArray array,
+                                         XBaseMetadata metadata, XBaseFieldDescriptorArray<D, A> array,
                                          Object optional);
 }

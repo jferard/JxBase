@@ -27,13 +27,13 @@ import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
 
-public class GenericMetadataWriter implements XBaseMetadataWriter {
+public class GenericMetadataWriter<D extends XBaseDialect<D, A>, A> implements XBaseMetadataWriter<D, A> {
     final OutputStream out;
     final Charset charset;
     private final RandomAccessFile file;
-    private final XBaseDialect dialect;
+    private final D dialect;
 
-    public GenericMetadataWriter(final XBaseDialect dialect, final RandomAccessFile file,
+    public GenericMetadataWriter(final D dialect, final RandomAccessFile file,
                                  final OutputStream out, final Charset charset) {
         this.dialect = dialect;
         this.file = file;

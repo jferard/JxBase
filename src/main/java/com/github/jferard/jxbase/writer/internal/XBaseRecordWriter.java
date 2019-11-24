@@ -21,10 +21,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-public interface XBaseRecordWriter {
+public interface XBaseRecordWriter<D> {
 
     void write(Map<String, Object> objectByName) throws IOException;
 
+    /*
     void writeCharacterValue(String value, int length) throws IOException;
 
     void writeDateValue(Date value) throws IOException;
@@ -36,6 +37,7 @@ public interface XBaseRecordWriter {
     void writeNumericValue(BigDecimal value, int length, int numberOfDecimalPlaces)
             throws IOException;
 
+*/
     /* With memo
     void writeMemoValue(XBaseMemoRecord value) throws IOException;
     */

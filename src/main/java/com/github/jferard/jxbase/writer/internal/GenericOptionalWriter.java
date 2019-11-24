@@ -17,22 +17,22 @@
 package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class GenericOptionalWriter implements XBaseOptionalWriter {
-    private final XBaseDialect dialect;
+public class GenericOptionalWriter<D extends XBaseDialect<D, A>, A> implements XBaseOptionalWriter<D> {
+    private final D dialect;
     private final OutputStream outputStream;
     private final XBaseMetadata metadata;
-    private final XBaseFieldDescriptorArray array;
+    private final XBaseFieldDescriptorArray<D, A> array;
 
-    public GenericOptionalWriter(final XBaseDialect dialect, final OutputStream outputStream,
+    public GenericOptionalWriter(final D dialect, final OutputStream outputStream,
                                  final XBaseMetadata metadata,
-                                 final XBaseFieldDescriptorArray array) {
+                                 final XBaseFieldDescriptorArray<D, A> array) {
         this.dialect = dialect;
         this.outputStream = outputStream;
         this.metadata = metadata;

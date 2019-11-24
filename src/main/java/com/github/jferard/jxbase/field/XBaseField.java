@@ -16,30 +16,26 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseRepresentations;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
-
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Independent of the dialect
  */
-public interface XBaseField {
+public interface XBaseField<A> {
     String getName();
 
     /**
      * @return the length of the field (the actual length, not necessarily the third field)
      */
-    int getValueByteLength(XBaseLengths dialect);
+    int getValueByteLength(A access);
 
-    Object getValue(XBaseRecordReader reader, byte[] recordBuffer, int offset, int length)
+    Object getValue(A access, byte[] recordBuffer, int offset, int length)
             throws IOException;
 
-    void writeValue(XBaseRecordWriter writer, Object value) throws IOException;
+    void writeValue(A access, OutputStream out, Object value) throws IOException;
 
-    String toStringRepresentation(XBaseRepresentations dialect);
+    String toStringRepresentation(A access);
 
-    FieldRepresentation toRepresentation(XBaseRepresentations dialect);
+    FieldRepresentation toRepresentation(A access);
 }

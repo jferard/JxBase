@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
-import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

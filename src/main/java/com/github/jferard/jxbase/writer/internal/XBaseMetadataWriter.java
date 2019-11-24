@@ -16,11 +16,12 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.IOException;
 
-public interface XBaseMetadataWriter {
+public interface XBaseMetadataWriter<D extends XBaseDialect<D, A>, A> {
     void write(XBaseMetadata metadata) throws IOException;
 
     void fixMetadata(int recordQty) throws IOException;

@@ -16,21 +16,18 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.core.XBaseFieldFactory;
-import com.github.jferard.jxbase.core.XBaseLengths;
-import com.github.jferard.jxbase.core.XBaseRepresentations;
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseFieldFactory {
-    long getOffsetInBlocks(XBaseRecordReader genericRecordReader, byte[] recordBuffer, int offset,
-                           int length);
+public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
+
+    XBaseField<? super A> getXBaseField(String name, byte typeByte, int length,
+                                        int numberOfDecimalPlaces);
 
     XBaseFileTypeEnum getType();
 
@@ -40,12 +37,12 @@ public interface XBaseDialect extends XBaseLengths, XBaseRepresentations, XBaseF
 
     int getOptionalLength();
 
-    //    XBaseMemoFileType memoFileType();
+    A getAccess();
 
-    XBaseInternalReaderFactory getInternalReaderFactory(String databaseName, Charset charset)
+    XBaseInternalReaderFactory<D, A> getInternalReaderFactory(String databaseName, Charset charset)
             throws IOException;
 
-    XBaseInternalWriterFactory getInternalWriterFactory(String databaseName, Charset charset,
-                                                        Map<String, Object> headerMeta)
+    XBaseInternalWriterFactory<D, A> getInternalWriterFactory(String databaseName, Charset charset,
+                                                           Map<String, Object> headerMeta)
             throws IOException;
 }

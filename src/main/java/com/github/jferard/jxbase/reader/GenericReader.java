@@ -18,10 +18,10 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
-import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
@@ -32,24 +32,19 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
-public class GenericReader implements XBaseReader {
-    private final XBaseFieldDescriptorArray array;
+public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader {
+    private final XBaseFieldDescriptorArray<D, A> array;
     private final XBaseRecordReader recordReader;
     private final XBaseOptional optional;
-    private final XBaseDialect dialect;
+    private final D dialect;
     private final InputStream inputStream;
     private final XBaseMetadata metadata;
 
     /**
-     * @param dialect
-     * @param inputStream
-     * @param charset
-     * @param readerFactory
-     * @throws IOException
+     *
      */
-    public GenericReader(final XBaseDialect dialect, final InputStream inputStream,
-                         final Charset charset, final XBaseInternalReaderFactory readerFactory)
-            throws IOException {
+    public GenericReader(final D dialect, final InputStream inputStream, final Charset charset,
+                         final XBaseInternalReaderFactory<D, A> readerFactory) throws IOException {
         this.dialect = dialect;
         this.inputStream = inputStream;
         this.metadata = readerFactory.createMetadataReader(inputStream).read();
@@ -63,7 +58,7 @@ public class GenericReader implements XBaseReader {
         this.checkLengths();
     }
 
-    private void checkLengths() throws IOException {
+    private void checkLengths() {
         final int metaLength = this.dialect.getMetaDataLength();
         final int actualHeaderLength =
                 this.array.getArrayLength() + metaLength + this.optional.getLength();
@@ -76,7 +71,7 @@ public class GenericReader implements XBaseReader {
     }
 
     @Override
-    public XBaseDialect getDialect() {
+    public D getDialect() {
         return this.dialect;
     }
 
@@ -86,7 +81,7 @@ public class GenericReader implements XBaseReader {
     }
 
     @Override
-    public XBaseFieldDescriptorArray getFieldDescriptorArray() {
+    public XBaseFieldDescriptorArray<D, A> getFieldDescriptorArray() {
         return this.array;
     }
 

@@ -16,25 +16,26 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 
 import java.util.Collection;
 
-public class GenericFieldDescriptorArray implements XBaseFieldDescriptorArray {
-    private final Collection<XBaseField> fields;
+public class GenericFieldDescriptorArray<D extends XBaseDialect<D, A>, A>
+        implements XBaseFieldDescriptorArray<D, A> {
+    private final Collection<XBaseField<? super A>> fields;
     private final int arrayLength;
     private final int recordLength;
 
-    public GenericFieldDescriptorArray(final Collection<XBaseField> fields, final int arrayLength,
-                                       final int recordLength) {
+    public GenericFieldDescriptorArray(final Collection<XBaseField<? super A>> fields,
+                                       final int arrayLength, final int recordLength) {
         this.fields = fields;
         this.arrayLength = arrayLength;
         this.recordLength = recordLength;
     }
 
     @Override
-    public Collection<XBaseField> getFields() {
+    public Collection<XBaseField<? super A>> getFields() {
         return this.fields;
     }
 

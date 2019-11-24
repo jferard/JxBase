@@ -16,7 +16,9 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -16,10 +16,11 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
-public interface XBaseFieldDescriptorArrayReader {
-    XBaseFieldDescriptorArray read() throws IOException;
+public interface XBaseFieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A> {
+    XBaseFieldDescriptorArray<D, A> read() throws IOException;
 }

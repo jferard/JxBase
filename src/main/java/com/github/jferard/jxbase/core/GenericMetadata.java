@@ -45,6 +45,18 @@ public class GenericMetadata implements XBaseMetadata {
         return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 
+    public static GenericMetadata create(final XBaseFileTypeEnum type, final Date updateDate,
+                                         final int recordsQty, final int fullHeaderLength,
+                                         final int oneRecordLength) {
+        if (type == null) {
+            throw new IllegalArgumentException("File type should not be null");
+        }
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", updateDate);
+        meta.put("recordsQty", recordsQty);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
+    }
+
     private final byte typeByte;
     private final int fullHeaderLength;
     private final int oneRecordLength;

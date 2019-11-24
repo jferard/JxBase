@@ -16,15 +16,15 @@
 
 package com.github.jferard.jxbase.it;
 
-import com.github.jferard.jxbase.GenericOptional;
+import com.github.jferard.jxbase.core.GenericOptional;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.XBaseWriterFactory;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
-import com.github.jferard.jxbase.field.CharacterField;
+import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.MemoField;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +38,12 @@ import java.util.Map;
 
 public class WriterWithMemoIT {
     private final Map<String, Object> valueMap = new HashMap<String, Object>();
-    private final List<XBaseField> fields = new ArrayList<XBaseField>();
+    private final List<XBaseField<? super DB4Access>> fields = new ArrayList<XBaseField<? super DB4Access>>();
 
     @Before
     public void prepareData() {
         this.fields.add(new CharacterField("NAME", 20));
-        this.fields.add(new MemoField<XBaseMemoRecord>("MEMO"));
+        this.fields.add(new MemoField("MEMO"));
         this.valueMap.put("NAME", "some data");
         this.valueMap.put("MEMO", new TextMemoRecord("in the memo", JxBaseUtils.UTF8_CHARSET));
     }
@@ -56,7 +56,7 @@ public class WriterWithMemoIT {
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
                 .createWriter(XBaseFileTypeEnum.dBASE4Memo, "112", JxBaseUtils.UTF8_CHARSET, meta,
-                        this.fields, GenericOptional.EMPTY, Collections.<String, Object>emptyMap());
+                        this.fields, new GenericOptional(new byte[263]), Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);
         } finally {

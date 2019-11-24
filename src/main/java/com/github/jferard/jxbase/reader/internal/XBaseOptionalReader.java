@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.reader.internal;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.IOException;

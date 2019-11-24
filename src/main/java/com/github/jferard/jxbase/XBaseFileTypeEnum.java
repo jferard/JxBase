@@ -16,10 +16,19 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.dialect.basic.BasicDialect;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.dialect.db4memo.DB4MemoDialect;
+import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
+import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * dBASE IV bit flags:
@@ -114,12 +123,14 @@ public enum XBaseFileTypeEnum {
     /**
      * 11001011 - 0xcb
      */
-    dBASE4SQLTableMemo(0xCB, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE IV SQL table files, with memo"),
+    dBASE4SQLTableMemo(0xCB, XBaseMemoFileType.REGULAR_MEMO_FILE,
+            "dBASE IV SQL table files, with memo"),
 
     /**
      * 11001101 - 0xcd
      */
-    dBASE7SQLTableMemo(0xCD, XBaseMemoFileType.REGULAR_MEMO_FILE, "dBASE VII SQL table files, with memo"),
+    dBASE7SQLTableMemo(0xCD, XBaseMemoFileType.REGULAR_MEMO_FILE,
+            "dBASE VII SQL table files, with memo"),
 
     /**
      * 11110101 - 0xf5
@@ -141,24 +152,94 @@ public enum XBaseFileTypeEnum {
         throw new IllegalArgumentException("Unknown file type: " + bType);
     }
 
-    public static XBaseDialect getDialect(final XBaseFileTypeEnum type) {
-        final XBaseDialect dialect;
+    /**
+     * @param type
+     * @param databaseName
+     * @param charset
+     * @param memoHeaderMeta null if reader only
+     * @return
+     * @throws IOException
+     */
+    public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type,
+                                                final String databaseName, final Charset charset,
+                                                final Map<String, Object> memoHeaderMeta)
+            throws IOException {
+        final FileChannel channel;
+        if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
+            channel = null;
+        } else {
+            final File memoFile = new File(databaseName + type.memoFileType().getExtension());
+            if (memoHeaderMeta == null) {
+                channel = new FileInputStream(memoFile).getChannel();
+            } else {
+                channel = new FileOutputStream(memoFile).getChannel();
+            }
+        }
+
+        final XBaseDialect<?, ?> dialect;
         switch (type) {
-            case dBASE3plusMemo:
-                dialect = new DB3MemoDialect(type);
+            case dBASE2:
+                dialect = DB2Dialect.create(type, charset);
                 break;
+            case dBASE3plus:
+            case dBASE3plusMemo:
+            case FoxBASEPlus1:
+                dialect = DB3Dialect
+                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
+                break;
+            case dBASE4:
+            case dBASE4SQLTable:
             case dBASE4Memo:
-                dialect = new DB4MemoDialect(type);
+            case dBASE4SQLTableMemo:
+                dialect = DB4Dialect
+                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
                 break;
             case VisualFoxPro:
             case VisualFoxProAutoIncrement:
-                dialect = new FoxProDialect(type);
+                dialect = FoxProDialect
+                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
                 break;
             default:
                 if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
-                    dialect = new DB3MemoDialect(type);
+                    dialect = DB3Dialect
+                            .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
                 } else {
-                    dialect = new BasicDialect(type);
+                    throw new IllegalArgumentException(type.toString());
+                }
+                break;
+        }
+        return dialect;
+    }
+
+    public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type, final Charset charset,
+                                                final FileChannel memoChannel,
+                                                final Map<String, Object> headerMetadata)
+            throws IOException {
+        if (type.memoFileType == XBaseMemoFileType.NO_MEMO_FILE) {
+            throw new IllegalArgumentException();
+        }
+        final XBaseDialect<?, ?> dialect;
+        switch (type) {
+            case dBASE3plusMemo:
+            case FoxBASEPlus1:
+                dialect = DB3Dialect
+                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
+                break;
+            case dBASE4Memo:
+                dialect = DB4Dialect
+                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
+                break;
+            case VisualFoxPro:
+            case VisualFoxProAutoIncrement:
+                dialect = FoxProDialect
+                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
+                break;
+            default:
+                if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
+                    dialect = DB3Dialect.create(type, charset, TimeZone.getDefault(), memoChannel,
+                            headerMetadata);
+                } else {
+                    throw new IllegalArgumentException(type.toString());
                 }
                 break;
         }

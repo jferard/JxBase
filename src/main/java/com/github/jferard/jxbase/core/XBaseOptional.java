@@ -18,4 +18,6 @@ package com.github.jferard.jxbase.core;
 
 public interface XBaseOptional {
     int getLength();
+
+    byte[] getBytes();
 }

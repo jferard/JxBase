@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
@@ -23,12 +24,12 @@ import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 import java.io.IOException;
 import java.util.Map;
 
-public class GenericWriter implements XBaseWriter {
-    private final XBaseMetadataWriter metadataWriter;
-    private final XBaseRecordWriter recordWriter;
+public class GenericWriter<D extends XBaseDialect<D, A>, A> implements XBaseWriter {
+    private final XBaseMetadataWriter<D, A> metadataWriter;
+    private final XBaseRecordWriter<D> recordWriter;
 
-    public GenericWriter(final XBaseMetadataWriter metadataWriter,
-                         final XBaseRecordWriter recordWriter) {
+    public GenericWriter(final XBaseMetadataWriter<D, A> metadataWriter,
+                         final XBaseRecordWriter<D> recordWriter) {
         this.metadataWriter = metadataWriter;
         this.recordWriter = recordWriter;
     }

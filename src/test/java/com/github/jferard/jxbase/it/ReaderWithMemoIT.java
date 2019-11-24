@@ -18,16 +18,16 @@ package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
-import com.github.jferard.jxbase.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.field.CharacterField;
-import com.github.jferard.jxbase.field.DateField;
+import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
+import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.MemoField;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ import java.text.ParseException;
 
 public class ReaderWithMemoIT {
     @Test
-    public void test1() throws FileNotFoundException, ParseException {
+    public <D extends XBaseDialect<D, A>, A> void test1() throws FileNotFoundException, ParseException {
         final String databaseName = TestHelper.getResourceBase("memo1/texto.dbf");
 
         try {
@@ -49,26 +49,26 @@ public class ReaderWithMemoIT {
                 final XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);
 
-                final XBaseFieldDescriptorArray array = reader.getFieldDescriptorArray();
+                final XBaseDialect<D, A> dialect = reader.getDialect();
+                final XBaseFieldDescriptorArray<D, A> array = reader.getFieldDescriptorArray();
 
-                final XBaseDialect dialect = reader.getDialect();
                 Assert.assertEquals(FoxProDialect.class, dialect.getClass());
-                for (final XBaseField field : array.getFields()) {
+                for (final XBaseField<? super A> field : array.getFields()) {
                     final String name = field.getName();
                     if (name.equals("TEXVER")) {
-                        Assert.assertEquals(5, field.getValueByteLength(dialect));
+                        Assert.assertEquals(5, field.getValueByteLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXTEX")) {
-                        Assert.assertEquals(4, field.getValueByteLength(dialect));
+                        Assert.assertEquals(4, field.getValueByteLength(dialect.getAccess()));
                         Assert.assertEquals(MemoField.class, field.getClass());
                     } else if (name.equals("TEXDAT")) {
-                        Assert.assertEquals(8, field.getValueByteLength(dialect));
+                        Assert.assertEquals(8, field.getValueByteLength(dialect.getAccess()));
                         Assert.assertEquals(DateField.class, field.getClass());
                     } else if (name.equals("TEXSTA")) {
-                        Assert.assertEquals(1, field.getValueByteLength(dialect));
+                        Assert.assertEquals(1, field.getValueByteLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXCAM")) {
-                        Assert.assertEquals(254, field.getValueByteLength(dialect));
+                        Assert.assertEquals(254, field.getValueByteLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     }
                 }

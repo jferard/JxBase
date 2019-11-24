@@ -16,12 +16,13 @@
 
 package com.github.jferard.jxbase.writer.internal;
 
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
-public interface XBaseFieldDescriptorArrayWriter {
-    int write(XBaseFieldDescriptorArray array) throws IOException;
+public interface XBaseFieldDescriptorArrayWriter<D extends XBaseDialect<D, A>, A> {
+    int write(XBaseFieldDescriptorArray<D, A> array) throws IOException;
 
     /* FoxPro
     void writeDatetimeField(String name, int offset) throws IOException;

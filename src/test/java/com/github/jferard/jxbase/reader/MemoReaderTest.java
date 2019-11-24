@@ -16,25 +16,8 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoReader;
-import com.github.jferard.jxbase.dialect.db4memo.DB4MemoReader;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import java.io.IOException;
-import java.nio.BufferUnderflowException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-
 public class MemoReaderTest {
+    /*
     private final FoxProMemoRecordFactory dbfMemoRecordFactory = null;
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -93,7 +76,8 @@ public class MemoReaderTest {
         Assert.assertEquals("MemoFileHeader{nextFreeBlockLocation=0, blockSize=0}",
                 memoReader.getMemoHeader().toString());
 
-         */
+         *//*
         memoReader.close();
     }
+    */
 }

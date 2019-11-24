@@ -16,27 +16,8 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.db3memo.DB3MemoDialect;
-import com.github.jferard.jxbase.memo.WithMemoInternalReaderFactory;
-import com.github.jferard.jxbase.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
-import com.github.jferard.jxbase.reader.internal.XBaseOptionalReader;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-
 public class GenericReaderTest {
+    /*
     private WithMemoInternalReaderFactory rf;
     private InputStream is;
     private GenericReader gr;
@@ -110,4 +91,6 @@ public class GenericReaderTest {
         this.gr.close();
         Mockito.verify(this.is).close();
     }
+
+     */
 }

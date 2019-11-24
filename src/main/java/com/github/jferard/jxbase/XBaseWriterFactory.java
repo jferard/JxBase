@@ -18,9 +18,10 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.core.XBaseLengths;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.GenericWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
@@ -38,81 +39,80 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
-public class XBaseWriterFactory {
-    public static XBaseWriter createWriter(final XBaseFileTypeEnum type, final String databaseName,
-                                           final Charset charset, final Map<String, Object> meta,
-                                           final Collection<XBaseField> fields,
-                                           final XBaseOptional optional,
-                                           final Map<String, Object> headerMeta)
-            throws IOException {
-        return new XBaseWriterFactory()
-                .create(type, databaseName, charset, meta, fields, optional, headerMeta);
+public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
+    public static <E extends XBaseDialect<E, F>, F> XBaseWriter createWriter(
+            final XBaseFileTypeEnum type, final String databaseName, final Charset charset,
+            final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,
+            final XBaseOptional optional, final Map<String, Object> memoHeaderMeta) throws IOException {
+        return new XBaseWriterFactory<E, F>()
+                .create(type, databaseName, charset, meta, fields, optional, memoHeaderMeta);
     }
 
     public XBaseWriter create(final XBaseFileTypeEnum type, final String databaseName,
                               final Charset charset, final Map<String, Object> meta,
-                              final Collection<XBaseField> fields, final XBaseOptional optional,
-                              final Map<String, Object> headerMeta) throws IOException {
-        final XBaseDialect dialect = XBaseFileTypeEnum.getDialect(type);
-        final XBaseInternalWriterFactory writerFactory =
-                dialect.getInternalWriterFactory(databaseName, charset, headerMeta);
+                              final Collection<XBaseField<? super A>> fields,
+                              final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
+            throws IOException {
+        final D dialect = (D) XBaseFileTypeEnum.getDialect(type, databaseName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
+        final XBaseInternalWriterFactory<D, A> writerFactory =
+                dialect.getInternalWriterFactory(databaseName, charset, memoHeaderMeta);
         final File dbfFile = new File(databaseName + ".dbf");
         dbfFile.delete();
 
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
         final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 
-        final XBaseFieldDescriptorArray array = this.getFieldDescriptorArray(dialect, fields);
+        final XBaseFieldDescriptorArray<D, A> array = this.getFieldDescriptorArray(dialect, fields);
         final XBaseMetadata initialMetadata = this.getInitialMetadata(type, dialect, meta, array);
 
-        final XBaseMetadataWriter metadataWriter =
+        final XBaseMetadataWriter<D, A> metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
                         optional);
-        final XBaseRecordWriter recordWriter = writerFactory
-                .createRecordWriter(dialect, out, charset, initialMetadata, array, optional);
-        return new GenericWriter(metadataWriter, recordWriter);
+        final XBaseRecordWriter<D> recordWriter =
+                writerFactory.createRecordWriter(out, charset, initialMetadata, array, optional);
+        return new GenericWriter<D, A>(metadataWriter, recordWriter);
     }
 
-    private XBaseMetadataWriter writeHeader(final XBaseDialect dialect, final RandomAccessFile file,
-                                            final OutputStream out, final Charset charset,
-                                            final XBaseInternalWriterFactory writerFactory,
-                                            final XBaseMetadata initialMetadata,
-                                            final XBaseFieldDescriptorArray array,
-                                            final XBaseOptional optional) throws IOException {
-        final XBaseMetadataWriter metadataWriter =
-                writerFactory.createMetadataWriter(dialect, file, out, charset);
+    private XBaseMetadataWriter<D, A> writeHeader(final D dialect, final RandomAccessFile file,
+                                               final OutputStream out, final Charset charset,
+                                               final XBaseInternalWriterFactory<D, A> writerFactory,
+                                               final XBaseMetadata initialMetadata,
+                                               final XBaseFieldDescriptorArray<D, A> array,
+                                               final XBaseOptional optional) throws IOException {
+        final XBaseMetadataWriter<D, A> metadataWriter =
+                writerFactory.createMetadataWriter(file, out, charset);
         metadataWriter.write(initialMetadata);
-        final XBaseFieldDescriptorArrayWriter fieldDescriptorArrayWriter =
-                writerFactory.createFieldDescriptorArrayWriter(dialect, out, initialMetadata);
+        final XBaseFieldDescriptorArrayWriter<D, A> fieldDescriptorArrayWriter =
+                writerFactory.createFieldDescriptorArrayWriter(out, initialMetadata);
         fieldDescriptorArrayWriter.write(array);
-        final XBaseOptionalWriter optionalWriter =
-                writerFactory.createOptionalWriter(dialect, out, initialMetadata, array);
+        final XBaseOptionalWriter<D> optionalWriter =
+                writerFactory.createOptionalWriter(out, initialMetadata, array);
         optionalWriter.write(optional);
         return metadataWriter;
     }
 
-    private XBaseMetadata getInitialMetadata(final XBaseFileTypeEnum type,
-                                             final XBaseDialect dialect,
+    private XBaseMetadata getInitialMetadata(final XBaseFileTypeEnum type, final D dialect,
                                              final Map<String, Object> meta,
-                                             final XBaseFieldDescriptorArray array) {
+                                             final XBaseFieldDescriptorArray<D, A> array) {
         final int optionalLength = dialect.getOptionalLength();
         final int metaLength = dialect.getMetaDataLength();
         final int fullHeaderLength = metaLength + array.getArrayLength() + optionalLength;
         return new GenericMetadata(type.toByte(), fullHeaderLength, array.getRecordLength(), meta);
     }
 
-    private XBaseFieldDescriptorArray getFieldDescriptorArray(final XBaseDialect dialect,
-                                                              final Collection<XBaseField> fields) {
+    private XBaseFieldDescriptorArray<D, A> getFieldDescriptorArray(final D dialect,
+                                                                    final Collection<XBaseField<?
+                                                                            super A>> fields) {
         final int arrayLength = fields.size() * dialect.getFieldDescriptorLength() + 1;
         final int oneRecordLength = this.calculateOneRecordLength(fields, dialect);
-        return new GenericFieldDescriptorArray(fields, arrayLength, oneRecordLength);
+        return new GenericFieldDescriptorArray<D, A>(fields, arrayLength, oneRecordLength);
     }
 
-    private int calculateOneRecordLength(final Iterable<XBaseField> fields,
-                                         final XBaseLengths dialect) {
+    private int calculateOneRecordLength(final Iterable<XBaseField<? super A>> fields,
+                                         final D dialect) {
         int result = 0;
-        for (final XBaseField field : fields) {
-            result += field.getValueByteLength(dialect);
+        for (final XBaseField<? super A> field : fields) {
+            result += field.getValueByteLength(dialect.getAccess());
         }
         return result + 1;
     }
