@@ -30,18 +30,18 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class DB2FieldDescriptorArrayWriter<D extends XBaseDialect<D, A>, A>
-        implements XBaseFieldDescriptorArrayWriter<D, A> {
-    final D dialect;
+public class DB2FieldDescriptorArrayWriter<A>
+        implements XBaseFieldDescriptorArrayWriter<A> {
+    final A access;
     final OutputStream out;
 
-    public DB2FieldDescriptorArrayWriter(final D dialect, final OutputStream out) {
-        this.dialect = dialect;
+    public DB2FieldDescriptorArrayWriter(final A access, final OutputStream out) {
+        this.access = access;
         this.out = out;
     }
 
     @Override
-    public int write(final XBaseFieldDescriptorArray<D, A> array) throws IOException {
+    public int write(final XBaseFieldDescriptorArray<A> array) throws IOException {
         int offset = 0;
         final Collection<XBaseField<? super A>> fields = array.getFields();
         final int fieldCount = Math.min(DB2Utils.DB2_MAX_FIELDS, fields.size());
@@ -49,8 +49,8 @@ public class DB2FieldDescriptorArrayWriter<D extends XBaseDialect<D, A>, A>
         for (int i = 0; i < fieldCount; i++) {
             assert iterator.hasNext();
             final XBaseField<? super A> field = iterator.next();
-            this.writeField(field.toRepresentation(this.dialect.getAccess()), offset);
-            offset += field.getValueByteLength(this.dialect.getAccess());
+            this.writeField(field.toRepresentation(this.access), offset);
+            offset += field.getValueByteLength(this.access);
         }
         assert !iterator.hasNext();
         final int missingCount = DB2Utils.DB2_MAX_FIELDS - fieldCount;

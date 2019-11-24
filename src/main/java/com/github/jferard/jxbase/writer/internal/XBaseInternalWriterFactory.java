@@ -28,13 +28,13 @@ public interface XBaseInternalWriterFactory<D extends XBaseDialect<D, A>, A> {
     XBaseMetadataWriter<D, A> createMetadataWriter(RandomAccessFile file, OutputStream outputStream,
                                                    Charset charset);
 
-    XBaseFieldDescriptorArrayWriter<D, A> createFieldDescriptorArrayWriter(OutputStream outputStream,
+    XBaseFieldDescriptorArrayWriter<A> createFieldDescriptorArrayWriter(OutputStream outputStream,
                                                                         XBaseMetadata metadata);
 
     XBaseOptionalWriter<D> createOptionalWriter(OutputStream outputStream, XBaseMetadata metadata,
-                                                XBaseFieldDescriptorArray<D, A> array);
+                                                XBaseFieldDescriptorArray<A> array);
 
     XBaseRecordWriter<D> createRecordWriter(OutputStream outputStream, Charset charset,
                                             XBaseMetadata metadata,
-                                            XBaseFieldDescriptorArray<D, A> array, Object optional);
+                                            XBaseFieldDescriptorArray<A> array, Object optional);
 }

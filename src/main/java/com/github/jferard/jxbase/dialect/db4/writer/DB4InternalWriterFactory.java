@@ -50,15 +50,15 @@ public class DB4InternalWriterFactory implements XBaseInternalWriterFactory<DB4D
     }
 
     @Override
-    public XBaseFieldDescriptorArrayWriter<DB4Dialect, DB4Access> createFieldDescriptorArrayWriter(
+    public XBaseFieldDescriptorArrayWriter<DB4Access> createFieldDescriptorArrayWriter(
             final OutputStream outputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayWriter<DB4Dialect, DB4Access>(this.dialect, outputStream);
+        return new DB3FieldDescriptorArrayWriter<DB4Access>(this.dialect.getAccess(), outputStream);
     }
 
     @Override
     public XBaseOptionalWriter<DB4Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
-                                                                final XBaseFieldDescriptorArray<DB4Dialect, DB4Access> array) {
+                                                                final XBaseFieldDescriptorArray<DB4Access> array) {
         return new GenericOptionalWriter<DB4Dialect, DB4Access>(this.dialect, outputStream, metadata,
                 array);
     }
@@ -67,7 +67,7 @@ public class DB4InternalWriterFactory implements XBaseInternalWriterFactory<DB4D
     public XBaseRecordWriter<DB4Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
-                                                            final XBaseFieldDescriptorArray<DB4Dialect, DB4Access> array,
+                                                            final XBaseFieldDescriptorArray<DB4Access> array,
                                                             final Object optional) {
         return new DB3RecordWriter<DB4Dialect, DB4Access>(this.dialect, outputStream, charset,
                 array.getFields());

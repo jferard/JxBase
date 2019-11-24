@@ -54,15 +54,15 @@ public class DB3InternalReaderFactory implements XBaseInternalReaderFactory<DB3D
 
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
-                                                final XBaseFieldDescriptorArray<DB3Dialect, DB3Access> array,
+                                                final XBaseFieldDescriptorArray<DB3Access> array,
                                                 final Object optional) {
-        return new DB3RecordReader<DB3Dialect, DB3Access>(this.dialect, inputStream, charset, array, this.timezone);
+        return new DB3RecordReader<DB3Access>(this.dialect.getAccess(), inputStream, charset, array, this.timezone);
     }
 
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
-                                                    final XBaseFieldDescriptorArray<DB3Dialect, DB3Access> array) {
+                                                    final XBaseFieldDescriptorArray<DB3Access> array) {
         return new DB2OptionalReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata, array);
     }
 }

@@ -33,7 +33,7 @@ import java.text.ParseException;
 import java.util.logging.Logger;
 
 public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader {
-    private final XBaseFieldDescriptorArray<D, A> array;
+    private final XBaseFieldDescriptorArray<A> array;
     private final XBaseRecordReader recordReader;
     private final XBaseOptional optional;
     private final D dialect;
@@ -81,7 +81,7 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
     }
 
     @Override
-    public XBaseFieldDescriptorArray<D, A> getFieldDescriptorArray() {
+    public XBaseFieldDescriptorArray<A> getFieldDescriptorArray() {
         return this.array;
     }
 

@@ -51,15 +51,15 @@ public class FoxProInternalWriterFactory implements XBaseInternalWriterFactory<F
     }
 
     @Override
-    public XBaseFieldDescriptorArrayWriter<FoxProDialect, FoxProAccess> createFieldDescriptorArrayWriter(
+    public XBaseFieldDescriptorArrayWriter<FoxProAccess> createFieldDescriptorArrayWriter(
             final OutputStream outputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayWriter<FoxProDialect, FoxProAccess>(this.dialect, outputStream);
+        return new DB3FieldDescriptorArrayWriter<FoxProAccess>(this.dialect.getAccess(), outputStream);
     }
 
     @Override
     public XBaseOptionalWriter<FoxProDialect> createOptionalWriter(final OutputStream outputStream,
                                                                    final XBaseMetadata metadata,
-                                                                   final XBaseFieldDescriptorArray<FoxProDialect, FoxProAccess> array) {
+                                                                   final XBaseFieldDescriptorArray<FoxProAccess> array) {
         return new FoxProOptionalWriter<FoxProDialect, FoxProAccess>(this.dialect, outputStream, metadata, array);
     }
 
@@ -67,7 +67,7 @@ public class FoxProInternalWriterFactory implements XBaseInternalWriterFactory<F
     public XBaseRecordWriter<FoxProDialect> createRecordWriter(final OutputStream outputStream,
                                                                final Charset charset,
                                                                final XBaseMetadata metadata,
-                                                               final XBaseFieldDescriptorArray<FoxProDialect, FoxProAccess> array,
+                                                               final XBaseFieldDescriptorArray<FoxProAccess> array,
                                                                final Object optional) {
         return new DB3RecordWriter<FoxProDialect, FoxProAccess>(this.dialect, outputStream, charset,
                 array.getFields());

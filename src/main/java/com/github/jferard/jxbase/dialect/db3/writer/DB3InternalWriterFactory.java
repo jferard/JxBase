@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.writer.internal.GenericOptionalWriter;
@@ -44,29 +44,31 @@ public class DB3InternalWriterFactory implements XBaseInternalWriterFactory<DB3D
     @Override
     public XBaseMetadataWriter<DB3Dialect, DB3Access> createMetadataWriter(
             final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
-        return new DB3MetadataWriter<DB3Dialect, DB3Access>(this.dialect, file, outputStream, charset);
+        return new DB3MetadataWriter<DB3Dialect, DB3Access>(this.dialect, file, outputStream,
+                charset);
     }
 
     @Override
-    public XBaseFieldDescriptorArrayWriter<DB3Dialect, DB3Access> createFieldDescriptorArrayWriter(
+    public XBaseFieldDescriptorArrayWriter<DB3Access> createFieldDescriptorArrayWriter(
             final OutputStream outputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayWriter<DB3Dialect, DB3Access>(this.dialect, outputStream);
+        return new DB3FieldDescriptorArrayWriter<DB3Access>(this.dialect.getAccess(), outputStream);
     }
 
     @Override
     public XBaseOptionalWriter<DB3Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
-                                                                final XBaseFieldDescriptorArray<DB3Dialect, DB3Access> array) {
-        return new GenericOptionalWriter<DB3Dialect, DB3Access>(this.dialect, outputStream, metadata,
-                array);
+                                                                final XBaseFieldDescriptorArray<DB3Access> array) {
+        return new GenericOptionalWriter<DB3Dialect, DB3Access>(this.dialect, outputStream,
+                metadata, array);
     }
 
     @Override
     public XBaseRecordWriter<DB3Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
-                                                            final XBaseFieldDescriptorArray<DB3Dialect, DB3Access> array,
+                                                            final XBaseFieldDescriptorArray<DB3Access> array,
                                                             final Object optional) {
-        return new DB3RecordWriter(this.dialect, outputStream, charset, array.getFields());
+        return new DB3RecordWriter<DB3Dialect, DB3Access>(this.dialect, outputStream, charset,
+                array.getFields());
     }
 }

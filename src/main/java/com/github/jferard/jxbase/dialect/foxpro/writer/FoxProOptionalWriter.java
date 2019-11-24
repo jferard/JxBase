@@ -32,7 +32,7 @@ public class FoxProOptionalWriter<D extends XBaseDialect<D, A>, A>
 
     public FoxProOptionalWriter(final D dialect, final OutputStream outputStream,
                                 final XBaseMetadata metadata,
-                                final XBaseFieldDescriptorArray<D, A> array) {
+                                final XBaseFieldDescriptorArray<A> array) {
         this.outputStream = outputStream;
     }
 

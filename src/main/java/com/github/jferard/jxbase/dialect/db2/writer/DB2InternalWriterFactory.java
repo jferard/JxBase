@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.reader.internal.GenericRecordWriter;
@@ -42,30 +42,31 @@ public class DB2InternalWriterFactory implements XBaseInternalWriterFactory<DB2D
     }
 
     @Override
-    public XBaseMetadataWriter<DB2Dialect, DB2Access> createMetadataWriter(final RandomAccessFile file,
-                                                                final OutputStream outputStream,
-                                                                final Charset charset) {
-        return new DB2MetadataWriter<DB2Dialect, DB2Access>(this.dialect, file, outputStream, charset);
+    public XBaseMetadataWriter<DB2Dialect, DB2Access> createMetadataWriter(
+            final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
+        return new DB2MetadataWriter<DB2Dialect, DB2Access>(this.dialect, file, outputStream,
+                charset);
     }
 
     @Override
-    public XBaseFieldDescriptorArrayWriter<DB2Dialect, DB2Access> createFieldDescriptorArrayWriter(
+    public XBaseFieldDescriptorArrayWriter<DB2Access> createFieldDescriptorArrayWriter(
             final OutputStream outputStream, final XBaseMetadata metadata) {
-        return new DB2FieldDescriptorArrayWriter<DB2Dialect, DB2Access>(this.dialect, outputStream);
+        return new DB2FieldDescriptorArrayWriter<DB2Access>(this.dialect.getAccess(), outputStream);
     }
 
     @Override
     public XBaseOptionalWriter<DB2Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
-                                                                final XBaseFieldDescriptorArray<DB2Dialect, DB2Access> array) {
-        return new DB2OptionalWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, metadata, array);
+                                                                final XBaseFieldDescriptorArray<DB2Access> array) {
+        return new DB2OptionalWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, metadata,
+                array);
     }
 
     @Override
     public XBaseRecordWriter<DB2Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
-                                                            final XBaseFieldDescriptorArray<DB2Dialect, DB2Access> array,
+                                                            final XBaseFieldDescriptorArray<DB2Access> array,
                                                             final Object optional) {
         return new GenericRecordWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, charset,
                 array.getFields());

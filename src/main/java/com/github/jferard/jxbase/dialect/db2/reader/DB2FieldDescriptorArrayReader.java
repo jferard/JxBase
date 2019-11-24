@@ -46,7 +46,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
     }
 
     @Override
-    public XBaseFieldDescriptorArray<D, A> read() throws IOException {
+    public XBaseFieldDescriptorArray<A> read() throws IOException {
         // DB2 has a max of 32 fields
         final Collection<XBaseField<? super A>> fields =
                 new ArrayList<XBaseField<? super A>>(DB2Utils.DB2_MAX_FIELDS);
@@ -67,7 +67,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         if (this.incorrectRemainingFields(fieldBytes, i)) {
             throw new IOException("The file is corrupted or is not a DB2 file");
         }
-        return new GenericFieldDescriptorArray<D, A>(fields,
+        return new GenericFieldDescriptorArray<A>(fields,
                 DB2Utils.DB2_MAX_FIELDS * DB2Utils.DB2_FIELD_DESCRIPTOR_LENGTH + 1, recordLength);
     }
 

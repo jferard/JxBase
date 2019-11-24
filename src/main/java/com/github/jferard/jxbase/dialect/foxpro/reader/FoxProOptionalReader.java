@@ -33,7 +33,7 @@ public class FoxProOptionalReader<D extends XBaseDialect<D, A>, A> implements XB
 
     public FoxProOptionalReader(final D dialect, final InputStream inputStream,
                                 final XBaseMetadata metadata,
-                                final XBaseFieldDescriptorArray<D, A> array) {
+                                final XBaseFieldDescriptorArray<A> array) {
         this.inputStream = inputStream;
     }
 

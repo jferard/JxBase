@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -28,37 +27,36 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class DB3RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRecordReader {
+public class DB3RecordReader<A> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
     protected final Charset charset;
     protected final byte[] recordBuffer;
     protected final int recordLength;
     protected final Collection<XBaseField<? super A>> fields;
-    protected final D dialect;
+    protected final A access;
     protected final TimeZone timezone;
     protected int recordsCounter;
 
-    public DB3RecordReader(final D dialect, final InputStream dbfInputStream, final Charset charset,
-                           final XBaseFieldDescriptorArray<D, A> array, final TimeZone timezone) {
+    public DB3RecordReader(final A access, final InputStream dbfInputStream, final Charset charset,
+                           final XBaseFieldDescriptorArray<A> array, final TimeZone timezone) {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
         this.recordBuffer = new byte[this.recordLength];
         this.fields = array.getFields();
-        this.dialect = dialect;
+        this.access = access;
         this.timezone = timezone;
         this.recordsCounter = -1;
     }
 
     @Override
-    public XBaseRecord read() throws IOException, ParseException {
+    public XBaseRecord read() throws IOException {
         if (IOUtils.isEndOfRecords(this.dbfInputStream, JxBaseUtils.RECORDS_TERMINATOR)) {
             return null;
         }
@@ -82,11 +80,11 @@ public class DB3RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRe
         final Map<String, Object> valueByFieldName = new HashMap<String, Object>();
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
-            final Object value = field.getValue(this.dialect.getAccess(), this.recordBuffer, offset,
-                    field.getValueByteLength(this.dialect.getAccess()));
+            final Object value = field.getValue(this.access, this.recordBuffer, offset,
+                    field.getValueByteLength(this.access));
             final String name = field.getName();
             valueByFieldName.put(name, value);
-            offset += field.getValueByteLength(this.dialect.getAccess());
+            offset += field.getValueByteLength(this.access);
         }
         return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }

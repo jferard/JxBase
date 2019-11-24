@@ -20,10 +20,6 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2FieldDescriptorArrayReader;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2MetadataReader;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2RecordReader;
 import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
@@ -58,8 +54,7 @@ public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2D
 
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
-                                                final XBaseFieldDescriptorArray<DB2Dialect,
-                                                        DB2Access> array,
+                                                final XBaseFieldDescriptorArray<DB2Access> array,
                                                 final Object optional) {
         return new DB2RecordReader<DB2Dialect, DB2Access>(this.dialect, inputStream, charset,
                 array);
@@ -68,8 +63,7 @@ public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2D
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
-                                                    final XBaseFieldDescriptorArray<DB2Dialect,
-                                                            DB2Access> array) {
+                                                    final XBaseFieldDescriptorArray<DB2Access> array) {
         return new DB2OptionalReader(this.dialect, inputStream, metadata, array);
     }
 }

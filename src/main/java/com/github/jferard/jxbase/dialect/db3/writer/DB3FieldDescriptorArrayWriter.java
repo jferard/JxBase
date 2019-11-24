@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
@@ -28,22 +27,21 @@ import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class DB3FieldDescriptorArrayWriter<D extends XBaseDialect<D, A>, A>
-        implements XBaseFieldDescriptorArrayWriter<D, A> {
-    final D dialect;
+public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArrayWriter<A> {
+    final A access;
     final OutputStream out;
 
-    public DB3FieldDescriptorArrayWriter(final D dialect, final OutputStream out) {
-        this.dialect = dialect;
+    public DB3FieldDescriptorArrayWriter(final A access, final OutputStream out) {
+        this.access = access;
         this.out = out;
     }
 
     @Override
-    public int write(final XBaseFieldDescriptorArray<D, A> array) throws IOException {
+    public int write(final XBaseFieldDescriptorArray<A> array) throws IOException {
         int offset = 0;
         for (final XBaseField<? super A> field : array.getFields()) {
-            this.writeField(field.toRepresentation(this.dialect.getAccess()));
-            offset += field.getValueByteLength(this.dialect.getAccess());
+            this.writeField(field.toRepresentation(this.access));
+            offset += field.getValueByteLength(this.access);
         }
         this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         return offset;

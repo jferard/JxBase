@@ -44,7 +44,7 @@ public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
     }
 
     @Override
-    public XBaseFieldDescriptorArray<D, A> read() throws IOException {
+    public XBaseFieldDescriptorArray<A> read() throws IOException {
         final Collection<XBaseField<? super A>> fields = new ArrayList<XBaseField<? super A>>();
         final byte[] fieldBytes = new byte[this.fieldDescriptorLength];
         int arrayLength = 0;
@@ -58,7 +58,7 @@ public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
             recordLength += field.getValueByteLength(this.dialect.getAccess());
 
             if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
-                return new GenericFieldDescriptorArray<D, A>(fields, arrayLength + 1, recordLength);
+                return new GenericFieldDescriptorArray<A>(fields, arrayLength + 1, recordLength);
             }
         }
     }

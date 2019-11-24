@@ -21,8 +21,8 @@ import com.github.jferard.jxbase.field.XBaseField;
 
 import java.util.Collection;
 
-public class GenericFieldDescriptorArray<D extends XBaseDialect<D, A>, A>
-        implements XBaseFieldDescriptorArray<D, A> {
+public class GenericFieldDescriptorArray<A>
+        implements XBaseFieldDescriptorArray<A> {
     private final Collection<XBaseField<? super A>> fields;
     private final int arrayLength;
     private final int recordLength;

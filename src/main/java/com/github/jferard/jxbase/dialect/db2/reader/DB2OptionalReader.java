@@ -28,7 +28,7 @@ import java.io.InputStream;
 public class DB2OptionalReader<D extends XBaseDialect<D, A>, A> implements XBaseOptionalReader {
     public DB2OptionalReader(final D dialect, final InputStream inputStream,
                              final XBaseMetadata metadata,
-                             final XBaseFieldDescriptorArray<D, A> array) {
+                             final XBaseFieldDescriptorArray<A> array) {
     }
 
     @Override

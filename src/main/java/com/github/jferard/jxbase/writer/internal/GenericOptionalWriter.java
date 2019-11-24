@@ -28,11 +28,11 @@ public class GenericOptionalWriter<D extends XBaseDialect<D, A>, A> implements X
     private final D dialect;
     private final OutputStream outputStream;
     private final XBaseMetadata metadata;
-    private final XBaseFieldDescriptorArray<D, A> array;
+    private final XBaseFieldDescriptorArray<A> array;
 
     public GenericOptionalWriter(final D dialect, final OutputStream outputStream,
                                  final XBaseMetadata metadata,
-                                 final XBaseFieldDescriptorArray<D, A> array) {
+                                 final XBaseFieldDescriptorArray<A> array) {
         this.dialect = dialect;
         this.outputStream = outputStream;
         this.metadata = metadata;

@@ -62,7 +62,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");
         final OutputStream out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 
-        final XBaseFieldDescriptorArray<D, A> array = this.getFieldDescriptorArray(dialect, fields);
+        final XBaseFieldDescriptorArray<A> array = this.getFieldDescriptorArray(dialect, fields);
         final XBaseMetadata initialMetadata = this.getInitialMetadata(type, dialect, meta, array);
 
         final XBaseMetadataWriter<D, A> metadataWriter =
@@ -77,12 +77,12 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
                                                final OutputStream out, final Charset charset,
                                                final XBaseInternalWriterFactory<D, A> writerFactory,
                                                final XBaseMetadata initialMetadata,
-                                               final XBaseFieldDescriptorArray<D, A> array,
+                                               final XBaseFieldDescriptorArray<A> array,
                                                final XBaseOptional optional) throws IOException {
         final XBaseMetadataWriter<D, A> metadataWriter =
                 writerFactory.createMetadataWriter(file, out, charset);
         metadataWriter.write(initialMetadata);
-        final XBaseFieldDescriptorArrayWriter<D, A> fieldDescriptorArrayWriter =
+        final XBaseFieldDescriptorArrayWriter<A> fieldDescriptorArrayWriter =
                 writerFactory.createFieldDescriptorArrayWriter(out, initialMetadata);
         fieldDescriptorArrayWriter.write(array);
         final XBaseOptionalWriter<D> optionalWriter =
@@ -93,19 +93,19 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
 
     private XBaseMetadata getInitialMetadata(final XBaseFileTypeEnum type, final D dialect,
                                              final Map<String, Object> meta,
-                                             final XBaseFieldDescriptorArray<D, A> array) {
+                                             final XBaseFieldDescriptorArray<A> array) {
         final int optionalLength = dialect.getOptionalLength();
         final int metaLength = dialect.getMetaDataLength();
         final int fullHeaderLength = metaLength + array.getArrayLength() + optionalLength;
         return new GenericMetadata(type.toByte(), fullHeaderLength, array.getRecordLength(), meta);
     }
 
-    private XBaseFieldDescriptorArray<D, A> getFieldDescriptorArray(final D dialect,
-                                                                    final Collection<XBaseField<?
+    private XBaseFieldDescriptorArray<A> getFieldDescriptorArray(final D dialect,
+                                                                 final Collection<XBaseField<?
                                                                             super A>> fields) {
         final int arrayLength = fields.size() * dialect.getFieldDescriptorLength() + 1;
         final int oneRecordLength = this.calculateOneRecordLength(fields, dialect);
-        return new GenericFieldDescriptorArray<D, A>(fields, arrayLength, oneRecordLength);
+        return new GenericFieldDescriptorArray<A>(fields, arrayLength, oneRecordLength);
     }
 
     private int calculateOneRecordLength(final Iterable<XBaseField<? super A>> fields,

@@ -53,16 +53,16 @@ public class DB4InternalReaderFactory implements XBaseInternalReaderFactory<DB4D
 
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
-                                                final XBaseFieldDescriptorArray<DB4Dialect, DB4Access> array,
+                                                final XBaseFieldDescriptorArray<DB4Access> array,
                                                 final Object optional) {
-        return new DB3RecordReader<DB4Dialect, DB4Access>(this.dialect, inputStream, charset, array,
+        return new DB3RecordReader<DB4Access>(this.dialect.getAccess(), inputStream, charset, array,
                 this.timezone);
     }
 
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
-                                                    final XBaseFieldDescriptorArray<DB4Dialect, DB4Access> array) {
+                                                    final XBaseFieldDescriptorArray<DB4Access> array) {
         return new DB2OptionalReader<DB4Dialect, DB4Access>(this.dialect, inputStream, metadata, array);
     }
 }

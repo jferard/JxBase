@@ -31,9 +31,9 @@ public interface XBaseInternalReaderFactory<D extends XBaseDialect<D, A>, A> {
 
     XBaseOptionalReader createOptionalReader(InputStream inputStream, Charset charset,
                                                 XBaseMetadata metadata,
-                                                XBaseFieldDescriptorArray<D, A> array);
+                                                XBaseFieldDescriptorArray<A> array);
 
     XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
-                                         XBaseMetadata metadata, XBaseFieldDescriptorArray<D, A> array,
+                                         XBaseMetadata metadata, XBaseFieldDescriptorArray<A> array,
                                          Object optional);
 }

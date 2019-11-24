@@ -43,7 +43,7 @@ public class DB2RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRe
     protected int recordsCounter;
 
     public DB2RecordReader(final D dialect, final InputStream dbfInputStream, final Charset charset,
-                           final XBaseFieldDescriptorArray<D, A> array) {
+                           final XBaseFieldDescriptorArray<A> array) {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();

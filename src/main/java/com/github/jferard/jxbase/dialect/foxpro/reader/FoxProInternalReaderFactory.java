@@ -53,16 +53,16 @@ public class FoxProInternalReaderFactory implements XBaseInternalReaderFactory<F
 
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
-                                                final XBaseFieldDescriptorArray<FoxProDialect, FoxProAccess> array,
+                                                final XBaseFieldDescriptorArray<FoxProAccess> array,
                                                 final Object optional) {
-        return new DB3RecordReader<FoxProDialect, FoxProAccess>(this.dialect, inputStream, charset, array,
+        return new DB3RecordReader<FoxProAccess>(this.dialect.getAccess(), inputStream, charset, array,
                 this.timezone);
     }
 
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
-                                                    final XBaseFieldDescriptorArray<FoxProDialect, FoxProAccess> array) {
+                                                    final XBaseFieldDescriptorArray<FoxProAccess> array) {
         return new FoxProOptionalReader<FoxProDialect, FoxProAccess>(this.dialect, inputStream, metadata, array);
     }
 }

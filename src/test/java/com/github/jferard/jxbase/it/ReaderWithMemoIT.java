@@ -50,7 +50,7 @@ public class ReaderWithMemoIT {
                 System.out.println("Read DBF Metadata: " + meta);
 
                 final XBaseDialect<D, A> dialect = reader.getDialect();
-                final XBaseFieldDescriptorArray<D, A> array = reader.getFieldDescriptorArray();
+                final XBaseFieldDescriptorArray<A> array = reader.getFieldDescriptorArray();
 
                 Assert.assertEquals(FoxProDialect.class, dialect.getClass());
                 for (final XBaseField<? super A> field : array.getFields()) {
