@@ -16,20 +16,26 @@
 
 package com.github.jferard.jxbase.field;
 
+import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
+import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
+import com.github.jferard.jxbase.dialect.db2.field.NumericField;
+import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+
 public class NumericFieldTest {
-    /*
     private NumericField f;
-    private DB3MemoDialect dialect;
-    private XBaseFieldDescriptorArrayWriter<D> aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter<D> w;
+    private NumericAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.access = new DB2NumericAccess(new RawRecordReader(JxBaseUtils.ASCII_CHARSET),
+                new RawRecordWriter(JxBaseUtils.ASCII_CHARSET));
         this.f = new NumericField("num", 10, 2);
     }
 
@@ -40,7 +46,7 @@ public class NumericFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(10, this.f.getValueByteLength(this.dialect));
+        Assert.assertEquals(10, this.f.getValueByteLength(this.access));
     }
 
     @Test
@@ -49,23 +55,25 @@ public class NumericFieldTest {
     }
 
     @Test
-    public void getValue() throws IOException {
-        final byte[] bytes = {0};
-        final BigDecimal v = new BigDecimal(18.9);
-        Mockito.when(this.r.getNumericValue(bytes, 0, 10, 2)).thenReturn(v);
-        Assert.assertEquals(v, this.f.getValue(this.r, bytes, 0, 10));
+    public void getValue() throws IOException, IOException {
+        final byte[] bytes = "     18.90".getBytes(JxBaseUtils.ASCII_CHARSET);
+        final BigDecimal v = new BigDecimal("18.90");
+        final BigDecimal value = this.f.getValue(this.access, bytes, 0, 10);
+        Assert.assertEquals(v, value);
     }
 
     @Test
     public void writeValue() throws IOException {
-        final BigDecimal v = new BigDecimal(18.9);
-        this.f.writeValue(this.w, v);
-        Mockito.verify(this.w).writeNumericValue(v, 10, 2);
+        final BigDecimal v = new BigDecimal("18.9");
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, out, v);
+        Assert.assertArrayEquals(new byte[]{' ', ' ', ' ', ' ', ' ', '1', '8', '.', '9', '0'},
+                out.toByteArray());
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("num,N,10,2", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("num,N,10,2", this.f.toStringRepresentation(this.access));
     }
 
     @Test
@@ -73,6 +81,4 @@ public class NumericFieldTest {
         Assert.assertEquals("NumericField[name=num, length=10, numberOfDecimalPlaces=2]",
                 this.f.toString());
     }
-
-     */
 }

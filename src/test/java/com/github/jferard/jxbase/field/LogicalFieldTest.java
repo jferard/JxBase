@@ -16,20 +16,25 @@
 
 package com.github.jferard.jxbase.field;
 
+import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
+import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
+import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
+import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class LogicalFieldTest {
-    /*
     private LogicalField f;
-    private DB3MemoDialect dialect;
-    private XBaseFieldDescriptorArrayWriter<D> aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter<D> w;
+    private LogicalAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.access = new DB2LogicalAccess(new RawRecordReader(JxBaseUtils.ASCII_CHARSET),
+                new RawRecordWriter(JxBaseUtils.ASCII_CHARSET));
         this.f = new LogicalField("bool");
     }
 
@@ -40,31 +45,29 @@ public class LogicalFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(1, this.f.getValueByteLength(this.dialect));
+        Assert.assertEquals(1, this.f.getValueByteLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = {0};
-        Mockito.when(this.r.getLogicalValue(bytes, 0, 1)).thenReturn(true);
-        Assert.assertTrue(this.f.getValue(this.r, bytes, 0, 1));
+        final byte[] bytes = {'t'};
+        Assert.assertTrue(this.f.getValue(this.access, bytes, 0, 1));
     }
 
     @Test
     public void writeValue() throws IOException {
-        this.f.writeValue(this.w, true);
-        Mockito.verify(this.w).writeLogicalValue(true);
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, out, false);
+        Assert.assertArrayEquals(new byte[] {'F'}, out.toByteArray());
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("bool,L,1,0", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("bool,L,1,0", this.f.toStringRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
         Assert.assertEquals("LogicalField[name=bool]", this.f.toString());
     }
-
-     */
 }

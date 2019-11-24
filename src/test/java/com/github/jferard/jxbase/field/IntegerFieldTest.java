@@ -16,20 +16,24 @@
 
 package com.github.jferard.jxbase.field;
 
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
+import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class IntegerFieldTest {
-    /*
     private IntegerField f;
-    private DB3MemoDialect dialect;
-    private XBaseFieldDescriptorArrayWriter<D> aw;
-    private XBaseRecordReader r;
-    private XBaseRecordWriter<D> w;
+    private IntegerAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.dialect = new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable);
-        this.aw = Mockito.mock(XBaseFieldDescriptorArrayWriter.class);
-        this.r = Mockito.mock(XBaseRecordReader.class);
-        this.w = Mockito.mock(XBaseRecordWriter.class);
+        this.access = new FoxProIntegerAccess();
         this.f = new IntegerField("int");
     }
 
@@ -40,31 +44,29 @@ public class IntegerFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
+        Assert.assertEquals(4, this.f.getValueByteLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Mockito.when(this.r.getIntegerValue(bytes, 0, 4)).thenReturn(19L);
-        Assert.assertEquals(Long.valueOf(19), this.f.getValue(this.r, bytes, 0, 4));
+        Assert.assertEquals(Long.valueOf(67305985), this.f.getValue(this.access, bytes, 0, 4));
     }
 
     @Test
     public void writeValue() throws IOException {
-        this.f.writeValue(this.w, 19L);
-        Mockito.verify(this.w).writeIntegerValue(19L);
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, out, 67305985L);
+        Assert.assertArrayEquals(new byte[]{1, 2, 3, 4}, out.toByteArray());
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("int,I,4,0", this.f.toStringRepresentation(this.dialect));
+        Assert.assertEquals("int,I,4,0", this.f.toStringRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
         Assert.assertEquals("IntegerField[name=int]", this.f.toString());
     }
-
-     */
 }

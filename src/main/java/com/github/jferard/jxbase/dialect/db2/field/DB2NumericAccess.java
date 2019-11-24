@@ -24,7 +24,6 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -34,7 +33,8 @@ public class DB2NumericAccess implements NumericAccess {
     private final RawRecordReader rawRecordReader;
     private final RawRecordWriter rawRecordWriter;
 
-    public DB2NumericAccess(final RawRecordReader rawRecordReader, final RawRecordWriter rawRecordWriter) {
+    public DB2NumericAccess(final RawRecordReader rawRecordReader,
+                            final RawRecordWriter rawRecordWriter) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
     }
@@ -49,11 +49,11 @@ public class DB2NumericAccess implements NumericAccess {
                                           final int length, final int numberOfDecimalPlaces) {
         final String s =
                 this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
-        final MathContext mc = new MathContext(numberOfDecimalPlaces);
         if (s == null || s.contains(NUMERIC_OVERFLOW)) {
             return null;
         }
-        return new BigDecimal(s, mc);
+        final BigDecimal ret = new BigDecimal(s);
+        return ret.setScale(numberOfDecimalPlaces, BigDecimal.ROUND_HALF_UP);
     }
 
     @Override
