@@ -46,7 +46,7 @@ public class FoxProUtils {
     }
 
     public static int millis(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.setTime(date);
         return ((calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
                 calendar.get(Calendar.SECOND)) * 1000;

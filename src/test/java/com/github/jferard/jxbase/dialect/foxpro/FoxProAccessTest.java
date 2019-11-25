@@ -66,7 +66,7 @@ public class FoxProAccessTest {
         final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.setTimeInMillis(1234567891011L);
 
-        final byte[] bytes = {92, 117, 37, 0, -72, -38, 28, 0};
+        final byte[] bytes = {92, 117, 37, 0, 56, 26, 121, 2};
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         this.df.writeValue(this.access, out, calendar.getTime());
         Assert.assertArrayEquals(bytes, out.toByteArray());
