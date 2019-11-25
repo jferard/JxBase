@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.dialect.foxpro;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class FoxProUtils {
     public static Date createHeaderUpdateDate(final byte yearByte, final byte monthByte,
@@ -31,7 +32,7 @@ public class FoxProUtils {
 
     // cf. www.nr.com/julian.html
     public static int dateToJulian(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
+        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.setTime(date);
         final int Y = calendar.get(Calendar.YEAR);
         final int M = calendar.get(Calendar.MONTH) + 1;
