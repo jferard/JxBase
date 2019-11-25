@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.field.RawRecordReader;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -79,7 +79,7 @@ public class XBaseRecordTest {
                         Collections.<XBaseField<? super DB2CharacterAccess>>singleton(
                                 new CharacterField("y", 3)), 0, 4);
         final XBaseRecordReader reader = new DB3RecordReader<DB2CharacterAccess>(
-                new DB2CharacterAccess(new RawRecordReader(JxBaseUtils.ASCII_CHARSET), null), in,
+                new DB2CharacterAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET), null), in,
                 ascii, array, TimeZone.getTimeZone("UTC"));
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());

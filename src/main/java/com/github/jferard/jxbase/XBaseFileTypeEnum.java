@@ -164,84 +164,13 @@ public enum XBaseFileTypeEnum {
                                                 final String databaseName, final Charset charset,
                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        final FileChannel channel;
+        final XBaseDialect<?, ?> dialect;
         if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
-            channel = null;
+            dialect = DialectFactory.getNoMemoDialect(type, databaseName, charset);
+        } else if (memoHeaderMeta == null) {
+            dialect = DialectFactory.getMemoReaderDialect(type, databaseName, charset);
         } else {
-            final File memoFile = new File(databaseName + type.memoFileType().getExtension());
-            if (memoHeaderMeta == null) {
-                channel = new FileInputStream(memoFile).getChannel();
-            } else {
-                channel = new FileOutputStream(memoFile).getChannel();
-            }
-        }
-
-        final XBaseDialect<?, ?> dialect;
-        switch (type) {
-            case dBASE2:
-                dialect = DB2Dialect.create(type, charset);
-                break;
-            case dBASE3plus:
-            case dBASE3plusMemo:
-            case FoxBASEPlus1:
-                dialect = DB3Dialect
-                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
-                break;
-            case dBASE4:
-            case dBASE4SQLTable:
-            case dBASE4Memo:
-            case dBASE4SQLTableMemo:
-                dialect = DB4Dialect
-                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
-                break;
-            case VisualFoxPro:
-            case VisualFoxProAutoIncrement:
-                dialect = FoxProDialect
-                        .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
-                break;
-            default:
-                if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
-                    dialect = DB3Dialect
-                            .create(type, charset, TimeZone.getDefault(), channel, memoHeaderMeta);
-                } else {
-                    throw new IllegalArgumentException(type.toString());
-                }
-                break;
-        }
-        return dialect;
-    }
-
-    public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type, final Charset charset,
-                                                final FileChannel memoChannel,
-                                                final Map<String, Object> headerMetadata)
-            throws IOException {
-        if (type.memoFileType == XBaseMemoFileType.NO_MEMO_FILE) {
-            throw new IllegalArgumentException();
-        }
-        final XBaseDialect<?, ?> dialect;
-        switch (type) {
-            case dBASE3plusMemo:
-            case FoxBASEPlus1:
-                dialect = DB3Dialect
-                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
-                break;
-            case dBASE4Memo:
-                dialect = DB4Dialect
-                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
-                break;
-            case VisualFoxPro:
-            case VisualFoxProAutoIncrement:
-                dialect = FoxProDialect
-                        .create(type, charset, TimeZone.getDefault(), memoChannel, headerMetadata);
-                break;
-            default:
-                if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
-                    dialect = DB3Dialect.create(type, charset, TimeZone.getDefault(), memoChannel,
-                            headerMetadata);
-                } else {
-                    throw new IllegalArgumentException(type.toString());
-                }
-                break;
+            dialect = DialectFactory.getMemoWriterDialect(type, databaseName, charset, memoHeaderMeta);
         }
         return dialect;
     }

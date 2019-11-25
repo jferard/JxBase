@@ -33,40 +33,6 @@ public class MemoFieldTest {
         this.f = new MemoField<TextMemoRecord>("memo");
     }
 
-    @Test
-    public void getName() {
-        Assert.assertEquals("memo", this.f.getName());
-    }
-
-    @Test
-    public void getByteLength() {
-        Assert.assertEquals(4, this.f.getValueByteLength(this.dialect));
-    }
-
-    @Test
-    public void getValue() throws IOException {
-        final byte[] bytes = {1, 2, 3, 4};
-        final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
-        Mockito.<XBaseMemoRecord>when(this.r.getMemoValue(bytes, 0, 4)).thenReturn(record);
-        Assert.assertEquals(record, this.f.getValue(this.r, bytes, 0, 4));
-    }
-
-    @Test
-    public void writeValue() throws IOException {
-        final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
-        this.f.writeValue(this.w, record);
-        Mockito.verify(this.w).writeMemoValue(record);
-    }
-
-    @Test
-    public void toStringRepresentation() {
-        Assert.assertEquals("memo,M,10,0", this.f.toStringRepresentation(this.dialect));
-    }
-
-    @Test
-    public void testToString() {
-        Assert.assertEquals("MemoField[name=memo]", this.f.toString());
-    }
 
      */
 }

@@ -18,86 +18,26 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
-import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
-import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
-import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
-import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
-import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
-import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
-import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
-import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
-import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
-import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
-import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
-import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
-import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProMemoAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
 public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> {
-    public static FoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                       final TimeZone timeZone, final FileChannel memoChannel,
-                                       final Map<String, Object> memoHeaderMetadata)
-            throws IOException {
-        final RawRecordReader rawRecordReader = new RawRecordReader(charset);
-        final RawRecordWriter rawRecordWriter = new RawRecordWriter(charset);
-        final CharacterAccess characterAccess =
-                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
-        final XBaseMemoReader memoReader;
-        final XBaseMemoWriter memoWriter;
-        if (memoHeaderMetadata == null) {
-            memoReader = new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(charset),
-                    new FoxProMemoFileHeaderReader());
-            memoWriter = null;
-        } else {
-            memoReader = null;
-            memoWriter = new DB4MemoWriter(memoChannel, 512, memoHeaderMetadata);
-        }
-        final MemoAccess memoAccess =
-                new FoxProMemoAccess(memoReader, memoWriter, new RawRecordReader(charset));
-        final DatetimeAccess datetimeAccess = new FoxProDatetimeAccess();
-        final NullFlagsAccess nullFlagsAccess = new FoxProNullFlagsAccess();
-        final IntegerAccess integerAccess = new FoxProIntegerAccess();
-        final FoxProAccess access =
-                new FoxProAccess(characterAccess, dateAccess, datetimeAccess, floatAccess,
-                        integerAccess, logicalAccess, memoAccess, nullFlagsAccess, numericAccess);
-        return new FoxProDialect(type, access);
-    }
-
     protected final XBaseFileTypeEnum type;
     private final FoxProAccess access;
 
@@ -168,14 +108,14 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
 
     @Override
     public XBaseInternalReaderFactory<FoxProDialect, FoxProAccess> getInternalReaderFactory(
-            final String databaseName, final Charset charset) throws IOException {
+            final String databaseName, final Charset charset) {
         return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseInternalWriterFactory<FoxProDialect, FoxProAccess> getInternalWriterFactory(
-            final String databaseName, final Charset charset, final Map<String, Object> headerMeta)
-            throws IOException {
+            final String databaseName, final Charset charset,
+            final Map<String, Object> headerMeta) {
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault());
     }
 }

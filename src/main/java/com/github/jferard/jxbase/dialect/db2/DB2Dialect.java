@@ -29,8 +29,8 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2InternalReaderFactory;
 import com.github.jferard.jxbase.dialect.db2.writer.DB2InternalWriterFactory;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -43,8 +43,8 @@ import java.util.TimeZone;
 
 public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
     public static DB2Dialect create(final XBaseFileTypeEnum type, final Charset charset) {
-        final RawRecordReader rawRecordReader = new RawRecordReader(charset);
-        final RawRecordWriter rawRecordWriter = new RawRecordWriter(charset);
+        final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterDialect =
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
         final LogicalAccess logicalDialect = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);

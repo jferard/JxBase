@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.db3.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -30,10 +30,10 @@ import java.io.OutputStream;
 public class DB3MemoAccess implements MemoAccess {
     private final XBaseMemoReader memoReader;
     private final XBaseMemoWriter memoWriter;
-    private final RawRecordReader rawRecordReader;
+    private final RawRecordReadHelper rawRecordReader;
 
     public DB3MemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter,
-                         final RawRecordReader rawRecordReader) {
+                         final RawRecordReadHelper rawRecordReader) {
         this.memoReader = memoReader;
         this.memoWriter = memoWriter;
         this.rawRecordReader = rawRecordReader;

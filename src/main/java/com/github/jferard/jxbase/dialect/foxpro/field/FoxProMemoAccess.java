@@ -17,14 +17,14 @@
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
-import com.github.jferard.jxbase.field.RawRecordReader;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.BitUtils;
 
 public class FoxProMemoAccess extends DB3MemoAccess {
     public FoxProMemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter,
-                            final RawRecordReader rawRecordReader) {
+                            final RawRecordReadHelper rawRecordReader) {
         super(memoReader, memoWriter, rawRecordReader);
     }
 

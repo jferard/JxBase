@@ -17,19 +17,19 @@
 package com.github.jferard.jxbase.dialect.db2.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class DB2LogicalAccess implements LogicalAccess {
-    private final RawRecordReader rawRecordReader;
-    private final RawRecordWriter rawRecordWriter;
+    private final RawRecordReadHelper rawRecordReader;
+    private final RawRecordWriteHelper rawRecordWriter;
 
-    public DB2LogicalAccess(final RawRecordReader rawRecordReader,
-                            final RawRecordWriter rawRecordWriter) {
+    public DB2LogicalAccess(final RawRecordReadHelper rawRecordReader,
+                            final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
     }

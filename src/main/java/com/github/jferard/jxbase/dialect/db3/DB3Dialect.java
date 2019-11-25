@@ -31,20 +31,11 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
 public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
-    public static DB3Dialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                    final TimeZone timeZone, final FileChannel memoChannel,
-                                    final Map<String, Object> memoHeaderMetadata)
-            throws IOException {
-        return new DB3Dialect(type,
-                DB3Access.create(charset, timeZone, memoChannel, memoHeaderMetadata));
-    }
-
     protected final XBaseFileTypeEnum type;
     private final DB3Access access;
 

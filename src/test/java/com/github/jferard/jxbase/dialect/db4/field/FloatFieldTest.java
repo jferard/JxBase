@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db4.field;
 
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -33,8 +33,8 @@ public class FloatFieldTest {
 
     @Before
     public void setUp() {
-        this.access = new DB4FloatAccess(new RawRecordReader(JxBaseUtils.ASCII_CHARSET),
-                new RawRecordWriter(JxBaseUtils.ASCII_CHARSET));
+        this.access = new DB4FloatAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET),
+                new RawRecordWriteHelper(JxBaseUtils.ASCII_CHARSET));
         this.f = new FloatField("float");
     }
 

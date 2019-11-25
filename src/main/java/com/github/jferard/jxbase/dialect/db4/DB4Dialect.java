@@ -43,8 +43,8 @@ import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
 import com.github.jferard.jxbase.dialect.db4.writer.DB4InternalWriterFactory;
 import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -59,37 +59,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
-    public static DB4Dialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                    final TimeZone timeZone, final FileChannel memoChannel,
-                                    final Map<String, Object> memoHeaderMetadata)
-            throws IOException {
-        final RawRecordReader rawRecordReader = new RawRecordReader(charset);
-        final RawRecordWriter rawRecordWriter = new RawRecordWriter(charset);
-        final CharacterAccess characterAccess =
-                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
-        final XBaseMemoReader memoReader;
-        final XBaseMemoWriter memoWriter;
-        if (memoHeaderMetadata == null) {
-            // TODO: DB4MemoRecordFactory
-            memoReader = new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(charset),
-                    new DB4MemoFileHeaderReader());
-            memoWriter = null;
-        } else {
-            memoReader = null;
-            memoWriter = new DB4MemoWriter(memoChannel, 512, memoHeaderMetadata);
-        }
-        final MemoAccess memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReader(charset));
-        final DB4Access access =
-                new DB4Access(characterAccess, dateAccess, floatAccess, logicalAccess, memoAccess,
-                        numericAccess);
-        return new DB4Dialect(type, access);
-    }
-
     protected final XBaseFileTypeEnum type;
     private final DB4Access access;
 

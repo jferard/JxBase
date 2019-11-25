@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase.dialect.db4.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
@@ -27,11 +27,11 @@ import java.math.BigDecimal;
 
 public class DB4FloatAccess implements FloatAccess {
     public static final CharSequence NUMERIC_OVERFLOW = "*";
-    private final RawRecordReader rawRecordReader;
-    private final RawRecordWriter rawRecordWriter;
+    private final RawRecordReadHelper rawRecordReader;
+    private final RawRecordWriteHelper rawRecordWriter;
 
-    public DB4FloatAccess(final RawRecordReader rawRecordReader,
-                          final RawRecordWriter rawRecordWriter) {
+    public DB4FloatAccess(final RawRecordReadHelper rawRecordReader,
+                          final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
     }

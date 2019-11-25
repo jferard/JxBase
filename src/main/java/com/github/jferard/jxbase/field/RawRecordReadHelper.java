@@ -20,10 +20,10 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.nio.charset.Charset;
 
-public class RawRecordReader {
+public class RawRecordReadHelper {
     private final Charset charset;
 
-    public RawRecordReader(final Charset charset) {
+    public RawRecordReadHelper(final Charset charset) {
         this.charset = charset;
     }
 

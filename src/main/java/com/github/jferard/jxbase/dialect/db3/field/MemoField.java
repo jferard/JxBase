@@ -36,30 +36,30 @@ public class MemoField implements XBaseField<MemoAccess> {
     }
 
     @Override
-    public int getValueByteLength(final MemoAccess dialect) {
-        return dialect.getMemoValueLength();
+    public int getValueByteLength(final MemoAccess memoAccess) {
+        return memoAccess.getMemoValueLength();
     }
 
     @Override
-    public XBaseMemoRecord getValue(final MemoAccess reader, final byte[] recordBuffer, final int offset,
-                                    final int length) throws IOException {
-        return reader.getMemoValue(recordBuffer, offset, length);
+    public XBaseMemoRecord getValue(final MemoAccess memoAccess, final byte[] recordBuffer,
+                                    final int offset, final int length) throws IOException {
+        return memoAccess.getMemoValue(recordBuffer, offset, length);
     }
 
     @Override
-    public void writeValue(final MemoAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final MemoAccess memoAccess, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeMemoValue(out, (XBaseMemoRecord) value);
+        memoAccess.writeMemoValue(out, (XBaseMemoRecord) value);
     }
 
     @Override
-    public String toStringRepresentation(final MemoAccess dialect) {
-        return dialect.getMemoFieldRepresentation(this.name).toString();
+    public String toStringRepresentation(final MemoAccess memoAccess) {
+        return memoAccess.getMemoFieldRepresentation(this.name).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final MemoAccess dialect) {
-        return dialect.getMemoFieldRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final MemoAccess memoAccess) {
+        return memoAccess.getMemoFieldRepresentation(this.name);
     }
 
     @Override

@@ -17,18 +17,18 @@
 package com.github.jferard.jxbase.dialect.db2.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class DB2CharacterAccess implements CharacterAccess {
-    final RawRecordReader rawRecordReader;
-    final RawRecordWriter rawRecordWriter;
+    final RawRecordReadHelper rawRecordReader;
+    final RawRecordWriteHelper rawRecordWriter;
 
-    public DB2CharacterAccess(final RawRecordReader rawRecordReader,
-                              final RawRecordWriter rawRecordWriter) {
+    public DB2CharacterAccess(final RawRecordReadHelper rawRecordReader,
+                              final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
     }

@@ -18,57 +18,18 @@ package com.github.jferard.jxbase.dialect.db3;
 
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
-import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
-import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
-import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
-import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
-import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoReader;
-import com.github.jferard.jxbase.dialect.db3.writer.DB3MemoWriter;
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
-import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.Map;
-import java.util.TimeZone;
 
 public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
-    public static DB3Access create(final Charset charset,
-                                    final TimeZone timeZone, final FileChannel memoChannel,
-                                    final Map<String, Object> memoHeaderMetadata) throws IOException {
-        final RawRecordReader rawRecordReader = new RawRecordReader(charset);
-        final RawRecordWriter rawRecordWriter = new RawRecordWriter(charset);
-        final CharacterAccess characterAccess =
-                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
-        final XBaseMemoReader memoReader;
-        final XBaseMemoWriter memoWriter;
-        if (memoChannel != null) {
-            memoReader = new DB3MemoReader(memoChannel);
-            memoWriter = new DB3MemoWriter(memoChannel, memoHeaderMetadata);
-        } else {
-            memoReader = null;
-            memoWriter = null;
-        }
-        final MemoAccess memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReader(charset));
-        return new DB3Access(characterAccess, dateAccess, logicalAccess, memoAccess, numericAccess);
-    }
-
     private final DateAccess dateAccess;
     private final MemoAccess memoAccess;
 

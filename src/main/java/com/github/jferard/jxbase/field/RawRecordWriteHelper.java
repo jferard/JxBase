@@ -22,10 +22,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-public class RawRecordWriter {
+public class RawRecordWriteHelper {
     final Charset charset;
 
-    public RawRecordWriter(final Charset charset) {
+    public RawRecordWriteHelper(final Charset charset) {
         this.charset = charset;
     }
 

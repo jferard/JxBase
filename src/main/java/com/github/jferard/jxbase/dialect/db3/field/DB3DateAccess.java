@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase.dialect.db3.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReader;
-import com.github.jferard.jxbase.field.RawRecordWriter;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
@@ -29,12 +29,12 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DB3DateAccess implements DateAccess {
-    private final RawRecordReader rawRecordReader;
-    private final RawRecordWriter rawRecordWriter;
+    private final RawRecordReadHelper rawRecordReader;
+    private final RawRecordWriteHelper rawRecordWriter;
     private final TimeZone timeZone;
 
-    public DB3DateAccess(final RawRecordReader rawRecordReader,
-                         final RawRecordWriter rawRecordWriter, final TimeZone timeZone) {
+    public DB3DateAccess(final RawRecordReadHelper rawRecordReader,
+                         final RawRecordWriteHelper rawRecordWriter, final TimeZone timeZone) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
         this.timeZone = timeZone;

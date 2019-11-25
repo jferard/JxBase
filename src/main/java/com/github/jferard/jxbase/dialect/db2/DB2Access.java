@@ -17,15 +17,31 @@
 package com.github.jferard.jxbase.dialect.db2;
 
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
+import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
+import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
+import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 
 public class DB2Access implements CLNFieldsAccess {
+    public static DB2Access create(final Charset charset) {
+        final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
+        final CharacterAccess characterAccess =
+                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        return new DB2Access(characterAccess, logicalAccess, numericAccess);
+    }
+
     private final CharacterAccess characterAccess;
     private final LogicalAccess logicalAccess;
     private final NumericAccess numericAccess;
