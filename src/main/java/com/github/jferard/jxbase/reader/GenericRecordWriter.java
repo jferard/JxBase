@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

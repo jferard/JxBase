@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.core.XBaseRecord;
 

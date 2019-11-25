@@ -18,8 +18,6 @@ package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
 
 import java.io.IOException;
 import java.util.Map;

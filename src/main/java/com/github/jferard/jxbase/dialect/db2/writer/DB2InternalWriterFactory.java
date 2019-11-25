@@ -20,12 +20,12 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
-import com.github.jferard.jxbase.reader.internal.GenericRecordWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseOptionalWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.reader.GenericRecordWriter;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
+import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;

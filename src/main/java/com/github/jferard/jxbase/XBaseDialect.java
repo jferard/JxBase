@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

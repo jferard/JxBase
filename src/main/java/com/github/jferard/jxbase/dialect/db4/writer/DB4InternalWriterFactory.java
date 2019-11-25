@@ -22,12 +22,12 @@ import com.github.jferard.jxbase.dialect.db3.writer.DB3FieldDescriptorArrayWrite
 import com.github.jferard.jxbase.dialect.db3.writer.DB3RecordWriter;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.writer.internal.GenericOptionalWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseOptionalWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.writer.GenericOptionalWriter;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
+import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.OutputStream;
 import java.io.RandomAccessFile;

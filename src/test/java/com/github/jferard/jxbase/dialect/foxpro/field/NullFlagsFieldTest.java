@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.field;
+package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;

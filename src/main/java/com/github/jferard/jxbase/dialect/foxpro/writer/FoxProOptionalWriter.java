@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.writer.internal.XBaseOptionalWriter;
+import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

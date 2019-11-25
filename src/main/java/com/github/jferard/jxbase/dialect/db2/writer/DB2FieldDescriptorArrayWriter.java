@@ -16,14 +16,13 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

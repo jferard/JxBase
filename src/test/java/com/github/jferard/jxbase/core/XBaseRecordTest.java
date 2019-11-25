@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.field.RawRecordReader;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.reader.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;

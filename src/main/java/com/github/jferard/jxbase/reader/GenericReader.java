@@ -23,8 +23,6 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
 
 import java.io.IOException;
 import java.io.InputStream;

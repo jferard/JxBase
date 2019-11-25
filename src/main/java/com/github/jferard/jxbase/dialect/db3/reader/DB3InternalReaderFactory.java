@@ -21,11 +21,11 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
-import com.github.jferard.jxbase.reader.internal.XBaseOptionalReader;
-import com.github.jferard.jxbase.reader.internal.XBaseRecordReader;
+import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseMetadataReader;
+import com.github.jferard.jxbase.reader.XBaseOptionalReader;
+import com.github.jferard.jxbase.reader.XBaseRecordReader;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;

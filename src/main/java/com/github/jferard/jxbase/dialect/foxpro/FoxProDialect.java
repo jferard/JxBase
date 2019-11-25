@@ -54,9 +54,9 @@ import com.github.jferard.jxbase.field.RawRecordWriter;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;
@@ -74,7 +74,7 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
         final CharacterAccess characterAccess =
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
         final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final FloatAccess floatAccess = new DB4FloatAccess();
+        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
         final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
         final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
         final XBaseMemoReader memoReader;

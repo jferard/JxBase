@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.db4.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

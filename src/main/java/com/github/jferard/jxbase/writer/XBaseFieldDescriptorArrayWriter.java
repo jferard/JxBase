@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
-public interface XBaseMetadataReader {
-    XBaseMetadata read() throws IOException;
+public interface XBaseFieldDescriptorArrayWriter<A> {
+    int write(XBaseFieldDescriptorArray<A> array) throws IOException;
 }

@@ -23,11 +23,11 @@ import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.GenericWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
-import com.github.jferard.jxbase.writer.internal.XBaseMetadataWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseOptionalWriter;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
+import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
+import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

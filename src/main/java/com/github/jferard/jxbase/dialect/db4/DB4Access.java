@@ -24,12 +24,9 @@ import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.util.Date;
 
 public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
     private final FloatAccess floatAccess;
@@ -47,12 +44,12 @@ public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
     }
 
     @Override
-    public Object getFloatValue(final byte[] recordBuffer, final int offset, final int length) {
-        return this.floatAccess.getFloatValue(recordBuffer, offset, length);
+    public Object extractFloatValue(final byte[] recordBuffer, final int offset, final int length) {
+        return this.floatAccess.extractFloatValue(recordBuffer, offset, length);
     }
 
     @Override
-    public void writeFloatValue(final OutputStream out, final Object value) {
+    public void writeFloatValue(final OutputStream out, final Object value) throws IOException {
         this.floatAccess.writeFloatValue(out, value);
     }
 

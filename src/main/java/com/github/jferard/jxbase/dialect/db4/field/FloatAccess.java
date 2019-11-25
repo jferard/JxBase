@@ -18,14 +18,15 @@ package com.github.jferard.jxbase.dialect.db4.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 public interface FloatAccess {
     int getFloatValueLength();
 
-    Object getFloatValue(byte[] recordBuffer, int offset, int length);
+    Object extractFloatValue(byte[] recordBuffer, int offset, int length);
 
-    void writeFloatValue(OutputStream out, Object value);
+    void writeFloatValue(OutputStream out, Object value) throws IOException;
 
     FieldRepresentation getFloatFieldRepresentation(String name);
 }

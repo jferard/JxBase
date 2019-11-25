@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.field;
+package com.github.jferard.jxbase.dialect.db3.field;
 
 public class MemoFieldTest {
     /*

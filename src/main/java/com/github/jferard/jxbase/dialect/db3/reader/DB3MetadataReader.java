@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.db3.reader;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
+import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 

@@ -19,15 +19,13 @@ package com.github.jferard.jxbase.dialect.foxpro.reader;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
-import com.github.jferard.jxbase.reader.internal.XBaseMetadataReader;
+import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.Date;
 
 public class FoxProMetadataReader implements XBaseMetadataReader {

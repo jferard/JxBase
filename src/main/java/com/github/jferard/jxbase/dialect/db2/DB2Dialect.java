@@ -32,9 +32,9 @@ import com.github.jferard.jxbase.dialect.db2.writer.DB2InternalWriterFactory;
 import com.github.jferard.jxbase.field.RawRecordReader;
 import com.github.jferard.jxbase.field.RawRecordWriter;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.db3.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseRecordWriter;
+import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;

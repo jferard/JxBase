@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.field;
+package com.github.jferard.jxbase.dialect.db3.field;
 
 import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
+import com.github.jferard.jxbase.field.RawRecordReader;
+import com.github.jferard.jxbase.field.RawRecordWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;

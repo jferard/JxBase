@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.internal.XBaseFieldDescriptorArrayReader;
+import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 

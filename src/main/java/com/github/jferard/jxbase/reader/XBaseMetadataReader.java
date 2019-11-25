@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.writer.internal;
+package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.IOException;
 
-public interface XBaseMetadataWriter<D extends XBaseDialect<D, A>, A> {
-    void write(XBaseMetadata metadata) throws IOException;
-
-    void fixMetadata(int recordQty) throws IOException;
-
-    void close() throws IOException;
-
+public interface XBaseMetadataReader {
+    XBaseMetadata read() throws IOException;
 }

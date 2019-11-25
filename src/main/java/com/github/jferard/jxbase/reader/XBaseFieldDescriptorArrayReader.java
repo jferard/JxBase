@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
-public interface XBaseOptionalReader {
-    XBaseOptional read() throws IOException;
+public interface XBaseFieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A> {
+    XBaseFieldDescriptorArray<A> read() throws IOException;
 }

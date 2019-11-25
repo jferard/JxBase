@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.reader.GenericReader;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -25,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Collections;
 
 public class XBaseReaderFactory {
     public static XBaseReader createReader(final String databaseName, final Charset charset)

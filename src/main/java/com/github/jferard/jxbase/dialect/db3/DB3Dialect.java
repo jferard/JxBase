@@ -26,9 +26,9 @@ import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3InternalReaderFactory;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3InternalWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.internal.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.internal.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 
 import java.io.IOException;
 import java.nio.channels.FileChannel;

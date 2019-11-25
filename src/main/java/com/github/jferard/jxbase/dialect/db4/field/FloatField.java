@@ -42,7 +42,7 @@ public class FloatField implements XBaseField<FloatAccess> {
     @Override
     public Object getValue(final FloatAccess reader, final byte[] recordBuffer, final int offset,
                            final int length) throws IOException {
-        return reader.getFloatValue(recordBuffer, offset, length);
+        return reader.extractFloatValue(recordBuffer, offset, length);
     }
 
     @Override
@@ -59,5 +59,10 @@ public class FloatField implements XBaseField<FloatAccess> {
     @Override
     public FieldRepresentation toRepresentation(final FloatAccess dialect) {
         return dialect.getFloatFieldRepresentation(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return "FloatField[name=" + this.name + "]";
     }
 }

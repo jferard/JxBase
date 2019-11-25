@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.reader.internal.XBaseOptionalReader;
+import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;

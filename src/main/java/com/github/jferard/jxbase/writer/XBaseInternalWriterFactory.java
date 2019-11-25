@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader.internal;
+package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 
-import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 
-public interface XBaseInternalReaderFactory<D extends XBaseDialect<D, A>, A> {
-    XBaseMetadataReader createMetadataReader(InputStream inputStream);
+public interface XBaseInternalWriterFactory<D extends XBaseDialect<D, A>, A> {
+    XBaseMetadataWriter<D, A> createMetadataWriter(RandomAccessFile file, OutputStream outputStream,
+                                                   Charset charset);
 
-    XBaseFieldDescriptorArrayReader<D, A> createFieldDescriptorArrayReader(InputStream inputStream,
+    XBaseFieldDescriptorArrayWriter<A> createFieldDescriptorArrayWriter(OutputStream outputStream,
                                                                         XBaseMetadata metadata);
 
-    XBaseOptionalReader createOptionalReader(InputStream inputStream, Charset charset,
-                                                XBaseMetadata metadata,
+    XBaseOptionalWriter<D> createOptionalWriter(OutputStream outputStream, XBaseMetadata metadata,
                                                 XBaseFieldDescriptorArray<A> array);
 
-    XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
-                                         XBaseMetadata metadata, XBaseFieldDescriptorArray<A> array,
-                                         Object optional);
+    XBaseRecordWriter<D> createRecordWriter(OutputStream outputStream, Charset charset,
+                                            XBaseMetadata metadata,
+                                            XBaseFieldDescriptorArray<A> array, Object optional);
 }
