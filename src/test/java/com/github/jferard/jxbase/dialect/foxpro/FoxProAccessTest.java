@@ -23,9 +23,11 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import sun.util.resources.ms.CalendarData_ms_MY;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -62,9 +64,13 @@ public class FoxProAccessTest {
 
     @Test
     public void writeDTValue() throws IOException {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.setTimeInMillis(12345678910L);
+
         final byte[] bytes = {26, 62, 37, 0, 48, -47, 56, 2};
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        this.df.writeValue(this.access, out, new Date(12345678910L));
+        this.df.writeValue(this.access, out, calendar.getTime());
         Assert.assertArrayEquals(bytes, out.toByteArray());
     }
 
