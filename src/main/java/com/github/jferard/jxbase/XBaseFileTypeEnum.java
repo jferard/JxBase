@@ -16,19 +16,9 @@
 
 package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * dBASE IV bit flags:
@@ -166,7 +156,7 @@ public enum XBaseFileTypeEnum {
             throws IOException {
         final XBaseDialect<?, ?> dialect;
         if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
-            dialect = DialectFactory.getNoMemoDialect(type, databaseName, charset);
+            dialect = DialectFactory.getNoMemoDialect(type, charset);
         } else if (memoHeaderMeta == null) {
             dialect = DialectFactory.getMemoReaderDialect(type, databaseName, charset);
         } else {

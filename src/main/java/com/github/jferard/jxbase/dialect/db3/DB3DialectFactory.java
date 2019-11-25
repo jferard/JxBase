@@ -70,7 +70,7 @@ public class DB3DialectFactory {
         // new RandomAccessFile(memoFile, "r").getChannel();
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-        final XBaseMemoReader memoReader = new DB3MemoReader(memoChannel);
+        final XBaseMemoReader memoReader = DB3MemoReader.create(memoChannel);
         this.memoAccess = new DB3MemoAccess(memoReader, null, this.rawRecordReadHelper);
         return this;
     }

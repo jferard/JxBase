@@ -25,7 +25,7 @@ import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccessFactory;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 
 import java.nio.charset.Charset;
@@ -60,7 +60,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
                                                                          final TimeZone timeZone,
                                                                          final String databaseName,
                                                                          final Map<String, Object> memoHeaderMeta) {
-        return new FoxProAccessFactory(type, charset, timeZone).build();
+        return new FoxProDialectFactory(type, charset, timeZone).build();
     }
 
 }

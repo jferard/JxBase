@@ -36,28 +36,34 @@ public class DatetimeField implements XBaseField<DatetimeAccess> {
     }
 
     @Override
-    public int getValueByteLength(final DatetimeAccess dialect) {
-        return dialect.getDatetimeValueLength();
+    public int getValueByteLength(final DatetimeAccess access) {
+        return access.getDatetimeValueLength();
     }
 
     @Override
-    public Date getValue(final DatetimeAccess reader, final byte[] recordBuffer,
-                         final int offset, final int length) throws IOException {
-        return reader.getDatetimeValue(recordBuffer, offset, length);
+    public Date getValue(final DatetimeAccess access, final byte[] recordBuffer, final int offset,
+                         final int length) throws IOException {
+        return access.getDatetimeValue(recordBuffer, offset, length);
     }
 
     @Override
-    public void writeValue(final DatetimeAccess writer, final OutputStream out, final Object value) throws IOException {
-        writer.writeDatetimeValue(out, (Date) value);
+    public void writeValue(final DatetimeAccess access, final OutputStream out, final Object value)
+            throws IOException {
+        access.writeDatetimeValue(out, (Date) value);
     }
 
     @Override
-    public String toStringRepresentation(final DatetimeAccess dialect) {
-        return dialect.getDatetimeRepresentation(this.name).toString();
+    public String toStringRepresentation(final DatetimeAccess access) {
+        return access.getDatetimeRepresentation(this.name).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final DatetimeAccess dialect) {
-        return dialect.getDatetimeRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final DatetimeAccess access) {
+        return access.getDatetimeRepresentation(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return "DatetimeField[name=" + this.name + "]";
     }
 }

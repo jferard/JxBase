@@ -23,15 +23,11 @@ import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,30 +46,28 @@ import java.util.List;
 public class DB3MemoReader implements XBaseMemoReader {
     public final static int BLOCK_SIZE = 512;
 
-    public static DB3MemoReader fromRandomAccess(final File memoFile, final Charset charset)
-            throws IOException {
-        final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new DB3MemoReader(randomAccessFile.getChannel());
+    public static DB3MemoReader create(final FileChannel channel) throws IOException {
+        final ByteBuffer memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
+        final MemoFileHeader header = DB3MemoFileHeaderReader.read(memoByteBuffer);
+        final RawMemoReader rawMemoReader =
+                new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
+                        header.getBlockLength());
+        return new DB3MemoReader(header, rawMemoReader);
     }
 
-    public static DB3MemoReader fromChannel(final File memoFile, final Charset charset)
-            throws IOException {
-        if (memoFile == null) {
-            return null;
-        }
-        final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new DB3MemoReader(fileInputStream.getChannel());
-    }
-
-    private final ByteBuffer memoByteBuffer;
+    private final MemoFileHeader header;
     private final RawMemoReader rawMemoReader;
 
-    public DB3MemoReader(final FileChannel channel) throws IOException {
-        this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
-        final MemoFileHeader header = DB3MemoFileHeaderReader.read(this.memoByteBuffer);
-        this.rawMemoReader = new RawMemoReader(this.memoByteBuffer, this.memoByteBuffer.position(),
-                header.getBlockLength());
+    DB3MemoReader(final MemoFileHeader header, final RawMemoReader rawMemoReader) {
+        this.header = header;
+        this.rawMemoReader = rawMemoReader;
     }
+
+
+    public MemoFileHeader getHeader() {
+        return this.header;
+    }
+
 
     @Override
     public void close() throws IOException {

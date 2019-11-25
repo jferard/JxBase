@@ -53,7 +53,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class FoxProAccessFactory {
+public class FoxProDialectFactory {
 
     private final RawRecordReadHelper rawRecordReader;
     private final CharacterAccess characterAccess;
@@ -68,8 +68,8 @@ public class FoxProAccessFactory {
     private final Charset charset;
     private MemoAccess memoAccess;
 
-    public FoxProAccessFactory(final XBaseFileTypeEnum type, final Charset charset,
-                               final TimeZone timeZone) {
+    public FoxProDialectFactory(final XBaseFileTypeEnum type, final Charset charset,
+                                final TimeZone timeZone) {
         this.type = type;
         this.rawRecordReader = new RawRecordReadHelper(charset);
         this.charset = charset;
@@ -85,7 +85,7 @@ public class FoxProAccessFactory {
         this.memoAccess = null;
     }
 
-    public FoxProAccessFactory reader(final String databaseName) throws IOException {
+    public FoxProDialectFactory reader(final String databaseName) throws IOException {
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
         final XBaseMemoReader memoReader =
@@ -97,8 +97,8 @@ public class FoxProAccessFactory {
         return this;
     }
 
-    public FoxProAccessFactory writer(final String databaseName,
-                                      final Map<String, Object> memoHeaderMetadata)
+    public FoxProDialectFactory writer(final String databaseName,
+                                       final Map<String, Object> memoHeaderMetadata)
             throws IOException {
         final XBaseMemoReader memoReader = null;
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());

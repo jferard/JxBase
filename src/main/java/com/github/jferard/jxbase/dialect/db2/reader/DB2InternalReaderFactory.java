@@ -56,7 +56,7 @@ public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2D
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB2Access> array,
                                                 final Object optional) {
-        return new DB2RecordReader<DB2Dialect, DB2Access>(this.dialect, inputStream, charset,
+        return new DB2RecordReader<DB2Access>(this.dialect.getAccess(), inputStream, charset,
                 array);
     }
 

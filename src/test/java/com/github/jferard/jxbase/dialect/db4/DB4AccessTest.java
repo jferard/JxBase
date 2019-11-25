@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db4.field;
+package com.github.jferard.jxbase.dialect.db4;
 
-import com.github.jferard.jxbase.field.RawRecordReadHelper;
-import com.github.jferard.jxbase.field.RawRecordWriteHelper;
+import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,15 +25,17 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.TimeZone;
 
-public class FloatFieldTest {
+public class DB4AccessTest {
     private FloatField f;
-    private FloatAccess access;
+    private CDFLMNFieldsAccess access;
 
     @Before
     public void setUp() {
-        this.access = new DB4FloatAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET),
-                new RawRecordWriteHelper(JxBaseUtils.ASCII_CHARSET));
+        this.access =
+                new DB4DialectFactory(null, JxBaseUtils.ASCII_CHARSET, TimeZone.getTimeZone("UTC"))
+                        .build().getAccess();
         this.f = new FloatField("float");
     }
 

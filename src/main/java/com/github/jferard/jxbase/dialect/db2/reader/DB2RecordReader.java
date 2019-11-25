@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -33,23 +32,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DB2RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRecordReader {
+public class DB2RecordReader<A> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
     protected final Charset charset;
     protected final byte[] recordBuffer;
     protected final int recordLength;
     protected final Collection<XBaseField<? super A>> fields;
-    protected final D dialect;
+    protected final A access;
     protected int recordsCounter;
 
-    public DB2RecordReader(final D dialect, final InputStream dbfInputStream, final Charset charset,
+    public DB2RecordReader(final A access, final InputStream dbfInputStream, final Charset charset,
                            final XBaseFieldDescriptorArray<A> array) {
         this.dbfInputStream = dbfInputStream;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
         this.recordBuffer = new byte[this.recordLength];
         this.fields = array.getFields();
-        this.dialect = dialect;
+        this.access = access;
         this.recordsCounter = -1;
     }
 
@@ -61,7 +60,7 @@ public class DB2RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRe
         final int readLength = IOUtils.readFully(this.dbfInputStream, this.recordBuffer);
 
         if (readLength < this.recordLength) {
-            throw new IOException("Bad record: " + readLength + " -> " + this.recordBuffer[0]);
+            throw new IOException("Bad record length: " + readLength + " -> " + this.recordLength);
         }
         this.recordsCounter++;
 
@@ -70,11 +69,11 @@ public class DB2RecordReader<D extends XBaseDialect<D, A>, A> implements XBaseRe
         final Map<String, Object> valueByFieldName = new HashMap<String, Object>();
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
-            final Object value = field.getValue(this.dialect.getAccess(), this.recordBuffer, offset,
-                    field.getValueByteLength(this.dialect.getAccess()));
+            final Object value = field.getValue(this.access, this.recordBuffer, offset,
+                    field.getValueByteLength(this.access));
             final String name = field.getName();
             valueByFieldName.put(name, value);
-            offset += field.getValueByteLength(this.dialect.getAccess());
+            offset += field.getValueByteLength(this.access);
         }
         return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }

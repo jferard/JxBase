@@ -52,6 +52,12 @@ public class ByteMemoRecord implements XBaseMemoRecord {
 
     @Override
     public String toString() {
-        return "ByteMemoRecord[bytes=" + Arrays.toString(this.bytes).substring(0, 50) + "...]";
+        final byte[] ret;
+        if (this.bytes.length >= 10) {
+            ret = Arrays.copyOfRange(this.bytes, 0, 10);
+        } else {
+            ret = this.bytes;
+        }
+        return "ByteMemoRecord[bytes=" + Arrays.toString(ret) + "...]";
     }
 }

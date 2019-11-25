@@ -25,7 +25,7 @@ import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccessFactory;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 
 import java.io.IOException;
@@ -65,6 +65,6 @@ public class MemoWriterDialectFactory implements MemoDialectFactory {
                                                                          final String databaseName,
                                                                          final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new FoxProAccessFactory(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return new FoxProDialectFactory(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
     }
 }

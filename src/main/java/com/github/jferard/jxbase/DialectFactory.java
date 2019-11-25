@@ -48,10 +48,8 @@ public class DialectFactory {
     }
 
     public static XBaseDialect<?, ?> getNoMemoDialect(final XBaseFileTypeEnum type,
-                                                      final String databaseName,
                                                       final Charset charset) throws IOException {
-        return DialectFactory
-                .getDialect(new NoMemoDialectFactory(), type, databaseName, charset, null);
+        return DialectFactory.getDialect(new NoMemoDialectFactory(), type, null, charset, null);
     }
 
     /**
@@ -67,19 +65,6 @@ public class DialectFactory {
                                                  final String databaseName, final Charset charset,
                                                  final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        /*
-        final FileChannel channel;
-        if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
-            channel = null;
-        } else {
-            final File memoFile = new File(databaseName + type.memoFileType().getExtension());
-            if (memoHeaderMeta == null) {
-                channel = new FileInputStream(memoFile).getChannel();
-            } else {
-                channel = new FileOutputStream(memoFile).getChannel();
-            }
-        }*/
-
         final XBaseDialect<?, ?> dialect;
         switch (type) {
             case dBASE2:
@@ -107,13 +92,9 @@ public class DialectFactory {
                                 memoHeaderMeta);
                 break;
             default:
-                if (type.memoFileType() == XBaseMemoFileType.REGULAR_MEMO_FILE) {
-                    dialect = dialectFactory
-                            .createDB3Dialect(type, charset, TimeZone.getDefault(), databaseName,
-                                    memoHeaderMeta);
-                } else {
-                    throw new IllegalArgumentException(type.toString());
-                }
+                dialect = dialectFactory
+                        .createDB3Dialect(type, charset, TimeZone.getDefault(), databaseName,
+                                memoHeaderMeta);
                 break;
         }
         return dialect;

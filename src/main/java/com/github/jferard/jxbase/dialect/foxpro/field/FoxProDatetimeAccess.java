@@ -16,37 +16,15 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
+import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.util.BitUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class FoxProDatetimeAccess implements DatetimeAccess {
-    // cf. www.nr.com/julian.html
-    private static int dateToJulian(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        final int Y = calendar.get(Calendar.YEAR);
-        final int M = calendar.get(Calendar.MONTH) + 1;
-        final int D = calendar.get(Calendar.DAY_OF_MONTH);
-
-        // https://en.wikipedia
-        // .org/wiki/Julian_day#Converting_Gregorian_calendar_date_to_Julian_Day_Number
-        return (1461 * (Y + 4800 + (M - 14) / 12)) / 4 +
-                (367 * (M - 2 - 12 * ((M - 14) / 12))) / 12 -
-                (3 * ((Y + 4900 + (M - 14) / 12) / 100)) / 4 + D - 32075;
-    }
-
-    private static int millis(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        return ((calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
-                calendar.get(Calendar.SECOND)) * 1000;
-    }
 
     @Override
     public int getDatetimeValueLength() {
@@ -55,10 +33,11 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
 
     @Override
     public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
-        // TODO
-        // https://en.wikipedia
-        // .org/wiki/Julian_day#Julian_or_Gregorian_calendar_from_Julian_day_number
-        return null;
+        assert length == 8;
+        return new Date(FoxProUtils.julianToDate(recordBuffer[offset + 3], recordBuffer[offset + 2],
+                recordBuffer[offset + 1], recordBuffer[offset]) + FoxProUtils
+                .toMillis(recordBuffer[offset + 7], recordBuffer[offset + 6],
+                        recordBuffer[offset + 5], recordBuffer[offset + 4]));
     }
 
     @Override
@@ -68,8 +47,8 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
             BitUtils.writeEmpties(out, fieldLength);
         } else {
             final long time = value.getTime();
-            BitUtils.writeLEByte4(out, FoxProDatetimeAccess.dateToJulian(value));
-            BitUtils.writeLEByte4(out, FoxProDatetimeAccess.millis(value));
+            BitUtils.writeLEByte4(out, FoxProUtils.dateToJulian(value));
+            BitUtils.writeLEByte4(out, FoxProUtils.millis(value));
         }
     }
 

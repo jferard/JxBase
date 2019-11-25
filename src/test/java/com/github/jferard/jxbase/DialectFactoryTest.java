@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro.field;
+package com.github.jferard.jxbase;
 
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class IntegerFieldTest {
+import static org.junit.Assert.*;
+
+public class DialectFactoryTest {
+    @Test
+    public void getNoMemoDialect() throws IOException {
+        for (final XBaseFileTypeEnum type : XBaseFileTypeEnum.values()) {
+            Assert.assertNotNull(DialectFactory.getNoMemoDialect(type, JxBaseUtils.ASCII_CHARSET));
+        }
+    }
 }
