@@ -62,19 +62,21 @@ public class DB4MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBase
         BitUtils.writeLEByte2(this.out, metadata.getFullHeaderLength());
         BitUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
         BitUtils.writeZeroes(this.out, 2);
-        final Object u = metadata.get("uncompletedTxFlag");
-        if (u instanceof Number) {
-            this.out.write(((Number) u).byteValue());
+        this.writeFlag(metadata, "uncompletedTxFlag");
+        this.writeFlag(metadata, "encryptionFlag");
+        BitUtils.writeZeroes(this.out, 12);
+        this.writeFlag(metadata, "mdxFlag");
+        this.writeFlag(metadata, "languageDriverId");
+        BitUtils.writeZeroes(this.out, 2);
+    }
+
+    private void writeFlag(final XBaseMetadata metadata, final String flag) throws IOException {
+        final Object o = metadata.get(flag);
+        if (o instanceof Number) {
+            this.out.write(((Number) o).byteValue());
         } else {
             this.out.write(0);
         }
-        final Object e = metadata.get("encryptionFlag");
-        if (e instanceof Number) {
-            this.out.write(((Number) e).byteValue());
-        } else {
-            this.out.write(0);
-        }
-        BitUtils.writeZeroes(this.out, this.dialect.getMetaDataLength() - 16);
     }
 
     @Override
