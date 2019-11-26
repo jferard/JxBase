@@ -27,6 +27,8 @@ import com.github.jferard.jxbase.util.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DB4MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
@@ -58,9 +60,18 @@ public class DB4MetadataReader implements XBaseMetadataReader {
         // 12-13: Reserved; filled with zeros.
         final byte uncompletedTxFlag = headerBytes[14];
         final byte encryptionFlag = headerBytes[15];
-        // next 16 bytes: for most DBF types these are reserved bytes
-        return GenericMetadata
-                .create(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
-                        uncompletedTxFlag, encryptionFlag);
+        // 16-27: Reserved
+        final byte mdxFlag = headerBytes[28];
+        final byte languageDriverId = headerBytes[29];
+        // 30-31: Reserved
+
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", updateDate);
+        meta.put("recordsQty", recordsQty);
+        meta.put("uncompletedTxFlag", uncompletedTxFlag);
+        meta.put("encryptionFlag", encryptionFlag);
+        meta.put("mdxFlag", mdxFlag);
+        meta.put("languageDriverId", languageDriverId);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

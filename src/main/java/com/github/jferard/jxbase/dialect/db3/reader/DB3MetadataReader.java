@@ -19,14 +19,16 @@ package com.github.jferard.jxbase.dialect.db3.reader;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DB3MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
@@ -50,30 +52,16 @@ public class DB3MetadataReader implements XBaseMetadataReader {
         final byte typeByte = headerBytes[0];
         final XBaseFileTypeEnum type = XBaseFileTypeEnum.fromInt(typeByte);
         final Date updateDate =
-                this.createHeaderUpdateDate(type, headerBytes[1], headerBytes[2], headerBytes[3]);
+                DB2Utils.createHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3]);
         final int recordsQty =
                 BitUtils.makeInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
         final int fullHeaderLength = BitUtils.makeInt(headerBytes[8], headerBytes[9]);
         final int oneRecordLength = BitUtils.makeInt(headerBytes[10], headerBytes[11]);
-        // 12-32: Reserved
-        return GenericMetadata
-                .create(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength);
-    }
+        // 12-31: Reserved
 
-    // TODO: make a different reader for foxpro
-    private Date createHeaderUpdateDate(final XBaseFileTypeEnum type, final byte yearByte,
-                                        final byte monthByte, final byte dayByte) {
-        final int year;
-        switch (type) {
-            case FoxBASEPlus1:
-                year = yearByte + 1900;
-                break;
-            default:
-                year = yearByte + 2000;
-                break;
-        }
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, monthByte - 1, dayByte);
-        return calendar.getTime();
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", updateDate);
+        meta.put("recordsQty", recordsQty);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

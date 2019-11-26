@@ -18,7 +18,6 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 public class FoxProUtils {
@@ -26,7 +25,7 @@ public class FoxProUtils {
                                               final byte dayByte) {
         final int year = yearByte + 2000;
         final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, monthByte - 1, dayByte);
+        calendar.set(year, monthByte - 1, dayByte, 0, 0, 0);
         return calendar.getTime();
     }
 

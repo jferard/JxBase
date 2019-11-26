@@ -17,12 +17,9 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -30,33 +27,6 @@ import java.util.Map;
  * Represents the file meta data, that is the first part of the header
  */
 public class GenericMetadata implements XBaseMetadata {
-    public static GenericMetadata create(final XBaseFileTypeEnum type, final Date updateDate,
-                                         final int recordsQty, final int fullHeaderLength,
-                                         final int oneRecordLength, final byte uncompletedTxFlag,
-                                         final byte encryptionFlag) {
-        if (type == null) {
-            throw new IllegalArgumentException("File type should not be null");
-        }
-        final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
-        meta.put("uncompletedTxFlag", uncompletedTxFlag);
-        meta.put("encryptionFlag", encryptionFlag);
-        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
-    }
-
-    public static GenericMetadata create(final XBaseFileTypeEnum type, final Date updateDate,
-                                         final int recordsQty, final int fullHeaderLength,
-                                         final int oneRecordLength) {
-        if (type == null) {
-            throw new IllegalArgumentException("File type should not be null");
-        }
-        final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
-        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
-    }
-
     private final byte typeByte;
     private final int fullHeaderLength;
     private final int oneRecordLength;
@@ -89,6 +59,7 @@ public class GenericMetadata implements XBaseMetadata {
     public Object get(final String key) {
         return this.meta.get(key);
     }
+    // TODO: how do we know the keys?
 
     @Override
     public String toString() {

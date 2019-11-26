@@ -27,6 +27,8 @@ import com.github.jferard.jxbase.util.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FoxProMetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
@@ -55,12 +57,11 @@ public class FoxProMetadataReader implements XBaseMetadataReader {
                 BitUtils.makeInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
         final int fullHeaderLength = BitUtils.makeInt(headerBytes[8], headerBytes[9]);
         final int oneRecordLength = BitUtils.makeInt(headerBytes[10], headerBytes[11]);
-        // 12-13: Reserved; filled with zeros.
-        final byte uncompletedTxFlag = headerBytes[14];
-        final byte encryptionFlag = headerBytes[15];
-        // next 16 bytes: for most DBF types these are reserved bytes
-        return GenericMetadata
-                .create(type, updateDate, recordsQty, fullHeaderLength, oneRecordLength,
-                        uncompletedTxFlag, encryptionFlag);
+        // 12-31: Reserved; filled with zeros.
+
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", updateDate);
+        meta.put("recordsQty", recordsQty);
+        return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

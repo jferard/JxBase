@@ -48,7 +48,7 @@ public class DB2Utils {
         final int year = yearByte + 1900;
         final int month = monthByte - 1;
         final Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, dayByte);
+        calendar.set(year, month, dayByte, 0, 0, 0);
         return calendar.getTime();
     }
 }

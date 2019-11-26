@@ -25,6 +25,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DbfMetadataTest {
     @Rule
@@ -32,51 +34,63 @@ public class DbfMetadataTest {
 
     @Test
     public void testToString() {
-        final XBaseMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JxBaseUtils.NULL_BYTE,
-                        JxBaseUtils.NULL_BYTE);
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date(0));
+        meta.put("recordsQty", 0);
+        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
+        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        final XBaseMetadata metadata =
+                new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals("GenericMetadata[type=3, fullHeaderLength=0, oneRecordLength=0, " +
                 "meta={encryptionFlag=0, updateDate=1970-01-01, uncompletedTxFlag=0, " +
                 "recordsQty=0}]", metadata.toString());
     }
 
     @Test
-    public void testSetNullType() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("File type should not be null");
-        GenericMetadata
-                .create(null, new Date(0), 0, 0, 0, JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
-    }
-
-    @Test
     public void testGetUpdateDate() {
-        final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JxBaseUtils.NULL_BYTE,
-                        JxBaseUtils.NULL_BYTE);
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date(0));
+        meta.put("recordsQty", 0);
+        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
+        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        final GenericMetadata metadata =
+                new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals(new Date(0), metadata.get("updateDate"));
     }
 
     @Test
     public void testGetRecordsQty() {
-        final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 100, 0, 0,
-                        JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE);
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date(0));
+        meta.put("recordsQty", 100);
+        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
+        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        final GenericMetadata metadata =
+                new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals(100, metadata.get("recordsQty"));
     }
 
     @Test
     public void testGetUncompletedTxFlag() {
-        final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
-                        JxBaseUtils.NULL_BYTE);
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date(0));
+        meta.put("recordsQty", 0);
+        meta.put("uncompletedTxFlag", (byte) 10);
+        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        final GenericMetadata metadata =
+                new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals((byte) 10, metadata.get("uncompletedTxFlag"));
     }
 
     @Test
     public void testGetEncryptionFlag() {
-        final GenericMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JxBaseUtils.NULL_BYTE,
-                        (byte) 10);
+        final Map<String, Object> meta = new HashMap<String, Object>();
+        meta.put("updateDate", new Date(0));
+        meta.put("recordsQty", 0);
+        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
+        meta.put("encryptionFlag", (byte) 10);
+        final GenericMetadata metadata =
+                new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals((byte) 10, metadata.get("encryptionFlag"));
     }
 
