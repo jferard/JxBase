@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
+import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 
@@ -64,5 +65,23 @@ public class DateField implements XBaseField<DateAccess> {
     @Override
     public String toString() {
         return "DateField[name=" + this.name + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DateField)) {
+            return false;
+        }
+
+        final DateField that = (DateField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }

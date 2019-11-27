@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
+import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 
@@ -65,5 +66,23 @@ public class DatetimeField implements XBaseField<DatetimeAccess> {
     @Override
     public String toString() {
         return "DatetimeField[name=" + this.name + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DatetimeField)) {
+            return false;
+        }
+
+        final DatetimeField that = (DatetimeField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }

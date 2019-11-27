@@ -50,7 +50,7 @@ public class NumericField implements XBaseField<NumericAccess> {
 
     @Override
     public BigDecimal getValue(final NumericAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) throws IOException {
+                               final int offset, final int length) {
         return reader.extractNumericValue(recordBuffer, offset, length, this.numberOfDecimalPlaces);
     }
 
@@ -77,5 +77,25 @@ public class NumericField implements XBaseField<NumericAccess> {
     public String toString() {
         return "NumericField[name=" + this.name + ", length=" + this.length +
                 ", numberOfDecimalPlaces=" + this.numberOfDecimalPlaces + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof NumericField)) {
+            return false;
+        }
+
+        final NumericField that = (NumericField) o;
+        return this.length == that.length &&
+                this.numberOfDecimalPlaces == that.numberOfDecimalPlaces &&
+                this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * ((31 * this.length) + this.numberOfDecimalPlaces) + this.name.hashCode();
     }
 }

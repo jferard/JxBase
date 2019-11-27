@@ -67,4 +67,22 @@ public class IntegerField implements XBaseField<IntegerAccess> {
     public String toString() {
         return "IntegerField[name=" + this.name + "]";
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof IntegerField)) {
+            return false;
+        }
+
+        final IntegerField that = (IntegerField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
 }

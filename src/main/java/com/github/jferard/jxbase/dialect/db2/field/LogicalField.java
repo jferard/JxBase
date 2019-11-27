@@ -40,8 +40,8 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     }
 
     @Override
-    public Boolean getValue(final LogicalAccess reader, final byte[] recordBuffer,
-                            final int offset, final int length) {
+    public Boolean getValue(final LogicalAccess reader, final byte[] recordBuffer, final int offset,
+                            final int length) {
         return reader.extractLogicalValue(recordBuffer, offset, length);
     }
 
@@ -64,5 +64,23 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     @Override
     public String toString() {
         return "LogicalField[name=" + this.name + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LogicalField)) {
+            return false;
+        }
+
+        final LogicalField that = (LogicalField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }

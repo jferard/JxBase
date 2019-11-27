@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class CharacterField implements XBaseField<CharacterAccess> {
-    private final int dataSize;
+    private final int length;
     private final String name;
 
-    public CharacterField(final String name, final int dataSize) {
+    public CharacterField(final String name, final int length) {
         this.name = name;
-        this.dataSize = dataSize;
+        this.length = length;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CharacterField implements XBaseField<CharacterAccess> {
 
     @Override
     public int getValueByteLength(final CharacterAccess dialect) {
-        return dialect.getCharacterValueLength(this.dataSize);
+        return dialect.getCharacterValueLength(this.length);
     }
 
     @Override
@@ -48,23 +48,41 @@ public class CharacterField implements XBaseField<CharacterAccess> {
     }
 
     @Override
-    public void writeValue(final CharacterAccess writer, final OutputStream out,
-                           final Object value) throws IOException {
-        writer.writeCharacterValue(out, (String) value, this.dataSize);
+    public void writeValue(final CharacterAccess writer, final OutputStream out, final Object value)
+            throws IOException {
+        writer.writeCharacterValue(out, (String) value, this.length);
     }
 
     @Override
     public String toStringRepresentation(final CharacterAccess dialect) {
-        return dialect.getCharacterFieldRepresentation(this.name, this.dataSize).toString();
+        return dialect.getCharacterFieldRepresentation(this.name, this.length).toString();
     }
 
     @Override
     public FieldRepresentation toRepresentation(final CharacterAccess dialect) {
-        return dialect.getCharacterFieldRepresentation(this.name, this.dataSize);
+        return dialect.getCharacterFieldRepresentation(this.name, this.length);
     }
 
     @Override
     public String toString() {
-        return "CharacterField[name=" + this.name + ", length=" + this.dataSize + "]";
+        return "CharacterField[name=" + this.name + ", length=" + this.length + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CharacterField)) {
+            return false;
+        }
+
+        final CharacterField that = (CharacterField) o;
+        return this.length == that.length && this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * this.length + this.name.hashCode();
     }
 }

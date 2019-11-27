@@ -51,7 +51,8 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
     }
 
     @Override
-    public void writeValue(final NullFlagsAccess writer, final OutputStream out, final Object value) throws IOException {
+    public void writeValue(final NullFlagsAccess writer, final OutputStream out, final Object value)
+            throws IOException {
         writer.writeNullFlagsValue(out, (byte[]) value, this.length);
     }
 
@@ -69,4 +70,23 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
     public String toString() {
         return "NullFlagsField[name=" + this.name + ", length=" + this.length + "]";
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof NullFlagsField)) {
+            return false;
+        }
+
+        final NullFlagsField that = (NullFlagsField) o;
+        return this.length == that.length && this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * this.length + this.name.hashCode();
+    }
+
 }

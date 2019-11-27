@@ -16,8 +16,10 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
+import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
@@ -65,5 +67,23 @@ public class MemoField implements XBaseField<MemoAccess> {
     @Override
     public String toString() {
         return "MemoField[name=" + this.name + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MemoField)) {
+            return false;
+        }
+
+        final MemoField that = (MemoField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }

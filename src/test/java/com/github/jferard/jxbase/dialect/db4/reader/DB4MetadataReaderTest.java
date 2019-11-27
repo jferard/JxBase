@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db3.reader;
+package com.github.jferard.jxbase.dialect.db4.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
@@ -29,12 +29,12 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class DB3MetadataReaderTest {
+public class DB4MetadataReaderTest {
     @Test(expected = IOException.class)
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
-        final DB3MetadataReader reader = new DB3MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
+        final DB4MetadataReader reader = new DB4MetadataReader(DialectFactory
+                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
                 inputStream);
         reader.read();
     }
@@ -42,22 +42,29 @@ public class DB3MetadataReaderTest {
     @Test
     public void test() throws IOException {
         final byte[] bytes =
-                {0x03, 101, 2, 3, 1, 0, 0, 0, 48, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0, 0, 0};
+                {0x03, 101, 2, 3, 1, 0, 0, 0, 48, 0, 12, 0, 101, 102, 103, 104, 105, 106, 107, 108,
+                        109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120};
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        final DB3MetadataReader reader = new DB3MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
+        final DB4MetadataReader reader = new DB4MetadataReader(DialectFactory
+                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
                 inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
         Assert.assertEquals(48, meta.getFullHeaderLength());
         Assert.assertEquals(12, meta.getOneRecordLength());
-        Assert.assertEquals(Sets.newSet("updateDate", "recordsQty"), meta.keySet());
+        Assert.assertEquals(
+                Sets.newSet("updateDate", "recordsQty", "encryptionFlag", "uncompletedTxFlag",
+                        "mdxFlag", "languageDriverId"), meta.keySet());
         final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.set(2001, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Assert.assertEquals(calendar.getTime(), meta.get("updateDate"));
         Assert.assertEquals(1, meta.get("recordsQty"));
+        Assert.assertEquals((byte) 103, meta.get("uncompletedTxFlag"));
+        Assert.assertEquals((byte) 104, meta.get("encryptionFlag"));
+        Assert.assertEquals((byte) 117, meta.get("mdxFlag"));
+        Assert.assertEquals((byte) 118, meta.get("languageDriverId"));
     }
+
 }

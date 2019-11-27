@@ -46,7 +46,6 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
         this.access = access;
     }
 
-
     @Override
     public XBaseField<? super FoxProAccess> getXBaseField(final String name, final byte typeByte,
                                                           final int length,
@@ -70,6 +69,9 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                 }
                 return new LogicalField(name);
             case 'M':
+                if (length != 4) {
+                    throw new IllegalArgumentException("A memo offset has 4 chars");
+                }
                 return new MemoField(name);
             case 'N':
                 return new NumericField(name, length, numberOfDecimalPlaces);

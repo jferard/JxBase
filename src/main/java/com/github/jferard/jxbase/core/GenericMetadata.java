@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -59,7 +60,11 @@ public class GenericMetadata implements XBaseMetadata {
     public Object get(final String key) {
         return this.meta.get(key);
     }
-    // TODO: how do we know the keys?
+
+    @Override
+    public Set<String> keySet() {
+        return this.meta.keySet();
+    }
 
     @Override
     public String toString() {

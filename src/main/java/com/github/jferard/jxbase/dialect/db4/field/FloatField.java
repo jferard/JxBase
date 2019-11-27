@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db4.field;
 
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 
@@ -64,5 +65,23 @@ public class FloatField implements XBaseField<FloatAccess> {
     @Override
     public String toString() {
         return "FloatField[name=" + this.name + "]";
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof FloatField)) {
+            return false;
+        }
+
+        final FloatField that = (FloatField) o;
+        return this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }
