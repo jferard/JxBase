@@ -25,6 +25,8 @@ import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
+import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
 import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
@@ -63,6 +65,11 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                     throw new IllegalArgumentException("A float has 20 chars");
                 }
                 return new FloatField(name);
+            case 'I':
+                if (length != 4) {
+                    throw new IllegalArgumentException("An integer has 4 chars");
+                }
+                return new IntegerField(name);
             case 'L':
                 if (length != 1) {
                     throw new IllegalArgumentException("A boolean has one char");
@@ -75,6 +82,11 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                 return new MemoField(name);
             case 'N':
                 return new NumericField(name, length, numberOfDecimalPlaces);
+            case 'T':
+                if (length != 8) {
+                    throw new IllegalArgumentException("A date time has 8 chars");
+                }
+                return new DatetimeField(name);
             case '0':
                 return new NullFlagsField(name, length);
             default:

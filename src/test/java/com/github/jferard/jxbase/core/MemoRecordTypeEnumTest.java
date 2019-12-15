@@ -26,6 +26,6 @@ public class MemoRecordTypeEnumTest {
         Assert.assertEquals(MemoRecordTypeEnum.IMAGE, MemoRecordTypeEnum.fromInt(0x00));
         Assert.assertEquals(MemoRecordTypeEnum.TEXT, MemoRecordTypeEnum.fromInt(0x01));
         Assert.assertEquals(MemoRecordTypeEnum.OBJECT, MemoRecordTypeEnum.fromInt(0x02));
-        Assert.assertNull(MemoRecordTypeEnum.fromInt(0x03));
+        Assert.assertEquals(MemoRecordTypeEnum.NO_TYPE, MemoRecordTypeEnum.fromInt(0x03));
     }
 }

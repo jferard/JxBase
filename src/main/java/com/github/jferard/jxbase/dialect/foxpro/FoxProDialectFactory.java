@@ -43,6 +43,7 @@ import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
+import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,14 +87,18 @@ public class FoxProDialectFactory {
     }
 
     public FoxProDialectFactory reader(final String databaseName) throws IOException {
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
-        final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-        final XBaseMemoReader memoReader =
-                new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(this.charset),
-                        new FoxProMemoFileHeaderReader());
-        final XBaseMemoWriter memoWriter = null;
+        final String filename = databaseName + this.type.memoFileType().getExtension();
+        final File memoFile = IOUtils.getFile(filename);
+        final XBaseMemoReader memoReader;
+        if (memoFile == null) {
+            memoReader = null;
+        } else {
+            final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
+            memoReader = new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(this.charset),
+                    new FoxProMemoFileHeaderReader());
+        }
         this.memoAccess =
-                new FoxProMemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
+                new FoxProMemoAccess(memoReader, null, new RawRecordReadHelper(this.charset));
         return this;
     }
 

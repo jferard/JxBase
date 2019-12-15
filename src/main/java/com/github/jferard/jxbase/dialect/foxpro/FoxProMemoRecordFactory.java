@@ -40,7 +40,8 @@ public class FoxProMemoRecordFactory {
             case OBJECT:
                 return new ImageMemoRecord(dataBytes, memoRecordLength);
             default:
-                throw new IllegalArgumentException(memoRecordType.toString());
+                return new ImageMemoRecord(dataBytes, memoRecordLength);
+                // throw new IllegalArgumentException(memoRecordType.toString());
         }
     }
 }

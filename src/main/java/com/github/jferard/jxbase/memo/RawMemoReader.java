@@ -46,7 +46,7 @@ public class RawMemoReader {
      * @return the record
      */
     public byte[] read(final long offsetInBlocks, final int from, final int length) {
-        assert offsetInBlocks > 0;
+        // assert offsetInBlocks > 0;
         final long start = this.blockSize * offsetInBlocks + from; // no matter what headerSize is!
         final byte[] memoBlock = new byte[length];
         this.memoByteBuffer.position((int) start);

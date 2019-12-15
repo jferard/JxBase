@@ -25,7 +25,7 @@ public enum MemoRecordTypeEnum {
                 return e;
             }
         }
-        return null;
+        return NO_TYPE;
     }
 
     public int getType() {

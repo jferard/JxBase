@@ -22,6 +22,7 @@ import com.github.jferard.jxbase.util.BitUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Date;
 
 public class FoxProDatetimeAccess implements DatetimeAccess {
@@ -34,10 +35,13 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
     @Override
     public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 8;
-        return new Date(FoxProUtils.julianToDate(recordBuffer[offset + 3], recordBuffer[offset + 2],
-                recordBuffer[offset + 1], recordBuffer[offset]) + FoxProUtils
-                .toMillis(recordBuffer[offset + 7], recordBuffer[offset + 6],
-                        recordBuffer[offset + 5], recordBuffer[offset + 4]));
+        final byte[] temp = new byte[8];
+        System.arraycopy(recordBuffer, offset, temp, 0, 8);
+        System.out.println(Arrays.toString(temp));
+        return new Date(FoxProUtils.julianDaysToDate(recordBuffer[offset], recordBuffer[offset + 1],
+                recordBuffer[offset + 2], recordBuffer[offset + 3]).getTime() + FoxProUtils
+                .toMillis(recordBuffer[offset + 4], recordBuffer[offset + 5],
+                        recordBuffer[offset + 6], recordBuffer[offset + 7]));
     }
 
     @Override
@@ -47,8 +51,8 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
             BitUtils.writeEmpties(out, fieldLength);
         } else {
             final long time = value.getTime();
-            BitUtils.writeLEByte4(out, FoxProUtils.dateToJulian(value));
-            BitUtils.writeLEByte4(out, FoxProUtils.millis(value));
+            BitUtils.writeLEByte4(out, FoxProUtils.dateToJulianDays(value));
+            BitUtils.writeLEByte4(out, FoxProUtils.millisFromDate(value));
         }
     }
 

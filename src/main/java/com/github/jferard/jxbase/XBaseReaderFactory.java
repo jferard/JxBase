@@ -34,13 +34,14 @@ public class XBaseReaderFactory {
 
     private XBaseReader create(final String databaseName, final Charset charset)
             throws IOException {
-        final InputStream dbfInputStream = new FileInputStream(databaseName + ".dbf");
+        final InputStream dbfInputStream =
+                new FileInputStream(IOUtils.getFile(databaseName + ".dbf"));
         final InputStream resettableInputStream =
                 IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
-        final XBaseDialect<?, ?> dialect = XBaseFileTypeEnum
-                .getDialect(type, databaseName, charset, null);
+        final XBaseDialect<?, ?> dialect =
+                XBaseFileTypeEnum.getDialect(type, databaseName, charset, null);
         final XBaseInternalReaderFactory<?, ?> readerFactory =
                 dialect.getInternalReaderFactory(databaseName, charset);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory);

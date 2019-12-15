@@ -18,8 +18,10 @@ package com.github.jferard.jxbase.util;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 
 public class IOUtils {
@@ -137,5 +139,18 @@ public class IOUtils {
         } else {
             return new BufferedInputStream(inputStream, bufferSize);
         }
+    }
+
+    public static File getFile(final String filename) {
+        final File candidateMemoFile = new File(filename);
+        final String candidateMemoPath = candidateMemoFile.getAbsolutePath().toLowerCase(Locale.US);
+        final File dir = candidateMemoFile.getParentFile();
+        for (final File f : dir.listFiles()) {
+            if (candidateMemoPath.equals(f.getAbsolutePath().toLowerCase(Locale.US))) {
+                return f;
+            }
+        }
+        return null;
+
     }
 }
