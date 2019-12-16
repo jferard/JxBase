@@ -30,7 +30,6 @@ import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
-import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
@@ -39,6 +38,7 @@ import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProMemoWriter;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -108,7 +108,8 @@ public class FoxProDialectFactory {
         final XBaseMemoReader memoReader = null;
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
-        final XBaseMemoWriter memoWriter = new DB4MemoWriter(memoChannel, 512, memoHeaderMetadata);
+        final XBaseMemoWriter memoWriter =
+                new FoxProMemoWriter(memoChannel, 512, memoHeaderMetadata);
         this.memoAccess =
                 new FoxProMemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
         return this;

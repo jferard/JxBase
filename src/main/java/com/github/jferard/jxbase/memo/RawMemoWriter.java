@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.memo;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Arrays;
 
 public class RawMemoWriter {
     private final SeekableByteChannel channel;
@@ -41,7 +42,9 @@ public class RawMemoWriter {
             final int n = this.channel.write(ByteBuffer.wrap(bytes));
             // Javadoc: "Unless otherwise specified, a write operation will return only after
             // writing all of the r requested bytes"
-            assert n == bytes.length;
+            if (n != bytes.length) {
+                throw new AssertionError("Expected to write " + bytes.length + " bytes, but only " + n + " were written");
+            }
             len += bytes.length;
         }
         return offsetInBlocks + from + len / this.blockSize;
