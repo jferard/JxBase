@@ -19,11 +19,8 @@ package com.github.jferard.jxbase.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class JxBaseUtils {
     public static final int HEADER_TERMINATOR = 0x0D;
@@ -47,10 +44,12 @@ public class JxBaseUtils {
     public static int EMPTY = 0x20;
 
     // helpers
-    public static void readFieldBytes(final InputStream inputStream, final byte[] fieldBytes) throws
-            IOException {
-        if (IOUtils.readFully(inputStream, fieldBytes) != fieldBytes.length) {
-            throw new IOException("The file is corrupted or is not a dbf file");
+    public static void readFieldBytes(final InputStream inputStream, final byte[] fieldBytes)
+            throws IOException {
+        final int count = IOUtils.readFully(inputStream, fieldBytes);
+        if (count != fieldBytes.length) {
+            throw new IOException("The file is corrupted or is not a dbf file. Couldn't read " +
+                    fieldBytes.length + " bytes for a field description (just found " + count + ")");
         }
     }
 

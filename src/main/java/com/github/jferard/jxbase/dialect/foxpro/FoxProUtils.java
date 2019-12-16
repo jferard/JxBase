@@ -109,13 +109,13 @@ public class FoxProUtils {
                     (DAYS_PER_GREGORIAN_YEAR * 100));
             julianDays += 1 + shift - (int) (ONE_OUT_OF_FOUR * shift);
         }
-        final int jb = julianDays + 1524;
+        final int daysPlus4years = julianDays + toInt((4 * DAYS_PER_JULIAN_YEAR) + 63);
         final int yplus2 =
-                (int) (6680 + (jb - 6680 * DAYS_PER_JULIAN_YEAR - 122.1) / DAYS_PER_JULIAN_YEAR);
-        final int jd = (int) (DAYS_PER_JULIAN_YEAR * yplus2);
-        final int temp = jb - jd;
-        final int mplus2 = (int) (temp / DAYS_PER_JULIAN_MONTH_MARCH_TO_DECEMBER);
-        final int D = (temp - (int) (DAYS_PER_JULIAN_MONTH_MARCH_TO_DECEMBER * mplus2));
+                toInt(6680 + (daysPlus4years - 6680 * DAYS_PER_JULIAN_YEAR - 122.1) / DAYS_PER_JULIAN_YEAR);
+        final int jd = toInt(DAYS_PER_JULIAN_YEAR * yplus2);
+        final int temp = daysPlus4years - jd;
+        final int mplus2 = toInt(temp / DAYS_PER_JULIAN_MONTH_MARCH_TO_DECEMBER);
+        final int D = (temp - toInt(DAYS_PER_JULIAN_MONTH_MARCH_TO_DECEMBER * mplus2));
         int M = mplus2 - 2;
         if (M >= MONTH_PER_YEAR) {
             M -= MONTH_PER_YEAR;

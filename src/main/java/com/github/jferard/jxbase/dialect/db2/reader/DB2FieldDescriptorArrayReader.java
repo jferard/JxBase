@@ -64,7 +64,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
                 break;
             }
         }
-        if (this.incorrectRemainingFields(fieldBytes, i)) {
+        if (this.incorrectRemainingFields(fieldBytes, i+1)) {
             throw new IOException("The file is corrupted or is not a DB2 file");
         }
         return new GenericFieldDescriptorArray<A>(fields,
