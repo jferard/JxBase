@@ -35,9 +35,6 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
     @Override
     public Date getDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 8;
-        final byte[] temp = new byte[8];
-        System.arraycopy(recordBuffer, offset, temp, 0, 8);
-        System.out.println(Arrays.toString(temp));
         return new Date(FoxProUtils.julianDaysToDate(recordBuffer[offset], recordBuffer[offset + 1],
                 recordBuffer[offset + 2], recordBuffer[offset + 3]).getTime() + FoxProUtils
                 .toMillis(recordBuffer[offset + 4], recordBuffer[offset + 5],

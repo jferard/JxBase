@@ -21,40 +21,44 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Calendar;
 
-public class IntegerFieldTest {
-    private IntegerField f;
-    private IntegerAccess access;
+public class DatetimeFieldTest {
+    private DatetimeField f;
+    private DatetimeAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.access = new FoxProIntegerAccess();
-        this.f = new IntegerField("i");
+        this.access = new FoxProDatetimeAccess();
+        this.f = new DatetimeField("dt");
     }
 
     @Test
     public void getName() {
-        Assert.assertEquals("i", this.f.getName());
+        Assert.assertEquals("dt", this.f.getName());
     }
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertEquals(Long.valueOf(67305985), this.f.getValue(this.access, bytes, 0, 4));
+        final byte[] bytes = {0, 0x65, (byte) 0x25, 0, 0, 0, 0, 0};
+        final Calendar cal = Calendar.getInstance();
+        cal.set(1997, Calendar.AUGUST, 27, 2, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Assert.assertEquals(cal.getTime(), this.f.getValue(this.access, bytes, 0, 8));
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("i,I,4,0", this.f.toStringRepresentation(this.access));
+        Assert.assertEquals("dt,T,8,0", this.f.toStringRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("IntegerField[name=i]", this.f.toString());
+        Assert.assertEquals("DatetimeField[name=dt]", this.f.toString());
     }
 }
