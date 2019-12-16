@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DatetimeFieldTest {
     private DatetimeField f;
@@ -46,8 +47,8 @@ public class DatetimeFieldTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0, 0x65, (byte) 0x25, 0, 0, 0, 0, 0};
-        final Calendar cal = Calendar.getInstance();
-        cal.set(1997, Calendar.AUGUST, 27, 2, 0, 0);
+        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(1997, Calendar.AUGUST, 27, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Assert.assertEquals(cal.getTime(), this.f.getValue(this.access, bytes, 0, 8));
     }
