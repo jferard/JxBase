@@ -42,7 +42,7 @@ public class DB3AccessTest {
     public void setUp() throws Exception {
         final FileChannel channel = Mockito.mock(FileChannel.class);
         this.access =
-                new DB3DialectFactory(null, JxBaseUtils.ASCII_CHARSET, TimeZone.getTimeZone("UTC"))
+                new DB3DialectFactory(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
                         .build().getAccess();
         this.df = new DateField("date");
         this.mf = new MemoField("memo");

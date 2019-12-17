@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 public class JxBaseUtils {
     public static final int HEADER_TERMINATOR = 0x0D;
@@ -40,6 +41,7 @@ public class JxBaseUtils {
     public static final int OPTIONAL_LENGTH = 263;
     public static final int BUFFER_SIZE = 8192;
     public static final int MAX_FIELD_NAME_SIZE = 11;
+    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
     private static final CharSequence NUMERIC_OVERFLOW = "*";
     public static int EMPTY = 0x20;
 

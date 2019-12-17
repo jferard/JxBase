@@ -38,7 +38,7 @@ public class DB3FieldDescriptorArrayReaderTest {
     @Before
     public void setUp() {
         this.db3Access = new DB3DialectFactory(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
-                TimeZone.getTimeZone("UTC")).build().getAccess();
+                JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
     }
 
     @Test(expected = IOException.class)

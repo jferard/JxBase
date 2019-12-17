@@ -56,7 +56,7 @@ public class DB4MetadataReaderTest {
         Assert.assertEquals(
                 Sets.newSet("updateDate", "recordsQty", "encryptionFlag", "uncompletedTxFlag",
                         "mdxFlag", "languageDriverId"), meta.keySet());
-        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(2001, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Assert.assertEquals(calendar.getTime(), meta.get("updateDate"));

@@ -39,7 +39,7 @@ public class FoxProAccessTest {
     @Before
     public void setUp() throws Exception {
         this.access = new FoxProDialectFactory(null, JxBaseUtils.ASCII_CHARSET,
-                TimeZone.getTimeZone("UTC")).build().getAccess();
+                JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
         this.inf = new IntegerField("int");
         this.nf = new NullFlagsField("nf", 8);
         this.df = new DatetimeField("dt");
@@ -63,7 +63,7 @@ public class FoxProAccessTest {
 
     @Test
     public void writeDTValue() throws IOException {
-        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTimeInMillis(1234567891011L);
 
         final byte[] bytes = {92, 117, 37, 0, 56, 26, 121, 2};

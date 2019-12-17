@@ -65,7 +65,7 @@ public class XBaseRecordTest {
                 new GenericFieldDescriptorArray<DB4Access>(
                         Collections.<XBaseField<? super DB4Access>>emptyList(), 0, 4);
         final XBaseRecordReader reader =
-                new DB3RecordReader<DB4Access>(null, in, ascii, array, TimeZone.getTimeZone("UTC"));
+                new DB3RecordReader<DB4Access>(null, in, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
         final XBaseRecord record = reader.read();
         Assert.assertTrue(record.isDeleted());
     }
@@ -80,7 +80,7 @@ public class XBaseRecordTest {
                                 new CharacterField("y", 3)), 0, 4);
         final XBaseRecordReader reader = new DB3RecordReader<DB2CharacterAccess>(
                 new DB2CharacterAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET), null), in,
-                ascii, array, TimeZone.getTimeZone("UTC"));
+                ascii, array, JxBaseUtils.UTC_TIME_ZONE);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals("abc", record.getMap().get("y"));

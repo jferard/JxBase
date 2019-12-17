@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class DatetimeFieldTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {0, 0x65, (byte) 0x25, 0, 0, 0, 0, 0};
-        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         cal.set(1997, Calendar.AUGUST, 27, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Assert.assertEquals(cal.getTime(), this.f.getValue(this.access, bytes, 0, 8));

@@ -24,6 +24,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
+import java.nio.BufferUnderflowException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+
 public class DB3MemoReaderTest {
     private DB3MemoReader reader;
     private MemoFileHeader header;
@@ -34,6 +39,21 @@ public class DB3MemoReaderTest {
         this.header = Mockito.mock(MemoFileHeader.class);
         this.rawMemoReader = Mockito.mock(RawMemoReader.class);
         this.reader = new DB3MemoReader(this.header, this.rawMemoReader);
+    }
+
+    @Test
+    public void testCreate() throws IOException {
+        final FileChannel channel = Mockito.mock(FileChannel.class);
+        final MappedByteBuffer buffer = Mockito.mock(MappedByteBuffer.class);
+
+        Mockito.when(channel.size()).thenReturn(10L);
+        Mockito.when(channel.map(FileChannel.MapMode.READ_ONLY, 0, 10)).thenReturn(buffer);
+
+        DB3MemoReader.create(channel);
+
+        Mockito.verify(buffer).get(Mockito.isA(byte[].class));
+        Mockito.verify(channel).size();
+        Mockito.verify(channel).map(FileChannel.MapMode.READ_ONLY, 0, 10);
     }
 
     @Test
@@ -48,5 +68,13 @@ public class DB3MemoReaderTest {
 
         Assert.assertEquals(3, this.reader.read(8).getLength());
         Assert.assertArrayEquals(new byte[]{1, 2, 3}, this.reader.read(8).getBytes());
+    }
+
+    @Test
+    public void testReadBufferUnderflow() {
+        Mockito.when(this.rawMemoReader.read(8, 0, 512)).thenThrow(new BufferUnderflowException());
+
+        Assert.assertEquals(0, this.reader.read(8).getLength());
+        Assert.assertArrayEquals(new byte[]{}, this.reader.read(8).getBytes());
     }
 }

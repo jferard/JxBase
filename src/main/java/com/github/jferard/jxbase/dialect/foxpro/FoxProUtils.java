@@ -17,11 +17,11 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 public class FoxProUtils {
 
@@ -35,19 +35,19 @@ public class FoxProUtils {
     public static final double JULIAN_SHIFT_IN_DAYS_PER_YEAR = 0.01;
     public static final double ONE_OUT_OF_FOUR = 0.25;
     public static final double DAYS_PER_GREGORIAN_YEAR = 365.2425;
-    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
     public static Date createHeaderUpdateDate(final byte yearByte, final byte monthByte,
                                               final byte dayByte) {
         final int year = yearByte + 2000;
-        final Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(year, monthByte - 1, dayByte, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
 
     // cf. https://bowie.gsfc.nasa.gov/time/julian.html
     public static int dateToJulianDays(final Date date) {
-        final GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        final GregorianCalendar calendar = new GregorianCalendar(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTime(date);
         int years = calendar.get(Calendar.YEAR);
         assert years != 0;
@@ -90,7 +90,7 @@ public class FoxProUtils {
     }
 
     public static int millisFromDate(final Date date) {
-        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTime(date);
         return ((calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
                 calendar.get(Calendar.SECOND)) * 1000;
@@ -136,7 +136,7 @@ public class FoxProUtils {
     }
 
     public static Date getDate(final int year, final int month, final int day, final int era) {
-        final Calendar calendar = Calendar.getInstance(UTC_TIME_ZONE);
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(year, month, day, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();

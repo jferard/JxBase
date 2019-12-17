@@ -34,11 +34,10 @@ public class DB2Utils {
             JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE,
             JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE};
     public static final int DB2_DELETED_RECORD_HEADER = 0x2A;
-    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");
 
     public static void writeHeaderUpdateDate(final OutputStream out, final Date updateDate)
             throws IOException {
-        final Calendar calendar = Calendar.getInstance(UTC_TIME_ZONE);
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTime(updateDate);
         out.write(calendar.get(Calendar.YEAR) - 1900);
         out.write(calendar.get(Calendar.MONTH) + 1);
@@ -49,7 +48,7 @@ public class DB2Utils {
                                               final byte dayByte) {
         final int year = yearByte + 1900;
         final int month = monthByte - 1;
-        final Calendar calendar = Calendar.getInstance(UTC_TIME_ZONE);
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(year, month, dayByte, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
