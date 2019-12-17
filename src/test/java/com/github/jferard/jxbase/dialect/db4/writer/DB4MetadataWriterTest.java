@@ -18,7 +18,8 @@ package com.github.jferard.jxbase.dialect.db4.writer;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
-import com.github.jferard.jxbase.dialect.db3.writer.DB3MetadataWriter;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,13 +38,14 @@ public class DB4MetadataWriterTest {
 
     private RandomAccessFile file;
     private ByteArrayOutputStream out;
-    private DB4MetadataWriter writer;
+    private DB4MetadataWriter<DB4Dialect, DB4Access> writer;
 
     @Before
     public void setUp() {
         this.file = Mockito.mock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
-        this.writer = new DB4MetadataWriter(null, this.file, this.out, JxBaseUtils.ASCII_CHARSET);
+        this.writer = new DB4MetadataWriter<DB4Dialect, DB4Access>(null, this.file, this.out,
+                JxBaseUtils.ASCII_CHARSET);
     }
 
     @Test
@@ -55,8 +57,7 @@ public class DB4MetadataWriterTest {
         meta.put("encryptionFlag", 3);
         meta.put("mdxFlag", 3);
         meta.put("languageDriverId", 4);
-        this.writer
-                .write(new GenericMetadata(XBaseFileTypeEnum.dBASE4.toByte(), 128, 11, meta));
+        this.writer.write(new GenericMetadata(XBaseFileTypeEnum.dBASE4.toByte(), 128, 11, meta));
         Assert.assertArrayEquals(
                 new byte[]{4, 70, 1, 1, 1, 0, 0, 0, -128, 0, 11, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0, 3, 4, 0, 0}, this.out.toByteArray());

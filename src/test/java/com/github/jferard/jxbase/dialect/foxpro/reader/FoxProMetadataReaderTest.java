@@ -60,5 +60,4 @@ public class FoxProMetadataReaderTest {
         Assert.assertEquals(calendar.getTime(), meta.get("updateDate"));
         Assert.assertEquals(1, meta.get("recordsQty"));
     }
-
 }

@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
@@ -64,6 +64,7 @@ public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2D
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<DB2Access> array) {
-        return new DB2OptionalReader(this.dialect, inputStream, metadata, array);
+        return new DB2OptionalReader<DB2Dialect, DB2Access>(this.dialect, inputStream, metadata,
+                array);
     }
 }

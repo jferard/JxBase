@@ -20,6 +20,8 @@ import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BitUtils;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -32,9 +34,10 @@ import java.util.Map;
 
 public class DB4MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
-    private final XBaseDialect dialect;
+    private final XBaseDialect<DB4Dialect, DB4Access> dialect;
 
-    public DB4MetadataReader(final XBaseDialect dialect, final InputStream dbfInputStream) {
+    public DB4MetadataReader(final XBaseDialect dialect,
+                             final InputStream dbfInputStream) {
         this.dialect = dialect;
         this.dbfInputStream = dbfInputStream;
     }

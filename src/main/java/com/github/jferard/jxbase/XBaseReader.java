@@ -24,18 +24,18 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.text.ParseException;
 
-public interface XBaseReader extends Closeable {
+public interface XBaseReader<D extends XBaseDialect<D, A>, A> extends Closeable {
     /**
      * @return the next record, or null if the end of file was reached
      * @throws IOException if an I/O exception occurs
      */
     XBaseRecord read() throws IOException, ParseException;
 
-    XBaseDialect getDialect();
+    XBaseDialect<D, A> getDialect();
 
     XBaseMetadata getMetadata();
 
-    XBaseFieldDescriptorArray getFieldDescriptorArray();
+    XBaseFieldDescriptorArray<A> getFieldDescriptorArray();
 
     XBaseOptional getOptional();
 

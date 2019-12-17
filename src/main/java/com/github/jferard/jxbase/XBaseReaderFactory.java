@@ -27,12 +27,12 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 public class XBaseReaderFactory {
-    public static XBaseReader createReader(final String databaseName, final Charset charset)
+    public static XBaseReader<?, ?> createReader(final String databaseName, final Charset charset)
             throws IOException {
         return new XBaseReaderFactory().create(databaseName, charset);
     }
 
-    private XBaseReader create(final String databaseName, final Charset charset)
+    private XBaseReader<?, ?> create(final String databaseName, final Charset charset)
             throws IOException {
         final InputStream dbfInputStream =
                 new FileInputStream(IOUtils.getFile(databaseName + ".dbf"));

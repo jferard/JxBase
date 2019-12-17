@@ -18,6 +18,8 @@ package com.github.jferard.jxbase.dialect.db3.writer;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.dialect.db3.DB3Access;
+import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,13 +38,14 @@ public class DB3MetadataWriterTest {
 
     private RandomAccessFile file;
     private ByteArrayOutputStream out;
-    private DB3MetadataWriter writer;
+    private DB3MetadataWriter<DB3Dialect, DB3Access> writer;
 
     @Before
     public void setUp() {
         this.file = Mockito.mock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
-        this.writer = new DB3MetadataWriter(null, this.file, this.out, JxBaseUtils.ASCII_CHARSET);
+        this.writer = new DB3MetadataWriter<DB3Dialect, DB3Access>(null, this.file, this.out,
+                JxBaseUtils.ASCII_CHARSET);
     }
 
     @Test

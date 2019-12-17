@@ -16,8 +16,6 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.core.XBaseOptional;
-
 public class GenericOptional implements XBaseOptional {
     public static final XBaseOptional EMPTY = new XBaseOptional() {
         @Override
