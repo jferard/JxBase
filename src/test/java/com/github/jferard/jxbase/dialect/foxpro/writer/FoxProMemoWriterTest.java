@@ -46,4 +46,17 @@ public class FoxProMemoWriterTest {
         Mockito.verify(channel, Mockito.times(4)).write(Mockito.isA(ByteBuffer.class));
     }
 
+    @Test
+    public void testCloseAndFix() throws IOException {
+        final SeekableByteChannel channel = Mockito.mock(SeekableByteChannel.class);
+        final byte[] h = new byte[512];
+        h[6] = 2;
+        Mockito.when(channel.write(ByteBuffer.wrap(h))).thenReturn(512);
+        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).thenReturn(4);
+
+        final XBaseMemoWriter writer =
+                new FoxProMemoWriter(channel, 4, Collections.<String, Object>emptyMap());
+        writer.fixMetadata();
+        writer.close();
+    }
 }

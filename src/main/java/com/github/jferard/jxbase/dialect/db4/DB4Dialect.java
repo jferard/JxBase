@@ -91,6 +91,9 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
                 }
                 return new LogicalField(name);
             case 'M':
+                if (length != 10) {
+                    throw new IllegalArgumentException("A memo address has 10 chars");
+                }
                 return new MemoField(name);
             case 'N':
                 return new NumericField(name, length, numberOfDecimalPlaces);
