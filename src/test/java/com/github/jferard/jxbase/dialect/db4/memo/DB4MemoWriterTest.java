@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db4.writer;
+package com.github.jferard.jxbase.dialect.db4.memo;
 
-import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
-import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProMemoWriter;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoWriter;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Test;

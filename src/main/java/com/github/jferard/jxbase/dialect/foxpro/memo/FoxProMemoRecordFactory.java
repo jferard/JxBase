@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.foxpro.memo;
 
+import com.github.jferard.jxbase.memo.ByteMemoRecord;
 import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
@@ -28,20 +29,19 @@ public class FoxProMemoRecordFactory {
         this.charset = charset;
     }
 
-    public XBaseMemoRecord create(final byte[] dataBytes,
-                                  final MemoRecordTypeEnum memoRecordType,
+    public XBaseMemoRecord create(final byte[] dataBytes, final MemoRecordTypeEnum memoRecordType,
                                   final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:
+            case OBJECT:
                 return new ImageMemoRecord(dataBytes, memoRecordLength);
             case TEXT:
                 return new TextMemoRecord(new String(dataBytes, 0, memoRecordLength, this.charset),
                         this.charset);
-            case OBJECT:
-                return new ImageMemoRecord(dataBytes, memoRecordLength);
+            case NO_TYPE:
+                return new ByteMemoRecord(dataBytes, memoRecordLength);
             default:
-                return new ImageMemoRecord(dataBytes, memoRecordLength);
-                // throw new IllegalArgumentException(memoRecordType.toString());
+                throw new IllegalArgumentException(memoRecordType.toString());
         }
     }
 }

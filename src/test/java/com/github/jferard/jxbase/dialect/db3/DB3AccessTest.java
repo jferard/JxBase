@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.db3;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
-import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -31,7 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class DB3AccessTest {
     private CDLMNFieldsAccess access;

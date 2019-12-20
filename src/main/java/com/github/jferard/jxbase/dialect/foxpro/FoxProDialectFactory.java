@@ -27,11 +27,9 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
-import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
@@ -39,8 +37,10 @@ import com.github.jferard.jxbase.dialect.foxpro.field.FoxProMemoAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoReader;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
-import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProMemoWriter;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -96,7 +96,7 @@ public class FoxProDialectFactory {
             memoReader = null;
         } else {
             final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-            memoReader = new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(this.charset),
+            memoReader = FoxProMemoReader.create(memoChannel, new FoxProMemoRecordFactory(this.charset),
                     new FoxProMemoFileHeaderReader());
         }
         this.memoAccess =

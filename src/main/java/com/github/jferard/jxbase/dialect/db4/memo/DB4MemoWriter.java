@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro.writer;
+package com.github.jferard.jxbase.dialect.db4.memo;
 
 import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db4.DB4Utils;
 import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -29,26 +30,27 @@ import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Map;
 
-public class FoxProMemoWriter implements XBaseMemoWriter {
-    public static FoxProMemoWriter fromRandomAccess(final File memoFile,
-                                                    final Map<String, Object> headerMeta)
+public class DB4MemoWriter implements XBaseMemoWriter {
+
+    public static DB4MemoWriter fromRandomAccess(final File memoFile,
+                                                 final Map<String, Object> headerMeta)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
-        return new FoxProMemoWriter(randomAccessFile.getChannel(), 512, headerMeta);
+        return new DB4MemoWriter(randomAccessFile.getChannel(), 512, headerMeta);
     }
 
-    public static FoxProMemoWriter fromChannel(final File memoFile,
-                                               final Map<String, Object> headerMeta)
+    public static DB4MemoWriter fromChannel(final File memoFile,
+                                            final Map<String, Object> headerMeta)
             throws IOException {
         final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);
-        return new FoxProMemoWriter(fileOutputStream.getChannel(), 512, headerMeta);
+        return new DB4MemoWriter(fileOutputStream.getChannel(), 512, headerMeta);
     }
 
     private final RawMemoWriter rawMemoWriter;
     private long curOffsetInBlocks;
 
-    public FoxProMemoWriter(final SeekableByteChannel channel, final int blockSize,
-                            final Map<String, Object> headerMeta) throws IOException {
+    public DB4MemoWriter(final SeekableByteChannel channel, final int blockSize,
+                         final Map<String, Object> headerMeta) throws IOException {
         this.rawMemoWriter =
                 new RawMemoWriter(channel, DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH, blockSize);
         this.writeHeader(headerMeta);
@@ -56,8 +58,7 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
 
     private void writeHeader(final Map<String, Object> headerMeta) throws IOException {
         final byte[] bytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
-        bytes[5] = 0x00;
-        bytes[6] = 0x02;
+        bytes[5] = 0x02;
         this.rawMemoWriter.write(0, 0, bytes);
         this.curOffsetInBlocks = 1;
     }
@@ -65,8 +66,8 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
     @Override
     public long write(final XBaseMemoRecord memo) throws IOException {
         this.curOffsetInBlocks = this.rawMemoWriter.write(this.curOffsetInBlocks, 0,
-                BitUtils.makeBEByte4(memo.getMemoType().getType()),
-                BitUtils.makeBEByte4(memo.getLength()), memo.getBytes());
+                DB4Utils.MEMO_FIELD_RESERVED_BYTES,
+                BitUtils.makeLEByte4(memo.getLength()), memo.getBytes());
         return this.curOffsetInBlocks;
     }
 

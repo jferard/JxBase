@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db3.reader;
+package com.github.jferard.jxbase.dialect.db3.memo;
 
+import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.ByteMemoRecord;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;

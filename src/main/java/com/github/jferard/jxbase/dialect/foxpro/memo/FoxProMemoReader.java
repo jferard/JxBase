@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db4.reader;
+package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
+import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
 import com.github.jferard.jxbase.memo.RawMemoReader;
@@ -24,64 +24,37 @@ import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.BitUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
-import java.nio.charset.Charset;
 
 /**
- * Reader of memo files (tested of *.FPT files - Visual FoxPro)
- * See links:
- * <p>
- * Visual FoxPro file formats:
- * http://msdn.microsoft.com/en-us/library/aa977077(v=vs.71).aspx
- * <p>
- * DBase file formats:
- * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
- * <p>
- * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
-public class DB4MemoReader implements XBaseMemoReader {
-    public static DB4MemoReader fromRandomAccess(final File memoFile, final Charset charset)
-            throws IOException {
-        final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "r");
-        return new DB4MemoReader(randomAccessFile.getChannel(),
-                new FoxProMemoRecordFactory(charset), new DB4MemoFileHeaderReader());
+public class FoxProMemoReader implements XBaseMemoReader {
+    public static XBaseMemoReader create(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
+                                         final MemoFileHeaderReader memoFileHeaderReader) throws IOException {
+        final ByteBuffer memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
+        final MemoFileHeader memoHeader = memoFileHeaderReader.read(memoByteBuffer);
+        final RawMemoReader rawMemoReader = new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
+                memoHeader.getBlockLength());
+        return new FoxProMemoReader(channel, memoRecordFactory, rawMemoReader);
     }
 
-    public static DB4MemoReader fromChannel(final File memoFile, final Charset charset)
-            throws IOException {
-        if (memoFile == null) {
-            return null;
-        }
-        final FileInputStream fileInputStream = new FileInputStream(memoFile);
-        return new DB4MemoReader(fileInputStream.getChannel(), new FoxProMemoRecordFactory(charset),
-                new DB4MemoFileHeaderReader());
-    }
-
-    private final ByteBuffer memoByteBuffer;
     private final FileChannel channel;
     private final FoxProMemoRecordFactory memoRecordFactory;
-    private final MemoFileHeader memoHeader;
     private final RawMemoReader rawMemoReader;
 
-    public DB4MemoReader(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
-                         final MemoFileHeaderReader memoFileHeaderReader) throws IOException {
+    public FoxProMemoReader(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
+                            final RawMemoReader rawMemoReader) {
         this.channel = channel;
-        this.memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
         this.memoRecordFactory = memoRecordFactory;
-        this.memoHeader = memoFileHeaderReader.read(this.memoByteBuffer);
-        this.rawMemoReader = new RawMemoReader(this.memoByteBuffer, this.memoByteBuffer.position(),
-                this.memoHeader.getBlockLength());
+        this.rawMemoReader = rawMemoReader;
     }
 
     @Override
     public void close() throws IOException {
-        //        this.channel.close();
+        this.channel.close();
     }
 
     /**

@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.XBaseWriterFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;

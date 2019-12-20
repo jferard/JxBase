@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoReader;
+import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
@@ -39,7 +39,6 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Collections;
-import java.util.TimeZone;
 
 public class XBaseRecordTest {
     //    private DB3MemoDialect dbfFieldFactory;

@@ -46,7 +46,7 @@ public class DB2MetadataReader implements XBaseMetadataReader {
     public GenericMetadata read() throws IOException {
         final byte[] headerBytes = new byte[0x208];
         if (IOUtils.readFully(this.dbfInputStream, headerBytes) != 0x208) {
-            throw new IOException("The file is corrupted or is not a dbf file");
+            throw new IOException("A DB2 file has a header of 520 bytes");
         }
         final byte typeByte = headerBytes[0];
         final XBaseFileTypeEnum type = XBaseFileTypeEnum.fromInt(typeByte);

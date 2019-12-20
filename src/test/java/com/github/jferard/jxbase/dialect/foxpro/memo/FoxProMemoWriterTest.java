@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db3.writer;
+package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
-import com.github.jferard.jxbase.dialect.foxpro.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Test;
@@ -28,21 +28,36 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Collections;
 
-public class DB3MemoWriterTest {
+public class FoxProMemoWriterTest {
     @Test
     public void test() throws IOException {
         final SeekableByteChannel channel = Mockito.mock(SeekableByteChannel.class);
         final byte[] h = new byte[512];
-        h[16] = 3;
+        h[6] = 2;
         Mockito.when(channel.write(ByteBuffer.wrap(h))).thenReturn(512);
+        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 1}))).thenReturn(4);
+        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 5}))).thenReturn(4);
         Mockito.when(channel.write(ByteBuffer.wrap("abcde".getBytes(JxBaseUtils.ASCII_CHARSET))))
                 .thenReturn(5);
 
         final XBaseMemoWriter writer =
-                new DB3MemoWriter(channel, Collections.<String, Object>emptyMap());
+                new FoxProMemoWriter(channel, 4, Collections.<String, Object>emptyMap());
         writer.write(new TextMemoRecord("abcde", JxBaseUtils.ASCII_CHARSET));
 
-        Mockito.verify(channel, Mockito.times(2)).write(Mockito.isA(ByteBuffer.class));
+        Mockito.verify(channel, Mockito.times(4)).write(Mockito.isA(ByteBuffer.class));
     }
 
+    @Test
+    public void testCloseAndFix() throws IOException {
+        final SeekableByteChannel channel = Mockito.mock(SeekableByteChannel.class);
+        final byte[] h = new byte[512];
+        h[6] = 2;
+        Mockito.when(channel.write(ByteBuffer.wrap(h))).thenReturn(512);
+        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).thenReturn(4);
+
+        final XBaseMemoWriter writer =
+                new FoxProMemoWriter(channel, 4, Collections.<String, Object>emptyMap());
+        writer.fixMetadata();
+        writer.close();
+    }
 }

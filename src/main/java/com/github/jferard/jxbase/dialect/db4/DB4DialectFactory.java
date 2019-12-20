@@ -28,12 +28,13 @@ import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
+import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoFileHeaderReader;
-import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoReader;
-import com.github.jferard.jxbase.dialect.db4.writer.DB4MemoWriter;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProMemoRecordFactory;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoWriter;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -76,8 +77,11 @@ public class DB4DialectFactory {
     public DB4DialectFactory reader(final String databaseName) throws IOException {
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
+        /** other version:
+         * final FileChannel memoChannel = new RandomAccessFile(memoFile, "r").getChannel();
+         */
         final XBaseMemoReader memoReader =
-                new DB4MemoReader(memoChannel, new FoxProMemoRecordFactory(this.charset),
+                DB4MemoReader.create(memoChannel, new FoxProMemoRecordFactory(this.charset),
                         new DB4MemoFileHeaderReader());
         final XBaseMemoWriter memoWriter = null;
         this.memoAccess =
@@ -91,15 +95,21 @@ public class DB4DialectFactory {
         final XBaseMemoReader memoReader = null;
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
-        final XBaseMemoWriter memoWriter = new DB4MemoWriter(memoChannel, 512, memoHeaderMetadata);
+        /** other version:
+         * final FileChannel memoChannel = new RandomAccessFile(memoFile, "rw").getChannel();
+         */
+        final XBaseMemoWriter memoWriter =
+                new DB4MemoWriter(memoChannel, DB3MemoFileHeaderReader.BLOCK_LENGTH,
+                        memoHeaderMetadata);
         this.memoAccess =
                 new DB3MemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
         return this;
     }
 
     public XBaseDialect<DB4Dialect, DB4Access> build() {
-        final DB4Access access = new DB4Access(this.characterAccess, this.dateAccess, this.floatAccess,
-                this.logicalAccess, this.memoAccess, this.numericAccess);
+        final DB4Access access =
+                new DB4Access(this.characterAccess, this.dateAccess, this.floatAccess,
+                        this.logicalAccess, this.memoAccess, this.numericAccess);
         return new DB4Dialect(this.type, access);
     }
 }

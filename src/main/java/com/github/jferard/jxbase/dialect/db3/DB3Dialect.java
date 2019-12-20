@@ -62,6 +62,9 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
                 }
                 return new LogicalField(name);
             case 'M':
+                if (length != 10) {
+                    throw new IllegalArgumentException("A memo address has 10 chars");
+                }
                 return new MemoField(name);
             case 'N':
                 return new NumericField(name, length, numberOfDecimalPlaces);
