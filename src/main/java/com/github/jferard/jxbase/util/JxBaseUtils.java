@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019 Julien Férard
+ * JxBase - Copyright (c) 2019-2020 Julien Férard
  * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.TimeZone;
 
 public class JxBaseUtils {
@@ -71,4 +74,15 @@ public class JxBaseUtils {
         return length;
     }
 
+    public static String join(final String delimiter, final Iterable<String> chunks) {
+        final Iterator<String> it = chunks.iterator();
+        final StringBuilder sb = new StringBuilder();
+        if (it.hasNext()) {
+            sb.append(it.next());
+            while (it.hasNext()) {
+                sb.append(delimiter).append(it.next());
+            }
+        }
+        return sb.toString();
+    }
 }

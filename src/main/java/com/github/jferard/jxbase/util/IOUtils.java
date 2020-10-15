@@ -142,15 +142,36 @@ public class IOUtils {
     }
 
     public static File getFile(final String filename) {
-        final File candidateMemoFile = new File(filename);
-        final String candidateMemoPath = candidateMemoFile.getAbsolutePath().toLowerCase(Locale.US);
-        final File dir = candidateMemoFile.getParentFile();
+        final File candidateFile = new File(filename);
+        final String candidatePath = candidateFile.getAbsolutePath();
+        final File dir = candidateFile.getParentFile();
         for (final File f : dir.listFiles()) {
-            if (candidateMemoPath.equals(f.getAbsolutePath().toLowerCase(Locale.US))) {
+            if (candidatePath.equalsIgnoreCase(f.getAbsolutePath())) {
                 return f;
             }
         }
         return null;
+    }
 
+    public static String getExtension(final File pathname) {
+        if (!pathname.isFile()) {
+            return null;
+        }
+        final String name = pathname.getName();
+        if (!name.contains(".")) {
+            return "";
+        }
+        return name.substring(name.lastIndexOf(".") + 1);
+    }
+
+    public static String removeExtension(final File pathname) {
+        if (!pathname.isFile()) {
+            return null;
+        }
+        final String fullpath = pathname.getAbsolutePath();
+        if (!fullpath.contains(".")) {
+            return fullpath;
+        }
+        return fullpath.substring(0, fullpath.lastIndexOf("."));
     }
 }

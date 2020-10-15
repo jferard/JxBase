@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro.field;
-
-import com.github.jferard.jxbase.field.FieldRepresentation;
+package com.github.jferard.jxbase.tool;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
-public interface IntegerAccess {
-    int getIntegerValueLength();
+public interface SQLQueryBuilder {
+    String dropTable();
 
-    Long getIntegerValue(byte[] recordBuffer, int offset, int length);
+    String createTable() throws IOException;
 
-    void writeIntegerValue(OutputStream out, Long value) throws IOException;
+    String insertValues();
 
-    FieldRepresentation getIntegerFieldRepresentation(String name);
+    int getValuesSize();
 }

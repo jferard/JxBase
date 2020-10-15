@@ -21,11 +21,13 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class FoxProUtilsTest {
     @Test
     public void dateToJulianAD() {
-        final Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.US);
         cal.set(Calendar.ERA, GregorianCalendar.AD);
         cal.set(1, Calendar.JANUARY, 1);
         Assert.assertEquals(1721424, FoxProUtils.dateToJulianDays(cal.getTime()));
@@ -39,7 +41,7 @@ public class FoxProUtilsTest {
 
     @Test
     public void dateToJulianBC() {
-        final Calendar cal = Calendar.getInstance();
+        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.US);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
         cal.set(4713, Calendar.JANUARY, 1);
         Assert.assertEquals(0, FoxProUtils.dateToJulianDays(cal.getTime()));
