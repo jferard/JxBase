@@ -77,7 +77,7 @@ limitations under the License.
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <maven.compiler.version>3.7.0</maven.compiler.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <powermock.version>1.7.3</powermock.version>
     </properties>
 
