@@ -125,7 +125,7 @@ public enum XBaseFileTypeEnum {
     /**
      * 11110101 - 0xf5
      */
-    FoxPro2xMemo(0xF5, XBaseMemoFileType.REGULAR_MEMO_FILE, "FoxPro 2.x (or earlier) with memo"),
+    FoxPro2xMemo(0xF5, XBaseMemoFileType.FOXPRO_OBJECT_AND_MEMO_FILE, "FoxPro 2.x (or earlier) with memo"),
 
     /**
      * 11111011 - 0xfb
