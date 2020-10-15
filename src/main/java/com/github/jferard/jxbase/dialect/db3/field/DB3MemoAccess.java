@@ -48,6 +48,9 @@ public class DB3MemoAccess implements MemoAccess {
     public XBaseMemoRecord getMemoValue(final byte[] recordBuffer, final int offset,
                                         final int length) throws IOException {
         final long offsetInBlocks = this.getOffsetInBlocks(recordBuffer, offset, length);
+        if (offsetInBlocks == 0) {
+            return null;
+        }
         return this.memoReader.read(offsetInBlocks);
     }
 
@@ -64,6 +67,9 @@ public class DB3MemoAccess implements MemoAccess {
     public long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
                 this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+        if (s == null) {
+            return 0;
+        }
         return Long.valueOf(s);
     }
 
