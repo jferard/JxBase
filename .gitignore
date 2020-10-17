@@ -1,6 +1,7 @@
 target/
 out/
 *.db
+*.sqlite
 
 # eclipse
 .classpath

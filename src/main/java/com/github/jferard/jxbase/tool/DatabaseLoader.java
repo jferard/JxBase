@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,6 +36,73 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class DatabaseLoader {
+    /**
+     * Example:
+     *
+     * ...$ java -cp "$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.32.3.2/sqlite-jdbc-3.32.3.2.jar:$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader $HOME/prog/java/jxbase/src/test/resources/data1 "jdbc:sqlite:./test.db"
+     *
+     * @param args
+     * @throws ClassNotFoundException
+     */
+    public static final void main(final String[] args) throws ClassNotFoundException {
+        if (args.length == 0 || args[0].equals("-h") || args[0].equals("--help")) {
+            System.out.println(
+                    "Usage: java -cp 'path/to/jxbase/jar:path/to/jdbc/driver/jar' com.github.jferard.jxbase.tool.DatabaseLoader [option] [source] [connect_string]\n" +
+                            "\n" +
+                            "   -h, --help          Print this message\n" +
+                            "   -c driver_class     Load the driver using Class.forName\n" +
+                            "   -d                  Drop tables if they exist\n" +
+                            "   -s N                Chunk size (default is one chunk of the size of the file)\n" +
+                            "                       Use this to avoid an out of memory for big files\n" +
+                            "   source              A directory or a single dbf file\n" +
+                            "   connection_string   A connection string to the database"
+            );
+            return;
+        }
+        boolean dropTable = false;
+        int chunkSize = -1;
+        int i = 0;
+        while (true) {
+            if (args[i].equals("-c")) {
+                Class.forName(args[i+1]);
+                i += 2;
+            } else if (args[i].equals("-d")) {
+                dropTable = true;
+                i ++;
+            } else if (args[i].equals("-s")) {
+                chunkSize = Integer.parseInt(args[i+1]);
+                i += 2;
+            } else {
+                break;
+            }
+        }
+        final File source = new File(args[i]);
+        final String url = args[i+1];
+        try {
+            final Connection connection = DriverManager.getConnection(url);
+            try {
+                final DatabaseLoader loader =
+                        new DatabaseLoader(Logger.getAnonymousLogger(), connection,
+                                SQLQueryBuilderProvider.create(connection), dropTable, chunkSize);
+                if (source.isFile()) {
+                    loader.buildAndFillTable(source);
+                } else if (source.isDirectory()) {
+                    loader.buildAndFillTables(source);
+                } else {
+                    System.err.println("Unknown source");
+                }
+            } finally {
+                connection.close();
+            }
+        } catch (final SQLException e) {
+            e.printStackTrace(System.err);
+        } catch (final ParseException e) {
+            e.printStackTrace(System.err);
+        } catch (final IOException e) {
+            e.printStackTrace(System.err);
+        }
+    }
+
     public static DatabaseLoader create(final Logger logger, final Connection connection)
             throws SQLException {
         final SQLQueryBuilderProvider provider = SQLQueryBuilderProvider.create(connection);
@@ -68,7 +136,7 @@ public class DatabaseLoader {
         }
     }
 
-    private void buildAndFillTable(final File filename)
+    public void buildAndFillTable(final File filename)
             throws IOException, SQLException, ParseException {
         this.logger.info(" > " + filename);
         final String filenameWithoutExt = IOUtils.removeExtension(filename);
@@ -111,7 +179,7 @@ public class DatabaseLoader {
     private boolean addBatchRows(final PreparedStatement preparedStatement,
                                  final XBaseReader<?, ?> reader)
             throws IOException, SQLException, ParseException {
-        for (int i = 0; i < this.chunkSize; i++) {
+        for (int i = 0; i != this.chunkSize; i++) {
             final XBaseRecord record = reader.read();
             if (record == null) {
                 return i != 0;

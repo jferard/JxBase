@@ -8,6 +8,28 @@ JxBase
 
 JxBase is a fork from [jdbf](https://github.com/iryndin/jdbf), a Java utility to read/write DBF files
 
+## Convert a DBF file to SQLite from command line
+Call, from command line, the class `com.github.jferard.jxbase.tool.DatabaseLoader`. Here's an example:
+
+    ...$ java -cp "$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader
+    Usage: java -cp 'path/to/jxbase/jar:path/to/jdbc/driver/jar' com.github.jferard.jxbase.tool.DatabaseLoader [option] [source] [connect_string]
+    
+       -h, --help          Print this message
+       -c driver_class     Load the driver using Class.forName
+       -d                  Drop tables if they exist
+       -s N                Chunk size (default is one chunk of the size of the file)
+                           Use this to avoid an out of memory for big files
+       source              A directory or a single dbf file
+       connection_string   A connection string to the database
+    ...$java -cp "$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.32.3.2/sqlite-jdbc-3.32.3.2.jar:$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader -d -s 10000 $HOME/prog/java/jxbase/src/test/resources/data1 "jdbc:sqlite:./test.sqlite"
+    oct. 17, 2020 10:52:55 PM com.github.jferard.jxbase.tool.DatabaseLoader buildAndFillTables
+    INFOS: Build tables
+    oct. 17, 2020 10:52:55 PM com.github.jferard.jxbase.tool.DatabaseLoader buildAndFillTable
+    INFOS:  > /home/jferard/prog/java/jxbase/src/test/resources/data1/gds_im.dbf
+    oct. 17, 2020 10:52:55 PM com.github.jferard.jxbase.tool.DatabaseLoader buildAndFillTable
+    INFOS:  > /home/jferard/prog/java/jxbase/src/test/resources/data1/tir_im.dbf
+         
+
 ## User Guide
 
 ### Read a DBF file 
