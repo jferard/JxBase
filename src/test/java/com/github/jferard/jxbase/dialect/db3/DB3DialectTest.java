@@ -41,7 +41,7 @@ public class DB3DialectTest {
     @Before
     public void setUp() {
         final DB3DialectFactory factory =
-                new DB3DialectFactory(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         this.dialect = factory.build();
     }

@@ -53,6 +53,9 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                                                           final int length,
                                                           final int numberOfDecimalPlaces) {
         switch (typeByte) {
+            case 'B':
+                // length is ignored
+                return new DoubleField(name, numberOfDecimalPlaces);
             case 'C':
                 return new CharacterField(name, length);
             case 'D':

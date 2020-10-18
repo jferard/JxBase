@@ -16,12 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
-import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -31,33 +30,43 @@ import java.util.Collections;
 public class FoxProMemoWriterTest {
     @Test
     public void test() throws IOException {
-        final SeekableByteChannel channel = Mockito.mock(SeekableByteChannel.class);
+        final SeekableByteChannel channel = PowerMock.createMock(SeekableByteChannel.class);
         final byte[] h = new byte[512];
         h[6] = 2;
-        Mockito.when(channel.write(ByteBuffer.wrap(h))).thenReturn(512);
-        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 1}))).thenReturn(4);
-        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 5}))).thenReturn(4);
-        Mockito.when(channel.write(ByteBuffer.wrap("abcde".getBytes(JxBaseUtils.ASCII_CHARSET))))
-                .thenReturn(5);
+        PowerMock.resetAll();
+
+        EasyMock.expect(channel.write(ByteBuffer.wrap(h))).andReturn(512);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 1}))).andReturn(4);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{0, 0, 0, 5}))).andReturn(4);
+        EasyMock.expect(channel.write(ByteBuffer.wrap("abcde".getBytes(JxBaseUtils.ASCII_CHARSET))))
+                .andReturn(5);
+        EasyMock.expect(channel.position(-508L)).andReturn(channel);
+        EasyMock.expect(channel.position(4L)).andReturn(channel);
+        PowerMock.replayAll();
 
         final XBaseMemoWriter writer =
                 new FoxProMemoWriter(channel, 4, Collections.<String, Object>emptyMap());
         writer.write(new TextMemoRecord("abcde", JxBaseUtils.ASCII_CHARSET));
-
-        Mockito.verify(channel, Mockito.times(4)).write(Mockito.isA(ByteBuffer.class));
+        PowerMock.verifyAll();
     }
 
     @Test
     public void testCloseAndFix() throws IOException {
-        final SeekableByteChannel channel = Mockito.mock(SeekableByteChannel.class);
+        final SeekableByteChannel channel = PowerMock.createMock(SeekableByteChannel.class);
         final byte[] h = new byte[512];
         h[6] = 2;
-        Mockito.when(channel.write(ByteBuffer.wrap(h))).thenReturn(512);
-        Mockito.when(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).thenReturn(4);
+        PowerMock.resetAll();
+
+        EasyMock.expect(channel.write(ByteBuffer.wrap(h))).andReturn(512);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).andReturn(4);
+        EasyMock.expect(channel.position(-508L)).andReturn(channel).times(2);
+        channel.close();
+        PowerMock.replayAll();
 
         final XBaseMemoWriter writer =
                 new FoxProMemoWriter(channel, 4, Collections.<String, Object>emptyMap());
         writer.fixMetadata();
         writer.close();
+        PowerMock.verifyAll();
     }
 }

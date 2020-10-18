@@ -37,7 +37,7 @@ public class DB3FieldDescriptorArrayReaderTest {
     @Before
     public void setUp() {
         this.db3Access =
-                new DB3DialectFactory(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+                 DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
     }
 

@@ -17,10 +17,11 @@
 
 package com.github.jferard.jxbase.util;
 
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -93,10 +94,17 @@ public class IOUtilsTest {
 
     @Test
     public void readFully() throws Exception {
-        final byte[] bs = new byte[100];
-        final InputStream is = Mockito.mock(InputStream.class);
+        final byte[] bs = new byte[20];
+        final InputStream is = PowerMock.createMock(InputStream.class);
+        PowerMock.resetAll();
 
-        Mockito.when(is.read(Mockito.eq(bs), Mockito.anyInt(), Mockito.anyInt())).thenReturn(1);
-        Assert.assertEquals(10, IOUtils.readFully(is, bs, 5, 10));
+        EasyMock.expect(is.read(EasyMock.eq(bs), EasyMock.anyInt(), EasyMock.anyInt())).andReturn(1).times(10);
+        PowerMock.replayAll();
+
+        final int count = IOUtils.readFully(is, bs, 5, 10);
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(10, count);
+        Assert.assertArrayEquals(new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, bs);
     }
 }

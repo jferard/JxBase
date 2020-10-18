@@ -16,6 +16,11 @@
 
 package com.github.jferard.jxbase.writer;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 public class DbfWriterTest {
     /*
     @Rule
@@ -38,12 +43,12 @@ public class DbfWriterTest {
         final XBaseField f4 = this.dbfFieldFactory.fromStringRepresentation("t,D,8,0");
         final OffsetXBaseField<?> of4 = f4.withOffset(13);
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getUpdateDate()).andReturn(new Date(119, 9, 25));
         Mockito.<Collection<OffsetXBaseField<?>>>when(md.getOffsetFields())
-                .thenReturn(Arrays.asList(of1, of2, of3, of4));
-        Mockito.when(md.getOneRecordLength()).thenReturn(24);
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+                .andReturn(Arrays.asList(of1, of2, of3, of4));
+        EasyMock.expect(md.getOneRecordLength()).andReturn(24);
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DbfWriter w = new DbfWriter(md, bos);
@@ -81,12 +86,12 @@ public class DbfWriterTest {
         final XBaseField f4 = this.dbfFieldFactory.fromStringRepresentation("t,O,6,2");
         final OffsetXBaseField<?> of4 = f4.withOffset(13);
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getUpdateDate()).andReturn(new Date(119, 9, 25));
         Mockito.<Collection<OffsetXBaseField<?>>>when(md.getOffsetFields())
-                .thenReturn(Arrays.asList(of1, of2, of3, of4));
-        Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+                .andReturn(Arrays.asList(of1, of2, of3, of4));
+        EasyMock.expect(md.getOneRecordLength()).andReturn(30);
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DbfWriter w = new DbfWriter(md, bos);
@@ -139,11 +144,12 @@ public class DbfWriterTest {
         final XBaseField f4 = this.dbfFieldFactory.fromStringRepresentation("t,F,10,2");
         final OffsetXBaseField<?> of4 = f4.withOffset(3);
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
-        Mockito.<Collection<OffsetXBaseField<?>>>when(md.getOffsetFields()).thenReturn(Arrays.asList(of1, of2, of3, of4));
-        Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getUpdateDate()).andReturn(new Date(119, 9, 25));
+        Mockito.<Collection<OffsetXBaseField<?>>>when(md.getOffsetFields())
+                .andReturn(Arrays.asList(of1, of2, of3, of4));
+        EasyMock.expect(md.getOneRecordLength()).andReturn(30);
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DbfWriter w = new DbfWriter(md, bos);
@@ -170,10 +176,10 @@ public class DbfWriterTest {
         final OffsetXBaseField<?> of1 = f1.withOffset(0);
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getOffsetFields())
+                .andReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final DbfWriter w = new DbfWriter(md, bos);
         final Map<String, Object> m1 = new HashMap<String, Object>();
@@ -189,12 +195,12 @@ public class DbfWriterTest {
         final XBaseField f1 = this.dbfFieldFactory.fromStringRepresentation("x,N,1,2");
         final OffsetXBaseField<?> of1 = f1.withOffset(0);
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
-        Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
-        Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getUpdateDate()).andReturn(new Date(119, 9, 25));
+        EasyMock.expect(md.getOffsetFields())
+                .andReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
+        EasyMock.expect(md.getOneRecordLength()).andReturn(30);
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DbfWriter w = new DbfWriter(md, bos);
@@ -215,12 +221,12 @@ public class DbfWriterTest {
         final XBaseField f1 = this.dbfFieldFactory.fromStringRepresentation("x,C,1,2");
         final OffsetXBaseField<?> of1 = f1.withOffset(0);
 
-        final GenericMetadata md = Mockito.mock(GenericMetadata.class);
-        Mockito.when(md.getUpdateDate()).thenReturn(new Date(119, 9, 25));
-        Mockito.when(md.getOffsetFields())
-                .thenReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
-        Mockito.when(md.getOneRecordLength()).thenReturn(30);
-        Mockito.when(md.getFileType()).thenReturn(XBaseFileTypeEnum.dBASEVII1);
+        final GenericMetadata md = PowerMock.createMock(GenericMetadata.class);
+        EasyMock.expect(md.getUpdateDate()).andReturn(new Date(119, 9, 25));
+        EasyMock.expect(md.getOffsetFields())
+                .andReturn(Collections.<OffsetXBaseField<?>>singletonList(of1));
+        EasyMock.expect(md.getOneRecordLength()).andReturn(30);
+        EasyMock.expect(md.getFileType()).andReturn(XBaseFileTypeEnum.dBASEVII1);
 
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DbfWriter w = new DbfWriter(md, bos);
@@ -236,6 +242,5 @@ public class DbfWriterTest {
                         32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32,
                         32, 32, 32, 32, 32, 32}, bos.toByteArray());
     }
-
      */
 }

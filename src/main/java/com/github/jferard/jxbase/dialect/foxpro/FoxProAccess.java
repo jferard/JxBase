@@ -36,16 +36,19 @@ public class FoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
     private final DatetimeAccess datetimeAccess;
     private final IntegerAccess integerAccess;
     private final NullFlagsAccess nullFlagsAccess;
+    private final DoubleAccess doubleAccess;
 
     public FoxProAccess(final CharacterAccess characterAccess, final DateAccess dateAccess,
                         final DatetimeAccess datetimeAccess, final FloatAccess floatAccess,
                         final IntegerAccess integerAccess, final LogicalAccess logicalAccess,
                         final MemoAccess memoAccess, final NullFlagsAccess nullFlagsAccess,
-                        final NumericAccess numericAccess) {
+                        final NumericAccess numericAccess,
+                        final DoubleAccess doubleAccess) {
         super(characterAccess, dateAccess, floatAccess, logicalAccess, memoAccess, numericAccess);
         this.datetimeAccess = datetimeAccess;
         this.integerAccess = integerAccess;
         this.nullFlagsAccess = nullFlagsAccess;
+        this.doubleAccess = doubleAccess;
     }
 
     @Override
@@ -108,5 +111,11 @@ public class FoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
     public FieldRepresentation getNullFlagsFieldRepresentation(final String name,
                                                                final int length) {
         return this.nullFlagsAccess.getNullFlagsFieldRepresentation(name, length);
+    }
+
+    @Override
+    public FieldRepresentation getDoubleFieldRepresentation(final String name,
+                                                            final int numberOfDecimalPlaces) {
+        return this.doubleAccess.getDoubleFieldRepresentation(name, numberOfDecimalPlaces);
     }
 }

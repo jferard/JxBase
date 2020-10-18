@@ -46,7 +46,7 @@ public class MemoWriterDialectFactory implements MemoDialectFactory {
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new DB3DialectFactory(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return DB3DialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
     }
 
     @Override
@@ -65,6 +65,6 @@ public class MemoWriterDialectFactory implements MemoDialectFactory {
                                                                          final String databaseName,
                                                                          final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new FoxProDialectFactory(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return FoxProDialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
     }
 }

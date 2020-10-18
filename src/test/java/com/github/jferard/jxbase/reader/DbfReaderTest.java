@@ -112,11 +112,11 @@ public class DbfReaderTest {
         Assert.assertEquals(65, buf.length);
         final InputStream dbf = new ByteArrayInputStream(buf);
 
-        final FileChannel fc = Mockito.mock(FileChannel.class);
-        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = PowerMock.createMock(FileChannel.class);
+        final MappedByteBuffer bb = PowerMock.createMock(MappedByteBuffer.class);
 
-        Mockito.when(fc.size()).thenReturn(100L);
-        Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
+        EasyMock.expect(fc.size()).andReturn(100L);
+        EasyMock.expect(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).andReturn(bb);
 
         final DbfMemoRecordFactory dbfMemoRecordFactory = null;
         final XBaseReader reader = new GenericReader(dbf, new GenericMemoReader(fc, dbfMemoRecordFactory));

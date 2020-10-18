@@ -16,17 +16,18 @@
 
 package com.github.jferard.jxbase.dialect.db3.memo;
 
-import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -37,24 +38,26 @@ public class DB3MemoReaderTest {
 
     @Before
     public void setUp() {
-        this.header = Mockito.mock(MemoFileHeader.class);
-        this.rawMemoReader = Mockito.mock(RawMemoReader.class);
+        this.header = PowerMock.createMock(MemoFileHeader.class);
+        this.rawMemoReader = PowerMock.createMock(RawMemoReader.class);
         this.reader = new DB3MemoReader(this.header, this.rawMemoReader);
     }
 
     @Test
     public void testCreate() throws IOException {
-        final FileChannel channel = Mockito.mock(FileChannel.class);
-        final MappedByteBuffer buffer = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel channel = PowerMock.createMock(FileChannel.class);
+        final MappedByteBuffer buffer = PowerMock.createMock(MappedByteBuffer.class);
+        final ByteBuffer bb = ByteBuffer.allocate(100);
+        PowerMock.resetAll();
 
-        Mockito.when(channel.size()).thenReturn(10L);
-        Mockito.when(channel.map(FileChannel.MapMode.READ_ONLY, 0, 10)).thenReturn(buffer);
+        EasyMock.expect(channel.size()).andReturn(10L);
+        EasyMock.expect(channel.map(FileChannel.MapMode.READ_ONLY, 0, 10)).andReturn(buffer);
+        EasyMock.expect(buffer.get(EasyMock.isA(byte[].class))).andReturn(bb);
+        PowerMock.replayAll();
 
         DB3MemoReader.create(channel);
+        PowerMock.verifyAll();
 
-        Mockito.verify(buffer).get(Mockito.isA(byte[].class));
-        Mockito.verify(channel).size();
-        Mockito.verify(channel).map(FileChannel.MapMode.READ_ONLY, 0, 10);
     }
 
     @Test
@@ -64,18 +67,33 @@ public class DB3MemoReaderTest {
 
     @Test
     public void testRead() {
-        Mockito.when(this.rawMemoReader.read(8, 0, 512))
-                .thenReturn(new byte[]{1, 2, 3, JxBaseUtils.RECORDS_TERMINATOR});
+        PowerMock.resetAll();
 
-        Assert.assertEquals(3, this.reader.read(8).getLength());
-        Assert.assertArrayEquals(new byte[]{1, 2, 3}, this.reader.read(8).getBytes());
+        EasyMock.expect(this.rawMemoReader.read(8, 0, 512))
+                .andReturn(new byte[]{1, 2, 3, JxBaseUtils.RECORDS_TERMINATOR}).times(2);
+        PowerMock.replayAll();
+
+        final int length = this.reader.read(8).getLength();
+        final byte[] bytes = this.reader.read(8).getBytes();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(3, length);
+        Assert.assertArrayEquals(new byte[]{1, 2, 3}, bytes);
     }
 
     @Test
     public void testReadBufferUnderflow() {
-        Mockito.when(this.rawMemoReader.read(8, 0, 512)).thenThrow(new BufferUnderflowException());
+        PowerMock.resetAll();
 
-        Assert.assertEquals(0, this.reader.read(8).getLength());
-        Assert.assertArrayEquals(new byte[]{}, this.reader.read(8).getBytes());
+        EasyMock.expect(this.rawMemoReader.read(8, 0, 512))
+                .andThrow(new BufferUnderflowException()).times(2);
+        PowerMock.replayAll();
+
+        final int length = this.reader.read(8).getLength();
+        final byte[] bytes = this.reader.read(8).getBytes();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(0, length);
+        Assert.assertArrayEquals(new byte[]{}, bytes);
     }
 }

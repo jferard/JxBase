@@ -24,7 +24,7 @@ public class GenericRecordReaderTest {
 
     @Before
     public void setUp() {
-        this.mr = Mockito.mock(XBaseMemoReader.class);
+        this.mr = PowerMock.createMock(XBaseMemoReader.class);
         this.bis = new ByteArrayInputStream(" T".getBytes(JxBaseUtils.ASCII_CHARSET));
         this.grr = new FoxProRecordReader(new DB3Dialect(XBaseFileTypeEnum.dBASE4SQLTable), this
         .bis,
@@ -95,7 +95,7 @@ public class GenericRecordReaderTest {
         .UTF8_CHARSET);
         final XBaseMemoRecord record =
                 factory.create(new byte[]{'A'}, MemoRecordTypeEnum.IMAGE, 1, 123);
-        Mockito.when(this.mr.read(123)).thenReturn(record);
+        EasyMock.expect(this.mr.read(123)).andReturn(record);
 
         final XBaseMemoRecord m =
                 this.grr.getSmallMemoValue("       123".getBytes(JxBaseUtils.ASCII_CHARSET), 0, 10);

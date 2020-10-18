@@ -38,7 +38,7 @@ public class FoxProAccessTest {
 
     @Before
     public void setUp() throws Exception {
-        this.access = new FoxProDialectFactory(null, JxBaseUtils.ASCII_CHARSET,
+        this.access = FoxProDialectFactory.create(null, JxBaseUtils.ASCII_CHARSET,
                 JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
         this.inf = new IntegerField("int");
         this.nf = new NullFlagsField("nf", 8);

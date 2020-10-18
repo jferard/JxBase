@@ -17,17 +17,16 @@
 package com.github.jferard.jxbase.dialect.db3.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
+import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.internal.util.collections.Sets;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class DB3MetadataReaderTest {
     @Test(expected = IOException.class)
@@ -53,7 +52,7 @@ public class DB3MetadataReaderTest {
         Assert.assertEquals(0x03, meta.getFileTypeByte());
         Assert.assertEquals(48, meta.getFullHeaderLength());
         Assert.assertEquals(12, meta.getOneRecordLength());
-        Assert.assertEquals(Sets.newSet("updateDate", "recordsQty"), meta.keySet());
+        Assert.assertEquals(TestHelper.newSet("updateDate", "recordsQty"), meta.keySet());
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(2001, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);

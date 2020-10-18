@@ -34,7 +34,7 @@ public class DB4MemoReaderTest {
 
     @Before
     public void setUp() {
-        final FileChannel channel = EasyMock.mock(FileChannel.class);
+        final FileChannel channel = PowerMock.createMock(FileChannel.class);
         this.rawMemoReader = EasyMock.strictMock(RawMemoReader.class);
         this.r = new DB4MemoReader(channel, this.rawMemoReader);
     }

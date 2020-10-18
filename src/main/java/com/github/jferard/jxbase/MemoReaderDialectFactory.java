@@ -47,7 +47,7 @@ public class MemoReaderDialectFactory implements MemoDialectFactory {
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new DB3DialectFactory(type, charset, timeZone).reader(databaseName).build();
+        return DB3DialectFactory.create(type, charset, timeZone).reader(databaseName).build();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MemoReaderDialectFactory implements MemoDialectFactory {
             final XBaseFileTypeEnum type, final Charset charset, final TimeZone timeZone,
             final String databaseName, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new FoxProDialectFactory(type, charset, timeZone).reader(databaseName).build();
+        return FoxProDialectFactory.create(type, charset, timeZone).reader(databaseName).build();
     }
 
 }

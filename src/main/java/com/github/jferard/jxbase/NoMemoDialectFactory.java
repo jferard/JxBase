@@ -43,7 +43,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
                                                                 final Charset charset, final TimeZone timeZone,
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta) {
-        return new DB3DialectFactory(type, charset, timeZone).build();
+        return DB3DialectFactory.create(type, charset, timeZone).build();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
                                                                          final TimeZone timeZone,
                                                                          final String databaseName,
                                                                          final Map<String, Object> memoHeaderMeta) {
-        return new FoxProDialectFactory(type, charset, timeZone).build();
+        return FoxProDialectFactory.create(type, charset, timeZone).build();
     }
 
 }

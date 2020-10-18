@@ -16,16 +16,19 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,9 +42,10 @@ public class DB3AccessTest {
 
     @Before
     public void setUp() throws Exception {
-        final FileChannel channel = Mockito.mock(FileChannel.class);
+        final FileChannel channel = PowerMock.createMock(FileChannel.class);
         this.access =
-                new DB3DialectFactory(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
+                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+                        JxBaseUtils.UTC_TIME_ZONE)
                         .build().getAccess();
         this.df = new DateField("date");
         this.mf = new MemoField("memo");
@@ -90,42 +94,65 @@ public class DB3AccessTest {
 
     @Test
     public void getMemoByteLength() {
-        final MemoAccess memoAccess = Mockito.mock(MemoAccess.class);
-        Mockito.when(memoAccess.getMemoValueLength()).thenReturn(10);
-        final DB3Access access = new DB3Access(null, null, null, memoAccess, null);
-        Assert.assertEquals(10, this.mf.getValueByteLength(access));
+        final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
+        PowerMock.resetAll();
+
+        EasyMock.expect(memoAccess.getMemoValueLength()).andReturn(10);
+        PowerMock.replayAll();
+
+        final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
+        final int valueByteLength = this.mf.getValueByteLength(access);
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(10, valueByteLength);
     }
 
     @Test
     public void getMemoValue() throws IOException {
-        final MemoAccess memoAccess = Mockito.mock(MemoAccess.class);
-        Mockito.when(memoAccess.getMemoValueLength()).thenReturn(10);
-        final DB3Access access = new DB3Access(null, null, null, memoAccess, null);
+        final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
+        final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
         final byte[] bytes = {1, 2, 3, 4};
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
-        Mockito.when(memoAccess.getMemoValue(bytes, 0, 4)).thenReturn(record);
-        Assert.assertEquals(record, this.mf.getValue(access, bytes, 0, 4));
+        PowerMock.resetAll();
+
+        EasyMock.expect(memoAccess.getMemoValue(bytes, 0, 4)).andReturn(record);
+        PowerMock.replayAll();
+
+        final XBaseMemoRecord memoRecord = this.mf.getValue(access, bytes, 0, 4);
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(record, memoRecord);
     }
 
     @Test
     public void writeMemoValue() throws IOException {
-        final MemoAccess memoAccess = Mockito.mock(MemoAccess.class);
-        Mockito.when(memoAccess.getMemoValueLength()).thenReturn(10);
-        final DB3Access access = new DB3Access(null, null, null, memoAccess, null);
+        final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
+        final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PowerMock.resetAll();
+
+        memoAccess.writeMemoValue(out, record);
+        PowerMock.replayAll();
 
         this.mf.writeValue(access, out, record);
-        Mockito.verify(memoAccess).writeMemoValue(out, record);
+        PowerMock.verifyAll();
     }
 
     @Test
     public void toMemoStringRepresentation() {
-        final MemoAccess memoAccess = Mockito.mock(MemoAccess.class);
-        Mockito.when(memoAccess.getMemoFieldRepresentation("memo"))
-                .thenReturn(new FieldRepresentation("memo", 'M', 10, 0));
-        final DB3Access access = new DB3Access(null, null, null, memoAccess, null);
-        Assert.assertEquals("memo,M,10,0", this.mf.toStringRepresentation(access));
+        final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
+        PowerMock.resetAll();
+
+        EasyMock.expect(memoAccess.getMemoFieldRepresentation("memo"))
+                .andReturn(new FieldRepresentation("memo", 'M', 10, 0));
+        PowerMock.replayAll();
+
+        final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
+        final String s = this.mf.toStringRepresentation(access);
+        PowerMock.verifyAll();
+
+        Assert.assertEquals("memo,M,10,0", s);
     }
 
     @Test

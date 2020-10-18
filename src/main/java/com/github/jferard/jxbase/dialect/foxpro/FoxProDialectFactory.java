@@ -29,7 +29,6 @@ import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
-import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
@@ -39,8 +38,8 @@ import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
-import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
+import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -57,8 +56,25 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class FoxProDialectFactory {
+    public static FoxProDialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
+                                              final TimeZone timeZone) {
+        final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
+        final CharacterAccess characterAccess =
+                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
+        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
+        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        final DatetimeAccess datetimeAccess = new FoxProDatetimeAccess();
+        final NullFlagsAccess nullFlagsAccess = new FoxProNullFlagsAccess();
+        final IntegerAccess integerAccess = new FoxProIntegerAccess();
+        final DoubleAccess doubleAccess = new FoxProDoubleAccess();
+        return new FoxProDialectFactory(type, charset, characterAccess, dateAccess, floatAccess,
+                logicalAccess, numericAccess, datetimeAccess, nullFlagsAccess, integerAccess,
+                doubleAccess);
+    }
 
-    private final RawRecordReadHelper rawRecordReader;
     private final CharacterAccess characterAccess;
     private final DateAccess dateAccess;
     private final FloatAccess floatAccess;
@@ -67,24 +83,30 @@ public class FoxProDialectFactory {
     private final DatetimeAccess datetimeAccess;
     private final NullFlagsAccess nullFlagsAccess;
     private final IntegerAccess integerAccess;
+    private final DoubleAccess doubleAccess;
     private final XBaseFileTypeEnum type;
     private final Charset charset;
     private MemoAccess memoAccess;
 
     public FoxProDialectFactory(final XBaseFileTypeEnum type, final Charset charset,
-                                final TimeZone timeZone) {
+                                final CharacterAccess characterAccess, final DateAccess dateAccess,
+                                final FloatAccess floatAccess, final LogicalAccess logicalAccess,
+                                final NumericAccess numericAccess,
+                                final DatetimeAccess datetimeAccess,
+                                final NullFlagsAccess nullFlagsAccess,
+                                final IntegerAccess integerAccess,
+                                final DoubleAccess doubleAccess) {
         this.type = type;
-        this.rawRecordReader = new RawRecordReadHelper(charset);
         this.charset = charset;
-        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
-        this.characterAccess = new DB2CharacterAccess(this.rawRecordReader, rawRecordWriter);
-        this.dateAccess = new DB3DateAccess(this.rawRecordReader, rawRecordWriter, timeZone);
-        this.floatAccess = new DB4FloatAccess(this.rawRecordReader, rawRecordWriter);
-        this.logicalAccess = new DB2LogicalAccess(this.rawRecordReader, rawRecordWriter);
-        this.numericAccess = new DB2NumericAccess(this.rawRecordReader, rawRecordWriter);
-        this.datetimeAccess = new FoxProDatetimeAccess();
-        this.nullFlagsAccess = new FoxProNullFlagsAccess();
-        this.integerAccess = new FoxProIntegerAccess();
+        this.characterAccess = characterAccess;
+        this.dateAccess = dateAccess;
+        this.floatAccess = floatAccess;
+        this.logicalAccess = logicalAccess;
+        this.numericAccess = numericAccess;
+        this.datetimeAccess = datetimeAccess;
+        this.nullFlagsAccess = nullFlagsAccess;
+        this.integerAccess = integerAccess;
+        this.doubleAccess = doubleAccess;
         this.memoAccess = null;
     }
 
@@ -96,9 +118,14 @@ public class FoxProDialectFactory {
             memoReader = null;
         } else {
             final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-            memoReader = FoxProMemoReader.create(memoChannel, new FoxProMemoRecordFactory(this.charset),
-                    new FoxProMemoFileHeaderReader());
+            memoReader =
+                    FoxProMemoReader.create(memoChannel, new FoxProMemoRecordFactory(this.charset),
+                            new FoxProMemoFileHeaderReader());
         }
+        return this.reader(memoReader);
+    }
+
+    public FoxProDialectFactory reader(final XBaseMemoReader memoReader) {
         this.memoAccess =
                 new FoxProMemoAccess(memoReader, null, new RawRecordReadHelper(this.charset));
         return this;
@@ -121,7 +148,7 @@ public class FoxProDialectFactory {
         final FoxProAccess access =
                 new FoxProAccess(this.characterAccess, this.dateAccess, this.datetimeAccess,
                         this.floatAccess, this.integerAccess, this.logicalAccess, this.memoAccess,
-                        this.nullFlagsAccess, this.numericAccess);
+                        this.nullFlagsAccess, this.numericAccess, this.doubleAccess);
         return new FoxProDialect(this.type, access);
     }
 }

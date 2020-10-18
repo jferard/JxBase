@@ -33,9 +33,9 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     private final DateAccess dateAccess;
     private final MemoAccess memoAccess;
 
-    public DB3Access(final CharacterAccess characterAccess, final DateAccess dateAccess,
-                     final LogicalAccess logicalAccess, final MemoAccess memoAccess,
-                     final NumericAccess numericAccess) {
+    public DB3Access(final CharacterAccess characterAccess, final LogicalAccess logicalAccess,
+                     final NumericAccess numericAccess, final DateAccess dateAccess,
+                     final MemoAccess memoAccess) {
         super(characterAccess, logicalAccess, numericAccess);
         this.dateAccess = dateAccess;
         this.memoAccess = memoAccess;

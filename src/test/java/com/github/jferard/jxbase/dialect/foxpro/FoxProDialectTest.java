@@ -26,10 +26,11 @@ import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.util.Collections;
 
@@ -40,7 +41,7 @@ public class FoxProDialectTest {
 
     @Before
     public void setUp() {
-        this.access = Mockito.mock(FoxProAccess.class);
+        this.access = PowerMock.createMock(FoxProAccess.class);
         this.dialect = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro, this.access);
     }
 

@@ -24,13 +24,13 @@ public class MemoReaderTest {
 
     @Test
     public void testRead() throws IOException {
-        final FileChannel fc = Mockito.mock(FileChannel.class);
-        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = PowerMock.createMock(FileChannel.class);
+        final MappedByteBuffer bb = PowerMock.createMock(MappedByteBuffer.class);
 
-        Mockito.when(fc.size()).thenReturn(100L);
-        Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
+        EasyMock.expect(fc.size()).andReturn(100L);
+        EasyMock.expect(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).andReturn(bb);
         final ArgumentCaptor<byte[]> argument = ArgumentCaptor.forClass(byte[].class);
-        Mockito.when(bb.get(argument.capture())).then(new Answer<Void>() {
+        EasyMock.expect(bb.get(argument.capture())).then(new Answer<Void>() {
             @Override
             public Void answer(final InvocationOnMock invocation) throws Throwable {
                 System.arraycopy(argument.getValue(), 0, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, 0, 8);
@@ -50,13 +50,13 @@ public class MemoReaderTest {
 
     @Test
     public void testBadFile() throws IOException {
-        final FileChannel fc = Mockito.mock(FileChannel.class);
-        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = PowerMock.createMock(FileChannel.class);
+        final MappedByteBuffer bb = PowerMock.createMock(MappedByteBuffer.class);
 
-        Mockito.when(fc.size()).thenReturn(100L);
-        Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
-        Mockito.when(bb.get((byte[]) Mockito.anyObject()))
-                .thenThrow(new BufferUnderflowException());
+        EasyMock.expect(fc.size()).andReturn(100L);
+        EasyMock.expect(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).andReturn(bb);
+        EasyMock.expect(bb.get((byte[]) Mockito.anyObject()))
+                .andThrow(new BufferUnderflowException());
 
         this.exception.expect(IOException.class);
         this.exception.expectMessage("The file is corrupted or is not a dbt file");
@@ -65,11 +65,11 @@ public class MemoReaderTest {
 
     @Test
     public void testOther() throws IOException {
-        final FileChannel fc = Mockito.mock(FileChannel.class);
-        final MappedByteBuffer bb = Mockito.mock(MappedByteBuffer.class);
+        final FileChannel fc = PowerMock.createMock(FileChannel.class);
+        final MappedByteBuffer bb = PowerMock.createMock(MappedByteBuffer.class);
 
-        Mockito.when(fc.size()).thenReturn(100L);
-        Mockito.when(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).thenReturn(bb);
+        EasyMock.expect(fc.size()).andReturn(100L);
+        EasyMock.expect(fc.map(FileChannel.MapMode.READ_ONLY, 0, 100L)).andReturn(bb);
 
         final DB3MemoReader memoReader = new DB3MemoReader(fc);
         /*

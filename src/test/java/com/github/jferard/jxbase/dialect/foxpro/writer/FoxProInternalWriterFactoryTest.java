@@ -23,9 +23,10 @@ import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class FoxProInternalWriterFactoryTest {
     @Before
     public void setUp() throws IOException {
         final FoxProDialectFactory f =
-                new FoxProDialectFactory(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+                FoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final XBaseDialect<FoxProDialect, FoxProAccess> dialect = f.build();
         this.factory =
@@ -48,13 +49,16 @@ public class FoxProInternalWriterFactoryTest {
     @Test
     public void test() {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        final XBaseFieldDescriptorArray array = Mockito.mock(XBaseFieldDescriptorArray.class);
+        final XBaseFieldDescriptorArray array = PowerMock.createMock(XBaseFieldDescriptorArray.class);
+        PowerMock.resetAll();
 
-        Mockito.when(array.getFields()).thenReturn(Collections.emptyList());
+        EasyMock.expect(array.getFields()).andReturn(Collections.emptyList());
+        PowerMock.replayAll();
 
         this.factory.createFieldDescriptorArrayWriter(bos, null);
         this.factory.createOptionalWriter(bos, null, null);
         this.factory.createRecordWriter(bos, null, null, array, null);
         this.factory.createMetadataWriter(null, null, null);
+        PowerMock.verifyAll();
     }
 }

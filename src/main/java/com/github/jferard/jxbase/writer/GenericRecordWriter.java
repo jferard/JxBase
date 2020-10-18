@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.reader;
+package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;

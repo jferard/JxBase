@@ -34,7 +34,7 @@ public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
     public DB4Access(final CharacterAccess characterAccess, final DateAccess dateAccess,
                      final FloatAccess floatAccess, final LogicalAccess logicalAccess,
                      final MemoAccess memoAccess, final NumericAccess numericAccess) {
-        super(characterAccess, dateAccess, logicalAccess, memoAccess, numericAccess);
+        super(characterAccess, logicalAccess, numericAccess, dateAccess, memoAccess);
         this.floatAccess = floatAccess;
     }
 

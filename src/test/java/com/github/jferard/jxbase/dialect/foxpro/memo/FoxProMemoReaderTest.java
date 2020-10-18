@@ -35,7 +35,7 @@ public class FoxProMemoReaderTest {
 
     @Before
     public void setUp() {
-        final FileChannel channel = EasyMock.mock(FileChannel.class);
+        final FileChannel channel = PowerMock.createMock(FileChannel.class);
         this.memoRecordFactory = new FoxProMemoRecordFactory(JxBaseUtils.ASCII_CHARSET);
         this.rawMemoReader = EasyMock.strictMock(RawMemoReader.class);
         this.r = new FoxProMemoReader(channel, this.memoRecordFactory, this.rawMemoReader);

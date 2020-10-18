@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,12 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.dialect.db4.CDFLMNFieldsAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
+import com.github.jferard.jxbase.field.FieldRepresentation;
 
-public interface CDDtFILMN0FieldsAccess
-        extends CDFLMNFieldsAccess, DatetimeAccess, IntegerAccess, NullFlagsAccess, DoubleAccess {
+public class FoxProDoubleAccess implements DoubleAccess {
+    @Override
+    public FieldRepresentation getDoubleFieldRepresentation(final String name,
+                                                            final int numberOfDecimalPlaces) {
+        return new FieldRepresentation(name, 'B', 8, numberOfDecimalPlaces);
+    }
 }

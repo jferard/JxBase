@@ -17,12 +17,12 @@
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
+import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.internal.util.collections.Sets;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class FoxProMetadataReaderTest {
         Assert.assertEquals(48, meta.getFullHeaderLength());
         Assert.assertEquals(12, meta.getOneRecordLength());
         Assert.assertEquals(
-                Sets.newSet("updateDate", "recordsQty"), meta.keySet());
+                TestHelper.newSet("updateDate", "recordsQty"), meta.keySet());
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(2101, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);

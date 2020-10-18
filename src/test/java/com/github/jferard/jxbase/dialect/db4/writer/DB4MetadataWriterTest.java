@@ -21,10 +21,11 @@ import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class DB4MetadataWriterTest {
 
     @Before
     public void setUp() {
-        this.file = Mockito.mock(RandomAccessFile.class);
+        this.file = PowerMock.createMock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
         this.writer = new DB4MetadataWriter<DB4Dialect, DB4Access>(null, this.file, this.out,
                 JxBaseUtils.ASCII_CHARSET);

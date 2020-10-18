@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase;
 
 
+import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.File;
@@ -24,6 +25,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TestHelper {
     public static String getResourceBase(final String filename) {
@@ -103,5 +107,24 @@ public class TestHelper {
         final File temp = File.createTempFile(databaseName, ".dbf");
         final String path = temp.getAbsolutePath();
         return path.substring(0, path.lastIndexOf('.'));
+    }
+
+    public static <T> XBaseField<? super T> fromStringRepresentation(final XBaseDialect<?, T> dialect,
+                                                      final String representation) {
+        final String[] split = representation.split(",");
+        assert split.length == 4;
+        final String name = split[0];
+        final byte[] typeBytes = split[1].getBytes(JxBaseUtils.ASCII_CHARSET);
+        assert typeBytes.length == 1;
+        final byte typeByte = typeBytes[0];
+        final int length = Integer.parseInt(split[2]);
+        final int numberOfDecimalPlaces = Integer.parseInt(split[2]);
+        return dialect.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+    }
+
+    public static <T> Set<T> newSet(final T... values) {
+        final Set<T> ret = new HashSet<T>(values.length);
+        ret.addAll(Arrays.asList(values));
+        return ret;
     }
 }

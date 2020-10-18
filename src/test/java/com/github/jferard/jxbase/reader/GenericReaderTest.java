@@ -16,16 +16,21 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
+import org.easymock.EasyMock;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.powermock.api.easymock.PowerMock;
+import sun.security.util.Cache;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +39,6 @@ import java.text.ParseException;
 public class GenericReaderTest {
     private XBaseInternalReaderFactory rf;
     private InputStream is;
-    private GenericReader gr;
     private XBaseMemoReader mr;
     private DB3Dialect dialect;
     private XBaseMetadataReader mdr;
@@ -47,62 +51,118 @@ public class GenericReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        this.is = Mockito.mock(InputStream.class);
-        this.mdr = Mockito.mock(XBaseMetadataReader.class);
-        this.metadata = Mockito.mock(XBaseMetadata.class);
-        this.ar = Mockito.mock(XBaseFieldDescriptorArrayReader.class);
-        this.array = Mockito.mock(XBaseFieldDescriptorArray.class);
-        this.or = Mockito.mock(XBaseOptionalReader.class);
-        this.optional = Mockito.mock(XBaseOptional.class);
-        this.rr = Mockito.mock(XBaseRecordReader.class);
+        this.is = PowerMock.createMock(InputStream.class);
+        this.mdr = PowerMock.createMock(XBaseMetadataReader.class);
+        this.metadata = PowerMock.createMock(XBaseMetadata.class);
+        this.ar = PowerMock.createMock(XBaseFieldDescriptorArrayReader.class);
+        this.array = PowerMock.createMock(XBaseFieldDescriptorArray.class);
+        this.or = PowerMock.createMock(XBaseOptionalReader.class);
+        this.optional = PowerMock.createMock(XBaseOptional.class);
+        this.rr = PowerMock.createMock(XBaseRecordReader.class);
 
-        this.dialect = Mockito.mock(DB3Dialect.class);
-        this.rf = Mockito.mock(XBaseInternalReaderFactory.class);
-        this.mr = Mockito.mock(XBaseMemoReader.class);
+        this.dialect = PowerMock.createMock(DB3Dialect.class);
+        this.rf = PowerMock.createMock(XBaseInternalReaderFactory.class);
+        this.mr = PowerMock.createMock(XBaseMemoReader.class);
+    }
 
-        Mockito.when(this.rf.createMetadataReader(this.is)).thenReturn(this.mdr);
-        Mockito.when(this.mdr.read()).thenReturn(this.metadata);
-        Mockito.when(this.rf.createFieldDescriptorArrayReader(this.is, this.metadata))
-                .thenReturn(this.ar);
-        Mockito.when(this.ar.read()).thenReturn(this.array);
-        Mockito.when(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
-                this.array)).thenReturn(this.or);
-        Mockito.when(this.or.read()).thenReturn(this.optional);
-        Mockito.when(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
-                this.array, this.optional)).thenReturn(this.rr);
+    private void init() throws IOException {
+        EasyMock.expect(this.rf.createMetadataReader(this.is)).andReturn(this.mdr);
+        EasyMock.expect(this.mdr.read()).andReturn(this.metadata);
+        EasyMock.expect(this.rf.createFieldDescriptorArrayReader(this.is, this.metadata))
+                .andReturn(this.ar);
+        EasyMock.expect(this.ar.read()).andReturn(this.array);
+        EasyMock.expect(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+                this.array)).andReturn(this.or);
+        EasyMock.expect(this.or.read()).andReturn(this.optional);
+        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+                this.array, this.optional)).andReturn(this.rr);
+        EasyMock.expect(this.dialect.getMetaDataLength()).andReturn(512);
+        EasyMock.expect(this.array.getArrayLength()).andReturn(512).times(1);
+        EasyMock.expect(this.optional.getLength()).andReturn(512).times(1);
+        EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512*3).times(1);
+    }
 
-        this.gr = new GenericReader(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
+    private GenericReader getGenericReader() throws IOException {
+        return new GenericReader(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
     }
 
     @Test
-    public void getDialect() {
-        Assert.assertEquals(this.dialect, this.gr.getDialect());
+    public void getDialect() throws IOException {
+        PowerMock.resetAll();
+
+        this.init();
+        PowerMock.replayAll();
+
+        final XBaseDialect dialect = this.getGenericReader().getDialect();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(this.dialect, dialect);
     }
 
     @Test
-    public void getMetadata() {
-        Assert.assertEquals(this.metadata, this.gr.getMetadata());
+    public void getMetadata() throws IOException {
+        PowerMock.resetAll();
+
+        this.init();
+        PowerMock.replayAll();
+
+        final XBaseMetadata metadata = this.getGenericReader().getMetadata();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(this.metadata, metadata);
     }
 
     @Test
-    public void getFieldDescriptorArray() {
-        Assert.assertEquals(this.array, this.gr.getFieldDescriptorArray());
+    public void getFieldDescriptorArray() throws IOException {
+        PowerMock.resetAll();
+
+        this.init();
+        PowerMock.replayAll();
+
+        final XBaseFieldDescriptorArray fieldDescriptorArray =
+                this.getGenericReader().getFieldDescriptorArray();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(this.array, fieldDescriptorArray);
     }
 
     @Test
-    public void getOptional() {
-        Assert.assertEquals(this.optional, this.gr.getOptional());
+    public void getOptional() throws IOException {
+        PowerMock.resetAll();
+
+        this.init();
+        PowerMock.replayAll();
+
+        final XBaseOptional optional = this.getGenericReader().getOptional();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(this.optional, optional);
     }
 
     @Test
     public void read() throws IOException, ParseException {
-        this.gr.read();
-        Mockito.verify(this.rr).read();
+        final XBaseRecord record = PowerMock.createMock(XBaseRecord.class);
+        PowerMock.resetAll();
+
+        this.init();
+        EasyMock.expect(this.rr.read()).andReturn(record);
+        PowerMock.replayAll();
+
+        final XBaseRecord rec = this.getGenericReader().read();
+        PowerMock.verifyAll();
+
+        Assert.assertEquals(record, rec);
     }
 
     @Test
     public void close() throws IOException {
-        this.gr.close();
-        Mockito.verify(this.is).close();
+        PowerMock.resetAll();
+
+        this.init();
+        this.is.close();
+        PowerMock.replayAll();
+
+        this.getGenericReader().close();
+        PowerMock.verifyAll();
     }
 }

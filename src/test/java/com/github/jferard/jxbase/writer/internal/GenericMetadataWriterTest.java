@@ -24,7 +24,7 @@ public class GenericMetadataWriterTest {
 
     @Before
     public void setUp() {
-        this.raf = Mockito.mock(RandomAccessFile.class);
+        this.raf = PowerMock.createMock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
         this.gmw =
                 new GenericMetadataWriter(new DB3MemoDialect(XBaseFileTypeEnum.dBASE4SQLTable),

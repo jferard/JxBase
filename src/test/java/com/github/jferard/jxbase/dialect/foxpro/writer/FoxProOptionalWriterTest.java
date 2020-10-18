@@ -38,7 +38,7 @@ public class FoxProOptionalWriterTest {
     @Test
     public void test() throws IOException {
         final FoxProDialectFactory factory =
-                new FoxProDialectFactory(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+                FoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final XBaseDialect<FoxProDialect, FoxProAccess> dialect = factory.build();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();

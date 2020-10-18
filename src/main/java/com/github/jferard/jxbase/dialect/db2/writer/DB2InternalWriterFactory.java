@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
-import com.github.jferard.jxbase.reader.GenericRecordWriter;
+import com.github.jferard.jxbase.writer.GenericRecordWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;

@@ -26,7 +26,7 @@ import java.util.Map;
 
 public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
 
-    XBaseField<? super A> getXBaseField(String name, byte typeByte, int length,
+    XBaseField<? super A>   getXBaseField(String name, byte typeByte, int length,
                                         int numberOfDecimalPlaces);
 
     XBaseFileTypeEnum getType();

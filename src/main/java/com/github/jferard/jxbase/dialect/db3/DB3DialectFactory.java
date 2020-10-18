@@ -45,24 +45,42 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class DB3DialectFactory {
+    public static DB3DialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
+                                           final TimeZone timeZone) {
+        final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriterHelper = new RawRecordWriteHelper(charset);
+        final CharacterAccess characterAccess =
+                new DB2CharacterAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final LogicalAccess logicalAccess =
+                new DB2LogicalAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final NumericAccess numericAccess =
+                new DB2NumericAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final DateAccess dateAccess =
+                new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
+        final MemoAccess memoAccess = null;
+        return new DB3DialectFactory(type, characterAccess, logicalAccess, numericAccess,
+                dateAccess, rawRecordReadHelper);
+    }
+
+
     private final CharacterAccess characterAccess;
     private final LogicalAccess logicalAccess;
     private final NumericAccess numericAccess;
     private final DateAccess dateAccess;
     private final RawRecordReadHelper rawRecordReadHelper;
     private final XBaseFileTypeEnum type;
-    private MemoAccess memoAccess;
+    private MemoAccess memoAccess; // late init
 
-    public DB3DialectFactory(final XBaseFileTypeEnum type, final Charset charset,
-                             final TimeZone timeZone) {
+    DB3DialectFactory(final XBaseFileTypeEnum type, final CharacterAccess characterAccess,
+                      final LogicalAccess logicalAccess, final NumericAccess numericAccess,
+                      final DateAccess dateAccess, final RawRecordReadHelper rawRecordReadHelper) {
         this.type = type;
-        this.rawRecordReadHelper = new RawRecordReadHelper(charset);
-        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
-        this.characterAccess = new DB2CharacterAccess(this.rawRecordReadHelper, rawRecordWriter);
-        this.logicalAccess = new DB2LogicalAccess(this.rawRecordReadHelper, rawRecordWriter);
-        this.numericAccess = new DB2NumericAccess(this.rawRecordReadHelper, rawRecordWriter);
-        this.dateAccess = new DB3DateAccess(this.rawRecordReadHelper, rawRecordWriter, timeZone);
-        this.memoAccess = null;
+        this.characterAccess = characterAccess;
+        this.logicalAccess = logicalAccess;
+        this.numericAccess = numericAccess;
+        this.dateAccess = dateAccess;
+        this.memoAccess = null; // late init
+        this.rawRecordReadHelper = rawRecordReadHelper;
     }
 
     public DB3DialectFactory reader(final String databaseName) throws IOException {
@@ -87,8 +105,8 @@ public class DB3DialectFactory {
 
     public XBaseDialect<DB3Dialect, DB3Access> build() {
         final DB3Access access =
-                new DB3Access(this.characterAccess, this.dateAccess, this.logicalAccess,
-                        this.memoAccess, this.numericAccess);
+                new DB3Access(this.characterAccess, this.logicalAccess, this.numericAccess, this.dateAccess,
+                        this.memoAccess);
         return new DB3Dialect(this.type, access);
     }
 }
