@@ -31,9 +31,9 @@ import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
-import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
 import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoWriter;
+import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -50,7 +50,20 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class DB4DialectFactory {
-    private final RawRecordReadHelper rawRecordReader;
+    public static DB4DialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
+                                           final TimeZone timeZone) {
+        final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
+        final CharacterAccess characterAccess =
+                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
+        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
+        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        return new DB4DialectFactory(type, charset, characterAccess, dateAccess, floatAccess,
+                logicalAccess, numericAccess);
+    }
+
     private final CharacterAccess characterAccess;
     private final DateAccess dateAccess;
     private final FloatAccess floatAccess;
@@ -61,23 +74,23 @@ public class DB4DialectFactory {
     private MemoAccess memoAccess;
 
     public DB4DialectFactory(final XBaseFileTypeEnum type, final Charset charset,
-                             final TimeZone timeZone) {
+                             final CharacterAccess characterAccess, final DateAccess dateAccess,
+                             final FloatAccess floatAccess, final LogicalAccess logicalAccess,
+                             final NumericAccess numericAccess) {
         this.type = type;
-        this.rawRecordReader = new RawRecordReadHelper(charset);
         this.charset = charset;
-        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
-        this.characterAccess = new DB2CharacterAccess(this.rawRecordReader, rawRecordWriter);
-        this.dateAccess = new DB3DateAccess(this.rawRecordReader, rawRecordWriter, timeZone);
-        this.floatAccess = new DB4FloatAccess(this.rawRecordReader, rawRecordWriter);
-        this.logicalAccess = new DB2LogicalAccess(this.rawRecordReader, rawRecordWriter);
-        this.numericAccess = new DB2NumericAccess(this.rawRecordReader, rawRecordWriter);
+        this.characterAccess = characterAccess;
+        this.dateAccess = dateAccess;
+        this.floatAccess = floatAccess;
+        this.logicalAccess = logicalAccess;
+        this.numericAccess = numericAccess;
         this.memoAccess = null;
     }
 
     public DB4DialectFactory reader(final String databaseName) throws IOException {
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-        /** other version:
+        /* other version:
          * final FileChannel memoChannel = new RandomAccessFile(memoFile, "r").getChannel();
          */
         final XBaseMemoReader memoReader =
@@ -95,7 +108,7 @@ public class DB4DialectFactory {
         final XBaseMemoReader memoReader = null;
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
-        /** other version:
+        /* other version:
          * final FileChannel memoChannel = new RandomAccessFile(memoFile, "rw").getChannel();
          */
         final XBaseMemoWriter memoWriter =

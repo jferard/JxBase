@@ -104,4 +104,13 @@ public class DB2FieldDescriptorArrayWriterTest {
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 this.bos.toByteArray());
     }
+
+    @Test(expected = IOException.class)
+    public void testFieldNameTooLong() throws IOException {
+        this.arrayWriter.write(new GenericFieldDescriptorArray<DB2Access>(
+                Arrays.<XBaseField<? super DB2Access>>asList(
+                        new CharacterField("a very long name", 10)), 2,
+                0));
+    }
+
 }

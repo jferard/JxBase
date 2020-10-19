@@ -32,7 +32,7 @@ public class GenericOptionalWriterTest {
     @Test
     public void test() throws IOException {
         final DB4DialectFactory factory =
-                new DB4DialectFactory(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+                DB4DialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final XBaseDialect<DB4Dialect, DB4Access> dialect = factory.build();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();

@@ -51,7 +51,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
                                                                 final Charset charset, final TimeZone timeZone,
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta) {
-        return new DB4DialectFactory(type, charset, timeZone).build();
+        return DB4DialectFactory.create(type, charset, timeZone).build();
     }
 
     @Override

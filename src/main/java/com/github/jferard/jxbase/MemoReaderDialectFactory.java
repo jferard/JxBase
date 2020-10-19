@@ -57,7 +57,7 @@ public class MemoReaderDialectFactory implements MemoDialectFactory {
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new DB4DialectFactory(type, charset, timeZone).reader(databaseName).build();
+        return DB4DialectFactory.create(type, charset, timeZone).reader(databaseName).build();
     }
 
     @Override

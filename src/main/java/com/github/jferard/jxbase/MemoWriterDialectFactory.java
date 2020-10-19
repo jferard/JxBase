@@ -55,7 +55,7 @@ public class MemoWriterDialectFactory implements MemoDialectFactory {
                                                                 final String databaseName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new DB4DialectFactory(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return DB4DialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
     }
 
     @Override

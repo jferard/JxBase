@@ -34,7 +34,7 @@ public class DB4AccessTest {
     @Before
     public void setUp() {
         this.access =
-                new DB4DialectFactory(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
+                DB4DialectFactory.create(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
                         .build().getAccess();
         this.f = new FloatField("float");
     }

@@ -107,7 +107,7 @@ public class DB3DialectFactory {
         return this;
     }
 
-    public XBaseDialect<DB3Dialect, DB3Access> build() {
+    public DB3Dialect build() {
         final DB3Access access =
                 new DB3Access(this.characterAccess, this.logicalAccess, this.numericAccess, this.dateAccess,
                         this.memoAccess);
