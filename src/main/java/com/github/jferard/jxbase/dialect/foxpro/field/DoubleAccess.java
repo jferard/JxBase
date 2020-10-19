@@ -18,7 +18,17 @@ package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Date;
+
 public interface DoubleAccess {
+    int getDoubleValueLength();
+
+    double getDoubleValue(byte[] recordBuffer, int offset, int length);
+
+    void writeDoubleValue(OutputStream out, double value) throws IOException;
+    
     FieldRepresentation getDoubleFieldRepresentation(String name,
                                                      int numberOfDecimalPlaces);
 }

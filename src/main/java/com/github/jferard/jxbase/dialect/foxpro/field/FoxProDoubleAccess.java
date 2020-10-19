@@ -16,10 +16,34 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
-import com.github.jferard.jxbase.dialect.foxpro.field.DoubleAccess;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.IOUtils;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.Date;
 
 public class FoxProDoubleAccess implements DoubleAccess {
+    @Override
+    public int getDoubleValueLength() {
+        return 8;
+    }
+
+    @Override
+    public double getDoubleValue(final byte[] recordBuffer, final int offset, final int length) {
+        assert length == 8;
+        return ByteBuffer.wrap(recordBuffer, offset, length).getDouble();
+    }
+
+    @Override
+    public void writeDoubleValue(final OutputStream out, final double value) throws IOException {
+        assert 8 == this.getDoubleValueLength();
+        new DataOutputStream(out).writeDouble(value);
+    }
+
     @Override
     public FieldRepresentation getDoubleFieldRepresentation(final String name,
                                                             final int numberOfDecimalPlaces) {

@@ -115,6 +115,21 @@ public class FoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
     }
 
     @Override
+    public int getDoubleValueLength() {
+        return this.doubleAccess.getDoubleValueLength();
+    }
+
+    @Override
+    public double getDoubleValue(final byte[] recordBuffer, final int offset, final int length) {
+        return this.doubleAccess.getDoubleValue(recordBuffer, offset, length);
+    }
+
+    @Override
+    public void writeDoubleValue(final OutputStream out, final double value) throws IOException {
+        this.doubleAccess.writeDoubleValue(out, value);
+    }
+
+    @Override
     public FieldRepresentation getDoubleFieldRepresentation(final String name,
                                                             final int numberOfDecimalPlaces) {
         return this.doubleAccess.getDoubleFieldRepresentation(name, numberOfDecimalPlaces);

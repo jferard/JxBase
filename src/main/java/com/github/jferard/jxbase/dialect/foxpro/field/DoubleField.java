@@ -50,14 +50,14 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     @Override
     public void writeValue(final DoubleAccess access, final OutputStream out, final Object value)
             throws IOException {
-        // TODO
+        access.writeDoubleValue(out, (double) value);
     }
 
     @Override
     public Object getValue(final DoubleAccess access, final byte[] recordBuffer, final int offset,
                            final int length)
             throws IOException {
-        return ByteBuffer.wrap(recordBuffer, offset, length).getDouble();
+        return access.getDoubleValue(recordBuffer, offset, length);
     }
 
     @Override

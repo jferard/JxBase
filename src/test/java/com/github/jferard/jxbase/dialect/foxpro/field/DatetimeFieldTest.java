@@ -21,6 +21,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -55,6 +56,26 @@ public class DatetimeFieldTest {
     }
 
     @Test
+    public void writeValue() throws IOException {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        cal.set(1997, Calendar.AUGUST, 27, 0, 0, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, bos, cal.getTime());
+        final byte[] bytes = {0, 0x65, (byte) 0x25, 0, 0, 0, 0, 0};
+        Assert.assertArrayEquals(bytes, bos.toByteArray());
+    }
+
+    @Test
+    public void writeNullValue() throws IOException {
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        this.f.writeValue(this.access, bos, null);
+        final byte[] bytes = {0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
+        Assert.assertArrayEquals(bytes, bos.toByteArray());
+    }
+
+    @Test
     public void toStringRepresentation() {
         Assert.assertEquals("dt,T,8,0", this.f.toStringRepresentation(this.access));
     }
@@ -62,5 +83,14 @@ public class DatetimeFieldTest {
     @Test
     public void testToString() {
         Assert.assertEquals("DatetimeField[name=dt]", this.f.toString());
+    }
+
+    @Test
+    public void testEquals() {
+        Assert.assertEquals(3216, this.f.hashCode());
+        Assert.assertEquals(this.f, this.f);
+        Assert.assertNotEquals(this.f, new Object());
+        final DatetimeField f2 = new DatetimeField("dt");
+        Assert.assertEquals(this.f, f2);
     }
 }

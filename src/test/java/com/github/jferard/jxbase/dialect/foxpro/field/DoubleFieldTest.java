@@ -22,65 +22,64 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
 
-public class IntegerFieldTest {
-    private IntegerField f;
-    private IntegerAccess access;
+public class DoubleFieldTest {
+    private DoubleField f;
+    private DoubleAccess access;
 
     @Before
     public void setUp() throws Exception {
-        this.access = new FoxProIntegerAccess();
-        this.f = new IntegerField("i");
+        this.access = new FoxProDoubleAccess();
+        this.f = new DoubleField("d", 2);
     }
 
     @Test
     public void getName() {
-        Assert.assertEquals("i", this.f.getName());
+        Assert.assertEquals("d", this.f.getName());
     }
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertEquals(Long.valueOf(67305985), this.f.getValue(this.access, bytes, 0, 4));
+        final byte[] bytes =
+                {0x40, 0x09, 0x21, (byte) 0xFB, 0x54, 0x44, 0x2D, 0x18};
+        Assert.assertEquals(3.141592653589793d, (double) this.f.getValue(this.access, bytes, 0, 8), 1e-10);
     }
 
     @Test
     public void writeValue() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.f.writeValue(this.access, bos, 67305985L);
-        final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertArrayEquals(bytes, bos.toByteArray());
-    }
+        this.f.writeValue(this.access, bos, 3.141592653589793d);
 
-    @Test
-    public void writeNullValue() throws IOException {
-        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.f.writeValue(this.access, bos, null);
-        final byte[] bytes = {0x20, 0x20, 0x20, 0x20};
+        final byte[] bytes =
+                {0x40, 0x09, 0x21, (byte) 0xFB, 0x54, 0x44, 0x2D, 0x18};
         Assert.assertArrayEquals(bytes, bos.toByteArray());
-    }
-
-    @Test
-    public void toStringRepresentation() {
-        Assert.assertEquals("i,I,4,0", this.f.toStringRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("IntegerField[name=i]", this.f.toString());
+        Assert.assertEquals("DoubleField[name=d, numberOfDecimalPlaces=2]", this.f.toString());
+    }
+
+    @Test
+    public void toStringRepresentation() {
+        Assert.assertEquals("d,B,8,2", this.f.toStringRepresentation(this.access));
     }
 
     @Test
     public void testEquals() {
-        Assert.assertEquals(105, this.f.hashCode());
+        Assert.assertEquals(162, this.f.hashCode());
         Assert.assertEquals(this.f, this.f);
         Assert.assertNotEquals(this.f, new Object());
-        final IntegerField f2 = new IntegerField("i");
-        Assert.assertEquals(this.f, f2);
+        final DoubleField f2 = new DoubleField("d", 3);
+        Assert.assertNotEquals(this.f, f2);
+        final DoubleField f3 = new DoubleField("d", 2);
+        Assert.assertEquals(this.f, f3);
     }
 }

@@ -55,7 +55,7 @@ public class DatetimeField implements XBaseField<DatetimeAccess> {
 
     @Override
     public String toStringRepresentation(final DatetimeAccess access) {
-        return access.getDatetimeRepresentation(this.name).toString();
+        return this.toRepresentation(access).toString();
     }
 
     @Override

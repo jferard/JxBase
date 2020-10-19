@@ -81,4 +81,15 @@ public class NullFlagsFieldTest {
     public void testToString() {
         Assert.assertEquals("NullFlagsField[name=nf, length=8]", this.f.toString());
     }
+
+    @Test
+    public void testEquals() {
+        Assert.assertEquals(3760, this.f.hashCode());
+        Assert.assertEquals(this.f, this.f);
+        Assert.assertNotEquals(this.f, new Object());
+        final NullFlagsField f2 = new NullFlagsField("nf", 9);
+        Assert.assertNotEquals(this.f, f2);
+        final NullFlagsField f3 = new NullFlagsField("nf", 8);
+        Assert.assertEquals(this.f, f3);
+    }
 }

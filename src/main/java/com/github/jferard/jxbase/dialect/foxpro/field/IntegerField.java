@@ -54,13 +54,13 @@ public class IntegerField implements XBaseField<IntegerAccess> {
     }
 
     @Override
-    public String toStringRepresentation(final IntegerAccess dialect) {
-        return dialect.getIntegerFieldRepresentation(this.name).toString();
+    public String toStringRepresentation(final IntegerAccess access) {
+        return this.toRepresentation(access).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final IntegerAccess dialect) {
-        return dialect.getIntegerFieldRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final IntegerAccess access) {
+        return access.getIntegerFieldRepresentation(this.name);
     }
 
     @Override
