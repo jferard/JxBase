@@ -18,6 +18,7 @@ package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.dialect.db4.CDFLMNFieldsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.DoubleAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 

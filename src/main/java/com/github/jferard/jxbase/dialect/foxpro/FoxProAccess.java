@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.DoubleAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 import com.github.jferard.jxbase.field.FieldRepresentation;

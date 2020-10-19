@@ -23,18 +23,24 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
+import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.foxpro.field.DoubleField;
+import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.util.Collections;
 
 public class FoxProDialectTest {
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private FoxProDialect dialect;
     private FoxProAccess access;
@@ -60,10 +66,52 @@ public class FoxProDialectTest {
     }
 
     @Test
+    public void testGetDateFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("A date has 8 chars");
+        this.dialect.getXBaseField("date", (byte) 'D', 9, 0);
+    }
+
+    @Test
+    public void testGetDatetimeField() {
+        final XBaseField<? super FoxProAccess> field =
+                this.dialect.getXBaseField("datetime", (byte) 'T', 8, 0);
+        Assert.assertEquals(new DatetimeField("datetime"), field);
+    }
+
+    @Test
+    public void testGetDatetimeFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("A date time has 8 chars");
+        this.dialect.getXBaseField("datetime", (byte) 'T', 9, 0);
+    }
+
+    @Test
     public void testGetFloatField() {
         final XBaseField<? super FoxProAccess> field =
                 this.dialect.getXBaseField("float", (byte) 'F', 20, 0);
         Assert.assertEquals(new FloatField("float"), field);
+    }
+
+    @Test
+    public void testGetFloatFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("A float has 20 chars");
+        this.dialect.getXBaseField("float", (byte) 'F', 21, 0);
+    }
+
+    @Test
+    public void testGetIntegerField() {
+        final XBaseField<? super FoxProAccess> field =
+                this.dialect.getXBaseField("int", (byte) 'I', 4, 0);
+        Assert.assertEquals(new IntegerField("int"), field);
+    }
+
+    @Test
+    public void testGetIntegerFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("An integer has 4 bytes");
+        this.dialect.getXBaseField("int", (byte) 'I', 5, 0);
     }
 
     @Test
@@ -81,6 +129,13 @@ public class FoxProDialectTest {
     }
 
     @Test
+    public void testGetMemoFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("A memo offset has 4 bytes");
+        this.dialect.getXBaseField("memo", (byte) 'M', 5, 0);
+    }
+
+    @Test
     public void testGetNumericField() {
         final XBaseField<? super FoxProAccess> field =
                 this.dialect.getXBaseField("num", (byte) 'N', 8, 2);
@@ -93,6 +148,21 @@ public class FoxProDialectTest {
                 this.dialect.getXBaseField("null", (byte) '0', 8, 0);
         Assert.assertEquals(new NullFlagsField("null", 8), field);
     }
+
+    @Test
+    public void testGetDoubleField() {
+        final XBaseField<? super FoxProAccess> field =
+                this.dialect.getXBaseField("double", (byte) 'B', 18, 2);
+        Assert.assertEquals(new DoubleField("double", 2), field);
+    }
+
+    @Test
+    public void testGetUnknownFieldException() {
+        this.exception.expect(IllegalArgumentException.class);
+        this.exception.expectMessage("'Z' (90) is not a dbf field type");
+        this.dialect.getXBaseField("unk", (byte) 'Z', 5, 0);
+    }
+
 
     @Test
     public void testGetType() {

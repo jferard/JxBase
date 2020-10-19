@@ -14,14 +14,11 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
 
-public class FoxProDoubleAccess implements DoubleAccess {
-    @Override
-    public FieldRepresentation getDoubleFieldRepresentation(final String name,
-                                                            final int numberOfDecimalPlaces) {
-        return new FieldRepresentation(name, 'B', 8, numberOfDecimalPlaces);
-    }
+public interface DoubleAccess {
+    FieldRepresentation getDoubleFieldRepresentation(String name,
+                                                     int numberOfDecimalPlaces);
 }

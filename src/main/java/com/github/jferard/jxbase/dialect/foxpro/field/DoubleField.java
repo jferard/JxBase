@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -48,12 +48,14 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     }
 
     @Override
-    public void writeValue(final DoubleAccess access, final OutputStream out, final Object value) throws IOException {
+    public void writeValue(final DoubleAccess access, final OutputStream out, final Object value)
+            throws IOException {
         // TODO
     }
 
     @Override
-    public Object getValue(final DoubleAccess access, final byte[] recordBuffer, final int offset, final int length)
+    public Object getValue(final DoubleAccess access, final byte[] recordBuffer, final int offset,
+                           final int length)
             throws IOException {
         return ByteBuffer.wrap(recordBuffer, offset, length).getDouble();
     }
@@ -61,5 +63,31 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     @Override
     public int getValueByteLength(final DoubleAccess access) {
         return 8;
+    }
+
+    @Override
+    public String toString() {
+        return "DoubleField[name=" + this.name + ", numberOfDecimalPlaces=" +
+                this.numberOfDecimalPlaces + "]";
+    }
+
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DoubleField)) {
+            return false;
+        }
+
+        final DoubleField that = (DoubleField) o;
+        return this.numberOfDecimalPlaces == that.numberOfDecimalPlaces &&
+                this.name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * this.numberOfDecimalPlaces + this.name.hashCode();
     }
 }

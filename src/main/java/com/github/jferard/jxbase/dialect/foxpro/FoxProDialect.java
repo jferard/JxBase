@@ -26,6 +26,7 @@ import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.foxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
@@ -70,7 +71,7 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                 return new FloatField(name);
             case 'I':
                 if (length != 4) {
-                    throw new IllegalArgumentException("An integer has 4 chars");
+                    throw new IllegalArgumentException("An integer has 4 bytes");
                 }
                 return new IntegerField(name);
             case 'L':
@@ -80,7 +81,7 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
                 return new LogicalField(name);
             case 'M':
                 if (length != 4) {
-                    throw new IllegalArgumentException("A memo offset has 4 chars");
+                    throw new IllegalArgumentException("A memo offset has 4 bytes");
                 }
                 return new MemoField(name);
             case 'N':

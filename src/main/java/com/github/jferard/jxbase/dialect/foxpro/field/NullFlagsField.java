@@ -88,5 +88,4 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
     public int hashCode() {
         return 31 * this.length + this.name.hashCode();
     }
-
 }
