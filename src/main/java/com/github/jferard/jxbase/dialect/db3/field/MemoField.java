@@ -56,7 +56,7 @@ public class MemoField implements XBaseField<MemoAccess> {
 
     @Override
     public String toStringRepresentation(final MemoAccess memoAccess) {
-        return memoAccess.getMemoFieldRepresentation(this.name).toString();
+        return this.toRepresentation(memoAccess).toString();
     }
 
     @Override

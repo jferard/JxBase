@@ -17,12 +17,16 @@
 package com.github.jferard.jxbase.dialect.db3;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.field.RawRecordReadHelper;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -39,13 +43,14 @@ public class DB3AccessTest {
     private CDLMNFieldsAccess access;
     private DateField df;
     private MemoField mf;
+    private XBaseMemoReader memoReader;
 
     @Before
-    public void setUp() throws Exception {
-        final FileChannel channel = PowerMock.createMock(FileChannel.class);
+    public void setUp() throws IOException {
+        this.memoReader = PowerMock.createMock(XBaseMemoReader.class);
         this.access =
-                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE)
+                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plusMemo, JxBaseUtils.ASCII_CHARSET,
+                        JxBaseUtils.UTC_TIME_ZONE).reader(this.memoReader)
                         .build().getAccess();
         this.df = new DateField("date");
         this.mf = new MemoField("memo");
@@ -125,6 +130,42 @@ public class DB3AccessTest {
     }
 
     @Test
+    public void getMemoValueOffset0() throws IOException {
+        final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
+        final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
+        final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
+        final byte[] bytes = new byte[4];
+        PowerMock.resetAll();
+
+        EasyMock.expect(readHelper.extractTrimmedASCIIString(bytes, 0, 4)).andReturn("0");
+        PowerMock.replayAll();
+
+        final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
+        final XBaseMemoRecord value = access.getMemoValue(bytes, 0, 4);
+        PowerMock.verifyAll();
+
+        Assert.assertNull(value);
+    }
+
+    @Test
+    public void getMemoValueOffsetNull() throws IOException {
+        final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
+        final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
+        final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
+        final byte[] bytes = new byte[4];
+        PowerMock.resetAll();
+
+        EasyMock.expect(readHelper.extractTrimmedASCIIString(bytes, 0, 4)).andReturn(null);
+        PowerMock.replayAll();
+
+        final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
+        final XBaseMemoRecord value = access.getMemoValue(bytes, 0, 4);
+        PowerMock.verifyAll();
+
+        Assert.assertNull(value);
+    }
+
+    @Test
     public void writeMemoValue() throws IOException {
         final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
         final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
@@ -158,5 +199,10 @@ public class DB3AccessTest {
     @Test
     public void testMemoToString() {
         Assert.assertEquals("MemoField[name=memo]", this.mf.toString());
+    }
+
+    @Test
+    public void testGetMemoLength() {
+        Assert.assertEquals(10, this.mf.getValueByteLength(this.access));
     }
 }

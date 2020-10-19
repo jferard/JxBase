@@ -53,13 +53,13 @@ public class DateField implements XBaseField<DateAccess> {
     }
 
     @Override
-    public String toStringRepresentation(final DateAccess dialect) {
-        return dialect.getDateFieldRepresentation(this.name).toString();
+    public String toStringRepresentation(final DateAccess access) {
+        return this.toRepresentation(access).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final DateAccess dialect) {
-        return dialect.getDateFieldRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final DateAccess acces) {
+        return acces.getDateFieldRepresentation(this.name);
     }
 
     @Override

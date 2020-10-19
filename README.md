@@ -3,7 +3,7 @@ JxBase
 * JxBase - Copyright (c) 2019 Julien Férard (https://github.com/jferard)
 * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
 
-[![Build Status](https://travis-ci.org/jferard/JxBase.svg?branch=master)](https://travis-ci.org/jferard/JxBase)
+[![Build Status](https://travis-ci.com/jferard/JxBase.svg?branch=master)](https://travis-ci.com/jferard/JxBase)
 [![codecov](https://codecov.io/gh/jferard/JxBase/branch/master/graph/badge.svg)](https://codecov.io/gh/jferard/JxBase)
 
 JxBase is a fork from [jdbf](https://github.com/iryndin/jdbf), a Java utility to read/write DBF files

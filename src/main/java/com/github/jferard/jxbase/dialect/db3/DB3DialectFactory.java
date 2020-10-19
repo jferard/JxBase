@@ -89,6 +89,10 @@ public class DB3DialectFactory {
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
         final XBaseMemoReader memoReader = DB3MemoReader.create(memoChannel);
+        return this.reader(memoReader);
+    }
+
+    public DB3DialectFactory reader(final XBaseMemoReader memoReader) {
         this.memoAccess = new DB3MemoAccess(memoReader, null, this.rawRecordReadHelper);
         return this;
     }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
+import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -23,12 +24,19 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class DB3DateAccess implements DateAccess {
+    public static DB3DateAccess create(final Charset charset, final TimeZone timeZone) {
+        final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriterHelper = new RawRecordWriteHelper(charset);
+        return new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
+    }
+
     private final RawRecordReadHelper rawRecordReader;
     private final RawRecordWriteHelper rawRecordWriter;
     private final TimeZone timeZone;
@@ -57,7 +65,7 @@ public class DB3DateAccess implements DateAccess {
             format.setTimeZone(this.timeZone);
             return format.parse(s);
         } catch (final ParseException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             return null;
         }
     }
