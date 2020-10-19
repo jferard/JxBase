@@ -29,16 +29,30 @@ import static org.junit.Assert.*;
 
 public class BitUtilsTest {
     @Test
-    public void testWriteLEByte4() throws IOException {
+    public void testWriteLEByte4_1() throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         BitUtils.writeLEByte4(out, 1);
         Assert.assertArrayEquals(new byte[] {1, 0, 0, 0}, out.toByteArray());
     }
 
     @Test
-    public void testWriteLEByte42() throws IOException {
+    public void testWriteLEByte4_256() throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         BitUtils.writeLEByte4(out, 256);
         Assert.assertArrayEquals(new byte[] {0, 1, 0, 0}, out.toByteArray());
+    }
+
+    @Test
+    public void testWriteLEByte8_huge() throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BitUtils.writeLEByte8(out, 12345678910111314L);
+        Assert.assertArrayEquals(new byte[] {84, -36, 43, 0, 82, -66, -14, 93}, out.toByteArray());
+    }
+
+    @Test
+    public void testMemSet() {
+        final byte[] bytes = new byte[5];
+        BitUtils.memset(bytes, 'a');
+        Assert.assertArrayEquals(new byte[] {97, 97, 97, 97, 97}, bytes);
     }
 }

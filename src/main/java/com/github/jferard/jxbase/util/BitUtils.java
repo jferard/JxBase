@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class BitUtils {
+    private BitUtils() {}
+
     public static int makeInt(final byte b1, final byte b2) {
         return ((b1) & 0x00FF) + ((b2 << 8) & 0xFF00);
     }
@@ -30,15 +32,13 @@ public class BitUtils {
     }
 
     public static byte[] makeLEByte4(final int i) {
-        final byte[] b = {(byte) (i & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) ((i >> 16) & 0xFF),
+        return new byte[]{(byte) (i & 0xFF), (byte) ((i >> 8) & 0xFF), (byte) ((i >> 16) & 0xFF),
                 (byte) ((i >> 24) & 0xFF)};
-        return b;
     }
 
     public static byte[] makeBEByte4(final int i) {
-        final byte[] b = {(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF),
+        return new byte[]{(byte) ((i >> 24) & 0xFF), (byte) ((i >> 16) & 0xFF), (byte) ((i >> 8) & 0xFF),
                 (byte) (i & 0xFF)};
-        return b;
     }
 
     public static void writeLEByte4(final OutputStream out, final int i) throws IOException {
@@ -53,17 +53,6 @@ public class BitUtils {
         out.write((i >> 8) & 0xFF);
     }
 
-    public static void writeZeroes(final OutputStream out, final int zeroCount) throws IOException {
-        for (int i = 0; i < zeroCount; i++) {
-            out.write(0x00);
-        }
-    }
-
-    public static byte[] makeByte2(final int i) {
-        final byte[] b = {(byte) (i & 0xFF), (byte) ((i >> 8) & 0xFF)};
-        return b;
-    }
-
     public static void memset(final byte[] bytes, final int value) {
         // this approach is a bit faster than Arrays.fill,
         // because there is no rangeCheck
@@ -75,8 +64,14 @@ public class BitUtils {
     }
 
     public static void writeLEByte8(final OutputStream out, final long l) throws IOException {
-        writeLEByte4(out, (int) (l / (long) (1 << 32)));
-        writeLEByte4(out, (int) (l % (long) (1 << 32)));
+        writeLEByte4(out, (int) (l / 0x100000000L));
+        writeLEByte4(out, (int) (l % 0x100000000L));
+    }
+
+    public static void writeZeroes(final OutputStream out, final int zeroCount) throws IOException {
+        for (int i = 0; i < zeroCount; i++) {
+            out.write(0x00);
+        }
     }
 
     public static void writeEmpties(final OutputStream out, final int length) throws IOException {
