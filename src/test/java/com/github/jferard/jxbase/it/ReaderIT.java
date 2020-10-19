@@ -39,7 +39,7 @@ public class ReaderIT {
     public void test1() throws IOException, ParseException {
         final Charset stringCharset = Charset.forName("Cp866");
 
-        final String databaseName = TestHelper.getResourcePath("data1/gds_im.dbf");
+        final String databaseName = TestHelper.getResourceBaseName("data1/gds_im.dbf");
 
         XBaseRecord rec;
         final XBaseReader<?, ?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);
@@ -68,7 +68,7 @@ public class ReaderIT {
     public void test2() throws IOException, ParseException {
         final Charset stringCharset = Charset.forName("Cp866");
 
-        final String databaseName = TestHelper.getResourcePath("data1/tir_im.dbf");
+        final String databaseName = TestHelper.getResourceBaseName("data1/tir_im.dbf");
 
         XBaseRecord rec;
         final XBaseReader<?, ?> reader = XBaseReaderFactory.createReader(databaseName, stringCharset);

@@ -17,6 +17,7 @@
 
 package com.github.jferard.jxbase.util;
 
+import com.github.jferard.jxbase.TestHelper;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -25,6 +26,7 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
 
@@ -48,7 +50,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFullyAVoidArray() throws Exception {
+    public void testReadFullyAVoidArray() throws Exception {
         final byte[] bs = new byte[0];
         Assert.assertEquals(0, IOUtils.readFully(this.in, bs));
 
@@ -57,7 +59,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFullyASmallArray() throws Exception {
+    public void testReadFullyASmallArray() throws Exception {
         final byte[] bs = new byte[5];
         Assert.assertEquals(5, IOUtils.readFully(this.in, bs));
 
@@ -65,7 +67,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFullyAFullSizeArray() throws Exception {
+    public void testReadFullyAFullSizeArray() throws Exception {
         final byte[] bs = new byte[10];
         Assert.assertEquals(10, IOUtils.readFully(this.in, bs));
 
@@ -73,7 +75,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFullyABigArray() throws Exception {
+    public void testReadFullyABigArray() throws Exception {
         final byte[] bs = new byte[100];
         Assert.assertEquals(10, IOUtils.readFully(this.in, bs));
 
@@ -83,7 +85,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFullyWithOffsetBigArray() throws Exception {
+    public void testReadFullyWithOffsetBigArray() throws Exception {
         final byte[] bs = new byte[100];
         Assert.assertEquals(10, IOUtils.readFully(this.in, bs, 5, 10));
 
@@ -93,7 +95,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void readFully() throws Exception {
+    public void testReadFully() throws Exception {
         final byte[] bs = new byte[20];
         final InputStream is = PowerMock.createMock(InputStream.class);
         PowerMock.resetAll();
@@ -106,5 +108,68 @@ public class IOUtilsTest {
 
         Assert.assertEquals(10, count);
         Assert.assertArrayEquals(new byte[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, bs);
+    }
+
+    @Test
+    public void testIsEndOfRecords() throws IOException {
+        final ByteArrayInputStream bis =
+                new ByteArrayInputStream(new byte[]{0x00, 0x20});
+        Assert.assertFalse(IOUtils.isEndOfRecords(bis, 0x20));
+        bis.read();
+        Assert.assertTrue(IOUtils.isEndOfRecords(bis, 0x20));
+    }
+
+    @Test
+    public void testAlreadyResettable() {
+        final ByteArrayInputStream bis =
+                new ByteArrayInputStream(new byte[]{0x00, 0x20});
+        Assert.assertTrue(bis.markSupported());
+        Assert.assertSame(bis, IOUtils.resettable(bis, 100));
+    }
+
+    @Test
+    public void testNotResettable() throws IOException {
+        final ByteArrayInputStream bis =
+                new ByteArrayInputStream(new byte[]{0x00, 0x20});
+        final InputStream is = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return bis.read();
+            }
+        };
+        Assert.assertFalse(is.markSupported());
+        final InputStream ris = IOUtils.resettable(is, 100);
+        Assert.assertNotSame(is, ris);
+        Assert.assertTrue(ris.markSupported());
+        ris.mark(3);
+        Assert.assertEquals(0x00, ris.read());
+        Assert.assertEquals(0x20, ris.read());
+        Assert.assertEquals(-1, ris.read());
+        ris.reset();
+        Assert.assertEquals(0x00, ris.read());
+    }
+
+    @Test
+    public void testGetFile() throws IOException {
+        final String baseName = TestHelper.getResourceBaseName("data1/tir_im.dbf");
+        Assert.assertTrue(IOUtils.getFile(baseName + ".dbf").exists());
+        Assert.assertTrue(IOUtils.getFile(baseName + ".DBF").exists());
+        Assert.assertNull(IOUtils.getFile("&é'(-è_çà'"));
+    }
+
+    @Test
+    public void testGetExtension() throws IOException {
+        final String pathDir = TestHelper.getResourcePath("data1");
+        Assert.assertNull(IOUtils.getExtension(new File(pathDir)));
+        Assert.assertNull(IOUtils.getExtension(new File(pathDir, "foo")));
+        Assert.assertEquals("dbf", IOUtils.getExtension(new File(pathDir, "tir_im.dbf")));
+    }
+
+    @Test
+    public void testRemoveExtension() throws IOException {
+        final String pathDir = TestHelper.getResourcePath("data1");
+        Assert.assertNull(IOUtils.removeExtension(new File(pathDir)));
+        Assert.assertNull(IOUtils.removeExtension(new File(pathDir, "foo")));
+        Assert.assertEquals(new File(pathDir, "tir_im").getAbsolutePath(), IOUtils.removeExtension(new File(pathDir, "tir_im.dbf")));
     }
 }

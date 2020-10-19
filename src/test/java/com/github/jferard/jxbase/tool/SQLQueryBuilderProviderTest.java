@@ -39,7 +39,7 @@ public class SQLQueryBuilderProviderTest {
         PowerMock.replayAll();
 
         final SQLQueryBuilderProvider provider = SQLQueryBuilderProvider.create(connection);
-        final SQLQueryBuilder foo = provider.get(TestHelper.getResourcePath("data1/gds_im.dbf"));
+        final SQLQueryBuilder foo = provider.get(TestHelper.getResourceBaseName("data1/gds_im.dbf"));
         PowerMock.verifyAll();
 
         Assert.assertEquals(SQLiteQueryBuilder.class, foo.getClass());

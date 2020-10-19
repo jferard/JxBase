@@ -24,7 +24,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -51,7 +50,7 @@ public class DatabaseLoaderIT {
     @Test
     public void testMain() throws ClassNotFoundException, ParseException, SQLException,
             IOException {
-        DatabaseLoader.main(new String[]{"-c", "java.lang.Boolean", "-d", "-s", "100", TestHelper.getResourceFile("data1/tir_im.dbf"),
+        DatabaseLoader.main(new String[]{"-c", "java.lang.Boolean", "-d", "-s", "100", TestHelper.getResourcePath("data1/tir_im.dbf"),
                 "jdbc:sqlite::memory:"});
     }
 }

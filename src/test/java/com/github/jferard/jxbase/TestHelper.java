@@ -30,15 +30,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TestHelper {
-    public static String getResourcePath(final String filename) {
-        final String pathname = getResourceFile(filename);
+    public static String getResourceBaseName(final String filename) throws IOException {
+        final String pathname = getResourcePath(filename);
         if (pathname == null) {
             return null;
         }
         return pathname.substring(0, pathname.lastIndexOf('.'));
     }
 
-    public static String getResourceFile(final String filename) {
+    public static String getResourcePath(final String filename) throws IOException {
         final URL resource = TestHelper.class.getClassLoader().getResource(filename);
         if (resource == null) {
             return null;

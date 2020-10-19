@@ -21,7 +21,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 
 public class IOUtils {
@@ -79,19 +78,6 @@ public class IOUtils {
             }
             byteCount += ret;
         }
-        return byteCount;
-    }
-
-    /**
-     * @param in  the input stream
-     * @param len number of bytes to skip
-     * @return 0 if b.length == 0 or the number or bytes really read, bewteen 0 and b.length.
-     * If b.length != 0, a return value lower than b.length means that the end of the stream was
-     * reached.
-     * @throws IOException
-     */
-    public static long skipFully(final InputStream in, final int len) throws IOException {
-        final long byteCount = in.skip(len);
         return byteCount;
     }
 
