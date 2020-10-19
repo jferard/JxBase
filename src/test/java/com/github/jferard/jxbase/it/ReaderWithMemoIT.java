@@ -40,7 +40,7 @@ import java.text.ParseException;
 public class ReaderWithMemoIT {
     @Test
     public <D extends XBaseDialect<D, A>, A> void test1() throws FileNotFoundException, ParseException {
-        final String databaseName = TestHelper.getResourceBase("memo1/texto.dbf");
+        final String databaseName = TestHelper.getResourcePath("memo1/texto.dbf");
 
         try {
             final Charset charset = Charset.forName("cp1252");

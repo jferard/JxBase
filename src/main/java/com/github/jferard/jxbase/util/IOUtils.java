@@ -145,9 +145,11 @@ public class IOUtils {
         final File candidateFile = new File(filename);
         final String candidatePath = candidateFile.getAbsolutePath();
         final File dir = candidateFile.getParentFile();
-        for (final File f : dir.listFiles()) {
-            if (candidatePath.equalsIgnoreCase(f.getAbsolutePath())) {
-                return f;
+        if (dir != null) {
+            for (final File f : dir.listFiles()) {
+                if (candidatePath.equalsIgnoreCase(f.getAbsolutePath())) {
+                    return f;
+                }
             }
         }
         return null;

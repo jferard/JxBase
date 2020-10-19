@@ -34,7 +34,7 @@ import java.util.logging.Logger;
 public class SQLLoaderIT {
     @Test
     public void testQuery() throws IOException, ParseException {
-        final String databaseName = TestHelper.getResourceBase("data1/gds_im.dbf");
+        final String databaseName = TestHelper.getResourcePath("data1/gds_im.dbf");
         final SQLiteQueryBuilder builder = SQLiteQueryBuilder.create(databaseName);
         Assert.assertEquals("DROP TABLE IF EXISTS \"gds_im\"", builder.dropTable());
         Assert.assertEquals("CREATE TABLE \"gds_im\" (\n" +
@@ -78,7 +78,7 @@ public class SQLLoaderIT {
         try {
             final Connection connection = DriverManager.getConnection(url);
             try {
-                final String databaseDir = TestHelper.getResourceBase("data1/gds_im.dbf");
+                final String databaseDir = TestHelper.getResourcePath("data1/gds_im.dbf");
                 final File baseDirectory = new File(new File(databaseDir).getParent());
                 final DatabaseLoader loader =
                         new DatabaseLoader(Logger.getAnonymousLogger(), connection,

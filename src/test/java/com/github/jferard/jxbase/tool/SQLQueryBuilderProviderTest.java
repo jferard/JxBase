@@ -27,8 +27,6 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
-
 public class SQLQueryBuilderProviderTest {
     @Test
     public void test() throws SQLException, IOException {
@@ -41,7 +39,7 @@ public class SQLQueryBuilderProviderTest {
         PowerMock.replayAll();
 
         final SQLQueryBuilderProvider provider = SQLQueryBuilderProvider.create(connection);
-        final SQLQueryBuilder foo = provider.get(TestHelper.getResourceBase("data1/gds_im.dbf"));
+        final SQLQueryBuilder foo = provider.get(TestHelper.getResourcePath("data1/gds_im.dbf"));
         PowerMock.verifyAll();
 
         Assert.assertEquals(SQLiteQueryBuilder.class, foo.getClass());

@@ -38,68 +38,36 @@ import java.util.logging.Logger;
 public class DatabaseLoader {
     /**
      * Example:
-     *
+     * <p>
      * ...$ java -cp "$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.32.3.2/sqlite-jdbc-3.32.3.2.jar:$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader $HOME/prog/java/jxbase/src/test/resources/data1 "jdbc:sqlite:./test.db"
      *
      * @param args
      * @throws ClassNotFoundException
      */
-    public static final void main(final String[] args) throws ClassNotFoundException {
-        if (args.length == 0 || args[0].equals("-h") || args[0].equals("--help")) {
-            System.out.println(
-                    "Usage: java -cp 'path/to/jxbase/jar:path/to/jdbc/driver/jar' com.github.jferard.jxbase.tool.DatabaseLoader [option] [source] [connect_string]\n" +
-                            "\n" +
-                            "   -h, --help          Print this message\n" +
-                            "   -c driver_class     Load the driver using Class.forName\n" +
-                            "   -d                  Drop tables if they exist\n" +
-                            "   -s N                Chunk size (default is one chunk of the size of the file)\n" +
-                            "                       Use this to avoid an out of memory for big files\n" +
-                            "   source              A directory or a single dbf file\n" +
-                            "   connection_string   A connection string to the database"
-            );
+    public static void main(final String[] args)
+            throws ClassNotFoundException, SQLException, IOException, ParseException {
+        final LoaderArgs loarderArgs = new LoaderArgsParser().parse(args);
+        if (loarderArgs == null) {
             return;
         }
-        boolean dropTable = false;
-        int chunkSize = -1;
-        int i = 0;
-        while (true) {
-            if (args[i].equals("-c")) {
-                Class.forName(args[i+1]);
-                i += 2;
-            } else if (args[i].equals("-d")) {
-                dropTable = true;
-                i ++;
-            } else if (args[i].equals("-s")) {
-                chunkSize = Integer.parseInt(args[i+1]);
-                i += 2;
-            } else {
-                break;
-            }
+        if (loarderArgs.classForName != null) {
+            Class.forName(loarderArgs.classForName);
         }
-        final File source = new File(args[i]);
-        final String url = args[i+1];
+        final Connection connection = DriverManager.getConnection(loarderArgs.url);
         try {
-            final Connection connection = DriverManager.getConnection(url);
-            try {
-                final DatabaseLoader loader =
-                        new DatabaseLoader(Logger.getAnonymousLogger(), connection,
-                                SQLQueryBuilderProvider.create(connection), dropTable, chunkSize);
-                if (source.isFile()) {
-                    loader.buildAndFillTable(source);
-                } else if (source.isDirectory()) {
-                    loader.buildAndFillTables(source);
-                } else {
-                    System.err.println("Unknown source");
-                }
-            } finally {
-                connection.close();
+            final DatabaseLoader loader =
+                    new DatabaseLoader(Logger.getAnonymousLogger(), connection,
+                            SQLQueryBuilderProvider.create(connection), loarderArgs.dropTable,
+                            loarderArgs.chunkSize);
+            if (loarderArgs.source.isFile()) {
+                loader.buildAndFillTable(loarderArgs.source);
+            } else if (loarderArgs.source.isDirectory()) {
+                loader.buildAndFillTables(loarderArgs.source);
+            } else {
+                System.err.println("Unknown source " + loarderArgs.source);
             }
-        } catch (final SQLException e) {
-            e.printStackTrace(System.err);
-        } catch (final ParseException e) {
-            e.printStackTrace(System.err);
-        } catch (final IOException e) {
-            e.printStackTrace(System.err);
+        } finally {
+            connection.close();
         }
     }
 

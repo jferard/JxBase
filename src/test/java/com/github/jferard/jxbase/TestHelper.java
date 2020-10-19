@@ -30,13 +30,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TestHelper {
-    public static String getResourceBase(final String filename) {
+    public static String getResourcePath(final String filename) {
+        final String pathname = getResourceFile(filename);
+        if (pathname == null) {
+            return null;
+        }
+        return pathname.substring(0, pathname.lastIndexOf('.'));
+    }
+
+    public static String getResourceFile(final String filename) {
         final URL resource = TestHelper.class.getClassLoader().getResource(filename);
         if (resource == null) {
             return null;
         }
-        final String pathname = resource.getFile();
-        return pathname.substring(0, pathname.lastIndexOf('.'));
+        return resource.getFile();
     }
 
     public static SeekableByteChannel fromByteBuffer(final ByteBuffer buffer) {
