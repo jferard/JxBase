@@ -42,12 +42,16 @@ public class DB4MemoWriterTest {
         EasyMock.expect(channel.write(ByteBuffer.wrap("abcde".getBytes(JxBaseUtils.ASCII_CHARSET))))
                 .andReturn(5);
         EasyMock.expect(channel.position(4L)).andReturn(channel);
-        EasyMock.expect(channel.position(-508L)).andReturn(channel);
+        EasyMock.expect(channel.position(-508L)).andReturn(channel).times(2);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).andReturn(4);
+        channel.close();
         PowerMock.replayAll();
 
         final XBaseMemoWriter writer =
                 new DB4MemoWriter(channel, 4, Collections.<String, Object>emptyMap());
         writer.write(new TextMemoRecord("abcde", JxBaseUtils.ASCII_CHARSET));
+        writer.fixMetadata();
+        writer.close();
         PowerMock.verifyAll();
     }
 }
