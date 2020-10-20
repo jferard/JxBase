@@ -57,6 +57,6 @@ public class TextMemoRecord implements XBaseMemoRecord {
 
     @Override
     public String toString() {
-        return "ImageMemoRecord[bytes=" + this.getValue() + "]";
+        return "TextMemoRecord[text=" + this.getValue() + "]";
     }
 }
