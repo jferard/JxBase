@@ -61,7 +61,7 @@ public class DB4DialectFactory {
         final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
         final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
         return new DB4DialectFactory(type, charset, characterAccess, dateAccess, floatAccess,
-                logicalAccess, numericAccess);
+                logicalAccess, numericAccess, rawRecordReader);
     }
 
     private final CharacterAccess characterAccess;
@@ -69,6 +69,7 @@ public class DB4DialectFactory {
     private final FloatAccess floatAccess;
     private final LogicalAccess logicalAccess;
     private final NumericAccess numericAccess;
+    private final RawRecordReadHelper rawRecordReader;
     private final Charset charset;
     private final XBaseFileTypeEnum type;
     private MemoAccess memoAccess;
@@ -76,7 +77,8 @@ public class DB4DialectFactory {
     public DB4DialectFactory(final XBaseFileTypeEnum type, final Charset charset,
                              final CharacterAccess characterAccess, final DateAccess dateAccess,
                              final FloatAccess floatAccess, final LogicalAccess logicalAccess,
-                             final NumericAccess numericAccess) {
+                             final NumericAccess numericAccess,
+                             final RawRecordReadHelper rawRecordReader) {
         this.type = type;
         this.charset = charset;
         this.characterAccess = characterAccess;
@@ -84,6 +86,7 @@ public class DB4DialectFactory {
         this.floatAccess = floatAccess;
         this.logicalAccess = logicalAccess;
         this.numericAccess = numericAccess;
+        this.rawRecordReader = rawRecordReader;
         this.memoAccess = null;
     }
 
@@ -96,16 +99,18 @@ public class DB4DialectFactory {
         final XBaseMemoReader memoReader =
                 DB4MemoReader.create(memoChannel, new FoxProMemoRecordFactory(this.charset),
                         new DB4MemoFileHeaderReader());
-        final XBaseMemoWriter memoWriter = null;
+        return this.reader(memoReader);
+    }
+
+    private DB4DialectFactory reader(final XBaseMemoReader memoReader) {
         this.memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
+                new DB3MemoAccess(memoReader, null, this.rawRecordReader);
         return this;
     }
 
     public DB4DialectFactory writer(final String databaseName,
                                     final Map<String, Object> memoHeaderMetadata)
             throws IOException {
-        final XBaseMemoReader memoReader = null;
         final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         /* other version:
@@ -114,8 +119,12 @@ public class DB4DialectFactory {
         final XBaseMemoWriter memoWriter =
                 new DB4MemoWriter(memoChannel, DB3MemoFileHeaderReader.BLOCK_LENGTH,
                         memoHeaderMetadata);
+        return this.writer(memoWriter);
+    }
+
+    private DB4DialectFactory writer(final XBaseMemoWriter memoWriter) {
         this.memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
+                new DB3MemoAccess(null, memoWriter, this.rawRecordReader);
         return this;
     }
 

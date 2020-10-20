@@ -19,14 +19,10 @@ package com.github.jferard.jxbase.dialect.foxpro.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.GenericOptionalWriter;
 import org.junit.Assert;
 import org.junit.Test;
 
