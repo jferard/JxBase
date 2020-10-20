@@ -82,6 +82,29 @@ public class DB3MemoReaderTest {
     }
 
     @Test
+    public void testReadNoTerminator() {
+        PowerMock.resetAll();
+
+        final byte[] bytes1 = new byte[512];
+        EasyMock.expect(this.rawMemoReader.read(8, 0, 512))
+                .andReturn(bytes1).times(2);
+        final byte[] bytes2 = {4, 5, 6, JxBaseUtils.RECORDS_TERMINATOR};
+        EasyMock.expect(this.rawMemoReader.read(9, 0, 512))
+                .andReturn(bytes2).times(2);
+        PowerMock.replayAll();
+
+        final int length = this.reader.read(8).getLength();
+        final byte[] bytes = this.reader.read(8).getBytes();
+        PowerMock.verifyAll();
+
+        final byte[] expectedBytes = new byte[515];
+        System.arraycopy(bytes2, 0, expectedBytes, 512, 3);
+
+        Assert.assertEquals(515, length);
+        Assert.assertArrayEquals(expectedBytes, bytes);
+    }
+
+    @Test
     public void testReadBufferUnderflow() {
         PowerMock.resetAll();
 

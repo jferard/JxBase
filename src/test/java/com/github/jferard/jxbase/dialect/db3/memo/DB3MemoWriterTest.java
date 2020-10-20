@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.memo;
 
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -49,4 +50,23 @@ public class DB3MemoWriterTest {
         PowerMock.verifyAll();
     }
 
+    @Test
+    public void testCloseAndFix() throws IOException {
+        final SeekableByteChannel channel = PowerMock.createMock(SeekableByteChannel.class);
+        final byte[] h = new byte[512];
+        h[16] = 3;
+        PowerMock.resetAll();
+
+        EasyMock.expect(channel.position(0L)).andReturn(channel).times(2);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(h))).andReturn(512);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).andReturn(4);
+        channel.close();
+        PowerMock.replayAll();
+
+        final XBaseMemoWriter writer =
+                new DB3MemoWriter(channel, Collections.<String, Object>emptyMap());
+        writer.fixMetadata();
+        writer.close();
+        PowerMock.verifyAll();
+    }
 }

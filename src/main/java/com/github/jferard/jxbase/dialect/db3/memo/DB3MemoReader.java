@@ -92,8 +92,6 @@ public class DB3MemoReader implements XBaseMemoReader {
             } while (lastBlockSize == -1);
         } catch (final BufferUnderflowException e) {
             lastBlockSize = BLOCK_SIZE;
-        } catch (final IllegalArgumentException e) {
-            lastBlockSize = BLOCK_SIZE;
         }
         final byte[] bytes = this.mergeBlocks(blocks, lastBlockSize);
         return new ByteMemoRecord(bytes, bytes.length);

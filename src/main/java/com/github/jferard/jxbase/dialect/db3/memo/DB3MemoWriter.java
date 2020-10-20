@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Map;
 
 public class DB3MemoWriter implements XBaseMemoWriter {
