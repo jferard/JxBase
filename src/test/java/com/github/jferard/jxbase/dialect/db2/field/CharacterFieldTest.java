@@ -64,8 +64,22 @@ public class CharacterFieldTest {
     }
 
     @Test
+    public void writeNullCharValue() throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        this.cf.writeValue(this.access, out, null);
+        Assert.assertEquals("                    ",
+                out.toString(String.valueOf(JxBaseUtils.ASCII_CHARSET)));
+    }
+
+    @Test
     public void toCharStringRepresentation() {
         Assert.assertEquals("char,C,20,0", this.cf.toStringRepresentation(this.access));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void toCharStringRepresentationException() {
+        final CharacterField field = new CharacterField("char", 734);
+        field.toStringRepresentation(this.access);
     }
 
     @Test

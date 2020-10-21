@@ -63,7 +63,7 @@ public class DB4FloatAccess implements FloatAccess {
             if (missingCount >= 0) {
                 this.writeNumeric(out, numberBytes, missingCount);
             } else {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Number too long");
             }
         } else {
             throw new IllegalArgumentException();

@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db4.field;
 
-import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 
@@ -36,30 +35,30 @@ public class FloatField implements XBaseField<FloatAccess> {
     }
 
     @Override
-    public int getValueByteLength(final FloatAccess dialect) {
-        return dialect.getFloatValueLength();
+    public int getValueByteLength(final FloatAccess access) {
+        return access.getFloatValueLength();
     }
 
     @Override
-    public Object getValue(final FloatAccess reader, final byte[] recordBuffer, final int offset,
+    public Object getValue(final FloatAccess access, final byte[] recordBuffer, final int offset,
                            final int length) throws IOException {
-        return reader.extractFloatValue(recordBuffer, offset, length);
+        return access.extractFloatValue(recordBuffer, offset, length);
     }
 
     @Override
-    public void writeValue(final FloatAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final FloatAccess access, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeFloatValue(out, value);
+        access.writeFloatValue(out, value);
     }
 
     @Override
-    public String toStringRepresentation(final FloatAccess dialect) {
-        return dialect.getFloatFieldRepresentation(this.name).toString();
+    public String toStringRepresentation(final FloatAccess access) {
+        return this.toRepresentation(access).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final FloatAccess dialect) {
-        return dialect.getFloatFieldRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final FloatAccess access) {
+        return access.getFloatFieldRepresentation(this.name);
     }
 
     @Override

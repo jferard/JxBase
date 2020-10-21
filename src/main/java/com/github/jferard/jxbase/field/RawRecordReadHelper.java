@@ -31,6 +31,13 @@ public class RawRecordReadHelper {
         return this.extractTrimmedString(recordBuffer, offset, length, this.charset);
     }
 
+    /**
+     * @param recordBuffer
+     * @param offset
+     * @param length
+     * @param charset
+     * @return null if the string is empty.
+     */
     public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length,
                                        final Charset charset) {
         int actualOffset = offset;

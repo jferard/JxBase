@@ -57,8 +57,10 @@ public class DB2CharacterAccess implements CharacterAccess {
     @Override
     public FieldRepresentation getCharacterFieldRepresentation(final String name,
                                                                final int dataSize) {
-        if (dataSize > 254) {
-            throw new IllegalArgumentException("Use FoxPro for long character fields");
+        if (dataSize >= 254) {
+            throw new IllegalArgumentException(
+                    String.format("Use FoxPro for long character fields: %s,C,%d,%d", name,
+                            dataSize % 256, dataSize / 256));
         }
         return new FieldRepresentation(name, 'C', dataSize, 0);
     }
