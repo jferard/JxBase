@@ -45,7 +45,7 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     }
 
     @Override
-    public XBaseField<? super DB3Access> getXBaseField(final String name, final byte typeByte,
+    public XBaseField<? super CDLMNFieldsAccess> getXBaseField(final String name, final byte typeByte,
                                                        final int length,
                                                        final int numberOfDecimalPlaces) {
         switch (typeByte) {
@@ -101,13 +101,13 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
 
     @Override
     public XBaseInternalReaderFactory<DB3Dialect, DB3Access> getInternalReaderFactory(
-            final String databaseName, final Charset charset) throws IOException {
+            final String tableName, final Charset charset) throws IOException {
         return new DB3InternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseInternalWriterFactory<DB3Dialect, DB3Access> getInternalWriterFactory(
-            final String databaseName, final Charset charset, final Map<String, Object> headerMeta)
+            final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
         return new DB3InternalWriterFactory(this, TimeZone.getDefault());
     }

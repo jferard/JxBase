@@ -38,36 +38,36 @@ import java.util.Collections;
 import java.util.List;
 
 public class SQLiteQueryBuilder implements SQLQueryBuilder {
-    private final String tableName;
+    private final String tableShortName;
     private final Collection<XBaseField<?>> fields;
 
-    public static SQLiteQueryBuilder create(final String databaseName) throws IOException {
-        final String tableName = new File(databaseName).getName();
+    public static SQLiteQueryBuilder create(final String tableName) throws IOException {
+        final String tableShortName = new File(tableName).getName();
         Collection<XBaseField<?>> fields = null;
         final XBaseReader<?, ?> reader =
-                XBaseReaderFactory.createReader(databaseName, JxBaseUtils.LATIN1_CHARSET);
+                XBaseReaderFactory.createReader(tableName, JxBaseUtils.LATIN1_CHARSET);
         try {
             fields = (Collection<XBaseField<?>>) reader.getFieldDescriptorArray().getFields();
         } finally {
             reader.close();
         }
-        return new SQLiteQueryBuilder(tableName, fields);
+        return new SQLiteQueryBuilder(tableShortName, fields);
     }
 
-    SQLiteQueryBuilder(final String tableName, final Collection<XBaseField<?>> fields) {
-        this.tableName = tableName;
+    SQLiteQueryBuilder(final String tableShortName, final Collection<XBaseField<?>> fields) {
+        this.tableShortName = tableShortName;
         this.fields = fields;
     }
 
     @Override
     public String dropTable() {
-        return "DROP TABLE IF EXISTS \"" + this.tableName + "\"";
+        return "DROP TABLE IF EXISTS \"" + this.tableShortName + "\"";
     }
 
     @Override
     public String createTable() throws IOException {
         final StringBuilder sb = new StringBuilder(
-                "CREATE TABLE \"").append(this.tableName).append("\" (\n");
+                "CREATE TABLE \"").append(this.tableShortName).append("\" (\n");
         final List<String> definitions = new ArrayList<String>(this.fields.size());
         for (final XBaseField<?> field : this.fields) {
             definitions.add(this.fieldDefinition(field));
@@ -107,7 +107,7 @@ public class SQLiteQueryBuilder implements SQLQueryBuilder {
 
     @Override
     public String insertValues() {
-        return "INSERT INTO \"" + this.tableName + "\" VALUES (" +
+        return "INSERT INTO \"" + this.tableShortName + "\" VALUES (" +
                 JxBaseUtils.join(", ", Collections.nCopies(this.fields.size()
                         , "?")) + ")";
     }

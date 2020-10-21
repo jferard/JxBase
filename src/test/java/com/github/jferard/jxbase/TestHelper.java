@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TestHelper {
-    public static String getResourceBaseName(final String filename) throws IOException {
+    public static String getResourceTableName(final String filename) throws IOException {
         final String pathname = getResourcePath(filename);
         if (pathname == null) {
             return null;
@@ -110,8 +110,13 @@ public class TestHelper {
         return bytes;
     }
 
-    public static String createTempDatabase(final String databaseName) throws IOException {
-        final File temp = File.createTempFile(databaseName, ".dbf");
+    /**
+     * @param tableName without .dbf
+     * @return
+     * @throws IOException
+     */
+    public static String createTempTable(final String tableName) throws IOException {
+        final File temp = File.createTempFile(tableName, ".dbf");
         final String path = temp.getAbsolutePath();
         return path.substring(0, path.lastIndexOf('.'));
     }

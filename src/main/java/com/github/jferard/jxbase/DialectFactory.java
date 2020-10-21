@@ -24,26 +24,26 @@ import java.util.TimeZone;
 public class DialectFactory {
     /**
      * @param type
-     * @param databaseName
+     * @param tableName
      * @param charset
      * @return
      * @throws IOException
      */
     public static XBaseDialect<?, ?> getMemoReaderDialect(final XBaseFileTypeEnum type,
-                                                          final String databaseName,
+                                                          final String tableName,
                                                           final Charset charset)
             throws IOException {
         return DialectFactory
-                .getDialect(new MemoReaderDialectFactory(), type, databaseName, charset, null);
+                .getDialect(new MemoReaderDialectFactory(), type, tableName, charset, null);
     }
 
     public static XBaseDialect<?, ?> getMemoWriterDialect(final XBaseFileTypeEnum type,
-                                                          final String databaseName,
+                                                          final String tableName,
                                                           final Charset charset,
                                                           final Map<String, Object> memoHeaderMeta)
             throws IOException {
         return DialectFactory
-                .getDialect(new MemoWriterDialectFactory(), type, databaseName, charset,
+                .getDialect(new MemoWriterDialectFactory(), type, tableName, charset,
                         memoHeaderMeta);
     }
 
@@ -54,7 +54,7 @@ public class DialectFactory {
 
     /**
      * @param type
-     * @param databaseName
+     * @param tableName
      * @param charset
      * @param memoHeaderMeta
      * @return
@@ -62,7 +62,7 @@ public class DialectFactory {
      */
     private static XBaseDialect<?, ?> getDialect(final MemoDialectFactory dialectFactory,
                                                  final XBaseFileTypeEnum type,
-                                                 final String databaseName, final Charset charset,
+                                                 final String tableName, final Charset charset,
                                                  final Map<String, Object> memoHeaderMeta)
             throws IOException {
         final XBaseDialect<?, ?> dialect;
@@ -74,7 +74,7 @@ public class DialectFactory {
             case dBASE3plusMemo:
             case FoxBASEPlus1:
                 dialect = dialectFactory
-                        .createDB3Dialect(type, charset, TimeZone.getDefault(), databaseName,
+                        .createDB3Dialect(type, charset, TimeZone.getDefault(), tableName,
                                 memoHeaderMeta);
                 break;
             case dBASE4:
@@ -82,18 +82,18 @@ public class DialectFactory {
             case dBASE4Memo:
             case dBASE4SQLTableMemo:
                 dialect = dialectFactory
-                        .createDB4Dialect(type, charset, TimeZone.getDefault(), databaseName,
+                        .createDB4Dialect(type, charset, TimeZone.getDefault(), tableName,
                                 memoHeaderMeta);
                 break;
             case VisualFoxPro:
             case VisualFoxProAutoIncrement:
                 dialect = dialectFactory
-                        .createFoxProDialect(type, charset, TimeZone.getDefault(), databaseName,
+                        .createFoxProDialect(type, charset, TimeZone.getDefault(), tableName,
                                 memoHeaderMeta);
                 break;
             default:
                 dialect = dialectFactory
-                        .createDB3Dialect(type, charset, TimeZone.getDefault(), databaseName,
+                        .createDB3Dialect(type, charset, TimeZone.getDefault(), tableName,
                                 memoHeaderMeta);
                 break;
         }

@@ -23,17 +23,16 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
 public class XBaseWriterFactoryTest {
     @Test
     public void test() throws IOException {
-        final String databaseName = TestHelper.createTempDatabase("mybase");
+        final String tableName = TestHelper.createTempTable("mybase");
         final XBaseWriter myBase =
                 XBaseWriterFactory.<DB2Dialect, DB2Access>createWriter(XBaseFileTypeEnum.dBASE2,
-                        databaseName, JxBaseUtils.UTF8_CHARSET, Collections.<String, Object>emptyMap(),
+                        tableName, JxBaseUtils.UTF8_CHARSET, Collections.<String, Object>emptyMap(),
                         Collections.<XBaseField<? super DB2Access>>emptyList(),
                         GenericOptional.EMPTY, null);
         myBase.close();

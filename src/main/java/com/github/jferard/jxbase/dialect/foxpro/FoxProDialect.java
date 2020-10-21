@@ -126,13 +126,13 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, FoxProAccess> 
 
     @Override
     public XBaseInternalReaderFactory<FoxProDialect, FoxProAccess> getInternalReaderFactory(
-            final String databaseName, final Charset charset) {
+            final String tableName, final Charset charset) {
         return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseInternalWriterFactory<FoxProDialect, FoxProAccess> getInternalWriterFactory(
-            final String databaseName, final Charset charset,
+            final String tableName, final Charset charset,
             final Map<String, Object> headerMeta) {
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault());
     }

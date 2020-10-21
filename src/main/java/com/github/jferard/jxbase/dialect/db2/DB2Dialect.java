@@ -109,13 +109,13 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
 
     @Override
     public XBaseInternalReaderFactory<DB2Dialect, DB2Access> getInternalReaderFactory(
-            final String databaseName, final Charset charset) throws IOException {
+            final String tableName, final Charset charset) throws IOException {
         return new DB2InternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseInternalWriterFactory<DB2Dialect, DB2Access> getInternalWriterFactory(
-            final String databaseName, final Charset charset, final Map<String, Object> headerMeta)
+            final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
         return new DB2InternalWriterFactory(this, TimeZone.getDefault());
     }

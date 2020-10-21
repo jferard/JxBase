@@ -144,23 +144,23 @@ public enum XBaseFileTypeEnum {
 
     /**
      * @param type
-     * @param databaseName
+     * @param tableName
      * @param charset
      * @param memoHeaderMeta null if reader only
      * @return
      * @throws IOException
      */
     public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type,
-                                                final String databaseName, final Charset charset,
+                                                final String tableName, final Charset charset,
                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
         final XBaseDialect<?, ?> dialect;
         if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
             dialect = DialectFactory.getNoMemoDialect(type, charset);
         } else if (memoHeaderMeta == null) {
-            dialect = DialectFactory.getMemoReaderDialect(type, databaseName, charset);
+            dialect = DialectFactory.getMemoReaderDialect(type, tableName, charset);
         } else {
-            dialect = DialectFactory.getMemoWriterDialect(type, databaseName, charset, memoHeaderMeta);
+            dialect = DialectFactory.getMemoWriterDialect(type, tableName, charset, memoHeaderMeta);
         }
         return dialect;
     }

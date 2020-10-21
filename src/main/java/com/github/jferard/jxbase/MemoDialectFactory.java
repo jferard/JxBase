@@ -34,19 +34,19 @@ public interface MemoDialectFactory {
     XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect(XBaseFileTypeEnum type, Charset charset);
 
     XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(XBaseFileTypeEnum type, Charset charset,
-                                                         TimeZone aDefault, String databaseName,
+                                                         TimeZone aDefault, String tableName,
                                                          Map<String, Object> memoHeaderMeta)
             throws IOException;
 
     XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(XBaseFileTypeEnum type, Charset charset,
-                                                         TimeZone aDefault, String databaseName,
+                                                         TimeZone aDefault, String tableName,
                                                          Map<String, Object> memoHeaderMeta)
             throws IOException;
 
     XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(XBaseFileTypeEnum type,
                                                                   Charset charset,
                                                                   TimeZone timeZone,
-                                                                  String databaseName,
+                                                                  String tableName,
                                                                   Map<String, Object> memoHeaderMeta)
             throws IOException;
 }

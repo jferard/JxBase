@@ -44,7 +44,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
      * Create a new writer.
      *
      * @param type              the type/flavour of the dbf file
-     * @param databaseName      the name of the database (without .dbf)
+     * @param tableName         the name of the table (without .dbf)
      * @param charset           the charset
      * @param meta              the meta information as a map
      * @param fields            list of fields
@@ -57,22 +57,22 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
      * @throws IOException
      */
     public static <E extends XBaseDialect<E, F>, F> XBaseWriter createWriter(
-            final XBaseFileTypeEnum type, final String databaseName, final Charset charset,
+            final XBaseFileTypeEnum type, final String tableName, final Charset charset,
             final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,
             final XBaseOptional optional, final Map<String, Object> memoHeaderMeta) throws IOException {
         return new XBaseWriterFactory<E, F>()
-                .create(type, databaseName, charset, meta, fields, optional, memoHeaderMeta);
+                .create(type, tableName, charset, meta, fields, optional, memoHeaderMeta);
     }
 
-    public XBaseWriter create(final XBaseFileTypeEnum type, final String databaseName,
+    public XBaseWriter create(final XBaseFileTypeEnum type, final String tableName,
                               final Charset charset, final Map<String, Object> meta,
                               final Collection<XBaseField<? super A>> fields,
                               final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        final D dialect = (D) XBaseFileTypeEnum.getDialect(type, databaseName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
+        final D dialect = (D) XBaseFileTypeEnum.getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
         final XBaseInternalWriterFactory<D, A> writerFactory =
-                dialect.getInternalWriterFactory(databaseName, charset, memoHeaderMeta);
-        final File dbfFile = new File(databaseName + ".dbf");
+                dialect.getInternalWriterFactory(tableName, charset, memoHeaderMeta);
+        final File dbfFile = new File(tableName + ".dbf");
         dbfFile.delete();
 
         final RandomAccessFile file = new RandomAccessFile(dbfFile, "rw");

@@ -43,28 +43,28 @@ public class MemoWriterDialectFactory implements MemoDialectFactory {
     @Override
     public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final XBaseFileTypeEnum type,
                                                                 final Charset charset, final TimeZone timeZone,
-                                                                final String databaseName,
+                                                                final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return DB3DialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return DB3DialectFactory.create(type, charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 
     @Override
     public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final XBaseFileTypeEnum type,
                                                                 final Charset charset, final TimeZone timeZone,
-                                                                final String databaseName,
+                                                                final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return DB4DialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return DB4DialectFactory.create(type, charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 
     @Override
     public XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(final XBaseFileTypeEnum type,
                                                                          final Charset charset,
                                                                          final TimeZone timeZone,
-                                                                         final String databaseName,
+                                                                         final String tableName,
                                                                          final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return FoxProDialectFactory.create(type, charset, timeZone).writer(databaseName, memoHeaderMeta).build();
+        return FoxProDialectFactory.create(type, charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 }

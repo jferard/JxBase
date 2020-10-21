@@ -151,9 +151,9 @@ public class IOUtilsTest {
 
     @Test
     public void testGetFile() throws IOException {
-        final String baseName = TestHelper.getResourceBaseName("data1/tir_im.dbf");
-        Assert.assertTrue(IOUtils.getFile(baseName + ".dbf").exists());
-        Assert.assertTrue(IOUtils.getFile(baseName + ".DBF").exists());
+        final String tableName = TestHelper.getResourceTableName("data1/tir_im.dbf");
+        Assert.assertTrue(IOUtils.getFile(tableName + ".dbf").exists());
+        Assert.assertTrue(IOUtils.getFile(tableName + ".DBF").exists());
         Assert.assertNull(IOUtils.getFile("&é'(-è_çà'"));
     }
 

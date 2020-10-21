@@ -49,7 +49,7 @@ public class DB2MetadataReader implements XBaseMetadataReader {
             throw new IOException("A DB2 file has a header of 520 bytes");
         }
         final byte typeByte = headerBytes[0];
-        final XBaseFileTypeEnum type = XBaseFileTypeEnum.fromInt(typeByte);
+        XBaseFileTypeEnum.fromInt(typeByte);
         final int recordsQty = BitUtils.makeInt(headerBytes[1], headerBytes[2]);
         final Date updateDate =
                 DB2Utils.createHeaderUpdateDate(headerBytes[3], headerBytes[4], headerBytes[5]);

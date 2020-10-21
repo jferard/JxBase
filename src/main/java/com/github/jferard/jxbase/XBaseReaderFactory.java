@@ -27,23 +27,23 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 public class XBaseReaderFactory {
-    public static XBaseReader<?, ?> createReader(final String databaseName, final Charset charset)
+    public static XBaseReader<?, ?> createReader(final String tableName, final Charset charset)
             throws IOException {
-        return new XBaseReaderFactory().create(databaseName, charset);
+        return new XBaseReaderFactory().create(tableName, charset);
     }
 
-    private XBaseReader<?, ?> create(final String databaseName, final Charset charset)
+    private XBaseReader<?, ?> create(final String tableName, final Charset charset)
             throws IOException {
         final InputStream dbfInputStream =
-                new FileInputStream(IOUtils.getFile(databaseName + ".dbf"));
+                new FileInputStream(IOUtils.getFile(tableName + ".dbf"));
         final InputStream resettableInputStream =
                 IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect<?, ?> dialect =
-                XBaseFileTypeEnum.getDialect(type, databaseName, charset, null);
+                XBaseFileTypeEnum.getDialect(type, tableName, charset, null);
         final XBaseInternalReaderFactory<?, ?> readerFactory =
-                dialect.getInternalReaderFactory(databaseName, charset);
+                dialect.getInternalReaderFactory(tableName, charset);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory);
     }
 

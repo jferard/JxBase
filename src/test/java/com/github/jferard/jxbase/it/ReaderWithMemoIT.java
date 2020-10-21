@@ -32,7 +32,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
@@ -40,11 +39,11 @@ import java.text.ParseException;
 public class ReaderWithMemoIT {
     @Test
     public <D extends XBaseDialect<D, A>, A> void test1() throws IOException, ParseException {
-        final String databaseName = TestHelper.getResourceBaseName("memo1/texto.dbf");
+        final String tableName = TestHelper.getResourceTableName("memo1/texto.dbf");
 
         try {
             final Charset charset = Charset.forName("cp1252");
-            final XBaseReader reader = XBaseReaderFactory.createReader(databaseName, charset);
+            final XBaseReader reader = XBaseReaderFactory.createReader(tableName, charset);
             try {
                 final XBaseMetadata meta = reader.getMetadata();
                 System.out.println("Read DBF Metadata: " + meta);

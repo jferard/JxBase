@@ -41,7 +41,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
     @Override
     public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final XBaseFileTypeEnum type,
                                                                 final Charset charset, final TimeZone timeZone,
-                                                                final String databaseName,
+                                                                final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta) {
         return DB3DialectFactory.create(type, charset, timeZone).build();
     }
@@ -49,7 +49,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
     @Override
     public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final XBaseFileTypeEnum type,
                                                                 final Charset charset, final TimeZone timeZone,
-                                                                final String databaseName,
+                                                                final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta) {
         return DB4DialectFactory.create(type, charset, timeZone).build();
     }
@@ -58,7 +58,7 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
     public XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(final XBaseFileTypeEnum type,
                                                                          final Charset charset,
                                                                          final TimeZone timeZone,
-                                                                         final String databaseName,
+                                                                         final String tableName,
                                                                          final Map<String, Object> memoHeaderMeta) {
         return FoxProDialectFactory.create(type, charset, timeZone).build();
     }

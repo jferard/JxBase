@@ -83,10 +83,10 @@ public class DB3DialectFactory {
         this.rawRecordReadHelper = rawRecordReadHelper;
     }
 
-    public DB3DialectFactory reader(final String databaseName) throws IOException {
+    public DB3DialectFactory reader(final String tableName) throws IOException {
         // TODO: nio reader and randomAccess reader
         // new RandomAccessFile(memoFile, "r").getChannel();
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
+        final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
         final XBaseMemoReader memoReader = DB3MemoReader.create(memoChannel);
         return this.reader(memoReader);
@@ -97,10 +97,10 @@ public class DB3DialectFactory {
         return this;
     }
 
-    public DB3DialectFactory writer(final String databaseName,
+    public DB3DialectFactory writer(final String tableName,
                                     final Map<String, Object> memoHeaderMetadata)
             throws IOException {
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
+        final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         final XBaseMemoWriter memoWriter = new DB3MemoWriter(memoChannel, memoHeaderMetadata);
         this.memoAccess = new DB3MemoAccess(null, memoWriter, null);

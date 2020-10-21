@@ -39,10 +39,10 @@ public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
 
     A getAccess();
 
-    XBaseInternalReaderFactory<D, A> getInternalReaderFactory(String databaseName, Charset charset)
+    XBaseInternalReaderFactory<D, A> getInternalReaderFactory(String tableName, Charset charset)
             throws IOException;
 
-    XBaseInternalWriterFactory<D, A> getInternalWriterFactory(String databaseName, Charset charset,
+    XBaseInternalWriterFactory<D, A> getInternalWriterFactory(String tableName, Charset charset,
                                                            Map<String, Object> headerMeta)
             throws IOException;
 }

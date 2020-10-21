@@ -90,8 +90,8 @@ public class DB4DialectFactory {
         this.memoAccess = null;
     }
 
-    public DB4DialectFactory reader(final String databaseName) throws IOException {
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
+    public DB4DialectFactory reader(final String tableName) throws IOException {
+        final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
         /* other version:
          * final FileChannel memoChannel = new RandomAccessFile(memoFile, "r").getChannel();
@@ -108,10 +108,10 @@ public class DB4DialectFactory {
         return this;
     }
 
-    public DB4DialectFactory writer(final String databaseName,
+    public DB4DialectFactory writer(final String tableName,
                                     final Map<String, Object> memoHeaderMetadata)
             throws IOException {
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
+        final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         /* other version:
          * final FileChannel memoChannel = new RandomAccessFile(memoFile, "rw").getChannel();

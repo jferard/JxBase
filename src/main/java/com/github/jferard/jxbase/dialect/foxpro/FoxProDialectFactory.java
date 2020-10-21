@@ -112,8 +112,8 @@ public class FoxProDialectFactory {
         this.memoAccess = null;
     }
 
-    public FoxProDialectFactory reader(final String databaseName) throws IOException {
-        final String filename = databaseName + this.type.memoFileType().getExtension();
+    public FoxProDialectFactory reader(final String tableName) throws IOException {
+        final String filename = tableName + this.type.memoFileType().getExtension();
         final File memoFile = IOUtils.getFile(filename);
         final XBaseMemoReader memoReader;
         if (memoFile == null) {
@@ -133,11 +133,11 @@ public class FoxProDialectFactory {
         return this;
     }
 
-    public FoxProDialectFactory writer(final String databaseName,
+    public FoxProDialectFactory writer(final String tableName,
                                        final Map<String, Object> memoHeaderMetadata)
             throws IOException {
         final XBaseMemoReader memoReader = null;
-        final File memoFile = new File(databaseName + this.type.memoFileType().getExtension());
+        final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         final XBaseMemoWriter memoWriter =
                 new FoxProMemoWriter(memoChannel, 512, memoHeaderMetadata);
