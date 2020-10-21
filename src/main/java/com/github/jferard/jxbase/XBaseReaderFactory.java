@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +35,13 @@ public class XBaseReaderFactory {
 
     private XBaseReader<?, ?> create(final String tableName, final Charset charset)
             throws IOException {
-        final InputStream dbfInputStream =
-                new FileInputStream(IOUtils.getFile(tableName + ".dbf"));
+        final File file = IOUtils.getFile(tableName + ".dbf");
+        if (file == null) {
+            throw new IllegalArgumentException(
+                    String.format("Can't find table %s (file %s.dbf doesn't exist)", tableName,
+                            tableName));
+        }
+        final InputStream dbfInputStream = new FileInputStream(file);
         final InputStream resettableInputStream =
                 IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);

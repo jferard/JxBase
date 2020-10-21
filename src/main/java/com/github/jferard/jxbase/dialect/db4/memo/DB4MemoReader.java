@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.util.Arrays;
 
 /**
  * Reader of memo files (tested of *.FPT files - Visual FoxPro)
@@ -80,7 +81,10 @@ public class DB4MemoReader implements XBaseMemoReader {
                 DB4Utils.MEMO_FIELD_RESERVED_BYTES[1] != recordHeaderBytes[1] ||
                 DB4Utils.MEMO_FIELD_RESERVED_BYTES[2] != recordHeaderBytes[2] ||
                 DB4Utils.MEMO_FIELD_RESERVED_BYTES[3] != recordHeaderBytes[3]) {
-            throw new IllegalArgumentException("Not a DB4 memo");
+            throw new IllegalArgumentException(
+                    String.format("Not a DB4 memo at offset %d blocks. Expected %s, got %s.",
+                            offsetInBlocks, Arrays.toString(DB4Utils.MEMO_FIELD_RESERVED_BYTES),
+                            Arrays.toString(recordHeaderBytes)));
         }
         final int memoRecordLength =
                 BitUtils.makeInt(recordHeaderBytes[7], recordHeaderBytes[6], recordHeaderBytes[5],
