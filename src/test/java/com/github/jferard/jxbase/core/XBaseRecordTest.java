@@ -22,7 +22,6 @@ import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
-import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
@@ -33,7 +32,6 @@ import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
-import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
@@ -51,6 +49,8 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class XBaseRecordTest {
@@ -169,7 +169,7 @@ public class XBaseRecordTest {
 
     @Test
     public void testGetNullDouble() throws IOException, ParseException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect,"x,B,8,0");
+        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,B,8,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -182,7 +182,7 @@ public class XBaseRecordTest {
 
     @Test
     public void testGetString() throws IOException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect,"x,C,4,0");
+        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,C,4,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -196,7 +196,7 @@ public class XBaseRecordTest {
     @Test
     public void testMemoAsString() throws IOException {
         final TextMemoRecord mrec = PowerMock.createMock(TextMemoRecord.class);
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect,"y,M,4,4");
+        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "y,M,4,4");
         PowerMock.resetAll();
 
         EasyMock.expect(this.mr.read(EasyMock.anyInt())).andReturn(mrec);
@@ -211,129 +211,29 @@ public class XBaseRecordTest {
         Assert.assertEquals("ok", value);
     }
 
-    /*
-
-   @Test
+    @Test
     public void testNotDeleted() throws IOException, ParseException {
         final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
-        final DB3RecordReader<DB3Dialect, DB3Access> reader = new DB3RecordReader(null, in, ascii,
-                new GenericFieldDescriptorArray(Collections.<XBaseField>emptyList(), 0, 3), null);
+        final DB3RecordReader<DB3Access> reader = new DB3RecordReader<DB3Access>(null, in, ascii,
+                new GenericFieldDescriptorArray(
+                        Collections.<XBaseField<? super DB3Access>>emptyList(), 0, 3), null);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals(1, record.getRecordNumber());
-    }
-
-        Assert.assertEquals("", record.getMap());
-    }
-
-    @Test
-    public void testMemoAsBytes() throws IOException {
-        final TextMemoRecord mrec = PowerMock.createMock(TextMemoRecord.class);
-
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("x"))
-                .andReturn(TestHelper.fromStringRepresentation(this.dialect,"y,M,4,4").withOffset(0));
-        EasyMock.expect(this.mr.read(EasyMock.anyInt())).andReturn(mrec);
-        EasyMock.expect(mrec.getBytes()).andReturn("ok".getBytes(JxBaseUtils.ASCII_CHARSET));
-
-        final GenericRecord record = new GenericRecord("0123456789".getBytes(JxBaseUtils.ASCII_CHARSET), this.md,
-                this.mr, 1);
-        Assert.assertArrayEquals("ok".getBytes(JxBaseUtils.ASCII_CHARSET), record.getMemoAsBytes("x"));
+        Assert.assertEquals(new HashMap<String, Object>(), record.getMap());
     }
 
     @Test
-    public void testMemoAsBytesFailure() throws IOException {
-        final TextMemoRecord mrec = PowerMock.createMock(TextMemoRecord.class);
-
-        EasyMock.expect(this.mr.read(EasyMock.anyInt())).andReturn(mrec);
-        EasyMock.expect(mrec.getValue()).andReturn("ok");
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("x"))
-                .andReturn(TestHelper.fromStringRepresentation(this.dialect,"y,C,1,0").withOffset(0));
-
-        final GenericRecord record = new GenericRecord("a".getBytes(JxBaseUtils.ASCII_CHARSET), this.md, this.mr, 1);
-
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("Field 'x' is not MEMO field!");
-        record.getMemoAsBytes("x");
-    }
-
-    @Test
-    public void testMemoAsBytes10() throws IOException {
-        final TextMemoRecord mrec = PowerMock.createMock(TextMemoRecord.class);
-
-        EasyMock.expect(this.mr.read(EasyMock.anyInt())).andReturn(mrec);
-        EasyMock.expect(mrec.getValue()).andReturn("ok");
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("x"))
-                .andReturn(TestHelper.fromStringRepresentation(this.dialect,"y,M,10,0").withOffset
-                (0));
-
-        final GenericRecord record = new GenericRecord("0000000000".getBytes(JxBaseUtils.ASCII_CHARSET), this.md,
-                this.mr, 1);
-
-        Assert.assertArrayEquals(new byte[]{}, record.getMemoAsBytes("x"));
-    }
-
-    @Test
-    public void testMap() throws Exception {
-        final XBaseField f1 = TestHelper.fromStringRepresentation(this.dialect,"x,C,1,2");
-        final OffsetXBaseField<?> of1 = f1.withOffset(0);
-        final XBaseField f2 = TestHelper.fromStringRepresentation(this.dialect,"y,D,8,0");
-        final OffsetXBaseField<?> of2 = f2.withOffset(1);
-        final XBaseField f3 = TestHelper.fromStringRepresentation(this.dialect,"z,N,1,2");
-        final OffsetXBaseField<?> of3 = f3.withOffset(9);
-        final XBaseField f4 = TestHelper.fromStringRepresentation(this.dialect,"t,L,1,0");
-        final OffsetXBaseField<?> of4 = f4.withOffset(10);
-        final XBaseField f5 = TestHelper.fromStringRepresentation(this.dialect,"u,I,4,2");
-        final OffsetXBaseField<?> of5 = f5.withOffset(11);
-
-        Mockito.<Collection<XBaseField>>when(this.md.getFields())
-                .andReturn(Arrays.asList(f1, f2, f3, f4, f5));
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("x")).andReturn(of1);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("y")).andReturn(of2);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("z")).andReturn(of3);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("t")).andReturn(of4);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("u")).andReturn(of5);
-
-        final GenericRecord record = new GenericRecord("a201005018t1234".getBytes(JxBaseUtils.ASCII_CHARSET), this.md,
-                this.mr, 1);
-        final Map<String, Object> expected = new HashMap<String, Object>();
-        expected.put("x", "a");
-        expected.put("y", new Date(110, 4, 1));
-        expected.put("z", new BigDecimal(8));
-        expected.put("t", true);
-        expected.put("u", 875770417);
-        Assert.assertEquals(expected, record.toMap(JxBaseUtils.ASCII_CHARSET));
-    }
-
-    @Test
-    public void testStringRepresentation() throws Exception {
-        final XBaseField f1 = TestHelper.fromStringRepresentation(this.dialect,"x,C,1,0");
-        final OffsetXBaseField<?> of1 = f1.withOffset(0);
-        final XBaseField f2 = TestHelper.fromStringRepresentation(this.dialect,"y,D,8,0");
-        final OffsetXBaseField<?> of2 = f2.withOffset(1);
-        final XBaseField f3 = TestHelper.fromStringRepresentation(this.dialect,"z,N,1,2");
-        final OffsetXBaseField<?> of3 = f3.withOffset(9);
-        final XBaseField f4 = TestHelper.fromStringRepresentation(this.dialect,"t,L,1,2");
-        final OffsetXBaseField<?> of4 = f4.withOffset(10);
-
-        Mockito.<Collection<XBaseField>>when(this.md.getFields())
-                .andReturn(Arrays.asList(f1, f2, f3, f4));
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("x")).andReturn(of1);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("y")).andReturn(of2);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("z")).andReturn(of3);
-        Mockito.<OffsetXBaseField<?>>when(this.md.getOffsetField("t")).andReturn(of4);
-
-
-        final GenericRecord record = new GenericRecord("a201005018t".getBytes(JxBaseUtils.ASCII_CHARSET), this.md,
-                this.mr, 1);
-        Assert.assertEquals("x=a, y=Sat May 01 00:00:00 CEST 2010, z=8, t=true, ",
-                record.getStringRepresentation(JxBaseUtils.ASCII_CHARSET));
-    }
-
-    @Test
-    public void testGetBytes() {
-        final GenericRecord record = new GenericRecord("abcd".getBytes(JxBaseUtils.ASCII_CHARSET), this.md, this.mr, 1);
-        Assert.assertArrayEquals(new byte[]{97, 98, 99, 100}, record.getBytes());
+    public void test() throws IOException {
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("x", "0123456789".getBytes(JxBaseUtils.ASCII_CHARSET));
+        final XBaseRecord record =
+                new XBaseRecord(false, 1, map);
+        Assert.assertArrayEquals("0123456789".getBytes(JxBaseUtils.ASCII_CHARSET),
+                (byte[]) record.getMap().get("x"));
+        Assert.assertEquals(1, record.getRecordNumber());
+        Assert.assertFalse(record.isDeleted());
     }
 
     /**

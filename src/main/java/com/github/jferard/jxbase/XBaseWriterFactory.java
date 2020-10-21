@@ -40,6 +40,22 @@ import java.util.Collection;
 import java.util.Map;
 
 public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
+    /**
+     * Create a new writer.
+     *
+     * @param type              the type/flavour of the dbf file
+     * @param databaseName      the name of the database (without .dbf)
+     * @param charset           the charset
+     * @param meta              the meta information as a map
+     * @param fields            list of fields
+     * @param optional          optional 263 bytes data. Might contain the relative path of a DBC
+     *                          file
+     * @param memoHeaderMeta    the memo meta information as a map
+     * @param <E>               a dialect.
+     * @param <F>               an access.
+     * @return                  a writer on the table.
+     * @throws IOException
+     */
     public static <E extends XBaseDialect<E, F>, F> XBaseWriter createWriter(
             final XBaseFileTypeEnum type, final String databaseName, final Charset charset,
             final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,

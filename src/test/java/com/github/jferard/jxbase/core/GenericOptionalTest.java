@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,22 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-public class DbfFileTypeEnumTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
+public class GenericOptionalTest {
     @Test
-    public void testFomInt() {
-        Assert.assertEquals(XBaseFileTypeEnum.FoxBASE1, XBaseFileTypeEnum.fromInt((byte) 0x02));
+    public void test() {
+        final byte[] bytes = {0, 1, 2};
+        final GenericOptional optional = new GenericOptional(bytes);
+        Assert.assertArrayEquals(bytes, optional.getBytes());
+        Assert.assertEquals(3, optional.getLength());
     }
 
     @Test
-    public void testFomIntNoValue() {
-        this.exception.expect(IllegalArgumentException.class);
-        XBaseFileTypeEnum.fromInt((byte) 0xFF);
-    }
-
-    @Test
-    public void testToByte() {
-        Assert.assertEquals((byte) 0x8B, XBaseFileTypeEnum.dBASE4Memo.toByte());
+    public void testEmpty() {
+        final XBaseOptional optional = GenericOptional.EMPTY;
+        Assert.assertArrayEquals(new byte[] {}, optional.getBytes());
+        Assert.assertEquals(0, optional.getLength());
     }
 }

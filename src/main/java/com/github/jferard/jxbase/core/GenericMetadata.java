@@ -72,8 +72,4 @@ public class GenericMetadata implements XBaseMetadata {
                 fullHeaderLength + ", oneRecordLength=" + this.oneRecordLength + ", meta=" +
                 this.meta + "]";
     }
-
-    private String formatUpdateDate() {
-        return new SimpleDateFormat("yyyy-MM-dd").format(this.meta.get("updateDate"));
-    }
 }

@@ -16,6 +16,16 @@
 
 package com.github.jferard.jxbase.core;
 
+/**
+ * A container for optional bytes after the field descriptor array (including 0x0D) and the
+ * beginning of the records.
+ *
+ * For Visual FoxPro: "A 263-byte range that contains the backlink information (the relative path
+ * of an associated database (.dbc)). If the first byte is 0x00 then the file is not associated
+ * with a database. Hence, database files themselves always contain 0x00."
+ * (http://fox.wikis.com/wc.dll?Wiki~TableFileStructure~Wiki).
+ *
+ */
 public interface XBaseOptional {
     int getLength();
 

@@ -33,6 +33,6 @@ public class DB2OptionalReader<D extends XBaseDialect<D, A>, A> implements XBase
 
     @Override
     public XBaseOptional read() {
-        return new GenericOptional(new byte[]{});
+        return GenericOptional.EMPTY;
     }
 }

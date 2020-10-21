@@ -64,7 +64,8 @@ See:
 * https://www.clicketyclick.dk/databases/xbase/format/
 * http://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm
 * http://devzone.advantagedatabase.com/dz/webhelp/Advantage12/index.html?master_advantage_isam_file_types.htm
-* https://dbfread.readthedocs.io/en/latest/field_types.html
+* https://dbfread.readthedocs.io/en/latest/field_types.html: comprehensive list of data types.
+* http://fox.wikis.com/wc.dll?Wiki~TableFileStructure~Wiki: comprehensive list of data types. 
 
 ### The DBF file
 The main file. Contains the header and the records.

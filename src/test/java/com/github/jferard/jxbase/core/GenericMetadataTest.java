@@ -28,7 +28,7 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DbfMetadataTest {
+public class GenericMetadataTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -93,34 +93,4 @@ public class DbfMetadataTest {
                 new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
         Assert.assertEquals((byte) 10, metadata.get("encryptionFlag"));
     }
-
-
-    /*
-    @Test
-    public void testToStringWithFields() {
-        final XBaseField f1 = this.dbfFieldFactory.fromStringRepresentation("x,C,1,0");
-        final XBaseField f2 = this.dbfFieldFactory.fromStringRepresentation("y,I,8,0");
-
-        final XBaseMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, JdbfUtils.NULL_BYTE,
-                        JdbfUtils.NULL_BYTE, Arrays.<XBaseField>asList(f1, f2));
-        Assert.assertEquals("DbfMetadata[type=FoxBASEPlus1, updateDate=1970-01-01, recordsQty=0, " +
-                "fullHeaderLength=0, oneRecordLength=0, uncompletedTxFlag=0, " +
-                "encryptionFlag=0, fields=OffsetDbfField[field=x,C,1,0, " +
-                "offset=1]|OffsetDbfField[field=y,I,8,0, offset=2]]", metadata.toString());
-    }
-
-    @Test
-    public void testGetFields() {
-        final XBaseField f = this.dbfFieldFactory.fromStringRepresentation("x,C,1,0");
-        final XBaseMetadata metadata = GenericMetadata
-                .create(XBaseFileTypeEnum.FoxBASEPlus1, new Date(0), 0, 0, 0, (byte) 10,
-                        JdbfUtils.NULL_BYTE, Collections.<XBaseField>singletonList(f));
-        Assert.assertEquals(Collections.singletonList(f),
-                new ArrayList<XBaseField>(metadata.getFields()));
-        Assert.assertEquals("OffsetDbfField[field=x,C,1,0, offset=1]",
-                metadata.getOffsetField("x").toString());
-    }
-
-     */
 }
