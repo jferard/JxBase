@@ -30,9 +30,7 @@ import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
 import com.github.jferard.jxbase.dialect.foxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
-import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
 import com.github.jferard.jxbase.dialect.foxpro.reader.VisualFoxProInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
 import com.github.jferard.jxbase.dialect.foxpro.writer.VisualFoxProInternalWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
@@ -43,11 +41,11 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAccess> {
+public class VisualFoxProDialect implements XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> {
     protected final XBaseFileTypeEnum type;
     private final VisualFoxProAccess access;
 
-    public FoxProDialect(final XBaseFileTypeEnum type, final VisualFoxProAccess access) {
+    public VisualFoxProDialect(final XBaseFileTypeEnum type, final VisualFoxProAccess access) {
         this.type = type;
         this.access = access;
     }
@@ -83,8 +81,8 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
                 }
                 return new LogicalField(name);
             case 'M':
-                if (length != 10) {
-                    throw new IllegalArgumentException(String.format("A memo offset has 10 chars, was %d", length));
+                if (length != 4) {
+                    throw new IllegalArgumentException(String.format("A memo offset has 4 bytes, was %d", length));
                 }
                 return new MemoField(name);
             case 'N':
@@ -133,16 +131,16 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
     }
 
     @Override
-    public XBaseInternalReaderFactory<FoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
+    public XBaseInternalReaderFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
             final String tableName, final Charset charset) {
-        return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
+        return new VisualFoxProInternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseInternalWriterFactory<FoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
+    public XBaseInternalWriterFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
             final String tableName, final Charset charset,
             final Map<String, Object> headerMeta) {
-        return new FoxProInternalWriterFactory(this, TimeZone.getDefault());
+        return new VisualFoxProInternalWriterFactory(this, TimeZone.getDefault());
     }
 }
 

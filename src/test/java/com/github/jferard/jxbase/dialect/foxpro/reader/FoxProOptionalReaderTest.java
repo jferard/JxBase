@@ -18,8 +18,8 @@ package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,18 +29,18 @@ import java.io.IOException;
 public class FoxProOptionalReaderTest {
     @Test(expected = IOException.class)
     public void testFail() throws IOException {
-        final FoxProOptionalReader<FoxProDialect, FoxProAccess> reader =
-                new FoxProOptionalReader<FoxProDialect, FoxProAccess>(
-                        new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
+        final FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess> reader =
+                new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(
+                        new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
                         new ByteArrayInputStream(new byte[]{}), null, null);
         reader.read();
     }
 
     @Test
     public void test() throws IOException {
-        final FoxProOptionalReader<FoxProDialect, FoxProAccess> reader =
-                new FoxProOptionalReader<FoxProDialect, FoxProAccess>(
-                        new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
+        final FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess> reader =
+                new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(
+                        new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
                         new ByteArrayInputStream(new byte[263]), null, null);
         final XBaseOptional actual = reader.read();
         Assert.assertEquals(263, actual.getLength());

@@ -22,8 +22,9 @@ import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -43,10 +44,17 @@ public interface MemoDialectFactory {
                                                          Map<String, Object> memoHeaderMeta)
             throws IOException;
 
-    XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(XBaseFileTypeEnum type,
-                                                                  Charset charset,
-                                                                  TimeZone timeZone,
-                                                                  String tableName,
-                                                                  Map<String, Object> memoHeaderMeta)
+    XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(XBaseFileTypeEnum type,
+                                                                                    Charset charset,
+                                                                                    TimeZone timeZone,
+                                                                                    String tableName,
+                                                                                    Map<String, Object> memoHeaderMeta)
+            throws IOException;
+
+    XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(XBaseFileTypeEnum type,
+                                                                        Charset charset,
+                                                                        TimeZone timeZone,
+                                                                        String tableName,
+                                                                        Map<String, Object> memoHeaderMeta)
             throws IOException;
 }

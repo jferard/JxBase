@@ -16,12 +16,10 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
-import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
+import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
@@ -34,11 +32,11 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class FoxProInternalReaderFactory implements XBaseInternalReaderFactory<FoxProDialect, VisualFoxProAccess> {
-    protected final FoxProDialect dialect;
+public class VisualFoxProInternalReaderFactory implements XBaseInternalReaderFactory<VisualFoxProDialect, VisualFoxProAccess> {
+    protected final VisualFoxProDialect dialect;
     protected final TimeZone timezone;
 
-    public FoxProInternalReaderFactory(final FoxProDialect dialect, final TimeZone timezone) {
+    public VisualFoxProInternalReaderFactory(final VisualFoxProDialect dialect, final TimeZone timezone) {
         this.dialect = dialect;
         this.timezone = timezone;
     }
@@ -47,9 +45,9 @@ public class FoxProInternalReaderFactory implements XBaseInternalReaderFactory<F
         return new FoxProMetadataReader(this.dialect, inputStream);
     }
 
-    public XBaseFieldDescriptorArrayReader<FoxProDialect, VisualFoxProAccess> createFieldDescriptorArrayReader(
+    public XBaseFieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayReader<FoxProDialect, VisualFoxProAccess>(this.dialect, inputStream,
+        return new DB3FieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream,
                 metadata);
     }
 
@@ -65,7 +63,6 @@ public class FoxProInternalReaderFactory implements XBaseInternalReaderFactory<F
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<VisualFoxProAccess> array) {
-        // no optional here.
-        return new DB2OptionalReader<FoxProDialect, VisualFoxProAccess>(this.dialect, inputStream, metadata, array);
+        return new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream, metadata, array);
     }
 }

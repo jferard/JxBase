@@ -23,6 +23,7 @@ import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.CurrencyAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DoubleAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
@@ -33,23 +34,25 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
-public class FoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
+public class VisualFoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
     private final DatetimeAccess datetimeAccess;
     private final IntegerAccess integerAccess;
     private final NullFlagsAccess nullFlagsAccess;
     private final DoubleAccess doubleAccess;
+    private final CurrencyAccess currencyAccess;
 
-    public FoxProAccess(final CharacterAccess characterAccess, final DateAccess dateAccess,
-                        final DatetimeAccess datetimeAccess, final FloatAccess floatAccess,
-                        final IntegerAccess integerAccess, final LogicalAccess logicalAccess,
-                        final MemoAccess memoAccess, final NullFlagsAccess nullFlagsAccess,
-                        final NumericAccess numericAccess,
-                        final DoubleAccess doubleAccess) {
+    public VisualFoxProAccess(final CharacterAccess characterAccess, final DateAccess dateAccess,
+                              final DatetimeAccess datetimeAccess, final FloatAccess floatAccess,
+                              final IntegerAccess integerAccess, final LogicalAccess logicalAccess,
+                              final MemoAccess memoAccess, final NullFlagsAccess nullFlagsAccess,
+                              final NumericAccess numericAccess,
+                              final DoubleAccess doubleAccess, final CurrencyAccess currencyAccess) {
         super(characterAccess, dateAccess, floatAccess, logicalAccess, memoAccess, numericAccess);
         this.datetimeAccess = datetimeAccess;
         this.integerAccess = integerAccess;
         this.nullFlagsAccess = nullFlagsAccess;
         this.doubleAccess = doubleAccess;
+        this.currencyAccess = currencyAccess;
     }
 
     @Override
@@ -133,5 +136,26 @@ public class FoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
     public FieldRepresentation getDoubleFieldRepresentation(final String name,
                                                             final int numberOfDecimalPlaces) {
         return this.doubleAccess.getDoubleFieldRepresentation(name, numberOfDecimalPlaces);
+    }
+
+    @Override
+    public int getCurrencyValueLength() {
+        return this.currencyAccess.getCurrencyValueLength();
+    }
+
+    @Override
+    public long getCurrencyValue(final byte[] recordBuffer, final int offset, final int length) {
+        return this.currencyAccess.getCurrencyValue(recordBuffer, offset, length);
+    }
+
+    @Override
+    public void writeCurrencyValue(final OutputStream out, final long value) throws IOException {
+        this.currencyAccess.writeCurrencyValue(out, value);
+
+    }
+
+    @Override
+    public FieldRepresentation getCurrencyRepresentation(final String name) {
+        return this.currencyAccess.getCurrencyRepresentation(name);
     }
 }

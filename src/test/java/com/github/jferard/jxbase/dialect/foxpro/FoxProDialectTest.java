@@ -42,25 +42,25 @@ public class FoxProDialectTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private FoxProDialect dialect;
-    private FoxProAccess access;
+    private VisualFoxProDialect dialect;
+    private VisualFoxProAccess access;
 
     @Before
     public void setUp() {
-        this.access = PowerMock.createMock(FoxProAccess.class);
-        this.dialect = new FoxProDialect(XBaseFileTypeEnum.VisualFoxPro, this.access);
+        this.access = PowerMock.createMock(VisualFoxProAccess.class);
+        this.dialect = new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, this.access);
     }
 
     @Test
     public void testGetCharacterField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("char", (byte) 'C', 10, 0);
         Assert.assertEquals(new CharacterField("char", 10), field);
     }
 
     @Test
     public void testGetDateField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("date", (byte) 'D', 8, 0);
         Assert.assertEquals(new DateField("date"), field);
     }
@@ -74,7 +74,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetDatetimeField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("datetime", (byte) 'T', 8, 0);
         Assert.assertEquals(new DatetimeField("datetime"), field);
     }
@@ -88,7 +88,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetFloatField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("float", (byte) 'F', 20, 0);
         Assert.assertEquals(new FloatField("float"), field);
     }
@@ -102,7 +102,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetIntegerField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("int", (byte) 'I', 4, 0);
         Assert.assertEquals(new IntegerField("int"), field);
     }
@@ -116,14 +116,14 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetLogicalField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("bool", (byte) 'L', 1, 0);
         Assert.assertEquals(new LogicalField("bool"), field);
     }
 
     @Test
     public void testGetMemoField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("memo", (byte) 'M', 4, 0);
         Assert.assertEquals(new MemoField("memo"), field);
     }
@@ -137,21 +137,21 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetNumericField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("num", (byte) 'N', 8, 2);
         Assert.assertEquals(new NumericField("num", 8, 2), field);
     }
 
     @Test
     public void testGetNullFlagsField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("null", (byte) '0', 8, 0);
         Assert.assertEquals(new NullFlagsField("null", 8), field);
     }
 
     @Test
     public void testGetDoubleField() {
-        final XBaseField<? super FoxProAccess> field =
+        final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.getXBaseField("double", (byte) 'B', 18, 2);
         Assert.assertEquals(new DoubleField("double", 2), field);
     }

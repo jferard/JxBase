@@ -17,11 +17,13 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.dialect.db4.CDFLMNFieldsAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.CurrencyAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.DoubleAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
 
 public interface CDDtFILMN0FieldsAccess
-        extends CDFLMNFieldsAccess, DatetimeAccess, IntegerAccess, NullFlagsAccess, DoubleAccess {
+        extends CDFLMNFieldsAccess, DatetimeAccess, IntegerAccess, NullFlagsAccess, DoubleAccess,
+        CurrencyAccess {
 }

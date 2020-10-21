@@ -23,7 +23,7 @@ import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseRecord;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -51,7 +51,7 @@ public class ReaderWithMemoIT {
                 final XBaseDialect<D, A> dialect = reader.getDialect();
                 final XBaseFieldDescriptorArray<A> array = reader.getFieldDescriptorArray();
 
-                Assert.assertEquals(FoxProDialect.class, dialect.getClass());
+                Assert.assertEquals(VisualFoxProDialect.class, dialect.getClass());
                 for (final XBaseField<? super A> field : array.getFields()) {
                     final String name = field.getName();
                     if (name.equals("TEXVER")) {

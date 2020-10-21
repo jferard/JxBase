@@ -19,9 +19,9 @@ package com.github.jferard.jxbase.tool;
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -38,7 +38,7 @@ public class SQLiteQueryBuilderTest {
 
     @Before
     public void setUp() throws IOException {
-        final XBaseDialect<FoxProDialect, FoxProAccess> dialect = FoxProDialectFactory
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
                         .getDefault()).build();
         final List<XBaseField<?>> fields =

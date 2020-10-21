@@ -88,6 +88,11 @@ public class DialectFactory {
             case VisualFoxPro:
             case VisualFoxProAutoIncrement:
                 dialect = dialectFactory
+                        .createVisualFoxProDialect(type, charset, TimeZone.getDefault(), tableName,
+                                memoHeaderMeta);
+                break;
+            case FoxPro2xMemo:
+                dialect = dialectFactory
                         .createFoxProDialect(type, charset, TimeZone.getDefault(), tableName,
                                 memoHeaderMeta);
                 break;

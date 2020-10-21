@@ -25,7 +25,6 @@ import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
-import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
@@ -37,12 +36,13 @@ import com.github.jferard.jxbase.dialect.foxpro.field.FoxProCurrencyAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDatetimeAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProDoubleAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProIntegerAccess;
+import com.github.jferard.jxbase.dialect.foxpro.field.FoxProMemoAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerAccess;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
-import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProMemoFileHeaderReader;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -59,9 +59,9 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class FoxProDialectFactory {
-    public static FoxProDialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
-                                              final TimeZone timeZone) {
+public class VisualFoxProDialectFactory {
+    public static VisualFoxProDialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
+                                                    final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
@@ -75,7 +75,7 @@ public class FoxProDialectFactory {
         final IntegerAccess integerAccess = new FoxProIntegerAccess();
         final DoubleAccess doubleAccess = new FoxProDoubleAccess();
         final CurrencyAccess currencyAccess = new FoxProCurrencyAccess();
-        return new FoxProDialectFactory(type, charset, characterAccess, dateAccess, floatAccess,
+        return new VisualFoxProDialectFactory(type, charset, characterAccess, dateAccess, floatAccess,
                 logicalAccess, numericAccess, datetimeAccess, nullFlagsAccess, integerAccess,
                 doubleAccess, currencyAccess);
     }
@@ -94,15 +94,15 @@ public class FoxProDialectFactory {
     private MemoAccess memoAccess;
     private final CurrencyAccess currencyAccess;
 
-    public FoxProDialectFactory(final XBaseFileTypeEnum type, final Charset charset,
-                                final CharacterAccess characterAccess, final DateAccess dateAccess,
-                                final FloatAccess floatAccess, final LogicalAccess logicalAccess,
-                                final NumericAccess numericAccess,
-                                final DatetimeAccess datetimeAccess,
-                                final NullFlagsAccess nullFlagsAccess,
-                                final IntegerAccess integerAccess,
-                                final DoubleAccess doubleAccess,
-                                final CurrencyAccess currencyAccess) {
+    public VisualFoxProDialectFactory(final XBaseFileTypeEnum type, final Charset charset,
+                                      final CharacterAccess characterAccess, final DateAccess dateAccess,
+                                      final FloatAccess floatAccess, final LogicalAccess logicalAccess,
+                                      final NumericAccess numericAccess,
+                                      final DatetimeAccess datetimeAccess,
+                                      final NullFlagsAccess nullFlagsAccess,
+                                      final IntegerAccess integerAccess,
+                                      final DoubleAccess doubleAccess,
+                                      final CurrencyAccess currencyAccess) {
         this.type = type;
         this.charset = charset;
         this.characterAccess = characterAccess;
@@ -118,7 +118,7 @@ public class FoxProDialectFactory {
         this.memoAccess = null;
     }
 
-    public FoxProDialectFactory reader(final String tableName) throws IOException {
+    public VisualFoxProDialectFactory reader(final String tableName) throws IOException {
         final String filename = tableName + this.type.memoFileType().getExtension();
         final File memoFile = IOUtils.getFile(filename);
         final XBaseMemoReader memoReader;
@@ -133,14 +133,14 @@ public class FoxProDialectFactory {
         return this.reader(memoReader);
     }
 
-    public FoxProDialectFactory reader(final XBaseMemoReader memoReader) {
+    public VisualFoxProDialectFactory reader(final XBaseMemoReader memoReader) {
         this.memoAccess =
-                new DB3MemoAccess(memoReader, null, new RawRecordReadHelper(this.charset));
+                new FoxProMemoAccess(memoReader, null, new RawRecordReadHelper(this.charset));
         return this;
     }
 
-    public FoxProDialectFactory writer(final String tableName,
-                                       final Map<String, Object> memoHeaderMetadata)
+    public VisualFoxProDialectFactory writer(final String tableName,
+                                             final Map<String, Object> memoHeaderMetadata)
             throws IOException {
         final XBaseMemoReader memoReader = null;
         final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
@@ -148,15 +148,15 @@ public class FoxProDialectFactory {
         final XBaseMemoWriter memoWriter =
                 new FoxProMemoWriter(memoChannel, 512, memoHeaderMetadata);
         this.memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
+                new FoxProMemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
         return this;
     }
 
-    public XBaseDialect<FoxProDialect, VisualFoxProAccess> build() {
+    public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> build() {
         final VisualFoxProAccess access =
                 new VisualFoxProAccess(this.characterAccess, this.dateAccess, this.datetimeAccess,
                         this.floatAccess, this.integerAccess, this.logicalAccess, this.memoAccess,
                         this.nullFlagsAccess, this.numericAccess, this.doubleAccess, this.currencyAccess);
-        return new FoxProDialect(this.type, access);
+        return new VisualFoxProDialect(this.type, access);
     }
 }

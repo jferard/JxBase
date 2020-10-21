@@ -24,9 +24,11 @@ import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -61,7 +63,15 @@ public class MemoReaderDialectFactory implements MemoDialectFactory {
     }
 
     @Override
-    public XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(
+    public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(
+            final XBaseFileTypeEnum type, final Charset charset, final TimeZone timeZone,
+            final String tableName, final Map<String, Object> memoHeaderMeta)
+            throws IOException {
+        return VisualFoxProDialectFactory.create(type, charset, timeZone).reader(tableName).build();
+    }
+
+    @Override
+    public XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(
             final XBaseFileTypeEnum type, final Charset charset, final TimeZone timeZone,
             final String tableName, final Map<String, Object> memoHeaderMeta)
             throws IOException {

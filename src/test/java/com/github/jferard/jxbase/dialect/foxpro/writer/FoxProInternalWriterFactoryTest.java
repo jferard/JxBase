@@ -19,9 +19,9 @@ package com.github.jferard.jxbase.dialect.foxpro.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -34,16 +34,16 @@ import java.util.Collections;
 
 public class FoxProInternalWriterFactoryTest {
 
-    private FoxProInternalWriterFactory factory;
+    private VisualFoxProInternalWriterFactory factory;
 
     @Before
     public void setUp() throws IOException {
-        final FoxProDialectFactory f =
-                FoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        final VisualFoxProDialectFactory f =
+                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
-        final XBaseDialect<FoxProDialect, FoxProAccess> dialect = f.build();
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = f.build();
         this.factory =
-                new FoxProInternalWriterFactory((FoxProDialect) dialect, JxBaseUtils.UTC_TIME_ZONE);
+                new VisualFoxProInternalWriterFactory((VisualFoxProDialect) dialect, JxBaseUtils.UTC_TIME_ZONE);
     }
 
     @Test

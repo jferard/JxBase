@@ -41,7 +41,7 @@ public class GenericMetadataTest {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
         final XBaseMetadata metadata =
                 new GenericMetadata(XBaseFileTypeEnum.FoxBASEPlus1.toByte(), 0, 0, meta);
-        Assert.assertEquals("GenericMetadata[type=3, fullHeaderLength=0, oneRecordLength=0, " +
+        Assert.assertEquals("GenericMetadata[type=3 (FoxBASEPlus1), fullHeaderLength=0, oneRecordLength=0, " +
                 "meta={encryptionFlag=0, updateDate=1970-01-01, uncompletedTxFlag=0, " +
                 "recordsQty=0}]", metadata.toString());
     }

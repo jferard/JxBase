@@ -18,10 +18,9 @@ package com.github.jferard.jxbase.geter.internal;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
-import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -33,8 +32,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -45,15 +42,15 @@ public class FoxProRecordReaderTest {
 
     private XBaseMemoWriter mw;
     private ByteArrayOutputStream bos;
-    private FoxProAccess access;
+    private VisualFoxProAccess access;
     private Map<String, Object> map;
 
     @Before
     public void setUp() throws IOException {
         this.mw = PowerMock.createMock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
-        final XBaseDialect<FoxProDialect, FoxProAccess> dialect =
-                FoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
+                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
                         TimeZone.getTimeZone("GMT")).reader("foo")
                         .build();
         this.access =

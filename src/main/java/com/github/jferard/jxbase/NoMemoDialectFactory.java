@@ -19,14 +19,16 @@ package com.github.jferard.jxbase;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -34,13 +36,15 @@ import java.util.TimeZone;
 
 public class NoMemoDialectFactory implements MemoDialectFactory {
     @Override
-    public XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect(final XBaseFileTypeEnum type, final Charset charset) {
+    public XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect(final XBaseFileTypeEnum type,
+                                                                final Charset charset) {
         return DB2Dialect.create(type, charset);
     }
 
     @Override
     public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final XBaseFileTypeEnum type,
-                                                                final Charset charset, final TimeZone timeZone,
+                                                                final Charset charset,
+                                                                final TimeZone timeZone,
                                                                 final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta) {
         return DB3DialectFactory.create(type, charset, timeZone).build();
@@ -48,19 +52,30 @@ public class NoMemoDialectFactory implements MemoDialectFactory {
 
     @Override
     public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final XBaseFileTypeEnum type,
-                                                                final Charset charset, final TimeZone timeZone,
+                                                                final Charset charset,
+                                                                final TimeZone timeZone,
                                                                 final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta) {
         return DB4DialectFactory.create(type, charset, timeZone).build();
     }
 
     @Override
-    public XBaseDialect<FoxProDialect, FoxProAccess> createFoxProDialect(final XBaseFileTypeEnum type,
-                                                                         final Charset charset,
-                                                                         final TimeZone timeZone,
-                                                                         final String tableName,
-                                                                         final Map<String, Object> memoHeaderMeta) {
-        return FoxProDialectFactory.create(type, charset, timeZone).build();
+    public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(
+            final XBaseFileTypeEnum type,
+            final Charset charset,
+            final TimeZone timeZone,
+            final String tableName,
+            final Map<String, Object> memoHeaderMeta) {
+        return VisualFoxProDialectFactory.create(type, charset, timeZone).build();
     }
 
+    @Override
+    public XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(
+            final XBaseFileTypeEnum type,
+            final Charset charset,
+            final TimeZone timeZone,
+            final String tableName,
+            final Map<String, Object> memoHeaderMeta) {
+        return FoxProDialectFactory.create(type, charset, timeZone).build();
+    }
 }

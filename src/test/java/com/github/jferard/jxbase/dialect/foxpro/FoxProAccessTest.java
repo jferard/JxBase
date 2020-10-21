@@ -27,8 +27,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 public class FoxProAccessTest {
     private IntegerField inf;
@@ -38,7 +36,7 @@ public class FoxProAccessTest {
 
     @Before
     public void setUp() throws Exception {
-        this.access = FoxProDialectFactory.create(null, JxBaseUtils.ASCII_CHARSET,
+        this.access = VisualFoxProDialectFactory.create(null, JxBaseUtils.ASCII_CHARSET,
                 JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
         this.inf = new IntegerField("int");
         this.nf = new NullFlagsField("nf", 8);

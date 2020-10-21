@@ -25,9 +25,9 @@ import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -58,15 +58,15 @@ public class XBaseRecordTest {
     public ExpectedException exception = ExpectedException.none();
     private XBaseMemoReader mr;
     private GenericMetadata md;
-    private XBaseDialect<FoxProDialect, FoxProAccess> dialect;
-    private FoxProAccess access;
+    private XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect;
+    private VisualFoxProAccess access;
     // new XBaseRecord("0000000000".getBytes(JxBaseUtils.ASCII_CHARSET), this.md, this.mr, 1);
 
     @Before
     public void setUp() throws IOException {
         this.mr = PowerMock.createMock(DB3MemoReader.class);
         this.md = PowerMock.createMock(GenericMetadata.class);
-        this.dialect = FoxProDialectFactory
+        this.dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
                         .getDefault()).reader(this.mr).build();
         this.access = this.dialect.getAccess();
@@ -105,11 +105,11 @@ public class XBaseRecordTest {
     public void testGetBoolean() throws IOException {
         PowerMock.resetAll();
 
-        final XBaseField<? super FoxProAccess> field1 =
+        final XBaseField<? super VisualFoxProAccess> field1 =
                 TestHelper.fromStringRepresentation(this.dialect, "x,L,1,0");
-        final XBaseField<? super FoxProAccess> field2 =
+        final XBaseField<? super VisualFoxProAccess> field2 =
                 TestHelper.fromStringRepresentation(this.dialect, "y,L,1,0");
-        final XBaseField<? super FoxProAccess> field3 =
+        final XBaseField<? super VisualFoxProAccess> field3 =
                 TestHelper.fromStringRepresentation(this.dialect, "z,L,1,0");
         final byte[] recordBuffer = "tf0".getBytes(JxBaseUtils.ASCII_CHARSET);
         PowerMock.replayAll();

@@ -42,7 +42,7 @@ public class DB4MemoReaderTest {
     @Test
     public void testOk() {
         PowerMock.resetAll();
-        final byte[] bytes = new byte[]{(byte) 0xff, (byte) 0xff, 0x08, 0x00, 0, 0, 0, 1};
+        final byte[] bytes = new byte[]{(byte) 0xff, (byte) 0xff, 0x08, 0x00, 1, 0, 0, 0};
         EasyMock.expect(this.rawMemoReader.read(0, 0, 8)).andReturn(bytes);
         EasyMock.expect(this.rawMemoReader.read(0, 8, 1)).andReturn(new byte[]{'a'});
 

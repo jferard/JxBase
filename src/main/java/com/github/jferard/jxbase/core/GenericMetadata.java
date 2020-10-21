@@ -17,9 +17,9 @@
 
 package com.github.jferard.jxbase.core;
 
+import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseMetadata;
 
-import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,7 +68,8 @@ public class GenericMetadata implements XBaseMetadata {
 
     @Override
     public String toString() {
-        return "GenericMetadata[type=" + this.typeByte + ", fullHeaderLength=" + this.
+        return "GenericMetadata[type=" + this.typeByte + " (" +
+                XBaseFileTypeEnum.fromInt(this.typeByte) + "), fullHeaderLength=" + this.
                 fullHeaderLength + ", oneRecordLength=" + this.oneRecordLength + ", meta=" +
                 this.meta + "]";
     }

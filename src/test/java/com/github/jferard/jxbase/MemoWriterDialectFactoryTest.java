@@ -24,9 +24,9 @@ import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -40,7 +40,7 @@ import java.io.IOException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DB2Dialect.class, DB3DialectFactory.class, DB4DialectFactory.class,
-        FoxProDialectFactory.class})
+        VisualFoxProDialectFactory.class})
 public class MemoWriterDialectFactoryTest {
     @Test
     public void createDB2Dialect() {
@@ -107,12 +107,12 @@ public class MemoWriterDialectFactoryTest {
 
     @Test
     public void createFoxProDialect() throws IOException {
-        final FoxProDialect dialect = PowerMock.createMock(FoxProDialect.class);
-        final FoxProDialectFactory factory = PowerMock.createMock(FoxProDialectFactory.class);
-        PowerMock.mockStatic(FoxProDialectFactory.class);
+        final VisualFoxProDialect dialect = PowerMock.createMock(VisualFoxProDialect.class);
+        final VisualFoxProDialectFactory factory = PowerMock.createMock(VisualFoxProDialectFactory.class);
+        PowerMock.mockStatic(VisualFoxProDialectFactory.class);
         PowerMock.resetAll();
 
-        EasyMock.expect(FoxProDialectFactory
+        EasyMock.expect(VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE))
                 .andReturn(factory);
@@ -120,8 +120,8 @@ public class MemoWriterDialectFactoryTest {
         EasyMock.expect(factory.build()).andReturn(dialect);
         PowerMock.replayAll();
 
-        final XBaseDialect<FoxProDialect, FoxProAccess> d = new MemoWriterDialectFactory()
-                .createFoxProDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> d = new MemoWriterDialectFactory()
+                .createVisualFoxProDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE, "foo", null);
         PowerMock.verifyAll();
 
