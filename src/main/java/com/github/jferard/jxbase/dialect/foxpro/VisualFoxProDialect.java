@@ -51,9 +51,9 @@ public class VisualFoxProDialect implements XBaseDialect<VisualFoxProDialect, Vi
     }
 
     @Override
-    public XBaseField<? super VisualFoxProAccess> getXBaseField(final String name, final byte typeByte,
-                                                                final int length,
-                                                                final int numberOfDecimalPlaces) {
+    public XBaseField<? super VisualFoxProAccess> createXBaseField(final String name, final byte typeByte,
+                                                                   final int length,
+                                                                   final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'B':
                 // length is ignored

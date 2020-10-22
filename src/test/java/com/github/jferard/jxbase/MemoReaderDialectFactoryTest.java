@@ -52,8 +52,9 @@ public class MemoReaderDialectFactoryTest {
                 .andReturn(dialect);
         PowerMock.replayAll();
 
-        final XBaseDialect<DB2Dialect, DB2Access> d = new MemoReaderDialectFactory()
-                .createDB2Dialect(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET);
+        final XBaseDialect<DB2Dialect, DB2Access> d =
+                new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET)
+                        .createDB2Dialect();
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);
@@ -74,9 +75,10 @@ public class MemoReaderDialectFactoryTest {
         EasyMock.expect(factory.build()).andReturn(dialect);
         PowerMock.replayAll();
 
-        final XBaseDialect<DB3Dialect, DB3Access> d = new MemoReaderDialectFactory()
-                .createDB3Dialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+        final XBaseDialect<DB3Dialect, DB3Access> d =
+                new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET)
+                        .createDB3Dialect(
+                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);
@@ -97,9 +99,10 @@ public class MemoReaderDialectFactoryTest {
         EasyMock.expect(factory.build()).andReturn(dialect);
         PowerMock.replayAll();
 
-        final XBaseDialect<DB4Dialect, DB4Access> d = new MemoReaderDialectFactory()
-                .createDB4Dialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+        final XBaseDialect<DB4Dialect, DB4Access> d =
+                new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
+                        .createDB4Dialect(
+                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);
@@ -108,7 +111,8 @@ public class MemoReaderDialectFactoryTest {
     @Test
     public void createFoxProDialect() throws IOException {
         final VisualFoxProDialect dialect = PowerMock.createMock(VisualFoxProDialect.class);
-        final VisualFoxProDialectFactory factory = PowerMock.createMock(VisualFoxProDialectFactory.class);
+        final VisualFoxProDialectFactory factory =
+                PowerMock.createMock(VisualFoxProDialectFactory.class);
         PowerMock.mockStatic(VisualFoxProDialectFactory.class);
         PowerMock.resetAll();
 
@@ -120,9 +124,10 @@ public class MemoReaderDialectFactoryTest {
         EasyMock.expect(factory.build()).andReturn(dialect);
         PowerMock.replayAll();
 
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> d = new MemoReaderDialectFactory()
-                .createVisualFoxProDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> d =
+                new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
+                        .createVisualFoxProDialect(
+                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);

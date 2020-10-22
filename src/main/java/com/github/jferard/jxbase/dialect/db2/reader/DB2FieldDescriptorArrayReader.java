@@ -91,7 +91,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         final int length = JxBaseUtils.getLength(fieldBytes[12]);
         // 13-14: RAM address
         final byte numberOfDecimalPlaces = fieldBytes[15];
-        return this.dialect.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+        return this.dialect.createXBaseField(name, typeByte, length, numberOfDecimalPlaces);
     }
 
 }

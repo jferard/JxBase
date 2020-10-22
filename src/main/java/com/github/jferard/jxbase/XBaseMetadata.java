@@ -19,7 +19,7 @@ package com.github.jferard.jxbase;
 import java.util.Set;
 
 /**
- * The meta data of a file. Contains
+ * The meta data of a file. Contains info about the file.
  */
 public interface XBaseMetadata {
     /**
@@ -43,5 +43,8 @@ public interface XBaseMetadata {
      */
     Object get(String key);
 
+    /**
+     * @return the set of keys
+     */
     Set<String> keySet();
 }

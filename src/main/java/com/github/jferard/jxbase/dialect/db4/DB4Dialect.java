@@ -48,9 +48,9 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
 
 
     @Override
-    public XBaseField<? super DB4Access> getXBaseField(final String name, final byte typeByte,
-                                                       final int length,
-                                                       final int numberOfDecimalPlaces) {
+    public XBaseField<? super DB4Access> createXBaseField(final String name, final byte typeByte,
+                                                          final int length,
+                                                          final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'C':
                 return new CharacterField(name, length);

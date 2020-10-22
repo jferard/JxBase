@@ -24,19 +24,46 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/**
+ *
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
+    /**
+     * Create a field. The field depends on the dialect (e.g. memo fields dialect dependent).
+     * @param name name of the field
+     * @param typeByte the type byte of the field ('C' for char...)
+     * @param length the given length of the field
+     * @param numberOfDecimalPlaces the given number of decimal places
+     * @return the field.
+     */
+    XBaseField<? super A> createXBaseField(String name, byte typeByte, int length,
+                                           int numberOfDecimalPlaces);
 
-    XBaseField<? super A>   getXBaseField(String name, byte typeByte, int length,
-                                        int numberOfDecimalPlaces);
-
+    /**
+     * @return the type of the dialect file
+     */
     XBaseFileTypeEnum getType();
 
+    /**
+     * @return the length of the meta data
+     */
     int getMetaDataLength();
 
+    /**
+     * @return the length of descriptor of *one* field.
+     */
     int getFieldDescriptorLength();
 
+    /**
+     * @return the length of the optional zone after the header.
+     */
     int getOptionalLength();
 
+    /**
+     * @return the access to data.
+     */
     A getAccess();
 
     XBaseInternalReaderFactory<D, A> getInternalReaderFactory(String tableName, Charset charset)

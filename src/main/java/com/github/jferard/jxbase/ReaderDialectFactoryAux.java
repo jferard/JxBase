@@ -35,47 +35,50 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class MemoReaderDialectFactory implements MemoDialectFactory {
-    @Override
-    public XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect(final XBaseFileTypeEnum type,
-                                                                final Charset charset) {
-        return DB2Dialect.create(type, charset);
+class ReaderDialectFactoryAux implements DialectFactoryAux {
+    private final XBaseFileTypeEnum type;
+    private final Charset charset;
+
+    public ReaderDialectFactoryAux(final XBaseFileTypeEnum type, final Charset charset) {
+        this.type = type;
+        this.charset = charset;
     }
 
     @Override
-    public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final XBaseFileTypeEnum type,
-                                                                final Charset charset,
-                                                                final TimeZone timeZone,
-                                                                final String tableName,
-                                                                final Map<String, Object> memoHeaderMeta)
-            throws IOException {
-        return DB3DialectFactory.create(type, charset, timeZone).reader(tableName).build();
+    public XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect() {
+        return DB2Dialect.create(this.type, this.charset);
     }
 
     @Override
-    public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final XBaseFileTypeEnum type,
-                                                                final Charset charset,
-                                                                final TimeZone timeZone,
+    public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final TimeZone timeZone,
                                                                 final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return DB4DialectFactory.create(type, charset, timeZone).reader(tableName).build();
+        return DB3DialectFactory.create(this.type, this.charset, timeZone).reader(tableName).build();
+    }
+
+    @Override
+    public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final TimeZone timeZone,
+                                                                final String tableName,
+                                                                final Map<String, Object> memoHeaderMeta)
+            throws IOException {
+        return DB4DialectFactory.create(this.type, this.charset, timeZone).reader(tableName).build();
     }
 
     @Override
     public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(
-            final XBaseFileTypeEnum type, final Charset charset, final TimeZone timeZone,
+            final TimeZone timeZone,
             final String tableName, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return VisualFoxProDialectFactory.create(type, charset, timeZone).reader(tableName).build();
+        return VisualFoxProDialectFactory.create(this.type, this.charset, timeZone).reader(tableName).build();
     }
 
     @Override
     public XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(
-            final XBaseFileTypeEnum type, final Charset charset, final TimeZone timeZone,
+            final TimeZone timeZone,
             final String tableName, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return FoxProDialectFactory.create(type, charset, timeZone).reader(tableName).build();
+        return FoxProDialectFactory.create(this.type, this.charset, timeZone).reader(tableName).build();
     }
 
 }

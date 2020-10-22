@@ -53,7 +53,7 @@ public class DB2InternalReaderFactoryTest {
         PowerMock.resetAll();
 
         EasyMock.expect(dialect.getFieldDescriptorLength()).andReturn(16);
-        EasyMock.expect((CharacterField) dialect.getXBaseField("test", (byte) 'C', 10, 0))
+        EasyMock.expect((CharacterField) dialect.createXBaseField("test", (byte) 'C', 10, 0))
                 .andReturn(field);
         EasyMock.expect(dialect.getAccess()).andReturn(access);
         PowerMock.replayAll();

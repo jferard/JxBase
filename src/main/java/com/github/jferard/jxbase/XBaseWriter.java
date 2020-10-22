@@ -19,8 +19,20 @@ package com.github.jferard.jxbase;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * A writer for xBase files.
+ */
 public interface XBaseWriter {
+    /**
+     * Write a new row
+     * @param objectByName a map name -> object
+     * @throws IOException
+     */
     void write(Map<String, Object> objectByName) throws IOException;
 
+    /**
+     * Close the writer
+     * @throws IOException
+     */
     void close() throws IOException;
 }

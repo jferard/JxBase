@@ -23,10 +23,6 @@ import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
-import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -64,38 +60,38 @@ public class DB3DialectTest {
     @Test
     public void testGetField() {
         Assert.assertEquals(new CharacterField("x", 2),
-                this.dialect.getXBaseField("x", (byte) 'C', 2, 0));
-        Assert.assertEquals(new DateField("x"), this.dialect.getXBaseField("x", (byte) 'D', 8, 0));
+                this.dialect.createXBaseField("x", (byte) 'C', 2, 0));
+        Assert.assertEquals(new DateField("x"), this.dialect.createXBaseField("x", (byte) 'D', 8, 0));
         Assert.assertEquals(new LogicalField("x"),
-                this.dialect.getXBaseField("x", (byte) 'L', 1, 0));
-        Assert.assertEquals(new MemoField("x"), this.dialect.getXBaseField("x", (byte) 'M', 10, 0));
+                this.dialect.createXBaseField("x", (byte) 'L', 1, 0));
+        Assert.assertEquals(new MemoField("x"), this.dialect.createXBaseField("x", (byte) 'M', 10, 0));
         Assert.assertEquals(new NumericField("x", 10, 2),
-                this.dialect.getXBaseField("x", (byte) 'N', 10, 2));
+                this.dialect.createXBaseField("x", (byte) 'N', 10, 2));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetDateField() {
-        this.dialect.getXBaseField("x", (byte) 'D', 5, 0);
+        this.dialect.createXBaseField("x", (byte) 'D', 5, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetFloatField() {
-        this.dialect.getXBaseField("x", (byte) 'F', 5, 0);
+        this.dialect.createXBaseField("x", (byte) 'F', 5, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetLogicalField() {
-        this.dialect.getXBaseField("x", (byte) 'L', 10, 0);
+        this.dialect.createXBaseField("x", (byte) 'L', 10, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetMemoField() {
-        this.dialect.getXBaseField("x", (byte) 'M', 4, 0);
+        this.dialect.createXBaseField("x", (byte) 'M', 4, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetOtherField() {
-        this.dialect.getXBaseField("x", (byte) 'A', 10, 2);
+        this.dialect.createXBaseField("x", (byte) 'A', 10, 2);
     }
 
     @Test

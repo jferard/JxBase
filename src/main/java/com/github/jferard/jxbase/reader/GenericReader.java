@@ -30,7 +30,7 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
-public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader {
+public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader<D, A> {
     private final XBaseFieldDescriptorArray<A> array;
     private final XBaseRecordReader recordReader;
     private final XBaseOptional optional;

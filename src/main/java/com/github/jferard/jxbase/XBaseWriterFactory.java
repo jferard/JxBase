@@ -39,6 +39,11 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * A factory for writers
+ * @param <D> The dialect
+ * @param <A> The access
+ */
 public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
     /**
      * Create a new writer.
@@ -64,12 +69,13 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
                 .create(type, tableName, charset, meta, fields, optional, memoHeaderMeta);
     }
 
-    public XBaseWriter create(final XBaseFileTypeEnum type, final String tableName,
+    private XBaseWriter create(final XBaseFileTypeEnum type, final String tableName,
                               final Charset charset, final Map<String, Object> meta,
                               final Collection<XBaseField<? super A>> fields,
                               final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        final D dialect = (D) XBaseFileTypeEnum.getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
+        final D dialect = (D) DialectFactory
+                .getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
         final XBaseInternalWriterFactory<D, A> writerFactory =
                 dialect.getInternalWriterFactory(tableName, charset, memoHeaderMeta);
         final File dbfFile = new File(tableName + ".dbf");

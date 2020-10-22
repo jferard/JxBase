@@ -131,7 +131,7 @@ public class TestHelper {
         final byte typeByte = typeBytes[0];
         final int length = Integer.parseInt(split[2]);
         final int numberOfDecimalPlaces = Integer.parseInt(split[2]);
-        return dialect.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+        return dialect.createXBaseField(name, typeByte, length, numberOfDecimalPlaces);
     }
 
     public static <T> Set<T> newSet(final T... values) {

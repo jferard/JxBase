@@ -74,6 +74,6 @@ public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         // 21-22: Reserved for db3+ on a LAN
         // 23: SET FIELDS flags
         // 24-31: Reserved
-        return this.dialect.getXBaseField(name, typeByte, length, numberOfDecimalPlaces);
+        return this.dialect.createXBaseField(name, typeByte, length, numberOfDecimalPlaces);
     }
 }

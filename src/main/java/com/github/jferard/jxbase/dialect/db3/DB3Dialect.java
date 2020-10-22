@@ -45,9 +45,9 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     }
 
     @Override
-    public XBaseField<? super CDLMNFieldsAccess> getXBaseField(final String name, final byte typeByte,
-                                                       final int length,
-                                                       final int numberOfDecimalPlaces) {
+    public XBaseField<? super CDLMNFieldsAccess> createXBaseField(final String name, final byte typeByte,
+                                                                  final int length,
+                                                                  final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'C':
                 return new CharacterField(name, length);

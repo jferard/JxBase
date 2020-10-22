@@ -63,9 +63,9 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
 
 
     @Override
-    public XBaseField<? super DB2Access> getXBaseField(final String name, final byte typeByte,
-                                                       final int length,
-                                                       final int numberOfDecimalPlaces) {
+    public XBaseField<? super DB2Access> createXBaseField(final String name, final byte typeByte,
+                                                          final int length,
+                                                          final int numberOfDecimalPlaces) {
         switch (typeByte) {
             case 'C':
                 return new CharacterField(name, length);

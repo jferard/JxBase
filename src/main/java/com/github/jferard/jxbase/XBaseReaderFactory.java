@@ -27,7 +27,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
+/**
+ * A factory for reader. One of the hardships is that you can't guess the dialect, hence the
+ * wildcard.
+ */
 public class XBaseReaderFactory {
+    /**
+     * Create a new reader
+     * @param tableName a full table name : path/to/table, without the .dbf extension
+     * @param charset   the charset.
+     * @return          a reader
+     * @throws IOException
+     */
     public static XBaseReader<?, ?> createReader(final String tableName, final Charset charset)
             throws IOException {
         return new XBaseReaderFactory().create(tableName, charset);
@@ -47,7 +58,7 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         final XBaseDialect<?, ?> dialect =
-                XBaseFileTypeEnum.getDialect(type, tableName, charset, null);
+                DialectFactory.getDialect(type, tableName, charset, null);
         final XBaseInternalReaderFactory<?, ?> readerFactory =
                 dialect.getInternalReaderFactory(tableName, charset);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory);

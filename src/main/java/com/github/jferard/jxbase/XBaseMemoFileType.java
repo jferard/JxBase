@@ -16,8 +16,24 @@
 
 package com.github.jferard.jxbase;
 
+/**
+ * the type of the memo file associated with the dbf file.
+ */
 public enum XBaseMemoFileType {
-    NO_MEMO_FILE(""), REGULAR_MEMO_FILE(".dbt"), FOXPRO_OBJECT_AND_MEMO_FILE(".fpt");
+    /**
+     * No memo file allowed
+     */
+    NO_MEMO_FILE(""),
+
+    /**
+     * A regular (dbt) memo file
+     */
+    REGULAR_MEMO_FILE(".dbt"),
+
+    /**
+     * A foxpro (fpt) memo file.
+     */
+    FOXPRO_OBJECT_AND_MEMO_FILE(".fpt");
 
     private final String extension;
 
@@ -25,6 +41,9 @@ public enum XBaseMemoFileType {
         this.extension = extension;
     }
 
+    /**
+     * @return the extension
+     */
     public String getExtension() {
         return this.extension;
     }

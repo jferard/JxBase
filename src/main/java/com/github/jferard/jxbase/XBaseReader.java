@@ -24,6 +24,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.text.ParseException;
 
+/**
+ * A reader for xBase files
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public interface XBaseReader<D extends XBaseDialect<D, A>, A> extends Closeable {
     /**
      * @return the next record, or null if the end of file was reached
@@ -31,14 +36,23 @@ public interface XBaseReader<D extends XBaseDialect<D, A>, A> extends Closeable 
      */
     XBaseRecord read() throws IOException, ParseException;
 
+    /**
+     * @return the dialect
+     */
     XBaseDialect<D, A> getDialect();
 
+    /**
+     * @return the meta data
+     */
     XBaseMetadata getMetadata();
 
+    /**
+     * @return the field descriptor array
+     */
     XBaseFieldDescriptorArray<A> getFieldDescriptorArray();
 
+    /**
+     * @return the optional data
+     */
     XBaseOptional getOptional();
-
-    @Override
-    void close() throws IOException;
 }

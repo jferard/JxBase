@@ -54,14 +54,14 @@ public class FoxProDialectTest {
     @Test
     public void testGetCharacterField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("char", (byte) 'C', 10, 0);
+                this.dialect.createXBaseField("char", (byte) 'C', 10, 0);
         Assert.assertEquals(new CharacterField("char", 10), field);
     }
 
     @Test
     public void testGetDateField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("date", (byte) 'D', 8, 0);
+                this.dialect.createXBaseField("date", (byte) 'D', 8, 0);
         Assert.assertEquals(new DateField("date"), field);
     }
 
@@ -69,13 +69,13 @@ public class FoxProDialectTest {
     public void testGetDateFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("A date has 8 chars");
-        this.dialect.getXBaseField("date", (byte) 'D', 9, 0);
+        this.dialect.createXBaseField("date", (byte) 'D', 9, 0);
     }
 
     @Test
     public void testGetDatetimeField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("datetime", (byte) 'T', 8, 0);
+                this.dialect.createXBaseField("datetime", (byte) 'T', 8, 0);
         Assert.assertEquals(new DatetimeField("datetime"), field);
     }
 
@@ -83,13 +83,13 @@ public class FoxProDialectTest {
     public void testGetDatetimeFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("A date time has 8 chars");
-        this.dialect.getXBaseField("datetime", (byte) 'T', 9, 0);
+        this.dialect.createXBaseField("datetime", (byte) 'T', 9, 0);
     }
 
     @Test
     public void testGetFloatField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("float", (byte) 'F', 20, 0);
+                this.dialect.createXBaseField("float", (byte) 'F', 20, 0);
         Assert.assertEquals(new FloatField("float"), field);
     }
 
@@ -97,13 +97,13 @@ public class FoxProDialectTest {
     public void testGetFloatFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("A float has 20 chars");
-        this.dialect.getXBaseField("float", (byte) 'F', 21, 0);
+        this.dialect.createXBaseField("float", (byte) 'F', 21, 0);
     }
 
     @Test
     public void testGetIntegerField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("int", (byte) 'I', 4, 0);
+                this.dialect.createXBaseField("int", (byte) 'I', 4, 0);
         Assert.assertEquals(new IntegerField("int"), field);
     }
 
@@ -111,20 +111,20 @@ public class FoxProDialectTest {
     public void testGetIntegerFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("An integer has 4 bytes");
-        this.dialect.getXBaseField("int", (byte) 'I', 5, 0);
+        this.dialect.createXBaseField("int", (byte) 'I', 5, 0);
     }
 
     @Test
     public void testGetLogicalField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("bool", (byte) 'L', 1, 0);
+                this.dialect.createXBaseField("bool", (byte) 'L', 1, 0);
         Assert.assertEquals(new LogicalField("bool"), field);
     }
 
     @Test
     public void testGetMemoField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("memo", (byte) 'M', 4, 0);
+                this.dialect.createXBaseField("memo", (byte) 'M', 4, 0);
         Assert.assertEquals(new MemoField("memo"), field);
     }
 
@@ -132,27 +132,27 @@ public class FoxProDialectTest {
     public void testGetMemoFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("A memo offset has 4 bytes");
-        this.dialect.getXBaseField("memo", (byte) 'M', 5, 0);
+        this.dialect.createXBaseField("memo", (byte) 'M', 5, 0);
     }
 
     @Test
     public void testGetNumericField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("num", (byte) 'N', 8, 2);
+                this.dialect.createXBaseField("num", (byte) 'N', 8, 2);
         Assert.assertEquals(new NumericField("num", 8, 2), field);
     }
 
     @Test
     public void testGetNullFlagsField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("null", (byte) '0', 8, 0);
+                this.dialect.createXBaseField("null", (byte) '0', 8, 0);
         Assert.assertEquals(new NullFlagsField("null", 8), field);
     }
 
     @Test
     public void testGetDoubleField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.getXBaseField("double", (byte) 'B', 18, 2);
+                this.dialect.createXBaseField("double", (byte) 'B', 18, 2);
         Assert.assertEquals(new DoubleField("double", 2), field);
     }
 
@@ -160,7 +160,7 @@ public class FoxProDialectTest {
     public void testGetUnknownFieldException() {
         this.exception.expect(IllegalArgumentException.class);
         this.exception.expectMessage("'Z' (90) is not a dbf field type");
-        this.dialect.getXBaseField("unk", (byte) 'Z', 5, 0);
+        this.dialect.createXBaseField("unk", (byte) 'Z', 5, 0);
     }
 
 

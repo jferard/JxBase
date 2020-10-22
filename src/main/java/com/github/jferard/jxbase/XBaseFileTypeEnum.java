@@ -142,29 +142,6 @@ public enum XBaseFileTypeEnum {
         throw new IllegalArgumentException("Unknown file type: " + bType);
     }
 
-    /**
-     * @param type
-     * @param tableName
-     * @param charset
-     * @param memoHeaderMeta null if reader only
-     * @return
-     * @throws IOException
-     */
-    public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type,
-                                                final String tableName, final Charset charset,
-                                                final Map<String, Object> memoHeaderMeta)
-            throws IOException {
-        final XBaseDialect<?, ?> dialect;
-        if (type.memoFileType() == XBaseMemoFileType.NO_MEMO_FILE) {
-            dialect = DialectFactory.getNoMemoDialect(type, charset);
-        } else if (memoHeaderMeta == null) {
-            dialect = DialectFactory.getMemoReaderDialect(type, tableName, charset);
-        } else {
-            dialect = DialectFactory.getMemoWriterDialect(type, tableName, charset, memoHeaderMeta);
-        }
-        return dialect;
-    }
-
     final int type;
     final String description;
     private final XBaseMemoFileType memoFileType;
@@ -176,10 +153,16 @@ public enum XBaseFileTypeEnum {
         this.description = description;
     }
 
+    /**
+     * @return the byte encoding of the file type
+     */
     public byte toByte() {
         return (byte) this.type;
     }
 
+    /**
+     * @return the memo file type.
+     */
     public XBaseMemoFileType memoFileType() {
         return this.memoFileType;
     }
