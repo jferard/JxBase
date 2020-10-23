@@ -33,7 +33,7 @@ public interface XBaseMemoRecord {
     /**
      * @return the memo type
      */
-    MemoRecordTypeEnum getMemoType();
+    MemoRecordType getMemoType();
 
     /**
      * @return the memo record length in bytes

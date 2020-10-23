@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class TextMemoRecordTest {
         Assert.assertArrayEquals(text.getBytes(JxBaseUtils.ASCII_CHARSET), record.getBytes());
         Assert.assertEquals(text, record.getValue());
         Assert.assertEquals(9, record.getLength());
-        Assert.assertEquals(MemoRecordTypeEnum.TEXT, record.getMemoType());
+        Assert.assertEquals(MemoRecordType.TEXT, record.getMemoType());
         Assert.assertEquals("TextMemoRecord[text=foobarbaz]", record.toString());
     }
 

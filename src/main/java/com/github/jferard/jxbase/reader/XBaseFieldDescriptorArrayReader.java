@@ -21,6 +21,15 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
+/**
+ * A reader for the field descriptor array.
+ * @param <D> the dialect (needed to create the fields)
+ * @param <A> the access (needed to decode the values)
+ */
 public interface XBaseFieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A> {
+    /**
+     * @return the file descriptor array
+     * @throws IOException
+     */
     XBaseFieldDescriptorArray<A> read() throws IOException;
 }

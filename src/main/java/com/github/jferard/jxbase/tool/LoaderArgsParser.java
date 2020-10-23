@@ -18,20 +18,24 @@ package com.github.jferard.jxbase.tool;
 
 import java.io.File;
 
+/**
+ * A parser for args.
+ */
 public class LoaderArgsParser {
+    private static final String HELP_MESSAGE =
+            "Usage: java -cp 'path/to/jxbase/jar:path/to/jdbc/driver/jar' com.github.jferard.jxbase.tool.DatabaseLoader [option] [source] [connect_string]\n" +
+                    "\n" +
+                    "   -h, --help          Print this message\n" +
+                    "   -c driver_class     Load the driver using Class.forName\n" +
+                    "   -d                  Drop tables if they exist\n" +
+                    "   -s N                Chunk size (default is one chunk of the size of the file)\n" +
+                    "                       Use this to avoid an out of memory for big files\n" +
+                    "   source              A directory or a single dbf file\n" +
+                    "   connection_string   A connection string to the database";
+
     public LoaderArgs parse(final String[] args) {
         if (args.length == 0 || args[0].equals("-h") || args[0].equals("--help")) {
-            System.out.println(
-                    "Usage: java -cp 'path/to/jxbase/jar:path/to/jdbc/driver/jar' com.github.jferard.jxbase.tool.DatabaseLoader [option] [source] [connect_string]\n" +
-                            "\n" +
-                            "   -h, --help          Print this message\n" +
-                            "   -c driver_class     Load the driver using Class.forName\n" +
-                            "   -d                  Drop tables if they exist\n" +
-                            "   -s N                Chunk size (default is one chunk of the size of the file)\n" +
-                            "                       Use this to avoid an out of memory for big files\n" +
-                            "   source              A directory or a single dbf file\n" +
-                            "   connection_string   A connection string to the database"
-            );
+            System.out.println(HELP_MESSAGE);
             return null;
         }
         boolean dropTable = false;

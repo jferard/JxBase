@@ -16,41 +16,25 @@
 
 package com.github.jferard.jxbase.writer;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-public interface XBaseRecordWriter<D> {
-
+/**
+ * A writer for a record passed as a map.
+ * @param <D> the dialect
+ */
+public interface XBaseRecordWriter<D> extends Closeable {
+    /**
+     * @param objectByName the data of the record
+     * @throws IOException
+     */
     void write(Map<String, Object> objectByName) throws IOException;
 
-    /*
-    void writeCharacterValue(String value, int length) throws IOException;
-
-    void writeDateValue(Date value) throws IOException;
-
-    void writeIntegerValue(Long value) throws IOException;
-
-    void writeLogicalValue(Boolean value) throws IOException;
-
-    void writeNumericValue(BigDecimal value, int length, int numberOfDecimalPlaces)
-            throws IOException;
-
-*/
-    /* With memo
-    void writeMemoValue(XBaseMemoRecord value) throws IOException;
-    */
-
+    /**
+     * @return the number of records written so far
+     */
     int getRecordQty();
-
-    void close() throws IOException;
-
-    /* FoxPro
-    void writeDatetimeValue(Date value) throws IOException;
-
-    <T extends XBaseMemoRecord<?>> void writeSmallMemoValue(T value) throws IOException;
-
-    void writeNullFlagsValue(byte[] value, int length) throws IOException;
-    */
 }

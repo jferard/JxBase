@@ -19,7 +19,6 @@ package com.github.jferard.jxbase.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,28 +26,40 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * A record writer. Uses the access to convert a value to bytes.
+ *
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRecordWriter<D> {
-    private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
+    public static <D extends XBaseDialect<D, A>, A> XBaseRecordWriter<D> create(
+            final D dialect, final OutputStream outputStream, final Charset charset,
+            final Collection<XBaseField<? super A>> fields) {
+        return new GenericRecordWriter<D, A>(dialect.getAccess(), outputStream, charset, fields);
+    }
+
     protected final Collection<XBaseField<? super A>> fields;
-    protected final D dialect;
+    protected final A access;
     protected final OutputStream out;
     final Charset charset;
     protected int recordCount;
 
-    public GenericRecordWriter(final D dialect, final OutputStream out, final Charset charset,
+    public GenericRecordWriter(final A access, final OutputStream out, final Charset charset,
                                final Collection<XBaseField<? super A>> fields) {
-        this.dialect = dialect;
+        this.access = access;
         this.out = out;
         this.charset = charset;
         this.fields = fields;
         this.recordCount = 0;
     }
 
+    @Override
     public void write(final Map<String, Object> objectByName) throws IOException {
         this.out.write(JxBaseUtils.EMPTY);
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = objectByName.get(field.getName());
-            field.writeValue(this.dialect.getAccess(), this.out, value);
+            field.writeValue(this.access, this.out, value);
         }
         this.recordCount++;
     }
@@ -57,6 +68,7 @@ public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBa
         return this.recordCount;
     }
 
+    @Override
     public void close() throws IOException {
         this.out.write(0x1A);
         this.out.flush();

@@ -18,11 +18,10 @@ package com.github.jferard.jxbase.dialect.db4.reader;
 
 import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,9 +34,9 @@ public class DB4MemoFileHeaderReader implements MemoFileHeaderReader {
         final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
         memoByteBuffer.get(headerBytes);
         final int nextFreeBlockLocation =
-                BitUtils.makeInt(headerBytes[0], headerBytes[1], headerBytes[2], headerBytes[3]);
+                BytesUtils.makeLEInt(headerBytes[0], headerBytes[1], headerBytes[2], headerBytes[3]);
         int blockLength =
-                BitUtils.makeInt(headerBytes[7], headerBytes[6], headerBytes[5], headerBytes[4]);
+                BytesUtils.makeLEInt(headerBytes[7], headerBytes[6], headerBytes[5], headerBytes[4]);
         // HACK:
         if (blockLength == 0) {
             blockLength = 512;

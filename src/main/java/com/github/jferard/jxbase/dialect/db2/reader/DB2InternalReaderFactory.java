@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -33,7 +33,7 @@ import java.util.TimeZone;
 /**
  * A factory to create internal readers.
  */
-public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2Dialect, DB2Access> {
+public class DB2InternalReaderFactory implements XBaseChunkReaderFactory<DB2Dialect, DB2Access> {
     protected final DB2Dialect dialect;
     protected final TimeZone timezone;
 
@@ -60,6 +60,7 @@ public class DB2InternalReaderFactory implements XBaseInternalReaderFactory<DB2D
                 array);
     }
 
+    @Override
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,

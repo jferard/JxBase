@@ -35,14 +35,21 @@ import java.text.ParseException;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * A loader for a data base.
+ *
+ * Example:
+ *
+ * ...$ java -cp "$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.32.3.2/sqlite-jdbc-3.32.3.2.jar:$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader $HOME/prog/java/jxbase/src/test/resources/data1 "jdbc:sqlite:./test.db"
+ *
+ */
 public class DatabaseLoader {
     /**
-     * Example:
-     * <p>
-     * ...$ java -cp "$HOME/.m2/repository/org/xerial/sqlite-jdbc/3.32.3.2/sqlite-jdbc-3.32.3.2.jar:$HOME/.m2/repository/com/github/jferard/jxbase/0.0.1-SNAPSHOT/jxbase-0.0.1-SNAPSHOT.jar" com.github.jferard.jxbase.tool.DatabaseLoader $HOME/prog/java/jxbase/src/test/resources/data1 "jdbc:sqlite:./test.db"
-     *
-     * @param args
+     * @param args the args
      * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws IOException
+     * @throws ParseException
      */
     public static void main(final String[] args)
             throws ClassNotFoundException, SQLException, IOException, ParseException {
@@ -71,6 +78,13 @@ public class DatabaseLoader {
         }
     }
 
+    /**
+     * Create a new database loader.
+     * @param logger  the logger
+     * @param connection the SQL connection
+     * @return a loader
+     * @throws SQLException
+     */
     public static DatabaseLoader create(final Logger logger, final Connection connection)
             throws SQLException {
         final SQLQueryBuilderProvider provider = SQLQueryBuilderProvider.create(connection);
@@ -96,6 +110,13 @@ public class DatabaseLoader {
         this.chunkSize = chunkSize;
     }
 
+    /**
+     * Load all the tables in a directory
+     * @param baseDirectory  the directory
+     * @throws SQLException
+     * @throws IOException
+     * @throws ParseException
+     */
     public void buildAndFillTables(final File baseDirectory)
             throws SQLException, IOException, ParseException {
         this.logger.info("Build tables");
@@ -104,6 +125,13 @@ public class DatabaseLoader {
         }
     }
 
+    /**
+     * Load one table from the filename
+     * @param filename  the file name
+     * @throws SQLException
+     * @throws IOException
+     * @throws ParseException
+     */
     public void buildAndFillTable(final File filename)
             throws IOException, SQLException, ParseException {
         this.logger.info(" > " + filename);
@@ -124,7 +152,7 @@ public class DatabaseLoader {
         this.statement.execute(createQuery);
     }
 
-    public void fillTable(final SQLQueryBuilder builder,
+    private void fillTable(final SQLQueryBuilder builder,
                           final String filenameWithoutExt)
             throws SQLException, IOException, ParseException {
         this.connection.setAutoCommit(false);

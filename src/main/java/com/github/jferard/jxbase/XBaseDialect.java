@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -66,10 +66,10 @@ public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
      */
     A getAccess();
 
-    XBaseInternalReaderFactory<D, A> getInternalReaderFactory(String tableName, Charset charset)
+    XBaseChunkReaderFactory<D, A> getInternalReaderFactory(String tableName, Charset charset)
             throws IOException;
 
-    XBaseInternalWriterFactory<D, A> getInternalWriterFactory(String tableName, Charset charset,
+    XBaseChunkWriterFactory<D, A> getInternalWriterFactory(String tableName, Charset charset,
                                                            Map<String, Object> headerMeta)
             throws IOException;
 }

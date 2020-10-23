@@ -18,11 +18,11 @@ package com.github.jferard.jxbase.dialect.foxpro.memo;
 
 import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -64,11 +64,11 @@ public class FoxProMemoReader implements XBaseMemoReader {
     @Override
     public XBaseMemoRecord read(final long offsetInBlocks) {
         final byte[] recordHeaderBytes = this.rawMemoReader.read(offsetInBlocks, 0, 8);
-        final MemoRecordTypeEnum memoRecordType = MemoRecordTypeEnum.fromInt(
-                BitUtils.makeInt(recordHeaderBytes[3], recordHeaderBytes[2], recordHeaderBytes[1],
+        final MemoRecordType memoRecordType = MemoRecordType.fromInt(
+                BytesUtils.makeLEInt(recordHeaderBytes[3], recordHeaderBytes[2], recordHeaderBytes[1],
                         recordHeaderBytes[0]));
         final int memoRecordLength =
-                BitUtils.makeInt(recordHeaderBytes[7], recordHeaderBytes[6], recordHeaderBytes[5],
+                BytesUtils.makeLEInt(recordHeaderBytes[7], recordHeaderBytes[6], recordHeaderBytes[5],
                         recordHeaderBytes[4]);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
         return this.memoRecordFactory

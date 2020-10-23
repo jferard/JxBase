@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;
@@ -50,10 +50,10 @@ public class DB2MetadataReader implements XBaseMetadataReader {
         }
         final byte typeByte = headerBytes[0];
         XBaseFileTypeEnum.fromInt(typeByte);
-        final int recordsQty = BitUtils.makeInt(headerBytes[1], headerBytes[2]);
+        final int recordsQty = BytesUtils.makeLEInt(headerBytes[1], headerBytes[2]);
         final Date updateDate =
                 DB2Utils.createHeaderUpdateDate(headerBytes[3], headerBytes[4], headerBytes[5]);
-        final int oneRecordLength = BitUtils.makeInt(headerBytes[6], headerBytes[7]);
+        final int oneRecordLength = BytesUtils.makeLEInt(headerBytes[6], headerBytes[7]);
         final Map<String, Object> meta = new HashMap<String, Object>();
         meta.put("updateDate", updateDate);
         meta.put("recordsQty", recordsQty);

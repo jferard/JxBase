@@ -23,7 +23,7 @@ import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.IOException;
@@ -57,9 +57,9 @@ public class DB4MetadataReader implements XBaseMetadataReader {
         final Date updateDate =
                 DB2Utils.createHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3]);
         final int recordsQty =
-                BitUtils.makeInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
-        final int fullHeaderLength = BitUtils.makeInt(headerBytes[8], headerBytes[9]);
-        final int oneRecordLength = BitUtils.makeInt(headerBytes[10], headerBytes[11]);
+                BytesUtils.makeLEInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
+        final int fullHeaderLength = BytesUtils.makeLEInt(headerBytes[8], headerBytes[9]);
+        final int oneRecordLength = BytesUtils.makeLEInt(headerBytes[10], headerBytes[11]);
         // 12-13: Reserved; filled with zeros.
         final byte uncompletedTxFlag = headerBytes[14];
         final byte encryptionFlag = headerBytes[15];

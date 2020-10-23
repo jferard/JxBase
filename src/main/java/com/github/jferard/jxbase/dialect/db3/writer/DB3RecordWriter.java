@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Map;
 
 public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRecordWriter<D> {
-    private static final int MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
     protected final Collection<XBaseField<? super A>> fields;
     protected final D dialect;
     protected final OutputStream out;

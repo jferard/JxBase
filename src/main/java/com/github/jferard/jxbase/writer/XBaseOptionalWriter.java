@@ -20,6 +20,10 @@ import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.IOException;
 
+/**
+ * A writer for the optional chunk after the descriptor array.
+ * @param <D> the dialect
+ */
 public interface XBaseOptionalWriter<D> {
     void write(XBaseOptional optional) throws IOException;
 

@@ -19,13 +19,28 @@ package com.github.jferard.jxbase.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public interface XBaseMetadataWriter<D extends XBaseDialect<D, A>, A> {
+/**
+ * A writer for the meta data (first chunk of the file).
+ * @param <D> the dialect
+ * @param <A> the access
+ */
+public interface XBaseMetadataWriter<D extends XBaseDialect<D, A>, A> extends Closeable {
+    /**
+     * Write the meta data.
+     * @param metadata      the meta data
+     * @throws IOException
+     */
     void write(XBaseMetadata metadata) throws IOException;
 
+    /**
+     * We know the record number *after* writing the records. Hence we need
+     * to fix the meta data before closing the file
+     *
+     * @param recordQty
+     * @throws IOException
+     */
     void fixMetadata(int recordQty) throws IOException;
-
-    void close() throws IOException;
-
 }

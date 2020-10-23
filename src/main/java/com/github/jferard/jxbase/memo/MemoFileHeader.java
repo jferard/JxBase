@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.memo;
 import java.util.Map;
 
 /**
+ * Header of a memo file.
  * See https://www.clicketyclick.dk/databases/xbase/format/dbt.html
  */
 public class MemoFileHeader {
@@ -33,14 +34,24 @@ public class MemoFileHeader {
         this.meta = meta;
     }
 
+    /**
+     * @return the next free block location
+     */
     public int getNextFreeBlockLocation() {
         return this.nextFreeBlockLocation;
     }
 
+    /**
+     * @return the block length
+     */
     public int getBlockLength() {
         return this.blockLength;
     }
 
+    /**
+     * @param key key of a meta data
+     * @return the value of the meta data
+     */
     public Object get(final String key) {
         return this.meta.get(key);
     }

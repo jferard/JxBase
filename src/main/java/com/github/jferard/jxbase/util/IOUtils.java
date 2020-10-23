@@ -23,16 +23,29 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
+/**
+ * Some utils to write.
+ */
 public class IOUtils {
 
+    public static final int BUFFER_SIZE = 1024 * 8;
+
+    /**
+     * Convert totally an input stream to a byte array.
+     *
+     * @param input the input stream
+     * @return the byte array
+     * @throws IOException
+     */
     public static byte[] toByteArray(final InputStream input) throws IOException {
         try {
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            final byte[] buffer = new byte[1024 * 8];
-            int count;
-            while ((count = input.read(buffer)) > 0) {
+            final byte[] buffer = new byte[BUFFER_SIZE];
+            int count = input.read(buffer);
+            while (count > 0) {
                 baos.write(buffer, 0, count);
+                count = input.read(buffer);
             }
 
             return baos.toByteArray();
@@ -42,11 +55,12 @@ public class IOUtils {
     }
 
     /**
+     * Fill totally the buffer.
+     *
      * @param in the input stream
      * @param bs a byte array to fill from the input stream
-     * @return 0 if b.length == 0 or the number or bytes really read, between 0 and b.length.
-     * If b.length != 0, a return value lower than b.length means that the end of the stream was
-     * reached.
+     * @return the number of bytes really read, between 0 and b.length:
+     * min(b.length, number of remaining bytes)
      * @throws IOException
      */
     public static int readFully(final InputStream in, final byte[] bs) throws IOException {
@@ -82,8 +96,10 @@ public class IOUtils {
     }
 
     /**
+     * This a "peek" method: check if the next byte is the terminator.
+     *
      * @param inputStream the buffered input stream
-     * @param terminator
+     * @param terminator  the terminator
      * @return true if the terminator was met
      * @throws IOException if the file ended abruptly.
      */
@@ -102,6 +118,8 @@ public class IOUtils {
     }
 
     /**
+     * This a "peek" method: check if the next byte is the terminator or the end of the stream.
+     *
      * @param inputStream the buffered input stream
      * @param terminator
      * @return true if the terminator was met
@@ -119,6 +137,13 @@ public class IOUtils {
         }
     }
 
+    /**
+     * Return a resettable version of the stream.
+     *
+     * @param inputStream the input stream
+     * @param bufferSize  the buffer size
+     * @return
+     */
     public static InputStream resettable(final InputStream inputStream, final int bufferSize) {
         if (inputStream.markSupported()) {
             return inputStream;
@@ -127,7 +152,11 @@ public class IOUtils {
         }
     }
 
-    public static File getFile(final String filename) {
+    /**
+     * @param filename the file name, any case accepted.
+     * @return the file or null
+     */
+    public static File getIgnoreCaseFile(final String filename) {
         final File candidateFile = new File(filename);
         final String candidatePath = candidateFile.getAbsolutePath();
         final File dir = candidateFile.getParentFile();
@@ -141,25 +170,40 @@ public class IOUtils {
         return null;
     }
 
-    public static String getExtension(final File pathname) {
-        if (!pathname.isFile()) {
+    /**
+     * Get the extension of a file, without dot.
+     *
+     * @param path the path
+     * @return the extension, null if the path is not a file
+     */
+    public static String getExtension(final File path) {
+        if (!path.isFile()) {
             return null;
         }
-        final String name = pathname.getName();
+        final String name = path.getName();
         if (!name.contains(".")) {
             return "";
         }
         return name.substring(name.lastIndexOf(".") + 1);
     }
 
-    public static String removeExtension(final File pathname) {
-        if (!pathname.isFile()) {
+    /**
+     * Remove the extension of a file, without dot.
+     *
+     * @param path the path
+     * @return the extension, null if the path is not a file
+     */
+    public static String removeExtension(final File path) {
+        if (!path.isFile()) {
             return null;
         }
-        final String fullpath = pathname.getAbsolutePath();
+        final String fullpath = path.getAbsolutePath();
         if (!fullpath.contains(".")) {
             return fullpath;
         }
         return fullpath.substring(0, fullpath.lastIndexOf("."));
+    }
+
+    private IOUtils() {
     }
 }

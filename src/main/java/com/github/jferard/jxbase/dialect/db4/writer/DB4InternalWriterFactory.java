@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.writer.GenericOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -34,7 +34,7 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB4InternalWriterFactory implements XBaseInternalWriterFactory<DB4Dialect, DB4Access> {
+public class DB4InternalWriterFactory implements XBaseChunkWriterFactory<DB4Dialect, DB4Access> {
     private final DB4Dialect dialect;
     private final TimeZone timeZone;
 

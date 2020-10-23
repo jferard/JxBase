@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.db2.writer;
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 
 import java.io.IOException;
@@ -48,25 +48,25 @@ public class DB2MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBase
         final Object r = metadata.get("recordsQty");
         if (r instanceof Number) {
             final int recordsQty = ((Number) r).intValue();
-            BitUtils.writeLEByte2(this.out, recordsQty);
+            BytesUtils.writeLEByte2(this.out, recordsQty);
         } else {
-            BitUtils.writeZeroes(this.out, 2);
+            BytesUtils.writeZeroes(this.out, 2);
         }
         final Object d = metadata.get("updateDate");
         if (d instanceof Date) {
             final Date updateDate = (Date) d;
             DB2Utils.writeHeaderUpdateDate(this.out, updateDate);
         } else {
-            BitUtils.writeZeroes(this.out, 3);
+            BytesUtils.writeZeroes(this.out, 3);
         }
-        BitUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
+        BytesUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
     }
 
     @Override
     public void fixMetadata(final int recordQty) throws IOException {
         this.out.flush();
         this.file.seek(1);
-        BitUtils.writeLEByte2(this.out, recordQty);
+        BytesUtils.writeLEByte2(this.out, recordQty);
         DB2Utils.writeHeaderUpdateDate(this.out, new Date());
     }
 

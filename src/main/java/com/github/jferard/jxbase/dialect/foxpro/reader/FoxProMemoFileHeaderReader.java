@@ -19,7 +19,7 @@ package com.github.jferard.jxbase.dialect.foxpro.reader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -38,8 +38,8 @@ public class FoxProMemoFileHeaderReader implements MemoFileHeaderReader {
         final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
         memoByteBuffer.get(headerBytes);
         final int nextFreeBlockLocation =
-                BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
-        final int blockLength = BitUtils.makeInt(headerBytes[7], headerBytes[6]);
+                BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
+        final int blockLength = BytesUtils.makeLEInt(headerBytes[7], headerBytes[6]);
         final Map<String, Object> meta = new HashMap<String, Object>();
         return new MemoFileHeader(blockLength, nextFreeBlockLocation, meta);
     }

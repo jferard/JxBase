@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.GenericWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -76,7 +76,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
             throws IOException {
         final D dialect = (D) DialectFactory
                 .getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
-        final XBaseInternalWriterFactory<D, A> writerFactory =
+        final XBaseChunkWriterFactory<D, A> writerFactory =
                 dialect.getInternalWriterFactory(tableName, charset, memoHeaderMeta);
         final File dbfFile = new File(tableName + ".dbf");
         dbfFile.delete();
@@ -97,7 +97,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
 
     private XBaseMetadataWriter<D, A> writeHeader(final D dialect, final RandomAccessFile file,
                                                final OutputStream out, final Charset charset,
-                                               final XBaseInternalWriterFactory<D, A> writerFactory,
+                                               final XBaseChunkWriterFactory<D, A> writerFactory,
                                                final XBaseMetadata initialMetadata,
                                                final XBaseFieldDescriptorArray<A> array,
                                                final XBaseOptional optional) throws IOException {

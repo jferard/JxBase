@@ -20,6 +20,10 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
 
+/**
+ * A writer for the descriptor array (description of the fields).
+ * @param <A> the access
+ */
 public interface XBaseFieldDescriptorArrayWriter<A> {
     int write(XBaseFieldDescriptorArray<A> array) throws IOException;
 }

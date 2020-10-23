@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Map;
 
 public class DB3MemoWriter implements XBaseMemoWriter {
@@ -77,6 +76,6 @@ public class DB3MemoWriter implements XBaseMemoWriter {
 
     @Override
     public void fixMetadata() throws IOException {
-        this.rawMemoWriter.write(0, 0, BitUtils.makeLEByte4((int) this.curOffsetInBlocks));
+        this.rawMemoWriter.write(0, 0, BytesUtils.makeLEByte4((int) this.curOffsetInBlocks));
     }
 }

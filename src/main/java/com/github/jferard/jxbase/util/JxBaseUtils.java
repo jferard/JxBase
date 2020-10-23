@@ -26,6 +26,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.TimeZone;
 
+/**
+ * Some utils.
+ */
 public class JxBaseUtils {
     public static final int HEADER_TERMINATOR = 0x0D;
     public static final ThreadLocal<SimpleDateFormat> DATE_FORMAT =
@@ -48,7 +51,12 @@ public class JxBaseUtils {
     private static final CharSequence NUMERIC_OVERFLOW = "*";
     public static int EMPTY = 0x20;
 
-    // helpers
+    /**
+     * Read the field bytes into a buffer
+     * @param inputStream  the input stream
+     * @param fieldBytes the field bytes
+     * @throws IOException if the bytes are not there
+     */
     public static void readFieldBytes(final InputStream inputStream, final byte[] fieldBytes)
             throws IOException {
         final int count = IOUtils.readFully(inputStream, fieldBytes);
@@ -58,6 +66,11 @@ public class JxBaseUtils {
         }
     }
 
+    /**
+     * Get the name of the field
+     * @param fieldBytes the data
+     * @return the name
+     */
     public static String getName(final byte[] fieldBytes) {
         int nameLength = 0;
         while (nameLength < MAX_FIELD_NAME_SIZE && fieldBytes[nameLength] != 0x0) {
@@ -66,6 +79,11 @@ public class JxBaseUtils {
         return new String(fieldBytes, 0, nameLength, ASCII_CHARSET);
     }
 
+    /**
+     * Get the length of the field
+     * @param lenByte the byte
+     * @return the length
+     */
     public static int getLength(final byte lenByte) {
         int length = lenByte;
         if (length < 0) {
@@ -74,6 +92,12 @@ public class JxBaseUtils {
         return length;
     }
 
+    /**
+     * A simple joiner...
+     * @param delimiter the delimiter
+     * @param chunks the chunks
+     * @return the joined string.
+     */
     public static String join(final String delimiter, final Iterable<String> chunks) {
         final Iterator<String> it = chunks.iterator();
         final StringBuilder sb = new StringBuilder();

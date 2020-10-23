@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.dialect.db4.writer;
 
 import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.XBaseMetadata;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 
 import java.io.IOException;
@@ -50,24 +50,24 @@ public class DB4MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBase
             final Date updateDate = (Date) d;
             this.writeHeaderDate(updateDate);
         } else {
-            BitUtils.writeZeroes(this.out, 3);
+            BytesUtils.writeZeroes(this.out, 3);
         }
         final Object r = metadata.get("recordsQty");
         if (r instanceof Number) {
             final int recordsQty = ((Number) r).intValue();
-            BitUtils.writeLEByte4(this.out, recordsQty);
+            BytesUtils.writeLEByte4(this.out, recordsQty);
         } else {
-            BitUtils.writeZeroes(this.out, 4);
+            BytesUtils.writeZeroes(this.out, 4);
         }
-        BitUtils.writeLEByte2(this.out, metadata.getFullHeaderLength());
-        BitUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
-        BitUtils.writeZeroes(this.out, 2);
+        BytesUtils.writeLEByte2(this.out, metadata.getFullHeaderLength());
+        BytesUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
+        BytesUtils.writeZeroes(this.out, 2);
         this.writeFlag(metadata, "uncompletedTxFlag");
         this.writeFlag(metadata, "encryptionFlag");
-        BitUtils.writeZeroes(this.out, 12);
+        BytesUtils.writeZeroes(this.out, 12);
         this.writeFlag(metadata, "mdxFlag");
         this.writeFlag(metadata, "languageDriverId");
-        BitUtils.writeZeroes(this.out, 2);
+        BytesUtils.writeZeroes(this.out, 2);
     }
 
     private void writeFlag(final XBaseMetadata metadata, final String flag) throws IOException {
@@ -84,7 +84,7 @@ public class DB4MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBase
         this.out.flush();
         this.file.seek(1);
         this.writeHeaderDate(new Date());
-        BitUtils.writeLEByte4(this.out, recordQty);
+        BytesUtils.writeLEByte4(this.out, recordQty);
     }
 
     @Override

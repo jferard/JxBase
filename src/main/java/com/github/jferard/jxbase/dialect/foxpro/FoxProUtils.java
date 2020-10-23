@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.util.Calendar;
@@ -99,7 +99,7 @@ public class FoxProUtils {
     // cf. https://bowie.gsfc.nasa.gov/time/julian.html
     public static Date julianDaysToDate(final byte b0, final byte b1, final byte b2,
                                         final byte b3) {
-        final int julianDays = BitUtils.makeInt(b0, b1, b2, b3);
+        final int julianDays = BytesUtils.makeLEInt(b0, b1, b2, b3);
         return julianDaysToDate(julianDays);
     }
 
@@ -143,7 +143,7 @@ public class FoxProUtils {
     }
 
     public static long toMillis(final byte b0, final byte b1, final byte b2, final byte b3) {
-        final long millis = BitUtils.makeInt(b0, b1, b2, b3);
+        final long millis = BytesUtils.makeLEInt(b0, b1, b2, b3);
         return millis;
     }
 

@@ -27,7 +27,13 @@ package com.github.jferard.jxbase.core;
  *
  */
 public interface XBaseOptional {
+    /**
+     * @return the length of the optional chunk
+     */
     int getLength();
 
+    /**
+     * @return the content of the chunk.
+     */
     byte[] getBytes();
 }

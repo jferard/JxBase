@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 
@@ -55,7 +55,7 @@ public class DB2FieldDescriptorArrayWriter<A>
         final int missingCount = DB2Utils.DB2_MAX_FIELDS - fieldCount;
         this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         if (missingCount > 0) {
-            BitUtils.writeZeroes(this.out, missingCount * DB2Utils.DB2_FIELD_DESCRIPTOR_LENGTH);
+            BytesUtils.writeZeroes(this.out, missingCount * DB2Utils.DB2_FIELD_DESCRIPTOR_LENGTH);
         }
         return offset;
     }
@@ -68,9 +68,9 @@ public class DB2FieldDescriptorArrayWriter<A>
             throw new IOException("Name too long");
         }
         this.out.write(nameBytes);
-        BitUtils.writeZeroes(this.out, 11 - nameLength);
+        BytesUtils.writeZeroes(this.out, 11 - nameLength);
         this.out.write(representation.getType()); // 11
-        BitUtils.writeEmpties(this.out, 2); // 12-13
+        BytesUtils.writeEmpties(this.out, 2); // 12-13
         this.out.write(representation.getRepLength() & 0xFF); // 14
         this.out.write(representation.getNumberOfDecimalPlaces()); // 15
     }

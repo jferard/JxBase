@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.memo;
 import java.util.Arrays;
 
 /**
+ * A memo record, just bytes.
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
 public class ByteMemoRecord implements XBaseMemoRecord {
@@ -46,8 +47,8 @@ public class ByteMemoRecord implements XBaseMemoRecord {
     }
 
     @Override
-    public MemoRecordTypeEnum getMemoType() {
-        return MemoRecordTypeEnum.NO_TYPE;
+    public MemoRecordType getMemoType() {
+        return MemoRecordType.NO_TYPE;
     }
 
     @Override

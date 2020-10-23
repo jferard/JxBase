@@ -120,7 +120,7 @@ public class VisualFoxProDialectFactory {
 
     public VisualFoxProDialectFactory reader(final String tableName) throws IOException {
         final String filename = tableName + this.type.memoFileType().getExtension();
-        final File memoFile = IOUtils.getFile(filename);
+        final File memoFile = IOUtils.getIgnoreCaseFile(filename);
         final XBaseMemoReader memoReader;
         if (memoFile == null) {
             memoReader = null;

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.nio.charset.Charset;
@@ -25,13 +25,13 @@ import java.nio.charset.Charset;
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
 public class TextMemoRecord implements XBaseMemoRecord {
-    private final MemoRecordTypeEnum type;
+    private final MemoRecordType type;
     private final Charset charset;
     private final String s;
 
     public TextMemoRecord(final String s, final Charset charset) {
         this.s = s;
-        this.type = MemoRecordTypeEnum.TEXT;
+        this.type = MemoRecordType.TEXT;
         this.charset = charset;
     }
 
@@ -51,7 +51,7 @@ public class TextMemoRecord implements XBaseMemoRecord {
     }
 
     @Override
-    public MemoRecordTypeEnum getMemoType() {
+    public MemoRecordType getMemoType() {
         return this.type;
     }
 

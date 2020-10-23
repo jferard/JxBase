@@ -20,7 +20,16 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * A provider for SQLQueryBuilder.
+ */
 public class SQLQueryBuilderProvider {
+
+    /**
+     * @param connection a SQL connection
+     * @return the provider
+     * @throws SQLException
+     */
     public static SQLQueryBuilderProvider create(final Connection connection) throws SQLException {
         final String productName = connection.getMetaData().getDatabaseProductName();
         return new SQLQueryBuilderProvider(productName);
@@ -32,6 +41,12 @@ public class SQLQueryBuilderProvider {
         this.productName = productName;
     }
 
+    /**
+     * Return a builder for this table
+     * @param tableName a SQL table name
+     * @return the builder
+     * @throws IOException
+     */
     public SQLQueryBuilder get(final String tableName) throws IOException {
         if ("SQLite".equals(this.productName)) {
             return SQLiteQueryBuilder.create(tableName);

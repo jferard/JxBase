@@ -32,9 +32,9 @@ import com.github.jferard.jxbase.dialect.db2.writer.DB2InternalWriterFactory;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -108,13 +108,13 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
     }
 
     @Override
-    public XBaseInternalReaderFactory<DB2Dialect, DB2Access> getInternalReaderFactory(
+    public XBaseChunkReaderFactory<DB2Dialect, DB2Access> getInternalReaderFactory(
             final String tableName, final Charset charset) throws IOException {
         return new DB2InternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseInternalWriterFactory<DB2Dialect, DB2Access> getInternalWriterFactory(
+    public XBaseChunkWriterFactory<DB2Dialect, DB2Access> getInternalWriterFactory(
             final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
         return new DB2InternalWriterFactory(this, TimeZone.getDefault());

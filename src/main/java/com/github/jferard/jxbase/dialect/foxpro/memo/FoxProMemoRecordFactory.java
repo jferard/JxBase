@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
 import com.github.jferard.jxbase.memo.ByteMemoRecord;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.nio.charset.Charset;
@@ -29,7 +29,7 @@ public class FoxProMemoRecordFactory {
         this.charset = charset;
     }
 
-    public XBaseMemoRecord create(final byte[] dataBytes, final MemoRecordTypeEnum memoRecordType,
+    public XBaseMemoRecord create(final byte[] dataBytes, final MemoRecordType memoRecordType,
                                   final int memoRecordLength, final long offsetInBlocks) {
         switch (memoRecordType) {
             case IMAGE:

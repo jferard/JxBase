@@ -17,14 +17,11 @@
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.Date;
 
 public class FoxProDoubleAccess implements DoubleAccess {
     @Override

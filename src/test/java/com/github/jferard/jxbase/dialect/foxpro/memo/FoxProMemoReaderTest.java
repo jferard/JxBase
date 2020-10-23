@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.dialect.foxpro.memo;
 
 import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
@@ -102,7 +102,7 @@ public class FoxProMemoReaderTest {
                 .andReturn((MappedByteBuffer) bbuffer);
         EasyMock.expect(memoFileHeaderReader.read(bbuffer)).andReturn(header);
         EasyMock.expect(header.getBlockLength()).andReturn(512);
-        EasyMock.expect(memoRecordFactory.create(new byte[]{0}, MemoRecordTypeEnum.NO_TYPE, 1, 0L))
+        EasyMock.expect(memoRecordFactory.create(new byte[]{0}, MemoRecordType.NO_TYPE, 1, 0L))
                 .andReturn(memoRecord);
         // channel.close();
         PowerMock.replayAll();

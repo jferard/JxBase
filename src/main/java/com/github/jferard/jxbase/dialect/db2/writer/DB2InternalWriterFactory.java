@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.writer.GenericRecordWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -32,7 +32,7 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB2InternalWriterFactory implements XBaseInternalWriterFactory<DB2Dialect, DB2Access> {
+public class DB2InternalWriterFactory implements XBaseChunkWriterFactory<DB2Dialect, DB2Access> {
     private final DB2Dialect dialect;
     private final TimeZone timeZone;
 
@@ -68,7 +68,7 @@ public class DB2InternalWriterFactory implements XBaseInternalWriterFactory<DB2D
                                                             final XBaseMetadata metadata,
                                                             final XBaseFieldDescriptorArray<DB2Access> array,
                                                             final Object optional) {
-        return new GenericRecordWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, charset,
+        return GenericRecordWriter.create(this.dialect, outputStream, charset,
                 array.getFields());
     }
 }

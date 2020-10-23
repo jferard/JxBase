@@ -25,19 +25,17 @@ import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-import sun.security.util.Cache;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 
 public class GenericReaderTest {
-    private XBaseInternalReaderFactory rf;
+    private XBaseChunkReaderFactory rf;
     private InputStream is;
     private XBaseMemoReader mr;
     private DB3Dialect dialect;
@@ -61,7 +59,7 @@ public class GenericReaderTest {
         this.rr = PowerMock.createMock(XBaseRecordReader.class);
 
         this.dialect = PowerMock.createMock(DB3Dialect.class);
-        this.rf = PowerMock.createMock(XBaseInternalReaderFactory.class);
+        this.rf = PowerMock.createMock(XBaseChunkReaderFactory.class);
         this.mr = PowerMock.createMock(XBaseMemoReader.class);
     }
 
@@ -155,7 +153,7 @@ public class GenericReaderTest {
     }
 
     @Test
-    public void close() throws IOException {
+    public void testClose() throws IOException {
         PowerMock.resetAll();
 
         this.init();

@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,8 +65,8 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
     @Override
     public long write(final XBaseMemoRecord memo) throws IOException {
         this.curOffsetInBlocks = this.rawMemoWriter.write(this.curOffsetInBlocks, 0,
-                BitUtils.makeBEByte4(memo.getMemoType().getType()),
-                BitUtils.makeBEByte4(memo.getLength()), memo.getBytes());
+                BytesUtils.makeBEByte4(memo.getMemoType().getType()),
+                BytesUtils.makeBEByte4(memo.getLength()), memo.getBytes());
         return this.curOffsetInBlocks;
     }
 
@@ -77,6 +77,6 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
 
     @Override
     public void fixMetadata() throws IOException {
-        this.rawMemoWriter.write(0, 0, BitUtils.makeLEByte4((int) this.curOffsetInBlocks));
+        this.rawMemoWriter.write(0, 0, BytesUtils.makeLEByte4((int) this.curOffsetInBlocks));
     }
 }

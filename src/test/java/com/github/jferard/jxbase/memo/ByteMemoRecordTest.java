@@ -27,7 +27,7 @@ public class ByteMemoRecordTest {
         Assert.assertArrayEquals(bytes, record.getBytes());
         Assert.assertArrayEquals(bytes, record.getValue());
         Assert.assertEquals(10, record.getLength());
-        Assert.assertEquals(MemoRecordTypeEnum.NO_TYPE, record.getMemoType());
+        Assert.assertEquals(MemoRecordType.NO_TYPE, record.getMemoType());
         Assert.assertEquals("ByteMemoRecord[bytes=[1, 2, 3, 4]]", record.toString());
     }
 

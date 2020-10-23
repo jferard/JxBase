@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class DB3MemoAccess implements MemoAccess {
             throws IOException {
         final int length = this.getMemoValueLength();
         if (value == null) {
-            BitUtils.writeEmpties(out, length);
+            BytesUtils.writeEmpties(out, length);
         } else {
             final long offsetInBlocks = this.memoWriter.write(value);
             final String s = String.format("%10d", offsetInBlocks);

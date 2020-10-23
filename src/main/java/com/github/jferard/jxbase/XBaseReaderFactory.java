@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.reader.GenericReader;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -46,7 +46,7 @@ public class XBaseReaderFactory {
 
     private XBaseReader<?, ?> create(final String tableName, final Charset charset)
             throws IOException {
-        final File file = IOUtils.getFile(tableName + ".dbf");
+        final File file = IOUtils.getIgnoreCaseFile(tableName + ".dbf");
         if (file == null) {
             throw new IllegalArgumentException(
                     String.format("Can't find table %s (file %s.dbf doesn't exist)", tableName,
@@ -59,7 +59,7 @@ public class XBaseReaderFactory {
 
         final XBaseDialect<?, ?> dialect =
                 DialectFactory.getDialect(type, tableName, charset, null);
-        final XBaseInternalReaderFactory<?, ?> readerFactory =
+        final XBaseChunkReaderFactory<?, ?> readerFactory =
                 dialect.getInternalReaderFactory(tableName, charset);
         return new GenericReader(dialect, resettableInputStream, charset, readerFactory);
     }

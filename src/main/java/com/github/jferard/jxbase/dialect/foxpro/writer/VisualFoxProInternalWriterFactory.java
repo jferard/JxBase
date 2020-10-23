@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.dialect.db4.writer.DB4MetadataWriter;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -34,7 +34,8 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class VisualFoxProInternalWriterFactory implements XBaseInternalWriterFactory<VisualFoxProDialect, VisualFoxProAccess> {
+public class VisualFoxProInternalWriterFactory implements
+        XBaseChunkWriterFactory<VisualFoxProDialect, VisualFoxProAccess> {
     private final VisualFoxProDialect dialect;
     private final TimeZone timeZone;
 

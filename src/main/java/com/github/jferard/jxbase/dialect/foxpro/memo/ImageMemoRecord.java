@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.util.Arrays;
@@ -26,12 +26,12 @@ import java.util.Arrays;
  */
 public class ImageMemoRecord implements XBaseMemoRecord {
     private final byte[] bytes;
-    private final MemoRecordTypeEnum type;
+    private final MemoRecordType type;
     private final int length;
 
     public ImageMemoRecord(final byte[] bytes, final int length) {
         this.bytes = bytes;
-        this.type = MemoRecordTypeEnum.IMAGE;
+        this.type = MemoRecordType.IMAGE;
         this.length = length;
     }
 
@@ -51,7 +51,7 @@ public class ImageMemoRecord implements XBaseMemoRecord {
     }
 
     @Override
-    public MemoRecordTypeEnum getMemoType() {
+    public MemoRecordType getMemoType() {
         return this.type;
     }
 

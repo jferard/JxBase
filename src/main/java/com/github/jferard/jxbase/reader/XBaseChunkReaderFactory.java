@@ -17,22 +17,52 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-public interface XBaseInternalReaderFactory<D extends XBaseDialect<D, A>, A> {
+/**
+ * A factory for various chunk readers. Readers are ordered by their parameters.
+ *
+ * @param <D> dialect
+ * @param <A> access
+ */
+public interface XBaseChunkReaderFactory<D extends XBaseDialect<D, A>, A> {
+    /**
+     * @param inputStream the input stream
+     * @return the meta data reader
+     */
     XBaseMetadataReader createMetadataReader(InputStream inputStream);
 
+    /**
+     * @param inputStream the input stream
+     * @param metadata the read meta data
+     * @return the field descriptor array reader
+     */
     XBaseFieldDescriptorArrayReader<D, A> createFieldDescriptorArrayReader(InputStream inputStream,
-                                                                        XBaseMetadata metadata);
+                                                                           XBaseMetadata metadata);
 
+    /**
+     * @param inputStream the input stream
+     * @param charset the charset
+     * @param metadata the read meta data
+     * @param array the read array
+     * @return the optional reader
+     */
     XBaseOptionalReader createOptionalReader(InputStream inputStream, Charset charset,
-                                                XBaseMetadata metadata,
-                                                XBaseFieldDescriptorArray<A> array);
+                                             XBaseMetadata metadata,
+                                             XBaseFieldDescriptorArray<A> array);
 
+    /**
+     * @param inputStream the input stream
+     * @param charset the charset
+     * @param metadata the read meta data
+     * @param array the read array
+     * @param optional the read optional
+     * @return the record reader
+     */
     XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
                                          XBaseMetadata metadata, XBaseFieldDescriptorArray<A> array,
                                          Object optional);

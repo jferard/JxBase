@@ -20,6 +20,9 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.nio.charset.Charset;
 
+/**
+ * A helper class
+ */
 public class RawRecordReadHelper {
     private final Charset charset;
 
@@ -27,15 +30,34 @@ public class RawRecordReadHelper {
         this.charset = charset;
     }
 
+    /**
+     * Read a string
+     * @param recordBuffer the source buffer
+     * @param offset the offset in the buffer
+     * @param length the length
+     * @return a trimmed string, null if the string is empty.
+     */
     public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length) {
         return this.extractTrimmedString(recordBuffer, offset, length, this.charset);
     }
 
     /**
-     * @param recordBuffer
-     * @param offset
-     * @param length
-     * @param charset
+     * Read an ASCII string
+     * @param recordBuffer the source buffer
+     * @param offset the offset in the buffer
+     * @param length the length
+     * @return a trimmed string, null if the string is empty.
+     */
+    public String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
+                                            final int length) {
+        return this.extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
+    }
+
+    /**
+     * @param recordBuffer the source buffer
+     * @param offset the offset in the buffer
+     * @param length the length
+     * @param charset the charset
      * @return null if the string is empty.
      */
     public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length,
@@ -59,10 +81,5 @@ public class RawRecordReadHelper {
         }
 
         return new String(recordBuffer, actualOffset, actualLength, charset);
-    }
-
-    public String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
-                                            final int length) {
-        return this.extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
     }
 }

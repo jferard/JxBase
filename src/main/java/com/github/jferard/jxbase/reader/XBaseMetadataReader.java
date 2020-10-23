@@ -20,6 +20,13 @@ import com.github.jferard.jxbase.XBaseMetadata;
 
 import java.io.IOException;
 
+/**
+ * The reader for the meta data (beginning of the file).
+ */
 public interface XBaseMetadataReader {
+    /**
+     * @return the meta data.
+     * @throws IOException
+     */
     XBaseMetadata read() throws IOException;
 }

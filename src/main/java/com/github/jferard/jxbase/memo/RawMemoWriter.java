@@ -16,12 +16,16 @@
 
 package com.github.jferard.jxbase.memo;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Arrays;
 
-public class RawMemoWriter {
+/**
+ * A writer for a memo file.
+ */
+public class RawMemoWriter implements Closeable {
     private final SeekableByteChannel channel;
     private final int blockSize;
     private final int headerSize;
@@ -33,6 +37,13 @@ public class RawMemoWriter {
         this.headerSize = headerSize;
     }
 
+    /**
+     * @param offsetInBlocks the start block
+     * @param from           offset in the block
+     * @param arrayOfBytes   a list of buffers
+     * @return               the new offset in block
+     * @throws IOException
+     */
     public long write(final long offsetInBlocks, final int from, final byte[]... arrayOfBytes)
             throws IOException {
         final long start = this.blockSize * (offsetInBlocks - 1) + this.headerSize + from;
@@ -47,9 +58,10 @@ public class RawMemoWriter {
             }
             len += bytes.length;
         }
-        return offsetInBlocks + from + len / this.blockSize;
+        return offsetInBlocks + (from + len) / this.blockSize;
     }
 
+    @Override
     public void close() throws IOException {
         this.channel.close();
     }

@@ -16,16 +16,16 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class MemoRecordTypeEnumTest {
     @Test
     public void testFromInt() {
-        Assert.assertEquals(MemoRecordTypeEnum.IMAGE, MemoRecordTypeEnum.fromInt(0x00));
-        Assert.assertEquals(MemoRecordTypeEnum.TEXT, MemoRecordTypeEnum.fromInt(0x01));
-        Assert.assertEquals(MemoRecordTypeEnum.OBJECT, MemoRecordTypeEnum.fromInt(0x02));
-        Assert.assertEquals(MemoRecordTypeEnum.NO_TYPE, MemoRecordTypeEnum.fromInt(0x03));
+        Assert.assertEquals(MemoRecordType.IMAGE, MemoRecordType.fromInt(0x00));
+        Assert.assertEquals(MemoRecordType.TEXT, MemoRecordType.fromInt(0x01));
+        Assert.assertEquals(MemoRecordType.OBJECT, MemoRecordType.fromInt(0x02));
+        Assert.assertEquals(MemoRecordType.NO_TYPE, MemoRecordType.fromInt(0x03));
     }
 }

@@ -24,6 +24,12 @@ import com.github.jferard.jxbase.core.XBaseOptional;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A generic writer for the optional chunk after the descriptor array.
+ * Do not use the metadata or the array.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class GenericOptionalWriter<D extends XBaseDialect<D, A>, A> implements XBaseOptionalWriter<D> {
     private final D dialect;
     private final OutputStream outputStream;

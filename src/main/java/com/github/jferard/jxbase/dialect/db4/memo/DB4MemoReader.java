@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -87,7 +87,7 @@ public class DB4MemoReader implements XBaseMemoReader {
                             Arrays.toString(recordHeaderBytes)));
         }
         final int memoRecordLength =
-                BitUtils.makeInt(recordHeaderBytes[4], recordHeaderBytes[5], recordHeaderBytes[6],
+                BytesUtils.makeLEInt(recordHeaderBytes[4], recordHeaderBytes[5], recordHeaderBytes[6],
                         recordHeaderBytes[7]);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
         return new ByteMemoRecord(dataBytes, memoRecordLength);

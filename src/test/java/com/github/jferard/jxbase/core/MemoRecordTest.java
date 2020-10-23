@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.dialect.foxpro.memo.ImageMemoRecord;
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -48,7 +48,7 @@ public class MemoRecordTest {
     public void testCreate() {
         final XBaseMemoRecord mr =
                 new ImageMemoRecord(new byte[]{0, 0, 0, 0, 5, 6, 7, 8}, 84281096);
-        Assert.assertEquals(MemoRecordTypeEnum.IMAGE, mr.getMemoType());
+        Assert.assertEquals(MemoRecordType.IMAGE, mr.getMemoType());
         Assert.assertEquals(84281096, mr.getLength());
     }
 
@@ -57,7 +57,7 @@ public class MemoRecordTest {
         final byte[] value = {'A', 'B'};
         final XBaseMemoRecord mr = new TextMemoRecord("AB", this.charset);
         Assert.assertArrayEquals(value, mr.getBytes());
-        Assert.assertEquals(MemoRecordTypeEnum.TEXT, mr.getMemoType());
+        Assert.assertEquals(MemoRecordType.TEXT, mr.getMemoType());
         Assert.assertEquals(2, mr.getLength());
     }
 }

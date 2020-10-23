@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Independent of the dialect
+ * A field. Independent of the dialect
  */
 public interface XBaseField<A> {
     String getName();
@@ -30,12 +30,36 @@ public interface XBaseField<A> {
      */
     int getValueByteLength(A access);
 
+    /**
+     * The value in the buffer.
+     * @param access the access
+     * @param recordBuffer the buffer
+     * @param offset offset of the value in the buffer
+     * @param length length of the value in the buffer
+     * @return the value.
+     * @throws IOException
+     */
     Object getValue(A access, byte[] recordBuffer, int offset, int length)
             throws IOException;
 
+    /**
+     * Write the value.
+     * @param access the access
+     * @param out the output stream
+     * @param value the value to write.
+     * @throws IOException
+     */
     void writeValue(A access, OutputStream out, Object value) throws IOException;
 
+    /**
+     * @param access the access
+     * @return the string representation of the field: name,type,len,num
+     */
     String toStringRepresentation(A access);
 
+    /**
+     * @param access the access
+     * @return the representation.
+     */
     FieldRepresentation toRepresentation(A access);
 }

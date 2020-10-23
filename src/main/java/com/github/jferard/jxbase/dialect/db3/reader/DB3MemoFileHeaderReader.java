@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.db3.reader;
 
 import com.github.jferard.jxbase.memo.MemoFileHeader;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
@@ -39,7 +39,7 @@ public class DB3MemoFileHeaderReader {
         try {
             memoByteBuffer.get(headerBytes);
             final int nextFreeBlockLocation =
-                    BitUtils.makeInt(headerBytes[3], headerBytes[2], headerBytes[1],
+                    BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1],
                             headerBytes[0]);
             return new MemoFileHeader(BLOCK_LENGTH, nextFreeBlockLocation,
                     Collections.<String, Object>emptyMap());

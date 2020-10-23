@@ -18,11 +18,10 @@ package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Date;
 
 public class FoxProDatetimeAccess implements DatetimeAccess {
@@ -45,11 +44,11 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
     public void writeDatetimeValue(final OutputStream out, final Date value) throws IOException {
         final int fieldLength = 8;
         if (value == null) {
-            BitUtils.writeEmpties(out, fieldLength);
+            BytesUtils.writeEmpties(out, fieldLength);
         } else {
             final long time = value.getTime();
-            BitUtils.writeLEByte4(out, FoxProUtils.dateToJulianDays(value));
-            BitUtils.writeLEByte4(out, FoxProUtils.millisFromDate(value));
+            BytesUtils.writeLEByte4(out, FoxProUtils.dateToJulianDays(value));
+            BytesUtils.writeLEByte4(out, FoxProUtils.millisFromDate(value));
         }
     }
 

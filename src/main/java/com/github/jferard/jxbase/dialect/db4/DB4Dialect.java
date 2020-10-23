@@ -28,9 +28,9 @@ import com.github.jferard.jxbase.dialect.db4.field.FloatField;
 import com.github.jferard.jxbase.dialect.db4.reader.DB4InternalReaderFactory;
 import com.github.jferard.jxbase.dialect.db4.writer.DB4InternalWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -108,13 +108,13 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
     }
 
     @Override
-    public XBaseInternalReaderFactory<DB4Dialect, DB4Access> getInternalReaderFactory(
+    public XBaseChunkReaderFactory<DB4Dialect, DB4Access> getInternalReaderFactory(
             final String tableName, final Charset charset) throws IOException {
         return new DB4InternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseInternalWriterFactory<DB4Dialect, DB4Access> getInternalWriterFactory(
+    public XBaseChunkWriterFactory<DB4Dialect, DB4Access> getInternalWriterFactory(
             final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
         return new DB4InternalWriterFactory(this, TimeZone.getDefault());

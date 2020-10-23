@@ -16,12 +16,6 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.util.BitUtils;
-import com.github.jferard.jxbase.util.JxBaseUtils;
-
-import java.io.IOException;
-import java.io.OutputStream;
-
 /**
  * A field representation is a dbf typical representation: name, type, length, number of decimals.
  * It can be written to a file, printed to screen, ...
@@ -56,22 +50,6 @@ public class FieldRepresentation {
         this.repLength = repLength;
         this.numberOfDecimalPlaces = numberOfDecimalPlaces;
     }
-
-    /*
-    public void write(final OutputStream out, final int offset) throws IOException {
-        final byte[] nameBytes = this.name.getBytes(JxBaseUtils.ASCII_CHARSET);
-        final int nameLength = nameBytes.length;
-        if (nameLength > 11) {
-            throw new IOException("Name too long");
-        }
-        out.write(nameBytes);
-        BitUtils.writeZeroes(out, 11 - nameLength);
-        out.write(this.type); // 11
-        BitUtils.writeLEByte4(out, offset); // 12-15
-        out.write(this.repLength & 0xFF); // 16
-        out.write(this.numberOfDecimalPlaces); // 17
-        BitUtils.writeZeroes(out, JxBaseUtils.FIELD_DESCRIPTOR_SIZE - 18);
-    }*/
 
     @Override
     public String toString() {

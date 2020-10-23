@@ -40,8 +40,8 @@ public class GenericRecordWriterTest {
         final DB3Dialect dialect = DB3DialectFactory
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE).build();
-        final GenericRecordWriter<DB3Dialect, DB3Access> writer =
-                new GenericRecordWriter<>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
+        final XBaseRecordWriter<DB3Dialect> writer =
+                GenericRecordWriter.create(dialect, bos, JxBaseUtils.ASCII_CHARSET,
                         Arrays.<XBaseField<? super DB3Access>>asList(
                                 new CharacterField("chars", 10),
                                 new NumericField("num", 8, 2)));

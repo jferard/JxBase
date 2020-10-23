@@ -24,7 +24,7 @@ import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -33,7 +33,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB4InternalReaderFactory implements XBaseInternalReaderFactory<DB4Dialect, DB4Access> {
+public class DB4InternalReaderFactory implements XBaseChunkReaderFactory<DB4Dialect, DB4Access> {
     protected final DB4Dialect dialect;
     protected final TimeZone timezone;
 
@@ -59,6 +59,7 @@ public class DB4InternalReaderFactory implements XBaseInternalReaderFactory<DB4D
                 this.timezone);
     }
 
+    @Override
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,

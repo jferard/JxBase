@@ -78,6 +78,7 @@ public class DB2RecordReader<A> implements XBaseRecordReader {
         return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }
 
+    @Override
     public void close() throws IOException {
         this.dbfInputStream.close();
     }

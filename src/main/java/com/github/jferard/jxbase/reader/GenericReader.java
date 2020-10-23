@@ -18,11 +18,11 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
-import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseOptional;
+import com.github.jferard.jxbase.core.XBaseRecord;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +30,13 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.logging.Logger;
 
+/**
+ * A generic reader: combination of various readers.
+ * Instead of reading on demand, everything is initialized at beginning.
+ *
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader<D, A> {
     private final XBaseFieldDescriptorArray<A> array;
     private final XBaseRecordReader recordReader;
@@ -39,10 +46,16 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
     private final XBaseMetadata metadata;
 
     /**
+     * Warning: read some data.
      *
+     * @param dialect       the dialect
+     * @param inputStream   the input stream
+     * @param charset       the charset
+     * @param readerFactory the chunk reader factory
+     * @throws IOException
      */
     public GenericReader(final D dialect, final InputStream inputStream, final Charset charset,
-                         final XBaseInternalReaderFactory<D, A> readerFactory) throws IOException {
+                         final XBaseChunkReaderFactory<D, A> readerFactory) throws IOException {
         this.dialect = dialect;
         this.inputStream = inputStream;
         this.metadata = readerFactory.createMetadataReader(inputStream).read();

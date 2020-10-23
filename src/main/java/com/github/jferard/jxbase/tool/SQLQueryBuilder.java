@@ -18,12 +18,28 @@ package com.github.jferard.jxbase.tool;
 
 import java.io.IOException;
 
+/**
+ * A query builder for a given table.
+ */
 public interface SQLQueryBuilder {
+    /**
+     * @return the DROP TABLE query.
+     */
     String dropTable();
 
+    /**
+     * @return the CREATE TABLE query
+     * @throws IOException
+     */
     String createTable() throws IOException;
 
+    /**
+     * @return the INSERT VALUES query
+     */
     String insertValues();
 
-    int getValuesSize();
+    /**
+     * @return the number of columns of the table
+     */
+    int getColumnsSize();
 }

@@ -22,6 +22,11 @@ import com.github.jferard.jxbase.XBaseWriter;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * The generic writer: a combination of chunk writers.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class GenericWriter<D extends XBaseDialect<D, A>, A> implements XBaseWriter {
     private final XBaseMetadataWriter<D, A> metadataWriter;
     private final XBaseRecordWriter<D> recordWriter;

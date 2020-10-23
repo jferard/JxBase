@@ -22,7 +22,7 @@ import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.writer.GenericOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -32,7 +32,7 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB3InternalWriterFactory implements XBaseInternalWriterFactory<DB3Dialect, DB3Access> {
+public class DB3InternalWriterFactory implements XBaseChunkWriterFactory<DB3Dialect, DB3Access> {
     private final DB3Dialect dialect;
     private final TimeZone timeZone;
 

@@ -69,7 +69,7 @@ public class DB3MetadataWriterTest {
     }
 
     @Test
-    public void close() throws IOException {
+    public void testClose() throws IOException {
         this.writer.close();
     }
 }

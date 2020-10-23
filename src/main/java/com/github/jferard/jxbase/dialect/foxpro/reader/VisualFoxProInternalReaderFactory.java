@@ -23,7 +23,7 @@ import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -32,7 +32,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class VisualFoxProInternalReaderFactory implements XBaseInternalReaderFactory<VisualFoxProDialect, VisualFoxProAccess> {
+public class VisualFoxProInternalReaderFactory implements
+        XBaseChunkReaderFactory<VisualFoxProDialect, VisualFoxProAccess> {
     protected final VisualFoxProDialect dialect;
     protected final TimeZone timezone;
 
@@ -59,6 +60,7 @@ public class VisualFoxProInternalReaderFactory implements XBaseInternalReaderFac
                 this.timezone);
     }
 
+    @Override
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,

@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 
@@ -54,10 +54,10 @@ public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArr
             throw new IOException("Name too long");
         }
         this.out.write(nameBytes);
-        BitUtils.writeZeroes(this.out, JxBaseUtils.MAX_FIELD_NAME_SIZE - nameLength);
+        BytesUtils.writeZeroes(this.out, JxBaseUtils.MAX_FIELD_NAME_SIZE - nameLength);
         this.out.write(fieldRepresentation.getType()); // 11
         // 12-15: RAM address
-        BitUtils.writeZeroes(this.out, 4);
+        BytesUtils.writeZeroes(this.out, 4);
         this.out.write(fieldRepresentation.getRepLength() & 0xFF); // 16
         this.out.write(fieldRepresentation.getNumberOfDecimalPlaces()); // 17
         // 18-19: Reserved for db3+ on a LAN
@@ -65,6 +65,6 @@ public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArr
         // 21-22: Reserved for db3+ on a LAN
         // 23: SET FIELDS flags
         // 24-31: Reserved
-        BitUtils.writeZeroes(this.out, DB3Utils.DB3_FIELD_DESCRIPTOR_SIZE - 18);
+        BytesUtils.writeZeroes(this.out, DB3Utils.DB3_FIELD_DESCRIPTOR_SIZE - 18);
     }
 }

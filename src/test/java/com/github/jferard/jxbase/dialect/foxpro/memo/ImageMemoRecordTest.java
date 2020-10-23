@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.memo.MemoRecordTypeEnum;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class ImageMemoRecordTest {
         Assert.assertArrayEquals(bytes, record.getBytes());
         Assert.assertArrayEquals(bytes, record.getValue());
         Assert.assertEquals(10, record.getLength());
-        Assert.assertEquals(MemoRecordTypeEnum.IMAGE, record.getMemoType());
+        Assert.assertEquals(MemoRecordType.IMAGE, record.getMemoType());
         Assert.assertEquals("ImageMemoRecord[bytes=[1, 2, 3, 4]]", record.toString());
     }
 }

@@ -16,11 +16,17 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseOptional;
 
 import java.io.IOException;
 
+/**
+ * A reader for the optional chunk after the descriptor array.
+ */
 public interface XBaseOptionalReader {
+    /**
+     * @return the optional chunk.
+     * @throws IOException
+     */
     XBaseOptional read() throws IOException;
 }

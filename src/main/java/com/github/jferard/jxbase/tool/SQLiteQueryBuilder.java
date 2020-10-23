@@ -37,10 +37,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * A SQL query builder for SQLite and a given table.
+ */
 public class SQLiteQueryBuilder implements SQLQueryBuilder {
     private final String tableShortName;
     private final Collection<XBaseField<?>> fields;
 
+    /**
+     * @param tableName the SQL table name
+     * @return the SQLite query builder
+     * @throws IOException
+     */
     public static SQLiteQueryBuilder create(final String tableName) throws IOException {
         final String tableShortName = new File(tableName).getName();
         Collection<XBaseField<?>> fields = null;
@@ -113,7 +121,7 @@ public class SQLiteQueryBuilder implements SQLQueryBuilder {
     }
 
     @Override
-    public int getValuesSize() {
+    public int getColumnsSize() {
         return this.fields.size();
     }
 }

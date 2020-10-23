@@ -31,13 +31,11 @@ import com.github.jferard.jxbase.dialect.foxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.foxpro.reader.VisualFoxProInternalReaderFactory;
 import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
-import com.github.jferard.jxbase.dialect.foxpro.writer.VisualFoxProInternalWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -133,13 +131,13 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
     }
 
     @Override
-    public XBaseInternalReaderFactory<FoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
+    public XBaseChunkReaderFactory<FoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
             final String tableName, final Charset charset) {
         return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseInternalWriterFactory<FoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
+    public XBaseChunkWriterFactory<FoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
             final String tableName, final Charset charset,
             final Map<String, Object> headerMeta) {
         return new FoxProInternalWriterFactory(this, TimeZone.getDefault());

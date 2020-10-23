@@ -26,9 +26,9 @@ import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3InternalReaderFactory;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3InternalWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.reader.XBaseInternalReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import com.github.jferard.jxbase.writer.XBaseInternalWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -100,13 +100,13 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     }
 
     @Override
-    public XBaseInternalReaderFactory<DB3Dialect, DB3Access> getInternalReaderFactory(
+    public XBaseChunkReaderFactory<DB3Dialect, DB3Access> getInternalReaderFactory(
             final String tableName, final Charset charset) throws IOException {
         return new DB3InternalReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseInternalWriterFactory<DB3Dialect, DB3Access> getInternalWriterFactory(
+    public XBaseChunkWriterFactory<DB3Dialect, DB3Access> getInternalWriterFactory(
             final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
         return new DB3InternalWriterFactory(this, TimeZone.getDefault());

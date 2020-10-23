@@ -18,12 +18,16 @@ package com.github.jferard.jxbase.tool;
 
 import java.io.File;
 
+/**
+ * Command line arguments.
+ */
 public class LoaderArgs {
     final File source;
     final String url;
     final boolean dropTable;
     final int chunkSize;
     final String classForName;
+    // TODO: logger level
 
     public LoaderArgs(final File source, final String url, final boolean dropTable, final int chunkSize,
                       final String classForName) {

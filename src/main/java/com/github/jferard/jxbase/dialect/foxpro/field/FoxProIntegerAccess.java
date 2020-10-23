@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.util.BitUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,18 +31,18 @@ public class FoxProIntegerAccess implements IntegerAccess {
     @Override
     public Long getIntegerValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 4;
-        return (long) BitUtils
-                .makeInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
+        return (long) BytesUtils
+                .makeLEInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
                         recordBuffer[offset + 3]);
     }
 
     @Override
     public void writeIntegerValue(final OutputStream out, final Long value) throws IOException {
         if (value == null) {
-            BitUtils.writeEmpties(out, this.getIntegerValueLength());
+            BytesUtils.writeEmpties(out, this.getIntegerValueLength());
         } else {
             assert 4 == this.getIntegerValueLength();
-            BitUtils.writeLEByte4(out, value.intValue());
+            BytesUtils.writeLEByte4(out, value.intValue());
         }
     }
 

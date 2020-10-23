@@ -64,7 +64,7 @@ public class SQLiteQueryBuilderTest {
 
     @Test
     public void testGetValuesSize() throws IOException {
-        Assert.assertEquals(3, this.builder.getValuesSize());
+        Assert.assertEquals(3, this.builder.getColumnsSize());
     }
 
     @Test

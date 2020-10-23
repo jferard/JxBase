@@ -16,11 +16,18 @@
 
 package com.github.jferard.jxbase.memo;
 
-public enum MemoRecordTypeEnum {
+/**
+ * The type of memo data. By convention, non FoxPro memo record have the NO_TYPE type.
+ */
+public enum MemoRecordType {
     IMAGE(0x0), TEXT(0x1), OBJECT(0x2), NO_TYPE(0xff);
 
-    public static MemoRecordTypeEnum fromInt(final int type) {
-        for (final MemoRecordTypeEnum e : MemoRecordTypeEnum.values()) {
+    /**
+     * @param type the int type (FoxPro: the first 4 bytes of the memo block.)
+     * @return the memo record type
+     */
+    public static MemoRecordType fromInt(final int type) {
+        for (final MemoRecordType e : MemoRecordType.values()) {
             if (e.type == type) {
                 return e;
             }
@@ -28,13 +35,16 @@ public enum MemoRecordTypeEnum {
         return NO_TYPE;
     }
 
+    /**
+     * @return the int type
+     */
     public int getType() {
         return this.type;
     }
 
     final int type;
 
-    MemoRecordTypeEnum(final int type) {
+    MemoRecordType(final int type) {
         this.type = type;
     }
 }

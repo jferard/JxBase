@@ -16,12 +16,23 @@
 
 package com.github.jferard.jxbase.memo;
 
+import java.io.Closeable;
 import java.io.IOException;
 
-public interface XBaseMemoWriter {
+/**
+ * A writer for a memo file
+ */
+public interface XBaseMemoWriter extends Closeable {
+    /**
+     * @param memo the memo record
+     * @return the new offset in blocks
+     * @throws IOException
+     */
     long write(XBaseMemoRecord memo) throws IOException;
 
-    void close() throws IOException;
-
+    /**
+     * Write the last offset in blocks.
+     * @throws IOException
+     */
     void fixMetadata() throws IOException;
 }

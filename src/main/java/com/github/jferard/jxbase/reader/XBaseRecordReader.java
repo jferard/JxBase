@@ -18,43 +18,18 @@ package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.core.XBaseRecord;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.text.ParseException;
 
-public interface XBaseRecordReader {
-    XBaseRecord read() throws IOException, ParseException;
-
-    /*
-    String getCharacterValue(byte[] recordBuffer, int offset, int length);
-
-    String getTrimmedString(byte[] recordBuffer, int offset, int length, Charset charset);
-
-    String getTrimmedASCIIString(byte[] recordBuffer, int offset, int length);
-
-    Date getDateValue(byte[] recordBuffer, int offset, int length);
-
-    Long getIntegerValue(byte[] recordBuffer, int offset, int length);
-
-    Boolean getLogicalValue(byte[] recordBuffer, int offset, int length);
-
-    BigDecimal getNumericValue(byte[] recordBuffer, int offset, int length,
-                               int numberOfDecimalPlaces);
-
-
+/**
+ * A reader for record
+ */
+public interface XBaseRecordReader extends Closeable {
+    /**
+     * @return the next record or null if there is no record left
+     * @throws IOException
+     * @throws ParseException
      */
-    void close() throws IOException;
-
-    /* With memo
-    <T extends XBaseMemoRecord<?>> T getMemoValue(byte[] recordBuffer, int offset, int length)
-            throws IOException;
-    */
-
-    /* FoxPro
-    Date getDatetimeValue(byte[] recordBuffer, int offset, int length);
-
-    <T extends XBaseMemoRecord<?>> T getSmallMemoValue(byte[] recordBuffer, int offset, int length)
-            throws IOException;
-
-    byte[] getNullFlagsValue(byte[] recordBuffer, int offset, int length);
-    */
+    XBaseRecord read() throws IOException, ParseException;
 }
