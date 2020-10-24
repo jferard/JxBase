@@ -17,10 +17,11 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseRecord;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -28,6 +29,7 @@ import org.junit.rules.ExpectedException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,19 +44,24 @@ public class ReaderIT {
         final String tableName = TestHelper.getResourceTableName("data1/gds_im.dbf");
 
         XBaseRecord rec;
+        final String[] g311s = new String[]{"21", "192", "376", "1318", "189"};
+
         final XBaseReader<?, ?> reader = XBaseReaderFactory.createReader(tableName, stringCharset);
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
-            assertEquals(5, meta.get("recordsQty"));
-            assertEquals(28, reader.getFieldDescriptorArray().getFields().size());
+            Assert.assertEquals(5, meta.get("recordsQty"));
+            Assert.assertEquals(3, meta.getFileTypeByte());
+            Assert.assertEquals(929, meta.getFullHeaderLength());
+            Assert.assertEquals(479, meta.getOneRecordLength());
+            Assert.assertEquals(new Date(112, 8, 26, 2, 0, 0), meta.get("updateDate"));
+            Assert.assertEquals(28, reader.getFieldDescriptorArray().getFields().size());
 
-            System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
-                System.out.println("Record is DELETED: " + rec.isDeleted());
-                System.out.println(rec.getRecordNumber());
-                System.out.println(rec.getMap());
+                Assert.assertFalse(rec.isDeleted());
+                Assert.assertEquals(recCounter + 1, rec.getRecordNumber());
+                Assert.assertEquals(g311s[recCounter], rec.getMap().get("G311"));
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
@@ -75,15 +82,18 @@ public class ReaderIT {
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
-            assertEquals(1, meta.get("recordsQty"));
-            assertEquals(117, reader.getFieldDescriptorArray().getFields().size());
+            Assert.assertEquals(1, meta.get("recordsQty"));
+            Assert.assertEquals(3, meta.getFileTypeByte());
+            Assert.assertEquals(3777, meta.getFullHeaderLength());
+            Assert.assertEquals(2763, meta.getOneRecordLength());
+            Assert.assertEquals(new Date(112, 8, 27, 2, 0, 0), meta.get("updateDate"));
+            Assert.assertEquals(117, reader.getFieldDescriptorArray().getFields().size());
 
-            System.out.println("Read DBF Metadata: " + meta);
             int recCounter = 0;
             while ((rec = reader.read()) != null) {
-                System.out.println("Record is DELETED: " + rec.isDeleted());
-                System.out.println(rec.getRecordNumber());
-                System.out.println(rec.getMap());
+                Assert.assertFalse(rec.isDeleted());
+                Assert.assertEquals(recCounter+1, rec.getRecordNumber());
+                Assert.assertEquals("WSK00000001218733", rec.getMap().get("VIN"));
 
                 recCounter++;
                 assertEquals(recCounter, rec.getRecordNumber());
