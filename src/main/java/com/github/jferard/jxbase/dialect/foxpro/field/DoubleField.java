@@ -61,7 +61,7 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     }
 
     @Override
-    public int getValueByteLength(final DoubleAccess access) {
+    public int getValueLength(final DoubleAccess access) {
         return 8;
     }
 

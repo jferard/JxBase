@@ -16,8 +16,6 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.XBaseMetadata;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Rule;

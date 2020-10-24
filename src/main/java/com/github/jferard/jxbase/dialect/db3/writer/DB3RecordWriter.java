@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
@@ -27,6 +27,11 @@ import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * A writer for DB3 records.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRecordWriter<D> {
     protected final Collection<XBaseField<? super A>> fields;
     protected final D dialect;

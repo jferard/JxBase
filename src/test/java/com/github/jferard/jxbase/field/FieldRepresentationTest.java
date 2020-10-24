@@ -32,7 +32,7 @@ public class FieldRepresentationTest {
     public void testGetName() {
         Assert.assertEquals("foo", this.fr.getName());
         Assert.assertEquals('Z', this.fr.getType());
-        Assert.assertEquals(9, this.fr.getRepLength());
+        Assert.assertEquals(9, this.fr.getFieldLength());
         Assert.assertEquals(2, this.fr.getNumberOfDecimalPlaces());
     }
 

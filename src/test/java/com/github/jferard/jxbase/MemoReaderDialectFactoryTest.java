@@ -16,11 +16,13 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
@@ -39,7 +41,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.IOException;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DB2Dialect.class, DB3DialectFactory.class, DB4DialectFactory.class,
+@PrepareForTest({DB2Dialect.class, DB3DialectBuilder.class, DB4DialectFactory.class,
         VisualFoxProDialectFactory.class})
 public class MemoReaderDialectFactoryTest {
     @Test
@@ -63,11 +65,11 @@ public class MemoReaderDialectFactoryTest {
     @Test
     public void createDB3Dialect() throws IOException {
         final DB3Dialect dialect = PowerMock.createMock(DB3Dialect.class);
-        final DB3DialectFactory factory = PowerMock.createMock(DB3DialectFactory.class);
-        PowerMock.mockStatic(DB3DialectFactory.class);
+        final DB3DialectBuilder factory = PowerMock.createMock(DB3DialectBuilder.class);
+        PowerMock.mockStatic(DB3DialectBuilder.class);
         PowerMock.resetAll();
 
-        EasyMock.expect(DB3DialectFactory
+        EasyMock.expect(DB3DialectBuilder
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE))
                 .andReturn(factory);

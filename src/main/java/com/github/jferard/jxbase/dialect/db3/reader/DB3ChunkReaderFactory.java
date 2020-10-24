@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.db3.reader;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
@@ -32,26 +32,29 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 
 /**
- * A factory to create internal readers.
+ * A factory to create readers for various chunks.
  */
-public class DB3InternalReaderFactory implements XBaseChunkReaderFactory<DB3Dialect, DB3Access> {
+public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect, DB3Access> {
     protected final DB3Dialect dialect;
     protected final TimeZone timezone;
 
-    public DB3InternalReaderFactory(final DB3Dialect dialect, final TimeZone timezone) {
+    public DB3ChunkReaderFactory(final DB3Dialect dialect, final TimeZone timezone) {
         this.dialect = dialect;
         this.timezone = timezone;
     }
 
+    @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
         return new DB3MetadataReader(this.dialect, inputStream);
     }
 
+    @Override
     public XBaseFieldDescriptorArrayReader<DB3Dialect, DB3Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
         return new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata);
     }
 
+    @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB3Access> array,

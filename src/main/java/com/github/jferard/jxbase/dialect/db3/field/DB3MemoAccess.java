@@ -27,6 +27,9 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Access (read/write) for DB3 memos.
+ */
 public class DB3MemoAccess implements MemoAccess {
     private final XBaseMemoReader memoReader;
     private final XBaseMemoWriter memoWriter;
@@ -39,14 +42,20 @@ public class DB3MemoAccess implements MemoAccess {
         this.rawRecordReader = rawRecordReader;
     }
 
+    /**
+     * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:
+     * > Pointer to ASCII text field in memo file 10 digits representing a pointer to a DBT block
+     * (default is blanks).
+     * @return 10
+     */
     @Override
     public int getMemoValueLength() {
         return 10;
     }
 
     @Override
-    public XBaseMemoRecord getMemoValue(final byte[] recordBuffer, final int offset,
-                                        final int length) throws IOException {
+    public XBaseMemoRecord extractMemoValue(final byte[] recordBuffer, final int offset,
+                                            final int length) throws IOException {
         final long offsetInBlocks = this.getOffsetInBlocks(recordBuffer, offset, length);
         if (offsetInBlocks == 0) {
             return null;
@@ -55,22 +64,19 @@ public class DB3MemoAccess implements MemoAccess {
     }
 
     /**
-     * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:
-     * > Pointer to ASCII text field in memo file 10 digits representing a pointer to a DBT block
-     * (default is blanks).
-     *
-     * @param recordBuffer
-     * @param offset
-     * @param length
-     * @return
+     * Get the block offset in the memo file.
+     * @param recordBuffer the record buffer
+     * @param offset the offset
+     * @param length the length
+     * @return the offset
      */
-    public long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
+    protected long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
                 this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return 0;
         }
-        return Long.valueOf(s);
+        return Long.parseLong(s);
     }
 
     @Override
@@ -87,7 +93,7 @@ public class DB3MemoAccess implements MemoAccess {
     }
 
     @Override
-    public FieldRepresentation getMemoFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'M', 10, 0);
+    public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
+        return new FieldRepresentation(fieldName, 'M', 10, 0);
     }
 }

@@ -16,9 +16,9 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -32,6 +32,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * A reader for DB2 array descriptor.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         implements XBaseFieldDescriptorArrayReader<D, A> {
     private final InputStream inputStream;
@@ -58,7 +63,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
             final XBaseField<? super A> field = this.createDbfField(fieldBytes);
             fields.add(field);
 
-            recordLength += field.getValueByteLength(this.dialect.getAccess());
+            recordLength += field.getValueLength(this.dialect.getAccess());
 
             if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
                 break;

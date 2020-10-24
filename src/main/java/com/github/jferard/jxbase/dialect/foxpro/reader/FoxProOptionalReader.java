@@ -17,9 +17,9 @@
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.core.GenericOptional;
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.util.IOUtils;

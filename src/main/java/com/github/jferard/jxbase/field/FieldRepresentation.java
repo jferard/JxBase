@@ -19,42 +19,42 @@ package com.github.jferard.jxbase.field;
 /**
  * A field representation is a dbf typical representation: name, type, length, number of decimals.
  * It can be written to a file, printed to screen, ...
- * It's dialect dependent
+ * It's dialect dependent. Contains
  */
 public class FieldRepresentation {
-    public String getName() {
-        return this.name;
-    }
-
-    public byte getType() {
-        return this.type;
-    }
-
-    public int getRepLength() {
-        return this.repLength;
-    }
-
-    public int getNumberOfDecimalPlaces() {
-        return this.numberOfDecimalPlaces;
-    }
-
-    private final String name;
-    private final byte type;
-    private final int repLength;
-    private final int numberOfDecimalPlaces;
+    private final String fieldName;
+    private final byte fieldType;
+    private final int fieldLength;
+    private final int fieldNumberOfDecimalPlaces;
 
     public FieldRepresentation(final String name, final char type, final int repLength,
                                final int numberOfDecimalPlaces) {
-        this.name = name;
-        this.type = (byte) type;
-        this.repLength = repLength;
-        this.numberOfDecimalPlaces = numberOfDecimalPlaces;
+        this.fieldName = name;
+        this.fieldType = (byte) type;
+        this.fieldLength = repLength;
+        this.fieldNumberOfDecimalPlaces = numberOfDecimalPlaces;
+    }
+
+    public String getName() {
+        return this.fieldName;
+    }
+
+    public byte getType() {
+        return this.fieldType;
+    }
+
+    public int getFieldLength() {
+        return this.fieldLength;
+    }
+
+    public int getNumberOfDecimalPlaces() {
+        return this.fieldNumberOfDecimalPlaces;
     }
 
     @Override
     public String toString() {
-        return this.name + "," + (char) this.type + "," + this.repLength + "," +
-                this.numberOfDecimalPlaces;
+        return this.fieldName + "," + (char) this.fieldType + "," + this.fieldLength + "," +
+                this.fieldNumberOfDecimalPlaces;
     }
 
     @Override
@@ -66,14 +66,15 @@ public class FieldRepresentation {
             return false;
         }
         final FieldRepresentation other = (FieldRepresentation) o;
-        return this.type == other.type && this.repLength == other.repLength &&
-                this.numberOfDecimalPlaces == other.numberOfDecimalPlaces &&
-                this.name.equals(other.name);
+        return this.fieldType == other.fieldType && this.fieldLength == other.fieldLength &&
+                this.fieldNumberOfDecimalPlaces == other.fieldNumberOfDecimalPlaces &&
+                this.fieldName.equals(other.fieldName);
     }
 
     @Override
     public int hashCode() {
-        return ((31 * this.type + this.repLength) * 31 + this.numberOfDecimalPlaces) * 31 +
-                this.name.hashCode();
+        return ((31 * this.fieldType + this.fieldLength) * 31 + this.fieldNumberOfDecimalPlaces) *
+                31 +
+                this.fieldName.hashCode();
     }
 }

@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseRecord;

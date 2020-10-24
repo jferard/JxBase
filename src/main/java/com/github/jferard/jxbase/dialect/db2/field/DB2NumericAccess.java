@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.field;
 
+import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -26,22 +27,29 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+/**
+ * Access (read/write) to numeric field in DB2.
+ */
 public class DB2NumericAccess implements NumericAccess {
     public static final CharSequence NUMERIC_OVERFLOW = "*";
     private final RawRecordReadHelper rawRecordReader;
     private final RawRecordWriteHelper rawRecordWriter;
+    private final Map<Integer, DecimalFormat> decimalFormatByDecimalPlaces;
 
     public DB2NumericAccess(final RawRecordReadHelper rawRecordReader,
                             final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordReader = rawRecordReader;
         this.rawRecordWriter = rawRecordWriter;
+        this.decimalFormatByDecimalPlaces = new HashMap<Integer, DecimalFormat>();
     }
 
     @Override
-    public int getNumericValueLength(final int dataSize) {
-        return dataSize;
+    public int getNumericValueLength(final int fieldLength) {
+        return fieldLength;
     }
 
     @Override
@@ -62,7 +70,7 @@ public class DB2NumericAccess implements NumericAccess {
         if (value == null) {
             this.rawRecordWriter.writeEmpties(out, length);
         } else {
-            final DecimalFormat df = this.createDecimalFormat(numberOfDecimalPlaces);
+            final DecimalFormat df = this.getDecimalFormat(numberOfDecimalPlaces);
             final String s = df.format(value);
             final byte[] numberBytes = s.getBytes(JxBaseUtils.ASCII_CHARSET);
             final int missingCount = length - numberBytes.length;
@@ -74,13 +82,17 @@ public class DB2NumericAccess implements NumericAccess {
         }
     }
 
-    private DecimalFormat createDecimalFormat(final int numberOfDecimalPlaces) {
-        final DecimalFormat df = new DecimalFormat();
-        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
-        df.setMinimumIntegerDigits(1);
-        df.setGroupingUsed(false);
-        df.setMinimumFractionDigits(numberOfDecimalPlaces);
-        df.setMaximumFractionDigits(numberOfDecimalPlaces);
+    private DecimalFormat getDecimalFormat(final int numberOfDecimalPlaces) {
+        DecimalFormat df = this.decimalFormatByDecimalPlaces.get(numberOfDecimalPlaces);
+        if (df == null) {
+            df = new DecimalFormat();
+            df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.US));
+            df.setMinimumIntegerDigits(1);
+            df.setGroupingUsed(false);
+            df.setMinimumFractionDigits(numberOfDecimalPlaces);
+            df.setMaximumFractionDigits(numberOfDecimalPlaces);
+            this.decimalFormatByDecimalPlaces.put(numberOfDecimalPlaces, df);
+        }
         return df;
     }
 
@@ -97,8 +109,8 @@ public class DB2NumericAccess implements NumericAccess {
     }
 
     @Override
-    public FieldRepresentation getNumericFieldRepresentation(final String name, final int dataSize,
-                                                             final int numberOfDecimalPlaces) {
-        return new FieldRepresentation(name, 'N', dataSize, numberOfDecimalPlaces);
+    public FieldRepresentation getNumericFieldRepresentation(final String fieldName, final int fieldLength,
+                                                             final int fieldNumberOfDecimalPlaces) {
+        return new FieldRepresentation(fieldName, 'N', fieldLength, fieldNumberOfDecimalPlaces);
     }
 }

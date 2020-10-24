@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db4.reader;
 
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class DB4MemoFileHeaderReader implements MemoFileHeaderReader {
     @Override
     public MemoFileHeader read(final ByteBuffer memoByteBuffer) {
-        final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
+        final byte[] headerBytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];
         memoByteBuffer.get(headerBytes);
         final int nextFreeBlockLocation =
                 BytesUtils.makeLEInt(headerBytes[0], headerBytes[1], headerBytes[2], headerBytes[3]);

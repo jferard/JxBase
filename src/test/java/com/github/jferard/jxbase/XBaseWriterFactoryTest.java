@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.GenericOptional;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.field.XBaseField;

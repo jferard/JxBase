@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
-import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 
@@ -24,6 +23,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+/**
+ * A date field
+ */
 public class DateField implements XBaseField<DateAccess> {
     private final String name;
 
@@ -37,14 +39,14 @@ public class DateField implements XBaseField<DateAccess> {
     }
 
     @Override
-    public int getValueByteLength(final DateAccess dialect) {
+    public int getValueLength(final DateAccess dialect) {
         return dialect.getDateValueLength();
     }
 
     @Override
-    public Date getValue(final DateAccess reader, final byte[] recordBuffer,
+    public Date getValue(final DateAccess access, final byte[] recordBuffer,
                          final int offset, final int length) throws IOException {
-        return reader.getDateValue(recordBuffer, offset, length);
+        return access.extractDateValue(recordBuffer, offset, length);
     }
 
     @Override

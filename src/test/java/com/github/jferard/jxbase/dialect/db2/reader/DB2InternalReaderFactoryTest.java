@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
@@ -58,8 +58,8 @@ public class DB2InternalReaderFactoryTest {
         EasyMock.expect(dialect.getAccess()).andReturn(access);
         PowerMock.replayAll();
 
-        final DB2InternalReaderFactory factory =
-                new DB2InternalReaderFactory(dialect, JxBaseUtils.UTC_TIME_ZONE);
+        final DB2ChunkReaderFactory factory =
+                new DB2ChunkReaderFactory(dialect, JxBaseUtils.UTC_TIME_ZONE);
 
         final XBaseFieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
                 factory.createFieldDescriptorArrayReader(bis, metadata);
@@ -80,8 +80,8 @@ public class DB2InternalReaderFactoryTest {
 
         PowerMock.replayAll();
 
-        final DB2InternalReaderFactory factory =
-                new DB2InternalReaderFactory(dialect, JxBaseUtils.UTC_TIME_ZONE);
+        final DB2ChunkReaderFactory factory =
+                new DB2ChunkReaderFactory(dialect, JxBaseUtils.UTC_TIME_ZONE);
 
         final XBaseMetadataReader reader = factory.createMetadataReader(bis);
         final XBaseMetadata metadata = reader.read();

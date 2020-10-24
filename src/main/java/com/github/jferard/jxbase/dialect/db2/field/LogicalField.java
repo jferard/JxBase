@@ -22,6 +22,9 @@ import com.github.jferard.jxbase.field.XBaseField;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A logical field : true/false.
+ */
 public class LogicalField implements XBaseField<LogicalAccess> {
     private final String name;
 
@@ -35,7 +38,7 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     }
 
     @Override
-    public int getValueByteLength(final LogicalAccess dialect) {
+    public int getValueLength(final LogicalAccess dialect) {
         return dialect.getLogicalValueLength();
     }
 

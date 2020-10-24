@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;

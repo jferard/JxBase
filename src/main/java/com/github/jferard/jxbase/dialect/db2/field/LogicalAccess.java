@@ -21,12 +21,34 @@ import com.github.jferard.jxbase.field.FieldRepresentation;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Access (read/write) to a logical field.
+ */
 public interface LogicalAccess {
+    /**
+     * @return the length in byte of the value
+     */
     int getLogicalValueLength();
 
+    /**
+     * @param recordBuffer the record buffer
+     * @param offset the offset
+     * @param length the length
+     * @return the value, true or false
+     */
     Boolean extractLogicalValue(byte[] recordBuffer, int offset, int length);
 
-    FieldRepresentation getLogicalFieldRepresentation(String name);
+    /**
+     * @param fieldName the field name
+     * @return the field representation
+     */
+    FieldRepresentation getLogicalFieldRepresentation(String fieldName);
 
+    /**
+     * Write a value.
+     * @param out the output stream
+     * @param value the value
+     * @throws IOException
+     */
     void writeLogicalValue(OutputStream out, Boolean value) throws IOException;
 }

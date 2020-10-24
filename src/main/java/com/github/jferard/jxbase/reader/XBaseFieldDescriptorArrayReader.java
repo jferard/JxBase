@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;

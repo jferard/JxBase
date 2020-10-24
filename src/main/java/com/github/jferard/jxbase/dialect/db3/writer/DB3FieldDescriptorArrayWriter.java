@@ -27,6 +27,10 @@ import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A writer for DB3 field descriptor array
+ * @param <A> the access
+ */
 public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArrayWriter<A> {
     final A access;
     final OutputStream out;
@@ -41,7 +45,7 @@ public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArr
         int offset = 0;
         for (final XBaseField<? super A> field : array.getFields()) {
             this.writeField(field.toRepresentation(this.access));
-            offset += field.getValueByteLength(this.access);
+            offset += field.getValueLength(this.access);
         }
         this.out.write(JxBaseUtils.HEADER_TERMINATOR);
         return offset;
@@ -58,7 +62,7 @@ public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArr
         this.out.write(fieldRepresentation.getType()); // 11
         // 12-15: RAM address
         BytesUtils.writeZeroes(this.out, 4);
-        this.out.write(fieldRepresentation.getRepLength() & 0xFF); // 16
+        this.out.write(fieldRepresentation.getFieldLength() & 0xFF); // 16
         this.out.write(fieldRepresentation.getNumberOfDecimalPlaces()); // 17
         // 18-19: Reserved for db3+ on a LAN
         // 20: Work area ID

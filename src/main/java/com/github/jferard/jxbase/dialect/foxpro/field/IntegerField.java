@@ -38,7 +38,7 @@ public class IntegerField implements XBaseField<IntegerAccess> {
     }
 
     @Override
-    public int getValueByteLength(final IntegerAccess dialect) {
+    public int getValueLength(final IntegerAccess dialect) {
         return dialect.getIntegerValueLength();
     }
 

@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.dialect.db4.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -27,7 +27,6 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class DB4MetadataReaderTest {
     @Test(expected = IOException.class)

@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 
 import java.io.Closeable;
 import java.io.IOException;

@@ -20,5 +20,8 @@ import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 
+/**
+ * An access, like DB2, to character, logical and numeric fields.
+ */
 public interface CLNFieldsAccess extends CharacterAccess, LogicalAccess, NumericAccess {
 }

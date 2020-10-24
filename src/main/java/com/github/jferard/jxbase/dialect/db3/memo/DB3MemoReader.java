@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.memo;
 
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.memo.ByteMemoRecord;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;
@@ -49,7 +49,7 @@ public class DB3MemoReader implements XBaseMemoReader {
 
     public static DB3MemoReader create(final FileChannel channel) throws IOException {
         final ByteBuffer memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
-        final MemoFileHeader header = DB3MemoFileHeaderReader.read(memoByteBuffer);
+        final MemoFileHeader header = DB3Utils.readMemoHeader(memoByteBuffer);
         final RawMemoReader rawMemoReader =
                 new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
                         header.getBlockLength());
@@ -65,6 +65,9 @@ public class DB3MemoReader implements XBaseMemoReader {
     }
 
 
+    /**
+     * @return the header of the memo file.
+     */
     public MemoFileHeader getHeader() {
         return this.header;
     }
@@ -76,7 +79,7 @@ public class DB3MemoReader implements XBaseMemoReader {
     }
 
     /**
-     * @param offsetInBlocks the number of the record
+     * @param offsetInBlocks the block number of the record (0 is the header, 1 is the first block)
      * @return the record
      */
     @Override

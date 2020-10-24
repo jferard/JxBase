@@ -29,6 +29,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+/**
+ * Access (read/write) for DB3 fields.
+ */
 public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     private final DateAccess dateAccess;
     private final MemoAccess memoAccess;
@@ -47,8 +50,8 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public Date getDateValue(final byte[] recordBuffer, final int offset, final int length) {
-        return this.dateAccess.getDateValue(recordBuffer, offset, length);
+    public Date extractDateValue(final byte[] recordBuffer, final int offset, final int length) {
+        return this.dateAccess.extractDateValue(recordBuffer, offset, length);
     }
 
     @Override
@@ -57,8 +60,8 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public FieldRepresentation getDateFieldRepresentation(final String name) {
-        return this.dateAccess.getDateFieldRepresentation(name);
+    public FieldRepresentation getDateFieldRepresentation(final String fieldName) {
+        return this.dateAccess.getDateFieldRepresentation(fieldName);
     }
 
     @Override
@@ -67,9 +70,9 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public XBaseMemoRecord getMemoValue(final byte[] recordBuffer, final int offset,
-                                        final int length) throws IOException {
-        return this.memoAccess.getMemoValue(recordBuffer, offset, length);
+    public XBaseMemoRecord extractMemoValue(final byte[] recordBuffer, final int offset,
+                                            final int length) throws IOException {
+        return this.memoAccess.extractMemoValue(recordBuffer, offset, length);
     }
 
     @Override
@@ -79,7 +82,7 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public FieldRepresentation getMemoFieldRepresentation(final String name) {
-        return this.memoAccess.getMemoFieldRepresentation(name);
+    public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
+        return this.memoAccess.getMemoFieldRepresentation(fieldName);
     }
 }

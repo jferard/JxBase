@@ -18,7 +18,6 @@ package com.github.jferard.jxbase.dialect.db2.field;
 
 import com.github.jferard.jxbase.dialect.db2.CLNFieldsAccess;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
-import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,8 +25,6 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 public class CharacterFieldTest {
     private CLNFieldsAccess access;
@@ -46,7 +43,7 @@ public class CharacterFieldTest {
 
     @Test
     public void getCharByteLength() {
-        Assert.assertEquals(20, this.cf.getValueByteLength(this.access));
+        Assert.assertEquals(20, this.cf.getValueLength(this.access));
     }
 
     @Test

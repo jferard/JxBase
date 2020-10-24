@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
@@ -32,6 +32,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A reader for DB3 meta data.
+ */
 public class DB3MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
     private final XBaseDialect<DB3Dialect, DB3Access> dialect;
@@ -41,9 +44,6 @@ public class DB3MetadataReader implements XBaseMetadataReader {
         this.dbfInputStream = dbfInputStream;
     }
 
-    /**
-     * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, 1.1 Table File Header
-     */
     @Override
     public GenericMetadata read() throws IOException {
         final int metadataLength = this.dialect.getMetaDataLength();

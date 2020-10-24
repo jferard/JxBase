@@ -17,8 +17,8 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseOptional;

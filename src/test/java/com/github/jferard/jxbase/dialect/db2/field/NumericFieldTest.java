@@ -44,7 +44,7 @@ public class NumericFieldTest {
 
     @Test
     public void getNumericByteLength() {
-        Assert.assertEquals(10, this.nf.getValueByteLength(this.access));
+        Assert.assertEquals(10, this.nf.getValueLength(this.access));
     }
 
     @Test

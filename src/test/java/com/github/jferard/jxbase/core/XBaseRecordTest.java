@@ -17,8 +17,6 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;

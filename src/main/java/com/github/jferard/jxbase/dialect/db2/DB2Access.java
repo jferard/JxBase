@@ -31,6 +31,9 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 
+/**
+ * Access to DB2 fields.
+ */
 public class DB2Access implements CLNFieldsAccess {
     public static DB2Access create(final Charset charset) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
@@ -54,8 +57,8 @@ public class DB2Access implements CLNFieldsAccess {
     }
 
     @Override
-    public int getCharacterValueLength(final int dataSize) {
-        return this.characterAccess.getCharacterValueLength(dataSize);
+    public int getCharacterValueLength(final int fieldLength) {
+        return this.characterAccess.getCharacterValueLength(fieldLength);
     }
 
     @Override
@@ -65,15 +68,15 @@ public class DB2Access implements CLNFieldsAccess {
     }
 
     @Override
-    public void writeCharacterValue(final OutputStream out, final String value, final int dataSize)
+    public void writeCharacterValue(final OutputStream out, final String value, final int length)
             throws IOException {
-        this.characterAccess.writeCharacterValue(out, value, dataSize);
+        this.characterAccess.writeCharacterValue(out, value, length);
     }
 
     @Override
-    public FieldRepresentation getCharacterFieldRepresentation(final String name,
-                                                               final int dataSize) {
-        return this.characterAccess.getCharacterFieldRepresentation(name, dataSize);
+    public FieldRepresentation getCharacterFieldRepresentation(final String fieldName,
+                                                               final int fieldLength) {
+        return this.characterAccess.getCharacterFieldRepresentation(fieldName, fieldLength);
     }
 
     @Override
@@ -88,8 +91,8 @@ public class DB2Access implements CLNFieldsAccess {
     }
 
     @Override
-    public FieldRepresentation getLogicalFieldRepresentation(final String name) {
-        return this.logicalAccess.getLogicalFieldRepresentation(name);
+    public FieldRepresentation getLogicalFieldRepresentation(final String fieldName) {
+        return this.logicalAccess.getLogicalFieldRepresentation(fieldName);
     }
 
     @Override
@@ -98,8 +101,8 @@ public class DB2Access implements CLNFieldsAccess {
     }
 
     @Override
-    public int getNumericValueLength(final int dataSize) {
-        return this.numericAccess.getNumericValueLength(dataSize);
+    public int getNumericValueLength(final int fieldLength) {
+        return this.numericAccess.getNumericValueLength(fieldLength);
     }
 
     @Override
@@ -116,9 +119,9 @@ public class DB2Access implements CLNFieldsAccess {
     }
 
     @Override
-    public FieldRepresentation getNumericFieldRepresentation(final String name, final int dataSize,
-                                                             final int numberOfDecimalPlaces) {
+    public FieldRepresentation getNumericFieldRepresentation(final String fieldName, final int fieldLength,
+                                                             final int fieldNumberOfDecimalPlaces) {
         return this.numericAccess
-                .getNumericFieldRepresentation(name, dataSize, numberOfDecimalPlaces);
+                .getNumericFieldRepresentation(fieldName, fieldLength, fieldNumberOfDecimalPlaces);
     }
 }

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db3.writer;
+package com.github.jferard.jxbase.dialect.db2.writer;
 
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.dialect.db3.DB3Access;
-import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.writer.GenericOptionalWriter;
+import com.github.jferard.jxbase.dialect.db2.DB2Access;
+import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.writer.GenericRecordWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
@@ -32,43 +32,46 @@ import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB3InternalWriterFactory implements XBaseChunkWriterFactory<DB3Dialect, DB3Access> {
-    private final DB3Dialect dialect;
+/**
+ * A chunk writer factory for DB2.
+ */
+public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Dialect, DB2Access> {
+    private final DB2Dialect dialect;
     private final TimeZone timeZone;
 
-    public DB3InternalWriterFactory(final DB3Dialect dialect, final TimeZone timeZone) {
+    public DB2ChunkWriterFactory(final DB2Dialect dialect, final TimeZone timeZone) {
         this.dialect = dialect;
         this.timeZone = timeZone;
     }
 
     @Override
-    public XBaseMetadataWriter<DB3Dialect, DB3Access> createMetadataWriter(
+    public XBaseMetadataWriter<DB2Dialect, DB2Access> createMetadataWriter(
             final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
-        return new DB3MetadataWriter<DB3Dialect, DB3Access>(this.dialect, file, outputStream,
+        return new DB2MetadataWriter<DB2Dialect, DB2Access>(this.dialect, file, outputStream,
                 charset);
     }
 
     @Override
-    public XBaseFieldDescriptorArrayWriter<DB3Access> createFieldDescriptorArrayWriter(
+    public XBaseFieldDescriptorArrayWriter<DB2Access> createFieldDescriptorArrayWriter(
             final OutputStream outputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayWriter<DB3Access>(this.dialect.getAccess(), outputStream);
+        return new DB2FieldDescriptorArrayWriter<DB2Access>(this.dialect.getAccess(), outputStream);
     }
 
     @Override
-    public XBaseOptionalWriter<DB3Dialect> createOptionalWriter(final OutputStream outputStream,
+    public XBaseOptionalWriter<DB2Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
-                                                                final XBaseFieldDescriptorArray<DB3Access> array) {
-        return new GenericOptionalWriter<DB3Dialect, DB3Access>(this.dialect, outputStream,
-                metadata, array);
+                                                                final XBaseFieldDescriptorArray<DB2Access> array) {
+        return new DB2OptionalWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, metadata,
+                array);
     }
 
     @Override
-    public XBaseRecordWriter<DB3Dialect> createRecordWriter(final OutputStream outputStream,
+    public XBaseRecordWriter<DB2Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
-                                                            final XBaseFieldDescriptorArray<DB3Access> array,
+                                                            final XBaseFieldDescriptorArray<DB2Access> array,
                                                             final Object optional) {
-        return new DB3RecordWriter<DB3Dialect, DB3Access>(this.dialect, outputStream, charset,
+        return GenericRecordWriter.create(this.dialect, outputStream, charset,
                 array.getFields());
     }
 }

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.memo;
 
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -50,12 +50,12 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
     public FoxProMemoWriter(final SeekableByteChannel channel, final int blockSize,
                             final Map<String, Object> headerMeta) throws IOException {
         this.rawMemoWriter =
-                new RawMemoWriter(channel, DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH, blockSize);
+                new RawMemoWriter(channel, DB3Utils.MEMO_HEADER_LENGTH, blockSize);
         this.writeHeader(headerMeta);
     }
 
     private void writeHeader(final Map<String, Object> headerMeta) throws IOException {
-        final byte[] bytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
+        final byte[] bytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];
         bytes[5] = 0x00;
         bytes[6] = 0x02;
         this.rawMemoWriter.write(0, 0, bytes);

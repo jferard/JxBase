@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 
@@ -28,6 +28,11 @@ import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * A writer for DB3 meta data.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB3MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBaseMetadataWriter<D, A> {
     final OutputStream out;
     final Charset charset;

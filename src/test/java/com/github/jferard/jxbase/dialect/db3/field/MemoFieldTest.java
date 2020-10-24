@@ -56,7 +56,7 @@ public class MemoFieldTest {
         PowerMock.replayAll();
 
         final DB3Access access = new DB3Access(null, null, null, null, this.memoAccess);
-        final int valueByteLength = this.mf.getValueByteLength(access);
+        final int valueByteLength = this.mf.getValueLength(access);
         PowerMock.verifyAll();
 
         Assert.assertEquals(10, valueByteLength);
@@ -70,7 +70,7 @@ public class MemoFieldTest {
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         PowerMock.resetAll();
 
-        EasyMock.expect(memoAccess.getMemoValue(bytes, 0, 4)).andReturn(record);
+        EasyMock.expect(memoAccess.extractMemoValue(bytes, 0, 4)).andReturn(record);
         PowerMock.replayAll();
 
         final XBaseMemoRecord memoRecord = this.mf.getValue(access, bytes, 0, 4);

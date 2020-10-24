@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
@@ -33,25 +33,28 @@ import java.util.TimeZone;
 /**
  * A factory to create internal readers.
  */
-public class DB2InternalReaderFactory implements XBaseChunkReaderFactory<DB2Dialect, DB2Access> {
+public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Dialect, DB2Access> {
     protected final DB2Dialect dialect;
     protected final TimeZone timezone;
 
-    public DB2InternalReaderFactory(final DB2Dialect dialect, final TimeZone timezone) {
+    public DB2ChunkReaderFactory(final DB2Dialect dialect, final TimeZone timezone) {
         this.dialect = dialect;
         this.timezone = timezone;
     }
 
+    @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
         return new DB2MetadataReader(this.dialect, inputStream);
     }
 
+    @Override
     public XBaseFieldDescriptorArrayReader<DB2Dialect, DB2Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
         return new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(this.dialect, inputStream,
                 metadata);
     }
 
+    @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB2Access> array,

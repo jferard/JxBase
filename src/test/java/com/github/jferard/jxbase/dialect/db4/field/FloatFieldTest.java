@@ -47,7 +47,7 @@ public class FloatFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(20, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(20, this.f.getValueLength(this.access));
     }
 
     @Test

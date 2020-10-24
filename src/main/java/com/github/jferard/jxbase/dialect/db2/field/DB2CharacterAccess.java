@@ -23,6 +23,9 @@ import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Access to a character field in DB2.
+ */
 public class DB2CharacterAccess implements CharacterAccess {
     final RawRecordReadHelper rawRecordReader;
     final RawRecordWriteHelper rawRecordWriter;
@@ -34,8 +37,8 @@ public class DB2CharacterAccess implements CharacterAccess {
     }
 
     @Override
-    public int getCharacterValueLength(final int dataSize) {
-        return dataSize;
+    public int getCharacterValueLength(final int fieldLength) {
+        return fieldLength;
     }
 
     @Override
@@ -55,13 +58,13 @@ public class DB2CharacterAccess implements CharacterAccess {
     }
 
     @Override
-    public FieldRepresentation getCharacterFieldRepresentation(final String name,
-                                                               final int dataSize) {
-        if (dataSize >= 254) {
+    public FieldRepresentation getCharacterFieldRepresentation(final String fieldName,
+                                                               final int fieldLength) {
+        if (fieldLength >= 254) {
             throw new IllegalArgumentException(
-                    String.format("Use FoxPro for long character fields: %s,C,%d,%d", name,
-                            dataSize % 256, dataSize / 256));
+                    String.format("Use FoxPro for long character fields: %s,C,%d,%d", fieldName,
+                            fieldLength % 256, fieldLength / 256));
         }
-        return new FieldRepresentation(name, 'C', dataSize, 0);
+        return new FieldRepresentation(fieldName, 'C', fieldLength, 0);
     }
 }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.memo;
 
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.memo.RawMemoWriter;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -30,6 +30,9 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+/**
+ * Writer for memo files.
+ */
 public class DB3MemoWriter implements XBaseMemoWriter {
     public static DB3MemoWriter fromRandomAccess(final File memoFile, final Charset charset,
                                                  final Map<String, Object> headerMeta)
@@ -50,13 +53,18 @@ public class DB3MemoWriter implements XBaseMemoWriter {
 
     public DB3MemoWriter(final SeekableByteChannel channel, final Map<String, Object> headerMeta)
             throws IOException {
-        this.rawMemoWriter = new RawMemoWriter(channel, DB3MemoFileHeaderReader.BLOCK_LENGTH,
+        this.rawMemoWriter = new RawMemoWriter(channel, DB3Utils.BLOCK_LENGTH,
                 DB3MemoReader.BLOCK_SIZE);
         this.writeHeader(headerMeta);
     }
 
+    /**
+     * Write the header
+     * @param headerMeta an optional meta data
+     * @throws IOException
+     */
     private void writeHeader(final Map<String, Object> headerMeta) throws IOException {
-        final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
+        final byte[] headerBytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];
         headerBytes[16] = 0x03;
         this.rawMemoWriter.write(0, 0, headerBytes);
         this.curOffsetInBlocks = 1;

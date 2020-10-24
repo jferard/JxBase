@@ -16,12 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
-import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

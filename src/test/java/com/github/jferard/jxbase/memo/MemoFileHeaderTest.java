@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.memo;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoFileHeaderReader;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class MemoFileHeaderTest {
     @Test
     public void testBlockAndNext() {
         final byte[] bytes = TestHelper
-                .getBytes("abcdefghijklmnop\0qrstuvw", DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH);
+                .getBytes("abcdefghijklmnop\0qrstuvw", DB3Utils.MEMO_HEADER_LENGTH);
         final MemoFileHeader memoFileHeader =
                 new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
         Assert.assertEquals(1701209960, memoFileHeader.getBlockLength());
@@ -53,7 +53,7 @@ public class MemoFileHeaderTest {
     @Test
     public void testToString() {
         final byte[] bytes = TestHelper
-                .getBytes("abcdefghijklmnop\0qrstuvw", DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH);
+                .getBytes("abcdefghijklmnop\0qrstuvw", DB3Utils.MEMO_HEADER_LENGTH);
         final MemoFileHeader memoFileHeader =
                 new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
         Assert.assertEquals(

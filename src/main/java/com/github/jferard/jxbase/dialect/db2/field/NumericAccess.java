@@ -22,15 +22,43 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 
+/**
+ * Access (read/write) to a numeric field.
+ */
 public interface NumericAccess {
-    int getNumericValueLength(int length);
+    /**
+     * @param fieldLength the "length"
+     * @return the actual length
+     */
+    int getNumericValueLength(int fieldLength);
 
+    /**
+     * @param recordBuffer          the record buffer
+     * @param offset                the offset
+     * @param length                the actual length
+     * @param numberOfDecimalPlaces the actual number of decimal places
+     * @return the value as BigDecimal
+     */
     BigDecimal extractNumericValue(byte[] recordBuffer, int offset, int length,
                                    int numberOfDecimalPlaces);
 
-    FieldRepresentation getNumericFieldRepresentation(String name, int length,
-                                                      int numberOfDecimalPlaces);
-
-    void writeNumericValue(OutputStream out, BigDecimal value, int length, int numberOfDecimalPlaces)
+    /**
+     * @param out                   the output stream
+     * @param value                 the value to write
+     * @param length                the actual length
+     * @param numberOfDecimalPlaces the actual number of decimal places
+     * @throws IOException
+     */
+    void writeNumericValue(OutputStream out, BigDecimal value, int length,
+                           int numberOfDecimalPlaces)
             throws IOException;
+
+    /**
+     * @param fieldName                  the field name
+     * @param fieldLength                the field length
+     * @param fieldNumberOfDecimalPlaces the field number of decimal places
+     * @return the representation
+     */
+    FieldRepresentation getNumericFieldRepresentation(String fieldName, int fieldLength,
+                                                      int fieldNumberOfDecimalPlaces);
 }

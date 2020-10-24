@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;

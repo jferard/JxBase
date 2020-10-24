@@ -16,15 +16,16 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
-import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A memo field.
+ */
 public class MemoField implements XBaseField<MemoAccess> {
     private final String name;
 
@@ -38,14 +39,14 @@ public class MemoField implements XBaseField<MemoAccess> {
     }
 
     @Override
-    public int getValueByteLength(final MemoAccess memoAccess) {
+    public int getValueLength(final MemoAccess memoAccess) {
         return memoAccess.getMemoValueLength();
     }
 
     @Override
     public XBaseMemoRecord getValue(final MemoAccess memoAccess, final byte[] recordBuffer,
                                     final int offset, final int length) throws IOException {
-        return memoAccess.getMemoValue(recordBuffer, offset, length);
+        return memoAccess.extractMemoValue(recordBuffer, offset, length);
     }
 
     @Override

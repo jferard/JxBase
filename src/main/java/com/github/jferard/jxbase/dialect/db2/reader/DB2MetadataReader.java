@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -30,6 +30,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A meta data reader for DB2. The DB2 meta data format is different from the DB3 meta data format.  
+ */
 public class DB2MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
     private final DB2Dialect dialect;

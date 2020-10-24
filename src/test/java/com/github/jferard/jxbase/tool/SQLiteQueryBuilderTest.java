@@ -17,8 +17,8 @@
 package com.github.jferard.jxbase.tool;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.XBaseWriter;
 
 import java.io.IOException;

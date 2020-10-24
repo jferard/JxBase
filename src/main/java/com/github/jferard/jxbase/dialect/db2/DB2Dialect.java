@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db2;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
@@ -27,8 +27,8 @@ import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
-import com.github.jferard.jxbase.dialect.db2.reader.DB2InternalReaderFactory;
-import com.github.jferard.jxbase.dialect.db2.writer.DB2InternalWriterFactory;
+import com.github.jferard.jxbase.dialect.db2.reader.DB2ChunkReaderFactory;
+import com.github.jferard.jxbase.dialect.db2.writer.DB2ChunkWriterFactory;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -110,13 +110,13 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
     @Override
     public XBaseChunkReaderFactory<DB2Dialect, DB2Access> getInternalReaderFactory(
             final String tableName, final Charset charset) throws IOException {
-        return new DB2InternalReaderFactory(this, TimeZone.getDefault());
+        return new DB2ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseChunkWriterFactory<DB2Dialect, DB2Access> getInternalWriterFactory(
             final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
-        return new DB2InternalWriterFactory(this, TimeZone.getDefault());
+        return new DB2ChunkWriterFactory(this, TimeZone.getDefault());
     }
 }

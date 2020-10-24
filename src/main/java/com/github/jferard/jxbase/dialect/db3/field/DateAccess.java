@@ -22,12 +22,35 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 
+/**
+ * Access (read/write) to a date field
+ */
 public interface DateAccess {
+    /**
+     * @return the actual length of the date
+     */
     int getDateValueLength();
 
-    Date getDateValue(byte[] recordBuffer, int offset, int length);
+    /**
+     * Get the date value.
+     * @param recordBuffer the record buffer
+     * @param offset the offset
+     * @param length the actual length
+     * @return the date
+     */
+    Date extractDateValue(byte[] recordBuffer, int offset, int length);
 
+    /**
+     * Write the date.
+     * @param out the output stream
+     * @param value the date
+     * @throws IOException
+     */
     void writeDateValue(OutputStream out, Date value) throws IOException;
 
-    FieldRepresentation getDateFieldRepresentation(String name);
+    /**
+     * @param fieldName the field name
+     * @return the field representation
+     */
+    FieldRepresentation getDateFieldRepresentation(String fieldName);
 }

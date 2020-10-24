@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db3.field;
 
-import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -30,6 +29,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * An access to DB3 date field.
+ */
 public class DB3DateAccess implements DateAccess {
     public static DB3DateAccess create(final Charset charset, final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
@@ -54,7 +56,7 @@ public class DB3DateAccess implements DateAccess {
     }
 
     @Override
-    public Date getDateValue(final byte[] recordBuffer, final int offset, final int length) {
+    public Date extractDateValue(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
                 this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
@@ -82,7 +84,7 @@ public class DB3DateAccess implements DateAccess {
     }
 
     @Override
-    public FieldRepresentation getDateFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'D', 8, 0);
+    public FieldRepresentation getDateFieldRepresentation(final String fieldName) {
+        return new FieldRepresentation(fieldName, 'D', 8, 0);
     }
 }

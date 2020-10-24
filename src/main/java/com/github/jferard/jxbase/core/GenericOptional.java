@@ -16,7 +16,13 @@
 
 package com.github.jferard.jxbase.core;
 
+/**
+ * An optional chunk (between the descriptor array and the records)
+ */
 public class GenericOptional implements XBaseOptional {
+    /**
+     * A empty optional (DB2).
+     */
     public static final XBaseOptional EMPTY = new XBaseOptional() {
         @Override
         public int getLength() {

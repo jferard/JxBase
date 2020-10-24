@@ -18,7 +18,10 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -134,7 +137,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
                                          final D dialect) {
         int result = 0;
         for (final XBaseField<? super A> field : fields) {
-            result += field.getValueByteLength(dialect.getAccess());
+            result += field.getValueLength(dialect.getAccess());
         }
         return result + 1;
     }

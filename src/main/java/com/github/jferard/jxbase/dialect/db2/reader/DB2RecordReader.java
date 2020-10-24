@@ -52,6 +52,7 @@ public class DB2RecordReader<A> implements XBaseRecordReader {
         this.recordsCounter = -1;
     }
 
+    @Override
     public XBaseRecord read() throws IOException {
         if (IOUtils.isEndOfRecords(this.dbfInputStream, JxBaseUtils.RECORDS_TERMINATOR)) {
             return null;
@@ -70,10 +71,10 @@ public class DB2RecordReader<A> implements XBaseRecordReader {
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = field.getValue(this.access, this.recordBuffer, offset,
-                    field.getValueByteLength(this.access));
+                    field.getValueLength(this.access));
             final String name = field.getName();
             valueByFieldName.put(name, value);
-            offset += field.getValueByteLength(this.access);
+            offset += field.getValueLength(this.access);
         }
         return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }

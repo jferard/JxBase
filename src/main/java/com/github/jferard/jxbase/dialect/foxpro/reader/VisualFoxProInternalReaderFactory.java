@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
@@ -42,16 +42,19 @@ public class VisualFoxProInternalReaderFactory implements
         this.timezone = timezone;
     }
 
+    @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
         return new FoxProMetadataReader(this.dialect, inputStream);
     }
 
+    @Override
     public XBaseFieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
         return new DB3FieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream,
                 metadata);
     }
 
+    @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<VisualFoxProAccess> array,

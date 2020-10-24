@@ -17,9 +17,9 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseRecord;
@@ -55,19 +55,19 @@ public class ReaderWithMemoIT {
                 for (final XBaseField<? super A> field : array.getFields()) {
                     final String name = field.getName();
                     if (name.equals("TEXVER")) {
-                        Assert.assertEquals(5, field.getValueByteLength(dialect.getAccess()));
+                        Assert.assertEquals(5, field.getValueLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXTEX")) {
-                        Assert.assertEquals(4, field.getValueByteLength(dialect.getAccess()));
+                        Assert.assertEquals(4, field.getValueLength(dialect.getAccess()));
                         Assert.assertEquals(MemoField.class, field.getClass());
                     } else if (name.equals("TEXDAT")) {
-                        Assert.assertEquals(8, field.getValueByteLength(dialect.getAccess()));
+                        Assert.assertEquals(8, field.getValueLength(dialect.getAccess()));
                         Assert.assertEquals(DateField.class, field.getClass());
                     } else if (name.equals("TEXSTA")) {
-                        Assert.assertEquals(1, field.getValueByteLength(dialect.getAccess()));
+                        Assert.assertEquals(1, field.getValueLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXCAM")) {
-                        Assert.assertEquals(254, field.getValueByteLength(dialect.getAccess()));
+                        Assert.assertEquals(254, field.getValueLength(dialect.getAccess()));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     }
                 }

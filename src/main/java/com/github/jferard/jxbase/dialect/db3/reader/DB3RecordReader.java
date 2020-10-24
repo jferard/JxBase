@@ -33,6 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
+/**
+ * A reader for DB3 records.
+ * @param <A> the access
+ */
 public class DB3RecordReader<A> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
     protected final Charset charset;
@@ -81,10 +85,10 @@ public class DB3RecordReader<A> implements XBaseRecordReader {
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = field.getValue(this.access, this.recordBuffer, offset,
-                    field.getValueByteLength(this.access));
+                    field.getValueLength(this.access));
             final String name = field.getName();
             valueByFieldName.put(name, value);
-            offset += field.getValueByteLength(this.access);
+            offset += field.getValueLength(this.access);
         }
         return new XBaseRecord(isDeleted, this.recordsCounter + 1, valueByFieldName);
     }

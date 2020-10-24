@@ -37,7 +37,7 @@ public class DatetimeField implements XBaseField<DatetimeAccess> {
     }
 
     @Override
-    public int getValueByteLength(final DatetimeAccess access) {
+    public int getValueLength(final DatetimeAccess access) {
         return access.getDatetimeValueLength();
     }
 

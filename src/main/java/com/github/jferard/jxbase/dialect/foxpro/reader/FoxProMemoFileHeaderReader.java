@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.util.BytesUtils;
@@ -35,7 +35,7 @@ public class FoxProMemoFileHeaderReader implements MemoFileHeaderReader {
      */
     @Override
     public MemoFileHeader read(final ByteBuffer memoByteBuffer) {
-        final byte[] headerBytes = new byte[DB3MemoFileHeaderReader.MEMO_HEADER_LENGTH];
+        final byte[] headerBytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];
         memoByteBuffer.get(headerBytes);
         final int nextFreeBlockLocation =
                 BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);

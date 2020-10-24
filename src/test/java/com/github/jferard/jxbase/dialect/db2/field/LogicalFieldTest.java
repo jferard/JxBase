@@ -43,7 +43,7 @@ public class LogicalFieldTest {
 
     @Test
     public void getLogicByteLength() {
-        Assert.assertEquals(1, this.lf.getValueByteLength(this.access));
+        Assert.assertEquals(1, this.lf.getValueLength(this.access));
     }
 
     @Test

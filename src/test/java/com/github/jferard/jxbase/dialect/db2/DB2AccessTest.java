@@ -49,7 +49,7 @@ public class DB2AccessTest {
 
     @Test
     public void getCharByteLength() {
-        Assert.assertEquals(20, this.cf.getValueByteLength(this.access));
+        Assert.assertEquals(20, this.cf.getValueLength(this.access));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class DB2AccessTest {
 
     @Test
     public void getLogicByteLength() {
-        Assert.assertEquals(1, this.lf.getValueByteLength(this.access));
+        Assert.assertEquals(1, this.lf.getValueLength(this.access));
     }
 
     @Test
@@ -116,7 +116,7 @@ public class DB2AccessTest {
 
     @Test
     public void getNumByteLength() {
-        Assert.assertEquals(10, this.nf.getValueByteLength(this.access));
+        Assert.assertEquals(10, this.nf.getValueLength(this.access));
     }
 
     @Test

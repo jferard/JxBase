@@ -16,8 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
@@ -44,8 +43,18 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class DB3DialectFactory {
-    public static DB3DialectFactory create(final XBaseFileTypeEnum type, final Charset charset,
+/**
+ * A builder for DB3 dialect.
+ */
+public class DB3DialectBuilder {
+    /**
+     * Create the builder
+     * @param type the actual type of the DBf file
+     * @param charset the charset
+     * @param timeZone the time zone
+     * @return the builder
+     */
+    public static DB3DialectBuilder create(final XBaseFileTypeEnum type, final Charset charset,
                                            final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriterHelper = new RawRecordWriteHelper(charset);
@@ -58,7 +67,7 @@ public class DB3DialectFactory {
         final DateAccess dateAccess =
                 new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
         final MemoAccess memoAccess = null;
-        return new DB3DialectFactory(type, characterAccess, logicalAccess, numericAccess,
+        return new DB3DialectBuilder(type, characterAccess, logicalAccess, numericAccess,
                 dateAccess, rawRecordReadHelper);
     }
 
@@ -71,7 +80,7 @@ public class DB3DialectFactory {
     private final XBaseFileTypeEnum type;
     private MemoAccess memoAccess; // late init
 
-    DB3DialectFactory(final XBaseFileTypeEnum type, final CharacterAccess characterAccess,
+    DB3DialectBuilder(final XBaseFileTypeEnum type, final CharacterAccess characterAccess,
                       final LogicalAccess logicalAccess, final NumericAccess numericAccess,
                       final DateAccess dateAccess, final RawRecordReadHelper rawRecordReadHelper) {
         this.type = type;
@@ -83,7 +92,13 @@ public class DB3DialectFactory {
         this.rawRecordReadHelper = rawRecordReadHelper;
     }
 
-    public DB3DialectFactory reader(final String tableName) throws IOException {
+    /**
+     * This dialect needs info about the memo file
+     * @param tableName the table name, to find the memo
+     * @return this for fluent style
+     * @throws IOException
+     */
+    public DB3DialectBuilder reader(final String tableName) throws IOException {
         // TODO: nio reader and randomAccess reader
         // new RandomAccessFile(memoFile, "r").getChannel();
         final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
@@ -92,12 +107,25 @@ public class DB3DialectFactory {
         return this.reader(memoReader);
     }
 
-    public DB3DialectFactory reader(final XBaseMemoReader memoReader) {
+    /**
+     * This dialect needs info about the memo file
+     * @param memoReader the memo reader
+     * @return this for fluent style
+     * @throws IOException
+     */
+    public DB3DialectBuilder reader(final XBaseMemoReader memoReader) {
         this.memoAccess = new DB3MemoAccess(memoReader, null, this.rawRecordReadHelper);
         return this;
     }
 
-    public DB3DialectFactory writer(final String tableName,
+    /**
+     * This dialect needs info about the memo file
+     * @param tableName the table name, to find the memo
+     * @param memoHeaderMetadata the memo header data.
+     * @return this for fluent style
+     * @throws IOException
+     */
+    public DB3DialectBuilder writer(final String tableName,
                                     final Map<String, Object> memoHeaderMetadata)
             throws IOException {
         final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
@@ -107,6 +135,9 @@ public class DB3DialectFactory {
         return this;
     }
 
+    /**
+     * @return the dialect
+     */
     public DB3Dialect build() {
         final DB3Access access =
                 new DB3Access(this.characterAccess, this.logicalAccess, this.numericAccess, this.dateAccess,

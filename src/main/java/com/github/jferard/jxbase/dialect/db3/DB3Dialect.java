@@ -16,15 +16,15 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
-import com.github.jferard.jxbase.dialect.db3.reader.DB3InternalReaderFactory;
-import com.github.jferard.jxbase.dialect.db3.writer.DB3InternalWriterFactory;
+import com.github.jferard.jxbase.dialect.db3.reader.DB3ChunkReaderFactory;
+import com.github.jferard.jxbase.dialect.db3.writer.DB3ChunkWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -35,6 +35,9 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
+/**
+ * the DB3 dialect.
+ */
 public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     protected final XBaseFileTypeEnum type;
     private final DB3Access access;
@@ -102,13 +105,13 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     @Override
     public XBaseChunkReaderFactory<DB3Dialect, DB3Access> getInternalReaderFactory(
             final String tableName, final Charset charset) throws IOException {
-        return new DB3InternalReaderFactory(this, TimeZone.getDefault());
+        return new DB3ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
     public XBaseChunkWriterFactory<DB3Dialect, DB3Access> getInternalWriterFactory(
             final String tableName, final Charset charset, final Map<String, Object> headerMeta)
             throws IOException {
-        return new DB3InternalWriterFactory(this, TimeZone.getDefault());
+        return new DB3ChunkWriterFactory(this, TimeZone.getDefault());
     }
 }

@@ -29,6 +29,10 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * The descriptor array writer in DB2.
+ * @param <A> the access
+ */
 public class DB2FieldDescriptorArrayWriter<A>
         implements XBaseFieldDescriptorArrayWriter<A> {
     final A access;
@@ -49,7 +53,7 @@ public class DB2FieldDescriptorArrayWriter<A>
             assert iterator.hasNext();
             final XBaseField<? super A> field = iterator.next();
             this.writeField(field.toRepresentation(this.access), offset);
-            offset += field.getValueByteLength(this.access);
+            offset += field.getValueLength(this.access);
         }
         assert !iterator.hasNext();
         final int missingCount = DB2Utils.DB2_MAX_FIELDS - fieldCount;
@@ -71,7 +75,7 @@ public class DB2FieldDescriptorArrayWriter<A>
         BytesUtils.writeZeroes(this.out, 11 - nameLength);
         this.out.write(representation.getType()); // 11
         BytesUtils.writeEmpties(this.out, 2); // 12-13
-        this.out.write(representation.getRepLength() & 0xFF); // 14
+        this.out.write(representation.getFieldLength() & 0xFF); // 14
         this.out.write(representation.getNumberOfDecimalPlaces()); // 15
     }
 }

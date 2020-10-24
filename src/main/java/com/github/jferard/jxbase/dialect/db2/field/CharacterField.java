@@ -22,23 +22,26 @@ import com.github.jferard.jxbase.field.XBaseField;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A character field.
+ */
 public class CharacterField implements XBaseField<CharacterAccess> {
-    private final int length;
-    private final String name;
+    private final int fieldLength;
+    private final String fieldName;
 
-    public CharacterField(final String name, final int length) {
-        this.name = name;
-        this.length = length;
+    public CharacterField(final String fieldName, final int fieldLength) {
+        this.fieldName = fieldName;
+        this.fieldLength = fieldLength;
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return this.fieldName;
     }
 
     @Override
-    public int getValueByteLength(final CharacterAccess dialect) {
-        return dialect.getCharacterValueLength(this.length);
+    public int getValueLength(final CharacterAccess access) {
+        return access.getCharacterValueLength(this.fieldLength);
     }
 
     @Override
@@ -50,22 +53,22 @@ public class CharacterField implements XBaseField<CharacterAccess> {
     @Override
     public void writeValue(final CharacterAccess writer, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeCharacterValue(out, (String) value, this.length);
+        writer.writeCharacterValue(out, (String) value, this.fieldLength);
     }
 
     @Override
-    public String toStringRepresentation(final CharacterAccess dialect) {
-        return dialect.getCharacterFieldRepresentation(this.name, this.length).toString();
+    public String toStringRepresentation(final CharacterAccess access) {
+        return access.getCharacterFieldRepresentation(this.fieldName, this.fieldLength).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final CharacterAccess dialect) {
-        return dialect.getCharacterFieldRepresentation(this.name, this.length);
+    public FieldRepresentation toRepresentation(final CharacterAccess access) {
+        return access.getCharacterFieldRepresentation(this.fieldName, this.fieldLength);
     }
 
     @Override
     public String toString() {
-        return "CharacterField[name=" + this.name + ", length=" + this.length + "]";
+        return "CharacterField[name=" + this.fieldName + ", length=" + this.fieldLength + "]";
     }
 
     @Override
@@ -78,11 +81,11 @@ public class CharacterField implements XBaseField<CharacterAccess> {
         }
 
         final CharacterField that = (CharacterField) o;
-        return this.length == that.length && this.name.equals(that.name);
+        return this.fieldLength == that.fieldLength && this.fieldName.equals(that.fieldName);
     }
 
     @Override
     public int hashCode() {
-        return 31 * this.length + this.name.hashCode();
+        return 31 * this.fieldLength + this.fieldName.hashCode();
     }
 }

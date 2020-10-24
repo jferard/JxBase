@@ -16,15 +16,20 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Writes nothing.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB2OptionalWriter<D extends XBaseDialect<D, A>, A> implements XBaseOptionalWriter<D> {
     private final D dialect;
     private final OutputStream outputStream;
@@ -42,5 +47,6 @@ public class DB2OptionalWriter<D extends XBaseDialect<D, A>, A> implements XBase
 
     @Override
     public void write(final XBaseOptional optional) throws IOException {
+        // write nothing.
     }
 }

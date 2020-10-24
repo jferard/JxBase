@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase;
+package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
- *
+ * A dialect.
  * @param <D> the dialect
  * @param <A> the access
  */

@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
@@ -64,6 +64,7 @@ public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBa
         this.recordCount++;
     }
 
+    @Override
     public int getRecordQty() {
         return this.recordCount;
     }

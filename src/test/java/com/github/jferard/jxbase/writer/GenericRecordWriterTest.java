@@ -16,12 +16,12 @@
 
 package com.github.jferard.jxbase.writer;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -37,7 +37,7 @@ public class GenericRecordWriterTest {
     @Test
     public void testWrite() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        final DB3Dialect dialect = DB3DialectFactory
+        final DB3Dialect dialect = DB3DialectBuilder
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE).build();
         final XBaseRecordWriter<DB3Dialect> writer =

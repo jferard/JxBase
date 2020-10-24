@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 
 import java.io.IOException;
 
@@ -25,6 +25,8 @@ import java.io.IOException;
  */
 public interface XBaseMetadataReader {
     /**
+     * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, 1.1 Table File Header
+     *
      * @return the meta data.
      * @throws IOException
      */

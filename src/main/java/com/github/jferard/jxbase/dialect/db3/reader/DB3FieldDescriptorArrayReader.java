@@ -16,9 +16,9 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
@@ -30,6 +30,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * A descriptor array reader for DB3.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         implements XBaseFieldDescriptorArrayReader<D, A> {
     private final InputStream inputStream;
@@ -55,7 +60,7 @@ public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
             fields.add(field);
 
             arrayLength += fieldBytes.length;
-            recordLength += field.getValueByteLength(this.dialect.getAccess());
+            recordLength += field.getValueLength(this.dialect.getAccess());
 
             if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
                 return new GenericFieldDescriptorArray<A>(fields, arrayLength + 1, recordLength);

@@ -16,11 +16,14 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 
 import java.util.Collection;
 
+/**
+ * The descriptor array.
+ * @param <A> the access
+ */
 public class GenericFieldDescriptorArray<A>
         implements XBaseFieldDescriptorArray<A> {
     private final Collection<XBaseField<? super A>> fields;

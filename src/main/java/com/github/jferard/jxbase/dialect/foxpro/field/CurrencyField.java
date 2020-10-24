@@ -36,7 +36,7 @@ public class CurrencyField implements XBaseField<CurrencyAccess> {
     }
 
     @Override
-    public int getValueByteLength(final CurrencyAccess access) {
+    public int getValueLength(final CurrencyAccess access) {
         return access.getCurrencyValueLength();
     }
 

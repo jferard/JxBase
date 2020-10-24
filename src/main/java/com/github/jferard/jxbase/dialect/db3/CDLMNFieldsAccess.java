@@ -20,6 +20,9 @@ import com.github.jferard.jxbase.dialect.db2.CLNFieldsAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 
+/**
+ * Access (read/write) for character, logical, numeric, date and memo fields.
+ */
 public interface CDLMNFieldsAccess
         extends CLNFieldsAccess, DateAccess, MemoAccess {
 }

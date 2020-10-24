@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase;
-
-import java.util.Set;
+package com.github.jferard.jxbase.core;
 
 /**
- * The meta data of a file. Contains info about the file.
+ * the type of the memo file associated with the dbf file.
  */
-public interface XBaseMetadata {
+public enum XBaseMemoFileType {
     /**
-     * @return the file type
+     * No memo file allowed
      */
-    int getFileTypeByte();
+    NO_MEMO_FILE(""),
 
     /**
-     * @return the length of the header
+     * A regular (dbt) memo file
      */
-    int getFullHeaderLength();
+    REGULAR_MEMO_FILE(".dbt"),
 
     /**
-     * @return the length of a record
+     * A foxpro (fpt) memo file.
      */
-    int getOneRecordLength();
+    FOXPRO_OBJECT_AND_MEMO_FILE(".fpt");
+
+    private final String extension;
+
+    XBaseMemoFileType(final String extension) {
+        this.extension = extension;
+    }
 
     /**
-     * @param key the key
-     * @return the value mapped to the key
+     * @return the extension
      */
-    Object get(String key);
-
-    /**
-     * @return the set of keys
-     */
-    Set<String> keySet();
+    public String getExtension() {
+        return this.extension;
+    }
 }

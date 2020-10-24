@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.db4.writer;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3FieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3RecordWriter;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;

@@ -16,7 +16,36 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
+import com.github.jferard.jxbase.memo.MemoFileHeader;
+import com.github.jferard.jxbase.util.BytesUtils;
+
+import java.io.IOException;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
+import java.util.Collections;
+
 public class DB3Utils {
     public static final int DB3_FIELD_DESCRIPTOR_LENGTH = 32;
     public static final int DB3_FIELD_DESCRIPTOR_SIZE = 32;
+    public static final int MEMO_HEADER_LENGTH = 512;
+    public static final int BLOCK_LENGTH = 512;
+
+    /**
+     * Read the header of memo files.
+     * @return the memo header
+     */
+    public static MemoFileHeader readMemoHeader(final ByteBuffer memoByteBuffer) throws
+            IOException {
+        final byte[] headerBytes = new byte[MEMO_HEADER_LENGTH];
+        try {
+            memoByteBuffer.get(headerBytes);
+            final int nextFreeBlockLocation =
+                    BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1],
+                            headerBytes[0]);
+            return new MemoFileHeader(BLOCK_LENGTH, nextFreeBlockLocation,
+                    Collections.<String, Object>emptyMap());
+        } catch (final BufferUnderflowException e) {
+            throw new IOException("The file is corrupted or is not a dbt file", e);
+        }
+    }
 }

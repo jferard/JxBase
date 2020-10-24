@@ -37,7 +37,7 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
     }
 
     @Override
-    public int getValueByteLength(final NullFlagsAccess dialect) {
+    public int getValueLength(final NullFlagsAccess dialect) {
         return dialect.getNullFlagsFieldLength(this.length);
     }
 

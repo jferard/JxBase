@@ -22,8 +22,6 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
 
 public class DoubleFieldTest {
     private DoubleField f;
@@ -42,7 +40,7 @@ public class DoubleFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.f.getValueLength(this.access));
     }
 
     @Test

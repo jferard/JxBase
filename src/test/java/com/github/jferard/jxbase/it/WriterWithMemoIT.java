@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.it;
 
 import com.github.jferard.jxbase.core.GenericOptional;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.XBaseWriterFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;

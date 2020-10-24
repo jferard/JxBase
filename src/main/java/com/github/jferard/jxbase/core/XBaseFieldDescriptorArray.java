@@ -16,15 +16,27 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 
 import java.util.Collection;
 
+/**
+ * The field descriptor array
+ * @param <A> the access
+ */
 public interface XBaseFieldDescriptorArray<A> {
+    /**
+     * @return the fields
+     */
     Collection<XBaseField<? super A>> getFields();
 
+    /**
+     * @return the array length in bytes
+     */
     int getArrayLength();
 
+    /**
+     * @return the length of a record in bytes
+     */
     int getRecordLength();
 }

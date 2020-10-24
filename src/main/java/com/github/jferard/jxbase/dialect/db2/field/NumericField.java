@@ -23,60 +23,71 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 
+/**
+ * A numeric field.
+ */
 public class NumericField implements XBaseField<NumericAccess> {
-    private final String name;
-    private final int length;
-    private final int numberOfDecimalPlaces;
+    private final String fieldName;
+    private final int fieldLength;
+    private final int fieldNumberOfDecimalPlaces;
 
-    public NumericField(final String name, final int length, final int numberOfDecimalPlaces) {
-        this.name = name;
-        this.length = length;
-        this.numberOfDecimalPlaces = numberOfDecimalPlaces;
+    public NumericField(final String fieldName, final int fieldLength,
+                        final int fieldNumberOfDecimalPlaces) {
+        this.fieldName = fieldName;
+        this.fieldLength = fieldLength;
+        this.fieldNumberOfDecimalPlaces = fieldNumberOfDecimalPlaces;
     }
 
+    /**
+     * @return the actual number of decimal places.
+     */
     public int getNumberOfDecimalPlaces() {
-        return this.numberOfDecimalPlaces;
+        return this.fieldNumberOfDecimalPlaces;
     }
 
     @Override
     public String getName() {
-        return this.name;
+        return this.fieldName;
     }
 
     @Override
-    public int getValueByteLength(final NumericAccess dialect) {
-        return dialect.getNumericValueLength(this.length);
+    public int getValueLength(final NumericAccess dialect) {
+        return dialect.getNumericValueLength(this.fieldLength);
     }
 
     @Override
     public BigDecimal getValue(final NumericAccess reader, final byte[] recordBuffer,
                                final int offset, final int length) {
-        return reader.extractNumericValue(recordBuffer, offset, length, this.numberOfDecimalPlaces);
+        return reader
+                .extractNumericValue(recordBuffer, offset, length, this.fieldNumberOfDecimalPlaces);
     }
 
     @Override
     public void writeValue(final NumericAccess writer, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeNumericValue(out, (BigDecimal) value, this.length, this.numberOfDecimalPlaces);
+        writer.writeNumericValue(out, (BigDecimal) value, this.fieldLength,
+                this.fieldNumberOfDecimalPlaces);
     }
 
     @Override
     public String toStringRepresentation(final NumericAccess dialect) {
         return dialect
-                .getNumericFieldRepresentation(this.name, this.length, this.numberOfDecimalPlaces)
+                .getNumericFieldRepresentation(this.fieldName, this.fieldLength,
+                        this.fieldNumberOfDecimalPlaces)
                 .toString();
     }
 
     @Override
     public FieldRepresentation toRepresentation(final NumericAccess dialect) {
         return dialect
-                .getNumericFieldRepresentation(this.name, this.length, this.numberOfDecimalPlaces);
+                .getNumericFieldRepresentation(this.fieldName, this.fieldLength,
+                        this.fieldNumberOfDecimalPlaces);
     }
 
     @Override
     public String toString() {
-        return "NumericField[name=" + this.name + ", length=" + this.length +
-                ", numberOfDecimalPlaces=" + this.numberOfDecimalPlaces + "]";
+        return "NumericField[name=" + this.fieldName + ", length=" + this.fieldLength +
+                ", numberOfDecimalPlaces=" + this.fieldNumberOfDecimalPlaces + "]";
     }
 
     @Override
@@ -89,13 +100,14 @@ public class NumericField implements XBaseField<NumericAccess> {
         }
 
         final NumericField that = (NumericField) o;
-        return this.length == that.length &&
-                this.numberOfDecimalPlaces == that.numberOfDecimalPlaces &&
-                this.name.equals(that.name);
+        return this.fieldLength == that.fieldLength &&
+                this.fieldNumberOfDecimalPlaces == that.fieldNumberOfDecimalPlaces &&
+                this.fieldName.equals(that.fieldName);
     }
 
     @Override
     public int hashCode() {
-        return 31 * ((31 * this.length) + this.numberOfDecimalPlaces) + this.name.hashCode();
+        return 31 * ((31 * this.fieldLength) + this.fieldNumberOfDecimalPlaces) +
+                this.fieldName.hashCode();
     }
 }

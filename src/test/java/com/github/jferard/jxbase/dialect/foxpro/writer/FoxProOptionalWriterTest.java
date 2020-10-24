@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.writer;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;

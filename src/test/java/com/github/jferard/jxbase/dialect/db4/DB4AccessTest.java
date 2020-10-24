@@ -25,7 +25,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.TimeZone;
 
 public class DB4AccessTest {
     private FloatField f;
@@ -46,7 +45,7 @@ public class DB4AccessTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(20, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(20, this.f.getValueLength(this.access));
     }
 
     @Test

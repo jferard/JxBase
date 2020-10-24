@@ -16,9 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.field;
 
-import com.github.jferard.jxbase.dialect.foxpro.field.FoxProNullFlagsAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsAccess;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +40,7 @@ public class NullFlagsFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.f.getValueLength(this.access));
     }
 
     @Test(expected = IllegalArgumentException.class)

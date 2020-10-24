@@ -18,6 +18,9 @@ package com.github.jferard.jxbase.core;
 
 import java.util.Map;
 
+/**
+ * A record
+ */
 public class XBaseRecord {
     private final boolean isDeleted;
     private final int recordNumber;
@@ -30,14 +33,23 @@ public class XBaseRecord {
         this.valueByFieldName = valueByFieldName;
     }
 
+    /**
+     * @return true if the record is marked as deleted
+     */
     public boolean isDeleted() {
         return this.isDeleted;
     }
 
+    /**
+     * @return the number of this record
+     */
     public int getRecordNumber() {
         return this.recordNumber;
     }
 
+    /**
+     * @return the record data as a map
+     */
     public Map<String, Object> getMap() {
         return this.valueByFieldName;
     }

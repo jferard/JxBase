@@ -24,6 +24,9 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A logical access in DB2.
+ */
 public class DB2LogicalAccess implements LogicalAccess {
     private final RawRecordReadHelper rawRecordReader;
     private final RawRecordWriteHelper rawRecordWriter;
@@ -69,7 +72,7 @@ public class DB2LogicalAccess implements LogicalAccess {
     }
 
     @Override
-    public FieldRepresentation getLogicalFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'L', 1, 0);
+    public FieldRepresentation getLogicalFieldRepresentation(final String fieldName) {
+        return new FieldRepresentation(fieldName, 'L', 1, 0);
     }
 }

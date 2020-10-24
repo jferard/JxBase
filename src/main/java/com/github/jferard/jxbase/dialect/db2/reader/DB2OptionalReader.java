@@ -17,14 +17,19 @@
 package com.github.jferard.jxbase.dialect.db2.reader;
 
 import com.github.jferard.jxbase.core.GenericOptional;
-import com.github.jferard.jxbase.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 
 import java.io.InputStream;
 
+/**
+ * There is no optional chunk in DB2.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class DB2OptionalReader<D extends XBaseDialect<D, A>, A> implements XBaseOptionalReader {
     public DB2OptionalReader(final D dialect, final InputStream inputStream,
                              final XBaseMetadata metadata,

@@ -24,7 +24,6 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.TimeZone;
 
 public class DatetimeFieldTest {
     private DatetimeField f;
@@ -43,7 +42,7 @@ public class DatetimeFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(8, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.f.getValueLength(this.access));
     }
 
     @Test

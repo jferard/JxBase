@@ -17,9 +17,6 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.XBaseMetadata;
-
 import java.util.Map;
 import java.util.Set;
 

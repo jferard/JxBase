@@ -40,7 +40,7 @@ public class IntegerFieldTest {
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(4, this.f.getValueByteLength(this.access));
+        Assert.assertEquals(4, this.f.getValueLength(this.access));
     }
 
     @Test

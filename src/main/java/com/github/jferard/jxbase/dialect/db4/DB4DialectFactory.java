@@ -16,19 +16,19 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db3.reader.DB3MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
@@ -117,7 +117,7 @@ public class DB4DialectFactory {
          * final FileChannel memoChannel = new RandomAccessFile(memoFile, "rw").getChannel();
          */
         final XBaseMemoWriter memoWriter =
-                new DB4MemoWriter(memoChannel, DB3MemoFileHeaderReader.BLOCK_LENGTH,
+                new DB4MemoWriter(memoChannel, DB3Utils.BLOCK_LENGTH,
                         memoHeaderMetadata);
         return this.writer(memoWriter);
     }

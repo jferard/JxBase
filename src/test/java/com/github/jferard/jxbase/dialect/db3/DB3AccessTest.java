@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
@@ -36,7 +36,6 @@ import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.Date;
 
 public class DB3AccessTest {
@@ -49,7 +48,7 @@ public class DB3AccessTest {
     public void setUp() throws IOException {
         this.memoReader = PowerMock.createMock(XBaseMemoReader.class);
         this.access =
-                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plusMemo, JxBaseUtils.ASCII_CHARSET,
+                DB3DialectBuilder.create(XBaseFileTypeEnum.dBASE3plusMemo, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE).reader(this.memoReader)
                         .build().getAccess();
         this.df = new DateField("date");
@@ -64,7 +63,7 @@ public class DB3AccessTest {
 
     @Test
     public void getDateByteLength() {
-        Assert.assertEquals(8, this.df.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.df.getValueLength(this.access));
     }
 
     @Test
@@ -106,7 +105,7 @@ public class DB3AccessTest {
         PowerMock.replayAll();
 
         final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
-        final int valueByteLength = this.mf.getValueByteLength(access);
+        final int valueByteLength = this.mf.getValueLength(access);
         PowerMock.verifyAll();
 
         Assert.assertEquals(10, valueByteLength);
@@ -120,7 +119,7 @@ public class DB3AccessTest {
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         PowerMock.resetAll();
 
-        EasyMock.expect(memoAccess.getMemoValue(bytes, 0, 4)).andReturn(record);
+        EasyMock.expect(memoAccess.extractMemoValue(bytes, 0, 4)).andReturn(record);
         PowerMock.replayAll();
 
         final XBaseMemoRecord memoRecord = this.mf.getValue(access, bytes, 0, 4);
@@ -141,7 +140,7 @@ public class DB3AccessTest {
         PowerMock.replayAll();
 
         final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
-        final XBaseMemoRecord value = access.getMemoValue(bytes, 0, 4);
+        final XBaseMemoRecord value = access.extractMemoValue(bytes, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertNull(value);
@@ -159,7 +158,7 @@ public class DB3AccessTest {
         PowerMock.replayAll();
 
         final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
-        final XBaseMemoRecord value = access.getMemoValue(bytes, 0, 4);
+        final XBaseMemoRecord value = access.extractMemoValue(bytes, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertNull(value);
@@ -203,6 +202,6 @@ public class DB3AccessTest {
 
     @Test
     public void testGetMemoLength() {
-        Assert.assertEquals(10, this.mf.getValueByteLength(this.access));
+        Assert.assertEquals(10, this.mf.getValueLength(this.access));
     }
 }

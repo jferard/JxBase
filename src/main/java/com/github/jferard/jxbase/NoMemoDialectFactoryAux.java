@@ -16,11 +16,13 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
@@ -52,7 +54,7 @@ class NoMemoDialectFactoryAux implements DialectFactoryAux {
     public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final TimeZone timeZone,
                                                                 final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta) {
-        return DB3DialectFactory.create(this.type, this.charset, timeZone).build();
+        return DB3DialectBuilder.create(this.type, this.charset, timeZone).build();
     }
 
     @Override

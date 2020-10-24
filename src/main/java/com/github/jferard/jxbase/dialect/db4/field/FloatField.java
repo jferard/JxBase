@@ -35,7 +35,7 @@ public class FloatField implements XBaseField<FloatAccess> {
     }
 
     @Override
-    public int getValueByteLength(final FloatAccess access) {
+    public int getValueLength(final FloatAccess access) {
         return access.getFloatValueLength();
     }
 

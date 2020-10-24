@@ -21,12 +21,36 @@ import com.github.jferard.jxbase.field.FieldRepresentation;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Access (read/write) to a character field
+ */
 public interface CharacterAccess {
-    int getCharacterValueLength(int dataSize);
+    /**
+     * @param fieldLength the "length" in the array descriptor
+     * @return the actual length
+     */
+    int getCharacterValueLength(int fieldLength);
 
+    /**
+     * @param recordBuffer the buffer that contains the record
+     * @param offset       the offset
+     * @param length       the actual length
+     * @return the value as a string
+     */
     String extractCharacterValue(byte[] recordBuffer, int offset, int length);
 
-    void writeCharacterValue(OutputStream out, String value, int dataSize) throws IOException;
+    /**
+     * @param out    the output stream
+     * @param value  the value
+     * @param length the length of data in record
+     * @throws IOException
+     */
+    void writeCharacterValue(OutputStream out, String value, int length) throws IOException;
 
-    FieldRepresentation getCharacterFieldRepresentation(String name, int dataSize);
+    /**
+     * @param fieldName   the field name
+     * @param fieldLength the "length" in array descriptor
+     * @return the representation
+     */
+    FieldRepresentation getCharacterFieldRepresentation(String fieldName, int fieldLength);
 }

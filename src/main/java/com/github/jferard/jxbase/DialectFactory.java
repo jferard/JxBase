@@ -16,6 +16,10 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMemoFileType;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;

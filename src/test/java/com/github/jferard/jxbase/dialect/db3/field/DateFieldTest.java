@@ -42,7 +42,7 @@ public class DateFieldTest {
 
     @Test
     public void getDateByteLength() {
-        Assert.assertEquals(8, this.df.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.df.getValueLength(this.access));
     }
 
     @Test

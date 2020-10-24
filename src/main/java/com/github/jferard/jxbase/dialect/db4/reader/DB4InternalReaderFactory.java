@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.db4.reader;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
@@ -42,15 +42,18 @@ public class DB4InternalReaderFactory implements XBaseChunkReaderFactory<DB4Dial
         this.timezone = timezone;
     }
 
+    @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
         return new DB4MetadataReader(this.dialect, inputStream);
     }
 
+    @Override
     public XBaseFieldDescriptorArrayReader<DB4Dialect, DB4Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
         return new DB3FieldDescriptorArrayReader<DB4Dialect, DB4Access>(this.dialect, inputStream, metadata);
     }
 
+    @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
                                                 final Charset charset, final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB4Access> array,

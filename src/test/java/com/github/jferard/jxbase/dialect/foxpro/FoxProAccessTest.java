@@ -50,7 +50,7 @@ public class FoxProAccessTest {
 
     @Test
     public void getDTByteLength() {
-        Assert.assertEquals(8, this.df.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.df.getValueLength(this.access));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class FoxProAccessTest {
 
     @Test
     public void getNullByteLength() {
-        Assert.assertEquals(8, this.nf.getValueByteLength(this.access));
+        Assert.assertEquals(8, this.nf.getValueLength(this.access));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -133,7 +133,7 @@ public class FoxProAccessTest {
 
     @Test
     public void getIntByteLength() {
-        Assert.assertEquals(4, this.inf.getValueByteLength(this.access));
+        Assert.assertEquals(4, this.inf.getValueLength(this.access));
     }
 
     @Test

@@ -28,7 +28,7 @@ public interface XBaseField<A> {
     /**
      * @return the length of the field (the actual length, not necessarily the third field)
      */
-    int getValueByteLength(A access);
+    int getValueLength(A access);
 
     /**
      * The value in the buffer.

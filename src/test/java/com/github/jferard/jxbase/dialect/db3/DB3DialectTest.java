@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
-import com.github.jferard.jxbase.XBaseDialect;
-import com.github.jferard.jxbase.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
@@ -36,8 +36,8 @@ public class DB3DialectTest {
 
     @Before
     public void setUp() {
-        final DB3DialectFactory factory =
-                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+        final DB3DialectBuilder factory =
+                DB3DialectBuilder.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         this.dialect = factory.build();
     }

@@ -22,12 +22,36 @@ import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Access (read/write) to a memo field.
+ */
 public interface MemoAccess {
+    /**
+     * @return the actual length of the field (*in the DBF file*)
+     */
     int getMemoValueLength();
 
-    XBaseMemoRecord getMemoValue(byte[] recordBuffer, int offset, int length) throws IOException;
+    /**
+     * Get the memo value.
+     * @param recordBuffer the record buffer
+     * @param offset the offset
+     * @param length the actual length
+     * @return the memo record
+     * @throws IOException
+     */
+    XBaseMemoRecord extractMemoValue(byte[] recordBuffer, int offset, int length) throws IOException;
 
+    /**
+     * Write the memo value.
+     * @param out the output stream
+     * @param value the memo value
+     * @throws IOException
+     */
     void writeMemoValue(OutputStream out, XBaseMemoRecord value) throws IOException;
 
-    FieldRepresentation getMemoFieldRepresentation(String name);
+    /**
+     * @param fieldName the field name
+     * @return the field representation.
+     */
+    FieldRepresentation getMemoFieldRepresentation(String fieldName);
 }

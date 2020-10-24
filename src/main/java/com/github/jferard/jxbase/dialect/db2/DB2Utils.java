@@ -35,6 +35,12 @@ public class DB2Utils {
             JxBaseUtils.NULL_BYTE, JxBaseUtils.NULL_BYTE};
     public static final int DB2_DELETED_RECORD_HEADER = 0x2A;
 
+    /**
+     * Write the date
+     * @param out the output stream
+     * @param updateDate the date of today
+     * @throws IOException
+     */
     public static void writeHeaderUpdateDate(final OutputStream out, final Date updateDate)
             throws IOException {
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
@@ -44,6 +50,13 @@ public class DB2Utils {
         out.write(calendar.get(Calendar.DAY_OF_MONTH));
     }
 
+    /**
+     * Build the data
+     * @param yearByte year
+     * @param monthByte month
+     * @param dayByte date
+     * @return a date
+     */
     public static Date createHeaderUpdateDate(final byte yearByte, final byte monthByte,
                                               final byte dayByte) {
         final int year = yearByte + 1900;
@@ -53,4 +66,6 @@ public class DB2Utils {
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
+
+    private DB2Utils() {}
 }
