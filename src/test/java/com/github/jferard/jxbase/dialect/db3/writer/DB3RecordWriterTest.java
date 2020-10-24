@@ -40,12 +40,13 @@ public class DB3RecordWriterTest {
         final DB3Dialect dialect = DB3DialectBuilder
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE).build();
+        @SuppressWarnings("unchecked")
         final DB3RecordWriter<DB3Dialect, DB3Access> writer =
-                new DB3RecordWriter<>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
+                new DB3RecordWriter<DB3Dialect, DB3Access>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
                         Arrays.<XBaseField<? super DB3Access>>asList(
                                 new CharacterField("chars", 10),
                                 new NumericField("num", 8, 2)));
-        final HashMap<String, Object> map = new HashMap<>();
+        final HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("chars", "some ch.");
         map.put("num", new BigDecimal("10.56"));
         writer.write(map);

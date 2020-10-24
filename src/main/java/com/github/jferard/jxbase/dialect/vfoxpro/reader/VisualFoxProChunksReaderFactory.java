@@ -49,7 +49,7 @@ public class VisualFoxProChunksReaderFactory implements
 
     @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
-        return new FoxProMetadataReader(this.dialect, inputStream);
+        return new FoxProMetadataReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream);
     }
 
     @Override

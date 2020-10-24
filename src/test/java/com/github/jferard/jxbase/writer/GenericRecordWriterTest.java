@@ -35,6 +35,7 @@ import java.util.HashMap;
 
 public class GenericRecordWriterTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void testWrite() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         final DB3Dialect dialect = DB3DialectBuilder
@@ -45,7 +46,7 @@ public class GenericRecordWriterTest {
                         Arrays.<XBaseField<? super DB3Access>>asList(
                                 new CharacterField("chars", 10),
                                 new NumericField("num", 8, 2)));
-        final HashMap<String, Object> map = new HashMap<>();
+        final HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("chars", "some ch.");
         map.put("num", new BigDecimal("10.56"));
         writer.write(map);

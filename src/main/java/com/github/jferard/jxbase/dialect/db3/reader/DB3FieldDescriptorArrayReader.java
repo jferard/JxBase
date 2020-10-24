@@ -16,10 +16,10 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
+import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
-import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -32,6 +32,7 @@ import java.util.Collection;
 
 /**
  * A descriptor array reader for DB3.
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
@@ -39,9 +40,10 @@ public class DB3FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
         implements XBaseFieldDescriptorArrayReader<D, A> {
     private final InputStream inputStream;
     private final int fieldDescriptorLength;
-    private final D dialect;
+    private final XBaseDialect<D, A> dialect;
 
-    public DB3FieldDescriptorArrayReader(final D dialect, final InputStream inputStream,
+    public DB3FieldDescriptorArrayReader(final XBaseDialect<D, A> dialect,
+                                         final InputStream inputStream,
                                          final XBaseMetadata metadata) {
         this.dialect = dialect;
         this.inputStream = inputStream;

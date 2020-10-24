@@ -16,8 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
@@ -36,10 +36,10 @@ public class DB3FieldDescriptorArrayWriterTest {
     public void test() throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final DB3FieldDescriptorArrayWriter<DB2Access> arrayWriter =
-                new DB3FieldDescriptorArrayWriter<>(
+                new DB3FieldDescriptorArrayWriter<DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET)
                                 .getAccess(), out);
-        final List<XBaseField<? super DB2Access>> fields =
+        @SuppressWarnings("unchecked") final List<XBaseField<? super DB2Access>> fields =
                 Arrays.<XBaseField<? super DB2Access>>asList(new CharacterField("char", 10));
         arrayWriter.write(new GenericFieldDescriptorArray<DB2Access>(fields, 10, 10));
 

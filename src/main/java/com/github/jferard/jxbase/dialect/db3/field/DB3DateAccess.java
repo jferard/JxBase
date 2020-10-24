@@ -67,8 +67,7 @@ public class DB3DateAccess implements DateAccess {
             format.setTimeZone(this.timeZone);
             return format.parse(s);
         } catch (final ParseException e) {
-            e.printStackTrace(System.err);
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

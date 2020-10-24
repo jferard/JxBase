@@ -18,18 +18,13 @@ package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GenericMetadataTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
     public void testToString() {
         final Map<String, Object> meta = new HashMap<String, Object>();

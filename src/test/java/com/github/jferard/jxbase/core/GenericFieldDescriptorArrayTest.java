@@ -23,15 +23,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GenericFieldDescriptorArrayTest {
     @Test
     public void test() {
         final List<XBaseField<? super DB2Access>> fields =
-                Arrays.<XBaseField<? super DB2Access>>asList(new CharacterField("char", 10));
+                Collections.<XBaseField<? super DB2Access>>singletonList(
+                        new CharacterField("char", 10));
         final GenericFieldDescriptorArray<DB2Access> array =
-                new GenericFieldDescriptorArray<>(fields, 10, 20);
+                new GenericFieldDescriptorArray<DB2Access>(fields, 10, 20);
         Assert.assertEquals(fields, array.getFields());
         Assert.assertEquals(10, array.getArrayLength());
         Assert.assertEquals(20, array.getRecordLength());

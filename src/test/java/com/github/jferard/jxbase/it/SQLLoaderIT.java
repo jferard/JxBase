@@ -82,7 +82,7 @@ public class SQLLoaderIT {
                 final File baseDirectory = new File(new File(databaseDir).getParent());
                 final DatabaseLoader loader =
                         new DatabaseLoader(Logger.getAnonymousLogger(), connection,
-                                SQLQueryBuilderProvider.create(connection), false, 10000);
+                                SQLQueryBuilderProvider.create(connection), true, 10000);
                 loader.buildAndFillTables(baseDirectory);
             } finally {
                 connection.close();

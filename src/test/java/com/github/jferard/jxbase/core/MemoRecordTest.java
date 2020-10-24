@@ -17,21 +17,17 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.dialect.foxpro.memo.ImageMemoRecord;
-import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
+import com.github.jferard.jxbase.memo.MemoRecordType;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.nio.charset.Charset;
 
 public class MemoRecordTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
     private Charset charset;
 
     @Before

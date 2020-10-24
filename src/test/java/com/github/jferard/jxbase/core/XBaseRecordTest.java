@@ -23,10 +23,10 @@ import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
-import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -35,9 +35,8 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayInputStream;
@@ -52,11 +51,9 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class XBaseRecordTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
     private XBaseMemoReader mr;
     private GenericMetadata md;
-    private XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect;
+    private VisualFoxProDialect dialect;
     private VisualFoxProAccess access;
     // new XBaseRecord("0000000000".getBytes(JxBaseUtils.ASCII_CHARSET), this.md, this.mr, 1);
 
@@ -124,21 +121,34 @@ public class XBaseRecordTest {
 
     @Test
     public void testVoidBoolean() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("A boolean has one char");
-        TestHelper.fromStringRepresentation(this.dialect, "x,L,0,0");
+        final VisualFoxProDialect thisDialect = this.dialect;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        TestHelper.fromStringRepresentation(thisDialect, "x,L,0,0");
+                    }
+                });
+        Assert.assertEquals(e.getMessage(), "A boolean has one char");
     }
 
     @Test
     public void testVoidDate() {
-        this.exception.expect(IllegalArgumentException.class);
-        this.exception.expectMessage("A date has 8 chars");
-        TestHelper.fromStringRepresentation(this.dialect, "x,D,0,0");
+        final VisualFoxProDialect thisDialect = this.dialect;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        TestHelper.fromStringRepresentation(thisDialect, "x,D,0,0");
+                    }
+                });
+        Assert.assertEquals(e.getMessage(), "A date has 8 chars");
     }
 
     @Test
     public void testGetDate() throws IOException, ParseException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,D,8,0");
+        final XBaseField<? super VisualFoxProAccess> field =
+                TestHelper.fromStringRepresentation(this.dialect, "x,D,8,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -154,7 +164,8 @@ public class XBaseRecordTest {
 
     @Test
     public void testGetInteger() throws IOException, ParseException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,I,4,0");
+        final XBaseField<? super VisualFoxProAccess> field =
+                TestHelper.fromStringRepresentation(this.dialect, "x,I,4,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -167,7 +178,8 @@ public class XBaseRecordTest {
 
     @Test
     public void testGetNullDouble() throws IOException, ParseException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,B,8,0");
+        final XBaseField<? super VisualFoxProAccess> field =
+                TestHelper.fromStringRepresentation(this.dialect, "x,B,8,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -175,12 +187,13 @@ public class XBaseRecordTest {
         final Object value = field.getValue(this.access, buffer, 0, 8);
         PowerMock.verifyAll();
 
-        Assert.assertEquals(1.2926117907728089E161, (double) value, 0.01);
+        Assert.assertEquals(1.2926117907728089E161, (Double) value, 0.01);
     }
 
     @Test
     public void testGetString() throws IOException {
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "x,C,4,0");
+        final XBaseField<? super VisualFoxProAccess> field =
+                TestHelper.fromStringRepresentation(this.dialect, "x,C,4,0");
         PowerMock.resetAll();
         PowerMock.replayAll();
 
@@ -194,7 +207,8 @@ public class XBaseRecordTest {
     @Test
     public void testMemoAsString() throws IOException {
         final TextMemoRecord mrec = PowerMock.createMock(TextMemoRecord.class);
-        final XBaseField field = TestHelper.fromStringRepresentation(this.dialect, "y,M,4,4");
+        final XBaseField<? super VisualFoxProAccess> field =
+                TestHelper.fromStringRepresentation(this.dialect, "y,M,4,4");
         PowerMock.resetAll();
 
         EasyMock.expect(this.mr.read(EasyMock.anyInt())).andReturn(mrec);
@@ -213,9 +227,11 @@ public class XBaseRecordTest {
     public void testNotDeleted() throws IOException, ParseException {
         final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
+        final GenericFieldDescriptorArray<DB3Access> descriptorArray =
+                new GenericFieldDescriptorArray<DB3Access>(
+                        Collections.<XBaseField<? super DB3Access>>emptyList(), 0, 3);
         final DB3RecordReader<DB3Access> reader = new DB3RecordReader<DB3Access>(null, in, ascii,
-                new GenericFieldDescriptorArray(
-                        Collections.<XBaseField<? super DB3Access>>emptyList(), 0, 3), null);
+                descriptorArray, null);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals(1, record.getRecordNumber());

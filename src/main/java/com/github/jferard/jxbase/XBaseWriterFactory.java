@@ -77,6 +77,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
                               final Collection<XBaseField<? super A>> fields,
                               final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
             throws IOException {
+        @SuppressWarnings("unchecked")
         final D dialect = (D) DialectFactory
                 .getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
         final XBaseChunkWriterFactory<D, A> writerFactory =

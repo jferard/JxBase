@@ -36,7 +36,7 @@ public class DB2RecordReaderTest {
     @Test
     public void test() throws IOException {
         final GenericFieldDescriptorArray<CharacterAccess> array =
-                new GenericFieldDescriptorArray<>(
+                new GenericFieldDescriptorArray<CharacterAccess>(
                         Collections.<XBaseField<? super CharacterAccess>>singleton(
                                 new CharacterField("text", 2)), 12, 3);
         final DB2RecordReader<CharacterAccess> reader = new DB2RecordReader<CharacterAccess>(

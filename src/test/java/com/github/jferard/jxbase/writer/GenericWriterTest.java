@@ -16,6 +16,8 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.dialect.db3.DB3Access;
+import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
@@ -26,11 +28,12 @@ import java.util.Map;
 
 public class GenericWriterTest {
     @Test
+    @SuppressWarnings("unchecked")
     public void test() throws IOException {
-        final XBaseMetadataWriter metadataWriter = PowerMock.createMock(XBaseMetadataWriter.class);
-        final XBaseRecordWriter recordWriter = PowerMock.createMock(XBaseRecordWriter.class);
-        final GenericWriter gw = new GenericWriter(metadataWriter, recordWriter);
-        final Map<String, Object> objectByName = new HashMap<>();
+        final XBaseMetadataWriter<DB3Dialect, DB3Access> metadataWriter = PowerMock.createMock(XBaseMetadataWriter.class);
+        final XBaseRecordWriter<DB3Dialect> recordWriter = PowerMock.createMock(XBaseRecordWriter.class);
+        final GenericWriter<DB3Dialect, DB3Access> gw = new GenericWriter<DB3Dialect, DB3Access>(metadataWriter, recordWriter);
+        final Map<String, Object> objectByName = new HashMap<String, Object>();
         PowerMock.resetAll();
 
         EasyMock.expect(recordWriter.getRecordQty()).andReturn(10);

@@ -158,7 +158,7 @@ public class DB4DialectBuilder {
     /**
      * @return the dialect
      */
-    public XBaseDialect<DB4Dialect, DB4Access> build() {
+    public DB4Dialect build() {
         final DB4Access access =
                 new DB4Access(this.characterAccess, this.dateAccess, this.floatAccess,
                         this.logicalAccess, this.memoAccess, this.numericAccess);

@@ -34,9 +34,10 @@ public class GenericOptionalWriterTest {
         final DB4DialectBuilder factory =
                 DB4DialectBuilder.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
-        final XBaseDialect<DB4Dialect, DB4Access> dialect = factory.build();
+        final DB4Dialect dialect = factory.build();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        final GenericOptionalWriter gow = new GenericOptionalWriter(dialect, bos, null, null);
+        final GenericOptionalWriter<DB4Dialect, DB4Access> gow =
+                new GenericOptionalWriter<DB4Dialect, DB4Access>(dialect, bos, null, null);
         gow.write(null);
         Assert.assertArrayEquals(new byte[263], bos.toByteArray());
     }

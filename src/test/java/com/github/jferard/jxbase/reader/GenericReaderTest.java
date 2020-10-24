@@ -16,11 +16,11 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -35,20 +35,20 @@ import java.io.InputStream;
 import java.text.ParseException;
 
 public class GenericReaderTest {
-    private XBaseChunkReaderFactory rf;
+    private XBaseChunkReaderFactory<DB3Dialect, DB3Access> rf;
     private InputStream is;
-    private XBaseMemoReader mr;
     private DB3Dialect dialect;
     private XBaseMetadataReader mdr;
     private XBaseMetadata metadata;
-    private XBaseFieldDescriptorArray array;
-    private XBaseFieldDescriptorArrayReader ar;
+    private XBaseFieldDescriptorArray<DB3Access> array;
+    private XBaseFieldDescriptorArrayReader<DB3Dialect, DB3Access> ar;
     private XBaseOptionalReader or;
     private XBaseOptional optional;
     private XBaseRecordReader rr;
 
     @Before
-    public void setUp() throws Exception {
+    @SuppressWarnings("unchecked")
+    public void setUp() {
         this.is = PowerMock.createMock(InputStream.class);
         this.mdr = PowerMock.createMock(XBaseMetadataReader.class);
         this.metadata = PowerMock.createMock(XBaseMetadata.class);
@@ -60,7 +60,6 @@ public class GenericReaderTest {
 
         this.dialect = PowerMock.createMock(DB3Dialect.class);
         this.rf = PowerMock.createMock(XBaseChunkReaderFactory.class);
-        this.mr = PowerMock.createMock(XBaseMemoReader.class);
     }
 
     private void init() throws IOException {
@@ -80,8 +79,8 @@ public class GenericReaderTest {
         EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512*3).times(1);
     }
 
-    private GenericReader getGenericReader() throws IOException {
-        return new GenericReader(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
+    private GenericReader<DB3Dialect, DB3Access> getGenericReader() throws IOException {
+        return new GenericReader<DB3Dialect, DB3Access>(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
     }
 
     @Test
@@ -91,7 +90,7 @@ public class GenericReaderTest {
         this.init();
         PowerMock.replayAll();
 
-        final XBaseDialect dialect = this.getGenericReader().getDialect();
+        final DB3Dialect dialect = this.getGenericReader().getDialect();
         PowerMock.verifyAll();
 
         Assert.assertEquals(this.dialect, dialect);
@@ -117,7 +116,7 @@ public class GenericReaderTest {
         this.init();
         PowerMock.replayAll();
 
-        final XBaseFieldDescriptorArray fieldDescriptorArray =
+        final XBaseFieldDescriptorArray<DB3Access> fieldDescriptorArray =
                 this.getGenericReader().getFieldDescriptorArray();
         PowerMock.verifyAll();
 

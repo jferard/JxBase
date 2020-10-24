@@ -18,8 +18,11 @@ package com.github.jferard.jxbase.dialect.db4.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,8 +35,11 @@ public class DB4MetadataReaderTest {
     @Test(expected = IOException.class)
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
-        final DB4MetadataReader reader = new DB4MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
+        @SuppressWarnings("unchecked")
+        final XBaseDialect<DB4Dialect, DB4Access> dialect =
+                (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
+                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
+        final DB4MetadataReader reader = new DB4MetadataReader(dialect,
                 inputStream);
         reader.read();
     }
@@ -45,9 +51,11 @@ public class DB4MetadataReaderTest {
                         109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120};
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        final DB4MetadataReader reader = new DB4MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
-                inputStream);
+        @SuppressWarnings("unchecked")
+        final XBaseDialect<DB4Dialect, DB4Access> dialect =
+                (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
+                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
+        final DB4MetadataReader reader = new DB4MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
         Assert.assertEquals(48, meta.getFullHeaderLength());

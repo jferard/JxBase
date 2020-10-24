@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.geter.internal;
+package com.github.jferard.jxbase.reader.internal;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
@@ -25,9 +25,7 @@ import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
@@ -37,18 +35,11 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class FoxProRecordReaderTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
-    private XBaseMemoWriter mw;
-    private ByteArrayOutputStream bos;
     private VisualFoxProAccess access;
     private Map<String, Object> map;
 
     @Before
     public void setUp() throws IOException {
-        this.mw = PowerMock.createMock(XBaseMemoWriter.class);
-        this.bos = new ByteArrayOutputStream();
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
                 VisualFoxProDialectBuilder.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
                         TimeZone.getTimeZone("GMT")).reader("foo")

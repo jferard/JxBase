@@ -16,15 +16,16 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
-import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -41,21 +42,22 @@ public class FoxProChunkReaderFactory implements
     protected final FoxProDialect dialect;
     protected final TimeZone timezone;
 
-    public FoxProChunkReaderFactory(final FoxProDialect dialect, final TimeZone timezone) {
+    public FoxProChunkReaderFactory(final FoxProDialect dialect,
+                                    final TimeZone timezone) {
         this.dialect = dialect;
         this.timezone = timezone;
     }
 
     @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
-        return new FoxProMetadataReader(this.dialect, inputStream);
+        return new FoxProMetadataReader<FoxProDialect, DB4Access>(this.dialect, inputStream);
     }
 
     @Override
     public XBaseFieldDescriptorArrayReader<FoxProDialect, DB4Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayReader<FoxProDialect, DB4Access>(this.dialect, inputStream,
-                metadata);
+        return new DB3FieldDescriptorArrayReader<FoxProDialect, DB4Access>(this.dialect,
+                inputStream, metadata);
     }
 
     @Override
@@ -73,6 +75,7 @@ public class FoxProChunkReaderFactory implements
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<DB4Access> array) {
         // no optional here.
-        return new DB2OptionalReader<FoxProDialect, DB4Access>(this.dialect, inputStream, metadata, array);
+        return new DB2OptionalReader<FoxProDialect, DB4Access>(this.dialect, inputStream, metadata,
+                array);
     }
 }

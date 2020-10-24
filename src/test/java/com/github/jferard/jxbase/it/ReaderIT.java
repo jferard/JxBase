@@ -22,21 +22,15 @@ import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
 public class ReaderIT {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
     public void test1() throws IOException, ParseException {
         final Charset stringCharset = Charset.forName("Cp866");
@@ -54,7 +48,7 @@ public class ReaderIT {
             Assert.assertEquals(3, meta.getFileTypeByte());
             Assert.assertEquals(929, meta.getFullHeaderLength());
             Assert.assertEquals(479, meta.getOneRecordLength());
-            Assert.assertEquals(new Date(112, 8, 26, 2, 0, 0), meta.get("updateDate"));
+            Assert.assertEquals(TestHelper.createDate(112, 8, 26), meta.get("updateDate"));
             Assert.assertEquals(28, reader.getFieldDescriptorArray().getFields().size());
 
             int recCounter = 0;
@@ -86,7 +80,7 @@ public class ReaderIT {
             Assert.assertEquals(3, meta.getFileTypeByte());
             Assert.assertEquals(3777, meta.getFullHeaderLength());
             Assert.assertEquals(2763, meta.getOneRecordLength());
-            Assert.assertEquals(new Date(112, 8, 27, 2, 0, 0), meta.get("updateDate"));
+            Assert.assertEquals(TestHelper.createDate(112, 8, 27), meta.get("updateDate"));
             Assert.assertEquals(117, reader.getFieldDescriptorArray().getFields().size());
 
             int recCounter = 0;

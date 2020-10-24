@@ -36,9 +36,10 @@ import java.nio.charset.Charset;
 public class XBaseReaderFactory {
     /**
      * Create a new reader
+     *
      * @param tableName a full table name : path/to/table, without the .dbf extension
      * @param charset   the charset.
-     * @return          a reader
+     * @return a reader
      * @throws IOException
      */
     public static XBaseReader<?, ?> createReader(final String tableName, final Charset charset)
@@ -46,7 +47,8 @@ public class XBaseReaderFactory {
         return new XBaseReaderFactory().create(tableName, charset);
     }
 
-    private XBaseReader<?, ?> create(final String tableName, final Charset charset)
+    private <D extends XBaseDialect<D, A>, A> XBaseReader<D, A> create(final String tableName,
+                                                                       final Charset charset)
             throws IOException {
         final File file = IOUtils.getIgnoreCaseFile(tableName + ".dbf");
         if (file == null) {
@@ -59,11 +61,11 @@ public class XBaseReaderFactory {
                 IOUtils.resettable(dbfInputStream, JxBaseUtils.BUFFER_SIZE);
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
-        final XBaseDialect<?, ?> dialect =
-                DialectFactory.getDialect(type, tableName, charset, null);
-        final XBaseChunkReaderFactory<?, ?> readerFactory =
+        @SuppressWarnings("unchecked") final D dialect =
+                (D) DialectFactory.getDialect(type, tableName, charset, null);
+        final XBaseChunkReaderFactory<D, A> readerFactory =
                 dialect.getInternalReaderFactory(tableName, charset);
-        return new GenericReader(dialect, resettableInputStream, charset, readerFactory);
+        return new GenericReader<D, A>(dialect, resettableInputStream, charset, readerFactory);
     }
 
     private XBaseFileTypeEnum getXBaseFileType(final InputStream resettableInputStream)

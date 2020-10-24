@@ -18,8 +18,10 @@ package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,9 +34,12 @@ public class FoxProMetadataReaderTest {
     @Test(expected = IOException.class)
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
-        final FoxProMetadataReader reader = new FoxProMetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
-                inputStream);
+        @SuppressWarnings("unchecked") final FoxProDialect dialect =
+                (FoxProDialect) DialectFactory
+                        .getNoMemoDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
+        final FoxProMetadataReader<FoxProDialect, DB4Access> reader =
+                new FoxProMetadataReader<FoxProDialect, DB4Access>(dialect,
+                        inputStream);
         reader.read();
     }
 
@@ -45,9 +50,10 @@ public class FoxProMetadataReaderTest {
                         109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120};
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        final FoxProMetadataReader reader = new FoxProMetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET),
-                inputStream);
+        @SuppressWarnings("unchecked") final FoxProDialect dialect = (FoxProDialect) DialectFactory
+                .getNoMemoDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
+        final FoxProMetadataReader<FoxProDialect, DB4Access> reader =
+                new FoxProMetadataReader<FoxProDialect, DB4Access>(dialect, inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
         Assert.assertEquals(48, meta.getFullHeaderLength());

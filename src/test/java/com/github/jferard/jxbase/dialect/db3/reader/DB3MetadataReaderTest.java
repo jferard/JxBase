@@ -18,8 +18,11 @@ package com.github.jferard.jxbase.dialect.db3.reader;
 
 import com.github.jferard.jxbase.DialectFactory;
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.db3.DB3Access;
+import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,8 +35,10 @@ public class DB3MetadataReaderTest {
     @Test(expected = IOException.class)
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
-        final DB3MetadataReader reader = new DB3MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
+        @SuppressWarnings("unchecked")
+        final DB3MetadataReader reader = new DB3MetadataReader(
+                (XBaseDialect<DB3Dialect, DB3Access>) DialectFactory
+                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
                 inputStream);
         reader.read();
     }
@@ -45,9 +50,11 @@ public class DB3MetadataReaderTest {
                         0, 0, 0, 0, 0, 0, 0};
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        final DB3MetadataReader reader = new DB3MetadataReader(DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
-                inputStream);
+        @SuppressWarnings("unchecked")
+        final XBaseDialect<DB3Dialect, DB3Access> dialect =
+                (XBaseDialect<DB3Dialect, DB3Access>) DialectFactory
+                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET);
+        final DB3MetadataReader reader = new DB3MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
         Assert.assertEquals(48, meta.getFullHeaderLength());

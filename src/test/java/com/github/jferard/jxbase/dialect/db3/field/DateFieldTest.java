@@ -20,6 +20,7 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -61,7 +62,14 @@ public class DateFieldTest {
     @Test
     public void getDateValueException() throws IOException {
         final byte[] bytes = "abcdefgh".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.df.getValue(this.access, bytes, 0, 8));
+        final DateField thisDf = this.df;
+        final DateAccess thisAccess = this.access;
+        Assert.assertThrows(RuntimeException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                thisDf.getValue(thisAccess, bytes, 0, 8);
+            }
+        });
     }
 
     @Test

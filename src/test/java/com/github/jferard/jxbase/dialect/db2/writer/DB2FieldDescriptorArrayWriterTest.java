@@ -75,6 +75,7 @@ public class DB2FieldDescriptorArrayWriterTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testFields() throws IOException {
         this.arrayWriter.write(new GenericFieldDescriptorArray<DB2Access>(
                 Arrays.<XBaseField<? super DB2Access>>asList(new CharacterField("chars", 10),
@@ -106,6 +107,7 @@ public class DB2FieldDescriptorArrayWriterTest {
     }
 
     @Test(expected = IOException.class)
+    @SuppressWarnings("unchecked")
     public void testFieldNameTooLong() throws IOException {
         this.arrayWriter.write(new GenericFieldDescriptorArray<DB2Access>(
                 Arrays.<XBaseField<? super DB2Access>>asList(

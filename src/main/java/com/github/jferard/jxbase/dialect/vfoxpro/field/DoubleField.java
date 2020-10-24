@@ -52,7 +52,7 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     @Override
     public void writeValue(final DoubleAccess access, final OutputStream out, final Object value)
             throws IOException {
-        access.writeDoubleValue(out, (double) value);
+        access.writeDoubleValue(out, (Double) value);
     }
 
     @Override

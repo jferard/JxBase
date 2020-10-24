@@ -49,6 +49,7 @@ public class SQLiteQueryBuilder implements SQLQueryBuilder {
      * @return the SQLite query builder
      * @throws IOException
      */
+    @SuppressWarnings("unchecked")
     public static SQLiteQueryBuilder create(final String tableName) throws IOException {
         final String tableShortName = new File(tableName).getName();
         Collection<XBaseField<?>> fields = null;

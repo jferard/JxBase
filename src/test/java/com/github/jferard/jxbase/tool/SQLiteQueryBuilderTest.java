@@ -37,12 +37,13 @@ public class SQLiteQueryBuilderTest {
     private SQLQueryBuilder builder;
 
     @Before
+    @SuppressWarnings("unchecked")
     public void setUp() throws IOException {
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectBuilder
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
                         .getDefault()).build();
         final List<XBaseField<?>> fields =
-                Arrays.asList(TestHelper.fromStringRepresentation(dialect, "a,C,10,0"),
+                Arrays.<XBaseField<?>>asList(TestHelper.fromStringRepresentation(dialect, "a,C,10,0"),
                         TestHelper.fromStringRepresentation(dialect, "b,D,8,0"),
                         TestHelper.fromStringRepresentation(dialect, "c,N,10,0"));
         this.builder = new SQLiteQueryBuilder("foo", fields);

@@ -17,14 +17,10 @@
 package com.github.jferard.jxbase.core;
 
 import org.junit.Assert;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 
 public class XBaseFileTypeEnumTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     @Test
     public void testFomInt() {
         Assert.assertEquals(XBaseFileTypeEnum.FoxBASE1, XBaseFileTypeEnum.fromInt((byte) 0x02));
@@ -32,8 +28,12 @@ public class XBaseFileTypeEnumTest {
 
     @Test
     public void testFomIntNoValue() {
-        this.exception.expect(IllegalArgumentException.class);
-        XBaseFileTypeEnum.fromInt((byte) 0xFF);
+        Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+            @Override
+            public void run() {
+                XBaseFileTypeEnum.fromInt((byte) 0xFF);
+            }
+        });
     }
 
     @Test

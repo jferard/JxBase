@@ -186,7 +186,7 @@ public class VisualFoxProDialectBuilder {
     /**
      * @return the dialect
      */
-    public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> build() {
+    public VisualFoxProDialect build() {
         final VisualFoxProAccess access =
                 new VisualFoxProAccess(this.characterAccess, this.dateAccess, this.datetimeAccess,
                         this.floatAccess, this.integerAccess, this.logicalAccess, this.memoAccess,

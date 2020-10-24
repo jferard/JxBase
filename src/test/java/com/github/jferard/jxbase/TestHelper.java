@@ -27,6 +27,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,5 +141,9 @@ public class TestHelper {
         final Set<T> ret = new HashSet<T>(values.length);
         ret.addAll(Arrays.asList(values));
         return ret;
+    }
+
+    public static Date createDate(final int year, final int month, final int date) {
+        return new GregorianCalendar(year + 1900, month, date, 2, 0).getTime();
     }
 }

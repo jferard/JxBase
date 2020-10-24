@@ -16,9 +16,9 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
+import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
@@ -39,7 +39,8 @@ public class DB3MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
     private final XBaseDialect<DB3Dialect, DB3Access> dialect;
 
-    public DB3MetadataReader(final XBaseDialect dialect, final InputStream dbfInputStream) {
+    public DB3MetadataReader(final XBaseDialect<DB3Dialect, DB3Access> dialect,
+                             final InputStream dbfInputStream) {
         this.dialect = dialect;
         this.dbfInputStream = dbfInputStream;
     }
@@ -56,7 +57,8 @@ public class DB3MetadataReader implements XBaseMetadataReader {
         final Date updateDate =
                 DB2Utils.createHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3]);
         final int recordsQty =
-                BytesUtils.makeLEInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
+                BytesUtils
+                        .makeLEInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
         final int fullHeaderLength = BytesUtils.makeLEInt(headerBytes[8], headerBytes[9]);
         final int oneRecordLength = BytesUtils.makeLEInt(headerBytes[10], headerBytes[11]);
         // 12-31: Reserved

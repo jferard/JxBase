@@ -18,17 +18,16 @@ package com.github.jferard.jxbase.writer.internal;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
-import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
@@ -40,9 +39,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class FoxProRecordWriterTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     private XBaseMemoWriter mw;
     private ByteArrayOutputStream bos;
     private VisualFoxProAccess access;
@@ -108,8 +104,15 @@ public class FoxProRecordWriterTest {
 
     @Test
     public void writeNumericValueError() throws IOException {
-        this.exception.expect(IllegalArgumentException.class);
-        this.access.writeNumericValue(this.bos, new BigDecimal("-99999999999991103.5"), 18, 3);
+        final VisualFoxProAccess thisAccess = this.access;
+        final ByteArrayOutputStream thisBos = this.bos;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() throws Throwable {
+                        thisAccess.writeNumericValue(thisBos, new BigDecimal("-99999999999991103.5"), 18, 3);
+                    }
+                });
     }
 
     @Test
