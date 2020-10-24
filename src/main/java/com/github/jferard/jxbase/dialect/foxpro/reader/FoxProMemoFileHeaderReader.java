@@ -35,8 +35,8 @@ public class FoxProMemoFileHeaderReader implements MemoFileHeaderReader {
         final byte[] headerBytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];
         memoByteBuffer.get(headerBytes);
         final int nextFreeBlockLocation =
-                BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1], headerBytes[0]);
-        final int blockLength = BytesUtils.makeLEInt(headerBytes[7], headerBytes[6]);
+                BytesUtils.extractBEInt4(headerBytes, 0);
+        final int blockLength = BytesUtils.extractBEInt2(headerBytes, 6);
         final Map<String, Object> meta = new HashMap<String, Object>();
         return new MemoFileHeader(blockLength, nextFreeBlockLocation, meta);
     }

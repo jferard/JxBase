@@ -116,7 +116,8 @@ public class BytesUtils {
 
     /**
      * Write 0's to the output stream.
-     * @param out the output stream
+     *
+     * @param out       the output stream
      * @param zeroCount the number of zeroes to write
      * @throws IOException
      */
@@ -130,6 +131,32 @@ public class BytesUtils {
         for (int i = 0; i < length; i++) {
             out.write(JxBaseUtils.EMPTY);
         }
+    }
+
+    public static int extractLEInt2(final byte[] buffer, final int offset) {
+        return ((buffer[offset]) & 0x000000FF) + ((buffer[offset + 1] << 8) & 0x0000FF00);
+    }
+
+    public static int extractLEInt4(final byte[] buffer, final int offset) {
+        return ((buffer[offset]) & 0x000000FF) +
+                ((buffer[offset + 1] << 8) & 0x0000FF00) +
+                ((buffer[offset + 2] << 16) & 0x00FF0000) +
+                ((buffer[offset + 3] << 24) & 0xFF000000);
+    }
+
+    public static int extractBEInt2(final byte[] buffer, final int offset) {
+        return ((buffer[offset] << 8) & 0x0000FF00) + ((buffer[offset + 1]) & 0x000000FF);
+    }
+
+    public static int extractBEInt4(final byte[] buffer, final int offset) {
+        return ((buffer[offset] << 24) & 0xFF000000) +
+                ((buffer[offset + 1] << 16) & 0x00FF0000) +
+                ((buffer[offset + 2] << 8) & 0x0000FF00) +
+                ((buffer[offset + 3]) & 0x000000FF);
+    }
+
+    public static long extractLEInt8(final byte[] buffer, final int offset) {
+        return 1 << 32 * extractLEInt4(buffer, offset) + extractLEInt4(buffer, offset + 4);
     }
 
     private BytesUtils() {

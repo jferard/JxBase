@@ -34,10 +34,7 @@ public class FoxProCurrencyAccess implements CurrencyAccess {
     @Override
     public long extractCurrencyValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 8;
-        return BytesUtils.makeLEInt(recordBuffer[offset], recordBuffer[offset + 1],
-                recordBuffer[offset + 2], recordBuffer[offset + 3]) +
-                1 << 32 * BytesUtils.makeLEInt(recordBuffer[offset + 4], recordBuffer[offset + 5],
-                recordBuffer[offset + 6], recordBuffer[offset + 7]);
+        return BytesUtils.extractLEInt8(recordBuffer, offset);
     }
 
     @Override

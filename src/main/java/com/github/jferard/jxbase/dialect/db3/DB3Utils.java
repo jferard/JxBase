@@ -32,6 +32,7 @@ public class DB3Utils {
 
     /**
      * Read the header of memo files.
+     *
      * @return the memo header
      */
     public static MemoFileHeader readMemoHeader(final ByteBuffer memoByteBuffer) throws
@@ -40,8 +41,7 @@ public class DB3Utils {
         try {
             memoByteBuffer.get(headerBytes);
             final int nextFreeBlockLocation =
-                    BytesUtils.makeLEInt(headerBytes[3], headerBytes[2], headerBytes[1],
-                            headerBytes[0]);
+                    BytesUtils.extractBEInt4(headerBytes, 0);
             return new MemoFileHeader(BLOCK_LENGTH, nextFreeBlockLocation,
                     Collections.<String, Object>emptyMap());
         } catch (final BufferUnderflowException e) {

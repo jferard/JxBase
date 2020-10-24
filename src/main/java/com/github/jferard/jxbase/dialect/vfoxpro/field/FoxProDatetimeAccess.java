@@ -35,13 +35,12 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
     }
 
     @Override
-    public Date extractDatetimeValue(final byte[] recordBuffer, final int offset, final int length) {
+    public Date extractDatetimeValue(final byte[] recordBuffer, final int offset,
+                                     final int length) {
         assert length == 8;
-        final int julianDaysCount = BytesUtils.makeLEInt(recordBuffer[offset], recordBuffer[offset + 1],
-                recordBuffer[offset + 2], recordBuffer[offset + 3]);
+        final int julianDaysCount = BytesUtils.extractLEInt4(recordBuffer, offset);
         return new Date(FoxProUtils.julianDaysToDate(julianDaysCount).getTime() + FoxProUtils
-                .toMillis(recordBuffer[offset + 4], recordBuffer[offset + 5],
-                        recordBuffer[offset + 6], recordBuffer[offset + 7]));
+                .toMillis(recordBuffer, offset + 4));
     }
 
     @Override

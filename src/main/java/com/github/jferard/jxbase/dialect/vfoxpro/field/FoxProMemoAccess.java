@@ -48,8 +48,6 @@ public class FoxProMemoAccess extends DB3MemoAccess {
      */
     @Override
     public long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
-        return BytesUtils
-                .makeLEInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
-                        recordBuffer[offset + 3]);
+        return BytesUtils.extractLEInt4(recordBuffer, offset);
     }
 }

@@ -53,10 +53,10 @@ public class DB2MetadataReader implements XBaseMetadataReader {
         }
         final byte typeByte = headerBytes[0];
         XBaseFileTypeEnum.fromInt(typeByte);
-        final int recordsQty = BytesUtils.makeLEInt(headerBytes[1], headerBytes[2]);
+        final int recordsQty = BytesUtils.extractLEInt2(headerBytes, 1);
         final Date updateDate =
                 DB2Utils.createHeaderUpdateDate(headerBytes[3], headerBytes[4], headerBytes[5]);
-        final int oneRecordLength = BytesUtils.makeLEInt(headerBytes[6], headerBytes[7]);
+        final int oneRecordLength = BytesUtils.extractLEInt2(headerBytes, 6);
         final Map<String, Object> meta = new HashMap<String, Object>();
         meta.put("updateDate", updateDate);
         meta.put("recordsQty", recordsQty);

@@ -150,8 +150,8 @@ public class FoxProUtils {
         return calendar.getTime();
     }
 
-    public static long toMillis(final byte b0, final byte b1, final byte b2, final byte b3) {
-        final long millis = BytesUtils.makeLEInt(b0, b1, b2, b3);
+    public static long toMillis(final byte[] buffer, final int offset) {
+        final long millis = BytesUtils.extractLEInt4(buffer, offset);
         return millis;
     }
 

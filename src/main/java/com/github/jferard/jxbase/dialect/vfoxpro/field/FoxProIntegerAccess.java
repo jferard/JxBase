@@ -35,8 +35,7 @@ public class FoxProIntegerAccess implements IntegerAccess {
     public Long extractIntegerValue(final byte[] recordBuffer, final int offset, final int length) {
         assert length == 4;
         return (long) BytesUtils
-                .makeLEInt(recordBuffer[offset], recordBuffer[offset + 1], recordBuffer[offset + 2],
-                        recordBuffer[offset + 3]);
+                .extractLEInt4(recordBuffer, offset);
     }
 
     @Override

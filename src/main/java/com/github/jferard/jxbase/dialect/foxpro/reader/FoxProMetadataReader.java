@@ -19,11 +19,7 @@ package com.github.jferard.jxbase.dialect.foxpro.reader;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -61,11 +57,9 @@ public class FoxProMetadataReader<D extends XBaseDialect<D, A>, A> implements XB
         final XBaseFileTypeEnum type = XBaseFileTypeEnum.fromInt(typeByte);
         final Date updateDate =
                 FoxProUtils.createHeaderUpdateDate(headerBytes[1], headerBytes[2], headerBytes[3]);
-        final int recordsQty =
-                BytesUtils
-                        .makeLEInt(headerBytes[4], headerBytes[5], headerBytes[6], headerBytes[7]);
-        final int fullHeaderLength = BytesUtils.makeLEInt(headerBytes[8], headerBytes[9]);
-        final int oneRecordLength = BytesUtils.makeLEInt(headerBytes[10], headerBytes[11]);
+        final int recordsQty = BytesUtils.extractLEInt4(headerBytes, 4);
+        final int fullHeaderLength = BytesUtils.extractLEInt2(headerBytes, 8);
+        final int oneRecordLength = BytesUtils.extractLEInt2(headerBytes, 10);
         // 12-31: Reserved; filled with zeros.
 
         final Map<String, Object> meta = new HashMap<String, Object>();

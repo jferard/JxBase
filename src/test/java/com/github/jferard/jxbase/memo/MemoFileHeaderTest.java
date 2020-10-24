@@ -46,7 +46,7 @@ public class MemoFileHeaderTest {
                 .getBytes("abcdefghijklmnop\0qrstuvw", DB3Utils.MEMO_HEADER_LENGTH);
         final MemoFileHeader memoFileHeader =
                 new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
-        Assert.assertEquals(1701209960, memoFileHeader.getBlockLength());
+        Assert.assertEquals(1751606885, memoFileHeader.getBlockLength());
         Assert.assertEquals(1684234849, memoFileHeader.getNextFreeBlockLocation());
     }
 
@@ -57,7 +57,7 @@ public class MemoFileHeaderTest {
         final MemoFileHeader memoFileHeader =
                 new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
         Assert.assertEquals(
-                "MemoFileHeader[blockLength=1701209960, nextFreeBlockLocation=1684234849, " +
+                "MemoFileHeader[blockLength=1751606885, nextFreeBlockLocation=1684234849, " +
                         "meta={dbfName=ijklmnop}]", memoFileHeader.toString());
     }
 }

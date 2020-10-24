@@ -33,12 +33,15 @@ import java.nio.channels.FileChannel.MapMode;
  * A fox pro memo reader.
  */
 public class FoxProMemoReader implements XBaseMemoReader {
-    public static XBaseMemoReader create(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
-                                         final MemoFileHeaderReader memoFileHeaderReader) throws IOException {
+    public static XBaseMemoReader create(final FileChannel channel,
+                                         final FoxProMemoRecordFactory memoRecordFactory,
+                                         final MemoFileHeaderReader memoFileHeaderReader)
+            throws IOException {
         final ByteBuffer memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
         final MemoFileHeader memoHeader = memoFileHeaderReader.read(memoByteBuffer);
-        final RawMemoReader rawMemoReader = new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
-                memoHeader.getBlockLength());
+        final RawMemoReader rawMemoReader =
+                new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
+                        memoHeader.getBlockLength());
         return new FoxProMemoReader(channel, memoRecordFactory, rawMemoReader);
     }
 
@@ -46,7 +49,8 @@ public class FoxProMemoReader implements XBaseMemoReader {
     private final FoxProMemoRecordFactory memoRecordFactory;
     private final RawMemoReader rawMemoReader;
 
-    public FoxProMemoReader(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
+    public FoxProMemoReader(final FileChannel channel,
+                            final FoxProMemoRecordFactory memoRecordFactory,
                             final RawMemoReader rawMemoReader) {
         this.channel = channel;
         this.memoRecordFactory = memoRecordFactory;
@@ -66,11 +70,8 @@ public class FoxProMemoReader implements XBaseMemoReader {
     public XBaseMemoRecord read(final long offsetInBlocks) {
         final byte[] recordHeaderBytes = this.rawMemoReader.read(offsetInBlocks, 0, 8);
         final MemoRecordType memoRecordType = MemoRecordType.fromInt(
-                BytesUtils.makeLEInt(recordHeaderBytes[3], recordHeaderBytes[2], recordHeaderBytes[1],
-                        recordHeaderBytes[0]));
-        final int memoRecordLength =
-                BytesUtils.makeLEInt(recordHeaderBytes[7], recordHeaderBytes[6], recordHeaderBytes[5],
-                        recordHeaderBytes[4]);
+                BytesUtils.extractBEInt4(recordHeaderBytes, 0));
+        final int memoRecordLength = BytesUtils.extractBEInt4(recordHeaderBytes, 4);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
         return this.memoRecordFactory
                 .create(dataBytes, memoRecordType, memoRecordLength);

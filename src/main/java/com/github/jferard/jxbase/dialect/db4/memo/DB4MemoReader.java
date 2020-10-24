@@ -88,8 +88,7 @@ public class DB4MemoReader implements XBaseMemoReader {
                             Arrays.toString(recordHeaderBytes)));
         }
         final int memoRecordLength =
-                BytesUtils.makeLEInt(recordHeaderBytes[4], recordHeaderBytes[5], recordHeaderBytes[6],
-                        recordHeaderBytes[7]);
+                BytesUtils.extractLEInt4(recordHeaderBytes, 4);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
         return new ByteMemoRecord(dataBytes, memoRecordLength);
     }
