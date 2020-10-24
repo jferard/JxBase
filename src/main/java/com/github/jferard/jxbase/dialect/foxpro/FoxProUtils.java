@@ -23,6 +23,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * An utility class.
+ */
 public class FoxProUtils {
 
     public static final int MONTH_PER_YEAR = 12;
@@ -45,7 +48,12 @@ public class FoxProUtils {
         return calendar.getTime();
     }
 
-    // cf. https://bowie.gsfc.nasa.gov/time/julian.html
+    /**
+     * Convert a date to a number of julian days
+     * cf. https://bowie.gsfc.nasa.gov/time/julian.html
+     * @param date the date
+     * @return the number of julian days
+     */
     public static int dateToJulianDays(final Date date) {
         final GregorianCalendar calendar = new GregorianCalendar(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTime(date);
@@ -96,13 +104,12 @@ public class FoxProUtils {
                 calendar.get(Calendar.SECOND)) * 1000;
     }
 
-    // cf. https://bowie.gsfc.nasa.gov/time/julian.html
-    public static Date julianDaysToDate(final byte b0, final byte b1, final byte b2,
-                                        final byte b3) {
-        final int julianDays = BytesUtils.makeLEInt(b0, b1, b2, b3);
-        return julianDaysToDate(julianDays);
-    }
-
+    /**
+     * Convert a number of julian days to a date
+     * cf. https://bowie.gsfc.nasa.gov/time/julian.html
+     * @param julianDays the number of julian days
+     * @return the number of julian days
+     */
     public static Date julianDaysToDate(int julianDays) {
         if (julianDays > GREGORIAN_CHANGE_IN_JULIAN_DAYS + 1) {
             final int shift = (int) (((julianDays - JULIAN_FEB_28_400_AD) - ONE_OUT_OF_FOUR) /
@@ -111,7 +118,8 @@ public class FoxProUtils {
         }
         final int daysPlus4years = julianDays + toInt((4 * DAYS_PER_JULIAN_YEAR) + 63);
         final int yplus2 =
-                toInt(6680 + (daysPlus4years - 6680 * DAYS_PER_JULIAN_YEAR - 122.1) / DAYS_PER_JULIAN_YEAR);
+                toInt(6680 + (daysPlus4years - 6680 * DAYS_PER_JULIAN_YEAR - 122.1) /
+                        DAYS_PER_JULIAN_YEAR);
         final int jd = toInt(DAYS_PER_JULIAN_YEAR * yplus2);
         final int temp = daysPlus4years - jd;
         final int mplus2 = toInt(temp / DAYS_PER_JULIAN_MONTH_MARCH_TO_DECEMBER);
@@ -153,5 +161,8 @@ public class FoxProUtils {
         } else {
             return (int) Math.ceil(val);
         }
+    }
+
+    private FoxProUtils() {
     }
 }

@@ -20,8 +20,12 @@ import com.github.jferard.jxbase.memo.MemoFileHeader;
 
 import java.nio.ByteBuffer;
 
+/**
+ * A memo header reader.
+ */
 public interface MemoFileHeaderReader {
     /**
+     * Read the header.
      * @param memoByteBuffer
      * @return the memo header
      */

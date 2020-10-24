@@ -18,9 +18,9 @@ package com.github.jferard.jxbase.geter.internal;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -50,7 +50,7 @@ public class FoxProRecordReaderTest {
         this.mw = PowerMock.createMock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
-                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
+                VisualFoxProDialectBuilder.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
                         TimeZone.getTimeZone("GMT")).reader("foo")
                         .build();
         this.access =

@@ -32,6 +32,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A reader for DB4 meta data.
+ */
 public class DB4MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
     private final XBaseDialect<DB4Dialect, DB4Access> dialect;

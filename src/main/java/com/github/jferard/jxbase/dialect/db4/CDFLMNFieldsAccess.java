@@ -19,5 +19,8 @@ package com.github.jferard.jxbase.dialect.db4;
 import com.github.jferard.jxbase.dialect.db3.CDLMNFieldsAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 
+/**
+ * Access (read/write) for character, logical, numeric, date, memo and float fields.
+ */
 public interface CDFLMNFieldsAccess extends CDLMNFieldsAccess, FloatAccess {
 }

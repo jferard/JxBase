@@ -16,6 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
+/**
+ * An utility class
+ */
 public class DB4Utils {
     public static final byte[] MEMO_FIELD_RESERVED_BYTES = {(byte) 0xff, (byte) 0xff, 0x08, 0x00};
+
+    private DB4Utils() {}
 }

@@ -26,13 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A fox pro reader for memo header.
  * See http://msdn.microsoft.com/en-US/library/8599s21w(v=vs.80).aspx
  */
 public class FoxProMemoFileHeaderReader implements MemoFileHeaderReader {
-    /**
-     * @param memoByteBuffer
-     * @return the memo header
-     */
     @Override
     public MemoFileHeader read(final ByteBuffer memoByteBuffer) {
         final byte[] headerBytes = new byte[DB3Utils.MEMO_HEADER_LENGTH];

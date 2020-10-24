@@ -24,8 +24,8 @@ import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 
 import java.io.IOException;
 import java.util.Map;
@@ -49,7 +49,7 @@ interface DialectFactoryAux {
             TimeZone timeZone, String tableName, Map<String, Object> memoHeaderMeta)
             throws IOException;
 
-    XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(
+    XBaseDialect<FoxProDialect, DB4Access> createFoxProDialect(
             TimeZone timeZone, String tableName, Map<String, Object> memoHeaderMeta)
             throws IOException;
 }

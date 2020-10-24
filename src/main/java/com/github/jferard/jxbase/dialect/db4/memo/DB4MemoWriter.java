@@ -30,8 +30,18 @@ import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Map;
 
+/**
+ * A writer for DB4 memo files.
+ */
 public class DB4MemoWriter implements XBaseMemoWriter {
 
+    /**
+     * Create a writer using a channel from a random access file
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
     public static DB4MemoWriter fromRandomAccess(final File memoFile,
                                                  final Map<String, Object> headerMeta)
             throws IOException {
@@ -39,6 +49,13 @@ public class DB4MemoWriter implements XBaseMemoWriter {
         return new DB4MemoWriter(randomAccessFile.getChannel(), 512, headerMeta);
     }
 
+    /**
+     * Create a writer using a channel from an output stream.
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
     public static DB4MemoWriter fromChannel(final File memoFile,
                                             final Map<String, Object> headerMeta)
             throws IOException {
@@ -72,12 +89,12 @@ public class DB4MemoWriter implements XBaseMemoWriter {
     }
 
     @Override
-    public void close() throws IOException {
-        this.rawMemoWriter.close();
+    public void fixMetadata() throws IOException {
+        this.rawMemoWriter.write(0, 0, BytesUtils.makeLEByte4((int) this.curOffsetInBlocks));
     }
 
     @Override
-    public void fixMetadata() throws IOException {
-        this.rawMemoWriter.write(0, 0, BytesUtils.makeLEByte4((int) this.curOffsetInBlocks));
+    public void close() throws IOException {
+        this.rawMemoWriter.close();
     }
 }

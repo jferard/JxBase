@@ -24,13 +24,13 @@ import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
+import com.github.jferard.jxbase.dialect.db4.DB4DialectBuilder;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectFactory;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -65,7 +65,8 @@ class WriterDialectFactoryAux implements DialectFactoryAux {
                                                                 final String tableName,
                                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return DB4DialectFactory.create(this.type, this.charset, timeZone).writer(tableName, memoHeaderMeta).build();
+        return DB4DialectBuilder
+                .create(this.type, this.charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 
     @Override
@@ -74,17 +75,17 @@ class WriterDialectFactoryAux implements DialectFactoryAux {
             final String tableName,
             final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return VisualFoxProDialectFactory
+        return VisualFoxProDialectBuilder
                 .create(this.type, this.charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 
     @Override
-    public XBaseDialect<FoxProDialect, VisualFoxProAccess> createFoxProDialect(
+    public XBaseDialect<FoxProDialect, DB4Access> createFoxProDialect(
             final TimeZone timeZone,
             final String tableName,
             final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return FoxProDialectFactory
+        return FoxProDialectBuilder
                 .create(this.type, this.charset, timeZone).writer(tableName, memoHeaderMeta).build();
     }
 }

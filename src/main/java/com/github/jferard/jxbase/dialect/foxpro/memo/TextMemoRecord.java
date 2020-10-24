@@ -22,6 +22,7 @@ import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import java.nio.charset.Charset;
 
 /**
+ * A foxpro memo record of type text.
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
 public class TextMemoRecord implements XBaseMemoRecord {

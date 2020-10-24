@@ -29,7 +29,17 @@ import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Map;
 
+/**
+ * A writer for foxpro memo files.
+ */
 public class FoxProMemoWriter implements XBaseMemoWriter {
+    /**
+     * Create a writer using a channel from a random access file
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
     public static FoxProMemoWriter fromRandomAccess(final File memoFile,
                                                     final Map<String, Object> headerMeta)
             throws IOException {
@@ -37,6 +47,13 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
         return new FoxProMemoWriter(randomAccessFile.getChannel(), 512, headerMeta);
     }
 
+    /**
+     * Create a writer using a channel from an output stream.
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
     public static FoxProMemoWriter fromChannel(final File memoFile,
                                                final Map<String, Object> headerMeta)
             throws IOException {

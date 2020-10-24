@@ -30,6 +30,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 
 /**
+ * A fox pro memo reader.
  */
 public class FoxProMemoReader implements XBaseMemoReader {
     public static XBaseMemoReader create(final FileChannel channel, final FoxProMemoRecordFactory memoRecordFactory,
@@ -72,6 +73,6 @@ public class FoxProMemoReader implements XBaseMemoReader {
                         recordHeaderBytes[4]);
         final byte[] dataBytes = this.rawMemoReader.read(offsetInBlocks, 8, memoRecordLength);
         return this.memoRecordFactory
-                .create(dataBytes, memoRecordType, memoRecordLength, offsetInBlocks);
+                .create(dataBytes, memoRecordType, memoRecordLength);
     }
 }

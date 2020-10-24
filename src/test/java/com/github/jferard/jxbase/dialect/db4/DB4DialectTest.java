@@ -37,8 +37,8 @@ public class DB4DialectTest {
 
     @Before
     public void setUp() {
-        final DB4DialectFactory factory =
-                DB4DialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        final DB4DialectBuilder factory =
+                DB4DialectBuilder.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         this.dialect = factory.build();
     }

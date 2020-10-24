@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.field.XBaseField;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 
 public class FloatField implements XBaseField<FloatAccess> {
     private final String name;
@@ -40,15 +41,15 @@ public class FloatField implements XBaseField<FloatAccess> {
     }
 
     @Override
-    public Object getValue(final FloatAccess access, final byte[] recordBuffer, final int offset,
-                           final int length) throws IOException {
+    public BigDecimal getValue(final FloatAccess access, final byte[] recordBuffer, final int offset,
+                               final int length) throws IOException {
         return access.extractFloatValue(recordBuffer, offset, length);
     }
 
     @Override
     public void writeValue(final FloatAccess access, final OutputStream out, final Object value)
             throws IOException {
-        access.writeFloatValue(out, value);
+        access.writeFloatValue(out, (Number) value);
     }
 
     @Override

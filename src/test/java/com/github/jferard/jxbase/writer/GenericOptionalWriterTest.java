@@ -20,7 +20,7 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
+import com.github.jferard.jxbase.dialect.db4.DB4DialectBuilder;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,8 +31,8 @@ import java.io.IOException;
 public class GenericOptionalWriterTest {
     @Test
     public void test() throws IOException {
-        final DB4DialectFactory factory =
-                DB4DialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        final DB4DialectBuilder factory =
+                DB4DialectBuilder.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final XBaseDialect<DB4Dialect, DB4Access> dialect = factory.build();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();

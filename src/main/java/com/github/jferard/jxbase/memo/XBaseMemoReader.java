@@ -25,7 +25,7 @@ import java.io.IOException;
 public interface XBaseMemoReader extends Closeable {
 
     /**
-     * Read a record
+     * Read a memo record (maybe several blocks long)
      *
      * @param offsetInBlocks 1 for the first block, 2 for the second. 0 is forbidden (header)
      * @return the memo record

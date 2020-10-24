@@ -23,7 +23,7 @@ import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseRecord;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.field.XBaseField;

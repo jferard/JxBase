@@ -20,13 +20,37 @@ import com.github.jferard.jxbase.field.FieldRepresentation;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 
+/**
+ * Access (read/write) for float.
+ */
 public interface FloatAccess {
+    /**
+     * @return the actual length of a float value
+     */
     int getFloatValueLength();
 
-    Object extractFloatValue(byte[] recordBuffer, int offset, int length);
+    /**
+     * Get the float value.
+     * @param recordBuffer the record buffer
+     * @param offset the offset
+     * @param length the length
+     * @return the float value
+     */
+    BigDecimal extractFloatValue(byte[] recordBuffer, int offset, int length);
 
-    void writeFloatValue(OutputStream out, Object value) throws IOException;
+    /**
+     * Write a float value
+     * @param out the output stream
+     * @param value the value
+     * @throws IOException
+     */
+    void writeFloatValue(OutputStream out, Number value) throws IOException;
 
-    FieldRepresentation getFloatFieldRepresentation(String name);
+    /**
+     * @param fieldName the field name
+     * @return the field representation
+     */
+    FieldRepresentation getFloatFieldRepresentation(String fieldName);
 }

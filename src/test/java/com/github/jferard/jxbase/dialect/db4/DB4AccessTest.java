@@ -33,7 +33,7 @@ public class DB4AccessTest {
     @Before
     public void setUp() {
         this.access =
-                DB4DialectFactory.create(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
+                DB4DialectBuilder.create(null, JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE)
                         .build().getAccess();
         this.f = new FloatField("float");
     }
@@ -54,7 +54,7 @@ public class DB4AccessTest {
         Assert.assertEquals(new BigDecimal("18.94"), this.f.getValue(this.access, bytes, 0, 20));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = ClassCastException.class)
     public void writeBadValue() throws IOException {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         this.f.writeValue(this.access, out, "some text");

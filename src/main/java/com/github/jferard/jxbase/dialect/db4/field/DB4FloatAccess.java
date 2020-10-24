@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 
+/**
+ * Access (read/write) for DB4 float.
+ */
 public class DB4FloatAccess implements FloatAccess {
     public static final CharSequence NUMERIC_OVERFLOW = "*";
     private final RawRecordReadHelper rawRecordReader;
@@ -53,10 +56,10 @@ public class DB4FloatAccess implements FloatAccess {
     }
 
     @Override
-    public void writeFloatValue(final OutputStream out, final Object value) throws IOException {
+    public void writeFloatValue(final OutputStream out, final Number value) throws IOException {
         if (value == null) {
             this.rawRecordWriter.writeEmpties(out, 20);
-        } else if (value instanceof Number) {
+        } else {
             final String s = String.valueOf(value);
             final byte[] numberBytes = s.getBytes(JxBaseUtils.ASCII_CHARSET);
             final int missingCount = 20 - numberBytes.length;
@@ -65,25 +68,21 @@ public class DB4FloatAccess implements FloatAccess {
             } else {
                 throw new IllegalArgumentException("Number too long");
             }
-        } else {
-            throw new IllegalArgumentException();
         }
     }
 
     private void writeNumeric(final OutputStream out, final byte[] numberBytes,
                               final int missingCount) throws IOException {
-        final byte[] bytes = new byte[20];
+        final byte[] buffer = new byte[20];
         for (int i = 0; i < missingCount; i++) {
-            bytes[i] = (byte) JxBaseUtils.EMPTY;
+            buffer[i] = (byte) JxBaseUtils.EMPTY;
         }
-        for (int i = 0; i < numberBytes.length; i++) {
-            bytes[missingCount + i] = numberBytes[i];
-        }
-        this.rawRecordWriter.write(out, bytes);
+        System.arraycopy(numberBytes, 0, buffer, missingCount, numberBytes.length);
+        this.rawRecordWriter.write(out, buffer);
     }
 
     @Override
-    public FieldRepresentation getFloatFieldRepresentation(final String name) {
-        return new FieldRepresentation(name, 'F', 20, 0);
+    public FieldRepresentation getFloatFieldRepresentation(final String fieldName) {
+        return new FieldRepresentation(fieldName, 'F', 20, 0);
     }
 }

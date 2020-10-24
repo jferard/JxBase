@@ -16,9 +16,11 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
-import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
+import com.github.jferard.jxbase.dialect.vfoxpro.CDDtFILMN0FieldsAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,7 +38,7 @@ public class FoxProAccessTest {
 
     @Before
     public void setUp() throws Exception {
-        this.access = VisualFoxProDialectFactory.create(null, JxBaseUtils.ASCII_CHARSET,
+        this.access = VisualFoxProDialectBuilder.create(null, JxBaseUtils.ASCII_CHARSET,
                 JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
         this.inf = new IntegerField("int");
         this.nf = new NullFlagsField("nf", 8);

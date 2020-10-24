@@ -102,7 +102,7 @@ public class FoxProMemoReaderTest {
                 .andReturn((MappedByteBuffer) bbuffer);
         EasyMock.expect(memoFileHeaderReader.read(bbuffer)).andReturn(header);
         EasyMock.expect(header.getBlockLength()).andReturn(512);
-        EasyMock.expect(memoRecordFactory.create(new byte[]{0}, MemoRecordType.NO_TYPE, 1, 0L))
+        EasyMock.expect(memoRecordFactory.create(new byte[]{0}, MemoRecordType.NO_TYPE, 1))
                 .andReturn(memoRecord);
         // channel.close();
         PowerMock.replayAll();

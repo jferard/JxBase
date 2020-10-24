@@ -24,14 +24,16 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
+import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
-import com.github.jferard.jxbase.dialect.foxpro.field.CurrencyField;
-import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
-import com.github.jferard.jxbase.dialect.foxpro.field.DoubleField;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
-import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProInternalReaderFactory;
-import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProInternalWriterFactory;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.CurrencyField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
+import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProChunkReaderFactory;
+import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProChunkWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -41,23 +43,23 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAccess> {
+/**
+ * A dialect for FoxPro <= 2.6.
+ */
+public class FoxProDialect implements XBaseDialect<FoxProDialect, DB4Access> {
     protected final XBaseFileTypeEnum type;
-    private final VisualFoxProAccess access;
+    private final DB4Access access;
 
-    public FoxProDialect(final XBaseFileTypeEnum type, final VisualFoxProAccess access) {
+    public FoxProDialect(final XBaseFileTypeEnum type, final DB4Access access) {
         this.type = type;
         this.access = access;
     }
 
     @Override
-    public XBaseField<? super VisualFoxProAccess> createXBaseField(final String name, final byte typeByte,
+    public XBaseField<? super DB4Access> createXBaseField(final String name, final byte typeByte,
                                                                    final int length,
                                                                    final int numberOfDecimalPlaces) {
         switch (typeByte) {
-            case 'B':
-                // length is ignored
-                return new DoubleField(name, numberOfDecimalPlaces);
             case 'C':
                 return new CharacterField(name, length);
             case 'D':
@@ -70,11 +72,6 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
                     throw new IllegalArgumentException("A float has 20 chars");
                 }
                 return new FloatField(name);
-            case 'I':
-                if (length != 4) {
-                    throw new IllegalArgumentException("An integer has 4 bytes");
-                }
-                return new IntegerField(name);
             case 'L':
                 if (length != 1) {
                     throw new IllegalArgumentException("A boolean has one char");
@@ -87,18 +84,6 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
                 return new MemoField(name);
             case 'N':
                 return new NumericField(name, length, numberOfDecimalPlaces);
-            case 'T':
-                if (length != 8) {
-                    throw new IllegalArgumentException("A date time has 8 chars");
-                }
-                return new DatetimeField(name);
-            case 'Y':
-                if (length != 8) {
-                    throw new IllegalArgumentException("A currency has 8 bytes");
-                }
-                return new CurrencyField(name);
-            case '0':
-                return new NullFlagsField(name, length);
             default:
                 throw new IllegalArgumentException(
                         String.format("'%c' (%d) is not a dbf field type", typeByte, typeByte));
@@ -126,21 +111,21 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, VisualFoxProAc
     }
 
     @Override
-    public VisualFoxProAccess getAccess() {
+    public DB4Access getAccess() {
         return this.access;
     }
 
     @Override
-    public XBaseChunkReaderFactory<FoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
+    public XBaseChunkReaderFactory<FoxProDialect, DB4Access> getInternalReaderFactory(
             final String tableName, final Charset charset) {
-        return new FoxProInternalReaderFactory(this, TimeZone.getDefault());
+        return new FoxProChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<FoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
+    public XBaseChunkWriterFactory<FoxProDialect, DB4Access> getInternalWriterFactory(
             final String tableName, final Charset charset,
             final Map<String, Object> headerMeta) {
-        return new FoxProInternalWriterFactory(this, TimeZone.getDefault());
+        return new FoxProChunkWriterFactory(this, TimeZone.getDefault());
     }
 }
 

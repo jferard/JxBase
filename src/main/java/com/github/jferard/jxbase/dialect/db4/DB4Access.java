@@ -27,7 +27,11 @@ import com.github.jferard.jxbase.field.FieldRepresentation;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 
+/**
+ * Access for DB4 fields.
+ */
 public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
     private final FloatAccess floatAccess;
 
@@ -44,17 +48,17 @@ public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
     }
 
     @Override
-    public Object extractFloatValue(final byte[] recordBuffer, final int offset, final int length) {
+    public BigDecimal extractFloatValue(final byte[] recordBuffer, final int offset, final int length) {
         return this.floatAccess.extractFloatValue(recordBuffer, offset, length);
     }
 
     @Override
-    public void writeFloatValue(final OutputStream out, final Object value) throws IOException {
+    public void writeFloatValue(final OutputStream out, final Number value) throws IOException {
         this.floatAccess.writeFloatValue(out, value);
     }
 
     @Override
-    public FieldRepresentation getFloatFieldRepresentation(final String name) {
-        return this.floatAccess.getFloatFieldRepresentation(name);
+    public FieldRepresentation getFloatFieldRepresentation(final String fieldName) {
+        return this.floatAccess.getFloatFieldRepresentation(fieldName);
     }
 }

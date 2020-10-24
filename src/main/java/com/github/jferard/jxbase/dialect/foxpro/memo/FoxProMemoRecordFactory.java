@@ -22,6 +22,9 @@ import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
 import java.nio.charset.Charset;
 
+/**
+ * A record factory for foxpro records
+ */
 public class FoxProMemoRecordFactory {
     final Charset charset;
 
@@ -29,8 +32,15 @@ public class FoxProMemoRecordFactory {
         this.charset = charset;
     }
 
+    /**
+     * Create a new record
+     * @param dataBytes the data
+     * @param memoRecordType the type of the record
+     * @param memoRecordLength the length of the record
+     * @return
+     */
     public XBaseMemoRecord create(final byte[] dataBytes, final MemoRecordType memoRecordType,
-                                  final int memoRecordLength, final long offsetInBlocks) {
+                                  final int memoRecordLength) {
         switch (memoRecordType) {
             case IMAGE:
             case OBJECT:

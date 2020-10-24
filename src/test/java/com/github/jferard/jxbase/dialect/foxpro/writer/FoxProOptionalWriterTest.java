@@ -19,9 +19,9 @@ package com.github.jferard.jxbase.dialect.foxpro.writer;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseOptional;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.foxpro.VisualFoxProDialectFactory;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,8 +33,8 @@ import java.util.Arrays;
 public class FoxProOptionalWriterTest {
     @Test
     public void test() throws IOException {
-        final VisualFoxProDialectFactory factory =
-                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        final VisualFoxProDialectBuilder factory =
+                VisualFoxProDialectBuilder.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = factory.build();
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();

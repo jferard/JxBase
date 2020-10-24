@@ -18,7 +18,6 @@ package com.github.jferard.jxbase.dialect.db4.memo;
 
 import com.github.jferard.jxbase.dialect.db4.DB4Utils;
 import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
-import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.memo.ByteMemoRecord;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.memo.RawMemoReader;
@@ -45,8 +44,14 @@ import java.util.Arrays;
  * See: https://www.clicketyclick.dk/databases/xbase/format/fpt.html
  */
 public class DB4MemoReader implements XBaseMemoReader {
+    /**
+     * Create a new memo reader
+     * @param channel  the file channel
+     * @param memoFileHeaderReader the reader of the header
+     * @return the reader
+     * @throws IOException
+     */
     public static XBaseMemoReader create(final FileChannel channel,
-                                         final FoxProMemoRecordFactory memoRecordFactory,
                                          final MemoFileHeaderReader memoFileHeaderReader)
             throws IOException {
         final ByteBuffer memoByteBuffer = channel.map(MapMode.READ_ONLY, 0, channel.size());
@@ -70,10 +75,6 @@ public class DB4MemoReader implements XBaseMemoReader {
         this.channel.close();
     }
 
-    /**
-     * @param offsetInBlocks the number of the record
-     * @return the record
-     */
     @Override
     public XBaseMemoRecord read(final long offsetInBlocks) {
         final byte[] recordHeaderBytes = this.rawMemoReader.read(offsetInBlocks, 0, 8);

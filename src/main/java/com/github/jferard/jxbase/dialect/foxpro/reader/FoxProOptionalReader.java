@@ -27,6 +27,11 @@ import com.github.jferard.jxbase.util.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * A fox pro optional chunk reader (263 bytes)
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class FoxProOptionalReader<D extends XBaseDialect<D, A>, A> implements XBaseOptionalReader {
     public static final int DATABASE_CONTAINER_LENGTH = 263;
     private final InputStream inputStream;

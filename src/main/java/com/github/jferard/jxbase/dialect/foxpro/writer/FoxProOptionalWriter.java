@@ -25,6 +25,11 @@ import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * A writer for foxpro optional 263 empty bytes.
+ * @param <D> the dialect
+ * @param <A> the access
+ */
 public class FoxProOptionalWriter<D extends XBaseDialect<D, A>, A>
         implements XBaseOptionalWriter<D> {
     private final OutputStream outputStream;

@@ -34,13 +34,27 @@ import java.util.Map;
  * Writer for memo files.
  */
 public class DB3MemoWriter implements XBaseMemoWriter {
-    public static DB3MemoWriter fromRandomAccess(final File memoFile, final Charset charset,
+    /**
+     * Create a writer using a channel from a random access file
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
+    public static DB3MemoWriter fromRandomAccess(final File memoFile,
                                                  final Map<String, Object> headerMeta)
             throws IOException {
         final RandomAccessFile randomAccessFile = new RandomAccessFile(memoFile, "rw");
         return new DB3MemoWriter(randomAccessFile.getChannel(), headerMeta);
     }
 
+    /**
+     * Create a writer using a channel from an output stream.
+     * @param memoFile the memo file
+     * @param headerMeta the meta data
+     * @return the writer
+     * @throws IOException
+     */
     public static DB3MemoWriter fromChannel(final File memoFile, final Charset charset,
                                             final Map<String, Object> headerMeta)
             throws IOException {

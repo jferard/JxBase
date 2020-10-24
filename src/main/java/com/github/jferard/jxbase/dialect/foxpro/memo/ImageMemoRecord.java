@@ -22,6 +22,7 @@ import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import java.util.Arrays;
 
 /**
+ * A foxpro memo record of type image.
  * https://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm, Table Records
  */
 public class ImageMemoRecord implements XBaseMemoRecord {

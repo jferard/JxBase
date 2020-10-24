@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * A reader for DB4 memo header.
  * See http://msdn.microsoft.com/en-US/library/8599s21w(v=vs.80).aspx
  */
 public class DB4MemoFileHeaderReader implements MemoFileHeaderReader {

@@ -24,9 +24,9 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
-import com.github.jferard.jxbase.dialect.foxpro.field.DatetimeField;
-import com.github.jferard.jxbase.dialect.foxpro.field.IntegerField;
-import com.github.jferard.jxbase.dialect.foxpro.field.NullFlagsField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
