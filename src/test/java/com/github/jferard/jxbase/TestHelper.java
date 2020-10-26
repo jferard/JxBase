@@ -27,6 +27,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -144,6 +145,9 @@ public class TestHelper {
     }
 
     public static Date createDate(final int year, final int month, final int date) {
-        return new GregorianCalendar(year + 1900, month, date, 2, 0).getTime();
+        final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        calendar.set(year + 1900, month, date, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
     }
 }
