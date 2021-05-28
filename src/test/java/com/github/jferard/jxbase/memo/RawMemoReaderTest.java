@@ -20,9 +20,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
-
-import static org.junit.Assert.*;
 
 public class RawMemoReaderTest {
     @Test
@@ -32,7 +29,7 @@ public class RawMemoReaderTest {
             bytes[i] = (byte) i;
         }
         final ByteBuffer buffer = ByteBuffer.wrap(bytes);
-        final RawMemoReader reader = new RawMemoReader(buffer, 512, 16);
+        final RawMemoReader reader = new RawMemoReader(buffer, 512, 16, null);
         final byte[] temp = reader.read(0); // header
         Assert.assertArrayEquals(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, temp);
         final byte[] temp2 = reader.read(1, 10, 5);

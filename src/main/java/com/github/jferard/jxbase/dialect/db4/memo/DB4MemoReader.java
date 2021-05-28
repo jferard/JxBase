@@ -58,21 +58,19 @@ public class DB4MemoReader implements XBaseMemoReader {
         final MemoFileHeader memoHeader = memoFileHeaderReader.read(memoByteBuffer);
         final RawMemoReader rawMemoReader =
                 new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
-                        memoHeader.getBlockLength());
-        return new DB4MemoReader(channel, rawMemoReader);
+                        memoHeader.getBlockLength(), channel);
+        return new DB4MemoReader(rawMemoReader);
     }
 
-    private final FileChannel channel;
     private final RawMemoReader rawMemoReader;
 
-    public DB4MemoReader(final FileChannel channel, final RawMemoReader rawMemoReader) {
-        this.channel = channel;
+    public DB4MemoReader(final RawMemoReader rawMemoReader) {
         this.rawMemoReader = rawMemoReader;
     }
 
     @Override
     public void close() throws IOException {
-        this.channel.close();
+        this.rawMemoReader.close();
     }
 
     @Override

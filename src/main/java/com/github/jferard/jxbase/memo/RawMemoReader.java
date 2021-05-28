@@ -16,21 +16,26 @@
 
 package com.github.jferard.jxbase.memo;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 /**
  * A memo file has a header and a sequence of blocks terminated by a terminator
  */
-public class RawMemoReader {
+public class RawMemoReader implements Closeable {
     private final ByteBuffer memoByteBuffer;
     private final int headerSize;
     private final int blockSize;
+    private final FileChannel channel;
 
     public RawMemoReader(final ByteBuffer memoByteBuffer, final int headerSize,
-                         final int blockSize) {
+                         final int blockSize, final FileChannel channel) {
         this.memoByteBuffer = memoByteBuffer;
         this.headerSize = headerSize;
         this.blockSize = blockSize;
+        this.channel = channel;
     }
 
     /**
@@ -52,5 +57,10 @@ public class RawMemoReader {
         this.memoByteBuffer.position((int) start);
         this.memoByteBuffer.get(memoBlock);
         return memoBlock;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.channel.close();
     }
 }

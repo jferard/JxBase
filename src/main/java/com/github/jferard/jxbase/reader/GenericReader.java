@@ -109,5 +109,6 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
     @Override
     public void close() throws IOException {
         this.inputStream.close();
+        this.dialect.close();
     }
 }

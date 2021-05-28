@@ -67,5 +67,6 @@ public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRe
     public void close() throws IOException {
         this.out.write(0x1A);
         this.out.flush();
+        this.dialect.close();
     }
 }

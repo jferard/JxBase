@@ -41,25 +41,22 @@ public class FoxProMemoReader implements XBaseMemoReader {
         final MemoFileHeader memoHeader = memoFileHeaderReader.read(memoByteBuffer);
         final RawMemoReader rawMemoReader =
                 new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
-                        memoHeader.getBlockLength());
-        return new FoxProMemoReader(channel, memoRecordFactory, rawMemoReader);
+                        memoHeader.getBlockLength(), channel);
+        return new FoxProMemoReader(memoRecordFactory, rawMemoReader);
     }
 
-    private final FileChannel channel;
     private final FoxProMemoRecordFactory memoRecordFactory;
     private final RawMemoReader rawMemoReader;
 
-    public FoxProMemoReader(final FileChannel channel,
-                            final FoxProMemoRecordFactory memoRecordFactory,
+    public FoxProMemoReader(final FoxProMemoRecordFactory memoRecordFactory,
                             final RawMemoReader rawMemoReader) {
-        this.channel = channel;
         this.memoRecordFactory = memoRecordFactory;
         this.rawMemoReader = rawMemoReader;
     }
 
     @Override
     public void close() throws IOException {
-        this.channel.close();
+        this.rawMemoReader.close();
     }
 
     /**

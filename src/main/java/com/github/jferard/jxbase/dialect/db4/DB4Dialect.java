@@ -122,4 +122,9 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
             throws IOException {
         return new DB4ChunkWriterFactory(this, TimeZone.getDefault());
     }
+
+    @Override
+    public void close() throws IOException {
+        this.access.close();
+    }
 }

@@ -19,13 +19,14 @@ package com.github.jferard.jxbase.dialect.db3.field;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
  * Access (read/write) to a memo field.
  */
-public interface MemoAccess {
+public interface MemoAccess extends Closeable {
     /**
      * @return the actual length of the field (*in the DBF file*)
      */

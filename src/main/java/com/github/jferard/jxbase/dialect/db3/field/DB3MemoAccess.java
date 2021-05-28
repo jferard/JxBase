@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Access (read/write) for DB3 memos.
+ * Access (read OR write) for DB3 memos.
  */
 public class DB3MemoAccess implements MemoAccess {
     private final XBaseMemoReader memoReader;
@@ -95,5 +95,15 @@ public class DB3MemoAccess implements MemoAccess {
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return new FieldRepresentation(fieldName, 'M', 10, 0);
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (this.memoReader != null) {
+            this.memoReader.close();
+        }
+        if (this.memoWriter != null) {
+            this.memoWriter.close();
+        }
     }
 }

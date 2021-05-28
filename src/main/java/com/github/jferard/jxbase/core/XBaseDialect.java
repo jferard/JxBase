@@ -20,6 +20,7 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -29,7 +30,7 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the access
  */
-public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
+public interface XBaseDialect<D extends XBaseDialect<D, A>, A> extends Closeable {
     /**
      * Create a field. The field depends on the dialect (e.g. memo fields dialect dependent).
      * @param name name of the field

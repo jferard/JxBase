@@ -52,7 +52,7 @@ public class DB3MemoReader implements XBaseMemoReader {
         final MemoFileHeader header = DB3Utils.readMemoHeader(memoByteBuffer);
         final RawMemoReader rawMemoReader =
                 new RawMemoReader(memoByteBuffer, memoByteBuffer.position(),
-                        header.getBlockLength());
+                        header.getBlockLength(), channel);
         return new DB3MemoReader(header, rawMemoReader);
     }
 
@@ -64,7 +64,6 @@ public class DB3MemoReader implements XBaseMemoReader {
         this.rawMemoReader = rawMemoReader;
     }
 
-
     /**
      * @return the header of the memo file.
      */
@@ -75,7 +74,7 @@ public class DB3MemoReader implements XBaseMemoReader {
 
     @Override
     public void close() throws IOException {
-        //        this.channel.close();
+        this.rawMemoReader.close();
     }
 
     /**

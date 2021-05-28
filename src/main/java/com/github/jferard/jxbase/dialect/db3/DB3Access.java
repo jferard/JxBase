@@ -85,4 +85,11 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return this.memoAccess.getMemoFieldRepresentation(fieldName);
     }
+
+    @Override
+    public void close() throws IOException {
+        if (this.memoAccess != null) {
+            this.memoAccess.close();
+        }
+    }
 }

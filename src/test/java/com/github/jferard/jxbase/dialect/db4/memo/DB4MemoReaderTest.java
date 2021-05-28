@@ -16,10 +16,8 @@
 
 package com.github.jferard.jxbase.dialect.db4.memo;
 
-import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.memo.RawMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,7 +34,7 @@ public class DB4MemoReaderTest {
     public void setUp() {
         final FileChannel channel = PowerMock.createMock(FileChannel.class);
         this.rawMemoReader = EasyMock.strictMock(RawMemoReader.class);
-        this.r = new DB4MemoReader(channel, this.rawMemoReader);
+        this.r = new DB4MemoReader(this.rawMemoReader);
     }
 
     @Test

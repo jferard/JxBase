@@ -119,4 +119,9 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
             throws IOException {
         return new DB2ChunkWriterFactory(this, TimeZone.getDefault());
     }
+
+    @Override
+    public void close() throws IOException {
+        // no memo
+    }
 }

@@ -20,6 +20,7 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -73,5 +74,8 @@ public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBa
     public void close() throws IOException {
         this.out.write(0x1A);
         this.out.flush();
+        if (this.access instanceof Closeable) {
+            ((Closeable) this.access).close();
+        }
     }
 }

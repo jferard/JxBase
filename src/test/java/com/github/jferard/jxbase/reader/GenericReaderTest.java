@@ -157,6 +157,7 @@ public class GenericReaderTest {
 
         this.init();
         this.is.close();
+        this.dialect.close();
         PowerMock.replayAll();
 
         this.getGenericReader().close();

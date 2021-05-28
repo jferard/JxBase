@@ -114,4 +114,9 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
             throws IOException {
         return new DB3ChunkWriterFactory(this, TimeZone.getDefault());
     }
+
+    @Override
+    public void close() throws IOException {
+        this.access.close();
+    }
 }
