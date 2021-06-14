@@ -23,7 +23,9 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -76,14 +78,30 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public void writeMemoValue(final OutputStream out, final XBaseMemoRecord value)
+    public void writeMemoAddress(final OutputStream out, final long offsetInBlocks) throws IOException {
+        this.memoAccess.writeMemoAddress(out, offsetInBlocks);
+    }
+
+    @Override
+    public long writeMemoValue(final XBaseMemoWriter memoWriter,
+                               final XBaseMemoRecord value)
             throws IOException {
-        this.memoAccess.writeMemoValue(out, value);
+        return this.memoAccess.writeMemoValue(memoWriter, value);
     }
 
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return this.memoAccess.getMemoFieldRepresentation(fieldName);
+    }
+
+    @Override
+    public XBaseMemoWriter getMemoWriter() {
+        return this.memoAccess.getMemoWriter();
+    }
+
+    @Override
+    public XBaseMemoReader getMemoReader() {
+        return this.memoAccess.getMemoReader();
     }
 
     @Override

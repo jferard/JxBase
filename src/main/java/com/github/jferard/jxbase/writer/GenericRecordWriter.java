@@ -17,7 +17,11 @@
 package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.Closeable;
@@ -60,7 +64,14 @@ public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBa
         this.out.write(JxBaseUtils.EMPTY);
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = objectByName.get(field.getName());
-            field.writeValue(this.access, this.out, value);
+            if (field instanceof MemoField) {
+                final MemoAccess memoAccess = (MemoAccess) this.access;
+                final XBaseMemoWriter memoWriter = memoAccess.getMemoWriter();
+                final long offsetInBlocks = memoAccess.writeMemoValue(memoWriter, (XBaseMemoRecord) value);
+                memoAccess.writeMemoAddress(this.out, offsetInBlocks);
+            } else {
+                field.writeValue(this.access, this.out, value);
+            }
         }
         this.recordCount++;
     }

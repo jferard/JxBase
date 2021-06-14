@@ -72,7 +72,8 @@ public class FoxProRecordWriterTest {
 //        EasyMock.expect(this.mw.write(memo)).andReturn(10L);
         PowerMock.replayAll();
 
-        this.access.writeMemoValue(this.bos, memo);
+        this.access.writeMemoValue(this.access.getMemoWriter(), memo);
+        this.access.writeMemoAddress(this.bos, 1L);
         PowerMock.verifyAll();
 
         Assert.assertArrayEquals(new byte[]{32, 32, 32, 32, 32, 32, 32, 32, 32, 49}, this.bos.toByteArray());

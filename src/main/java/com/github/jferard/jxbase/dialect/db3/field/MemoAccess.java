@@ -17,7 +17,9 @@
 package com.github.jferard.jxbase.dialect.db3.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -43,16 +45,38 @@ public interface MemoAccess extends Closeable {
     XBaseMemoRecord extractMemoValue(byte[] recordBuffer, int offset, int length) throws IOException;
 
     /**
-     * Write the memo value.
-     * @param out the output stream
-     * @param value the memo value
+     * Write the memo address.
+     * @param out   the output stream
+     * @param offsetInBlocks the memo value
      * @throws IOException
      */
-    void writeMemoValue(OutputStream out, XBaseMemoRecord value) throws IOException;
+    void writeMemoAddress(OutputStream out,
+                        long offsetInBlocks) throws IOException;
+
+    /**
+     * Write the memo value.
+     * @param memoWriter the memo writer
+     * @param value the memo value
+     * @return the offset in blocks or -1
+     * @throws IOException
+     * @return
+     */
+    long writeMemoValue(XBaseMemoWriter memoWriter,
+                        XBaseMemoRecord value) throws IOException;
 
     /**
      * @param fieldName the field name
      * @return the field representation.
      */
     FieldRepresentation getMemoFieldRepresentation(String fieldName);
+
+    /**
+     * temp
+     */
+    XBaseMemoWriter getMemoWriter();
+
+    /**
+     * temp
+     */
+    XBaseMemoReader getMemoReader();
 }

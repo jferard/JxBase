@@ -17,7 +17,11 @@
 package com.github.jferard.jxbase.dialect.db3.writer;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
@@ -29,6 +33,7 @@ import java.util.Map;
 
 /**
  * A writer for DB3 records.
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
@@ -51,9 +56,17 @@ public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRe
     @Override
     public void write(final Map<String, Object> objectByName) throws IOException {
         this.out.write(JxBaseUtils.EMPTY);
+        final A access = this.dialect.getAccess();
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = objectByName.get(field.getName());
-            field.writeValue(this.dialect.getAccess(), this.out, value);
+            if (field instanceof MemoField) {
+                final MemoAccess memoAccess = (MemoAccess) access;
+                final XBaseMemoWriter memoWriter = memoAccess.getMemoWriter();
+                final long offsetInBlocks = memoAccess.writeMemoValue(memoWriter, (XBaseMemoRecord) value);
+                memoAccess.writeMemoAddress(this.out, offsetInBlocks);
+            } else {
+                field.writeValue(access, this.out, value);
+            }
         }
         this.recordCount++;
     }

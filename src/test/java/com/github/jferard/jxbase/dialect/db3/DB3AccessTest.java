@@ -53,8 +53,9 @@ public class DB3AccessTest {
     public void setUp() throws IOException {
         this.memoReader = PowerMock.createMock(XBaseMemoReader.class);
         this.access =
-                DB3DialectBuilder.create(XBaseFileTypeEnum.dBASE3plusMemo, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE).reader(this.memoReader)
+                DB3DialectBuilder
+                        .create(XBaseFileTypeEnum.dBASE3plusMemo, JxBaseUtils.ASCII_CHARSET,
+                                JxBaseUtils.UTC_TIME_ZONE).reader(this.memoReader)
                         .build().getAccess();
         this.df = new DateField("date");
         this.mf = new MemoField("memo");
@@ -166,12 +167,17 @@ public class DB3AccessTest {
     @Test
     public void writeMemoValue() throws IOException {
         final MemoAccess memoAccess = PowerMock.createMock(MemoAccess.class);
+        final XBaseMemoWriter memoWriter = PowerMock.createMock(XBaseMemoWriter.class);
+
         final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
         final TextMemoRecord record = new TextMemoRecord("a", JxBaseUtils.ASCII_CHARSET);
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
         PowerMock.resetAll();
 
-        memoAccess.writeMemoValue(out, record);
+        EasyMock.expect(memoAccess.getMemoWriter()).andReturn(memoWriter);
+        EasyMock.expect(memoAccess.writeMemoValue(memoWriter, record)).andReturn(10L);
+        memoAccess.writeMemoAddress(out, 10L);
         PowerMock.replayAll();
 
         this.mf.writeValue(access, out, record);

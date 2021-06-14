@@ -77,13 +77,24 @@ public class DB3MemoAccess implements MemoAccess {
     }
 
     @Override
-    public void writeMemoValue(final OutputStream out, final XBaseMemoRecord value)
+    public long writeMemoValue(final XBaseMemoWriter memoWriter,
+                               final XBaseMemoRecord value)
+            throws IOException {
+        if (value == null) {
+            return -1L;
+        } else {
+            return memoWriter.write(value);
+        }
+    }
+
+    @Override
+    public void writeMemoAddress(final OutputStream out,
+                                 final long offsetInBlocks)
             throws IOException {
         final int length = this.getMemoValueLength();
-        if (value == null) {
+        if (offsetInBlocks == -1) {
             BytesUtils.writeEmpties(out, length);
         } else {
-            final long offsetInBlocks = this.memoWriter.write(value);
             final String s = String.format("%10d", offsetInBlocks);
             out.write(s.getBytes(JxBaseUtils.ASCII_CHARSET));
         }
@@ -92,6 +103,16 @@ public class DB3MemoAccess implements MemoAccess {
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return new FieldRepresentation(fieldName, 'M', 10, 0);
+    }
+
+    @Override
+    public XBaseMemoWriter getMemoWriter() {
+        return this.memoWriter;
+    }
+
+    @Override
+    public XBaseMemoReader getMemoReader() {
+        return this.memoReader;
     }
 
     @Override
