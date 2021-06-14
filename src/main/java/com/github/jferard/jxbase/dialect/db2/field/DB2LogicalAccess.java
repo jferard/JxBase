@@ -46,7 +46,7 @@ public class DB2LogicalAccess implements LogicalAccess {
     public Boolean extractLogicalValue(final byte[] recordBuffer, final int offset,
                                        final int length) {
         final String s =
-                this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return null;
         }

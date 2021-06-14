@@ -33,13 +33,10 @@ import java.io.OutputStream;
 public class DB3MemoAccess implements MemoAccess {
     private final XBaseMemoReader memoReader;
     private final XBaseMemoWriter memoWriter;
-    private final RawRecordReadHelper rawRecordReader;
 
-    public DB3MemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter,
-                         final RawRecordReadHelper rawRecordReader) {
+    public DB3MemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter) {
         this.memoReader = memoReader;
         this.memoWriter = memoWriter;
-        this.rawRecordReader = rawRecordReader;
     }
 
     /**
@@ -72,7 +69,7 @@ public class DB3MemoAccess implements MemoAccess {
      */
     protected long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
-                this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return 0;
         }

@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
@@ -124,7 +123,7 @@ public class DB4DialectBuilder {
      */
     private DB4DialectBuilder reader(final XBaseMemoReader memoReader) {
         this.memoAccess =
-                new DB3MemoAccess(memoReader, null, this.rawRecordReader);
+                new DB3MemoAccess(memoReader, null);
         return this;
     }
 
@@ -151,7 +150,7 @@ public class DB4DialectBuilder {
 
     private DB4DialectBuilder writer(final XBaseMemoWriter memoWriter) {
         this.memoAccess =
-                new DB3MemoAccess(null, memoWriter, this.rawRecordReader);
+                new DB3MemoAccess(null, memoWriter);
         return this;
     }
 

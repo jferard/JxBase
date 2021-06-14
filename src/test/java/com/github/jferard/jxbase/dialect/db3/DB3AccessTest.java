@@ -32,12 +32,17 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(RawRecordReadHelper.class)
 public class DB3AccessTest {
     private CDLMNFieldsAccess access;
     private DateField df;
@@ -132,14 +137,11 @@ public class DB3AccessTest {
     public void getMemoValueOffset0() throws IOException {
         final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
         final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
-        final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
-        final byte[] bytes = new byte[4];
+        final byte[] bytes = "   0".getBytes(JxBaseUtils.ASCII_CHARSET);
         PowerMock.resetAll();
-
-        EasyMock.expect(readHelper.extractTrimmedASCIIString(bytes, 0, 4)).andReturn("0");
         PowerMock.replayAll();
 
-        final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
+        final DB3MemoAccess access = new DB3MemoAccess(reader, writer);
         final XBaseMemoRecord value = access.extractMemoValue(bytes, 0, 4);
         PowerMock.verifyAll();
 
@@ -150,14 +152,11 @@ public class DB3AccessTest {
     public void getMemoValueOffsetNull() throws IOException {
         final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
         final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
-        final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
-        final byte[] bytes = new byte[4];
+        final byte[] bytes = "    ".getBytes(JxBaseUtils.ASCII_CHARSET);
         PowerMock.resetAll();
-
-        EasyMock.expect(readHelper.extractTrimmedASCIIString(bytes, 0, 4)).andReturn(null);
         PowerMock.replayAll();
 
-        final DB3MemoAccess access = new DB3MemoAccess(reader, writer, readHelper);
+        final DB3MemoAccess access = new DB3MemoAccess(reader, writer);
         final XBaseMemoRecord value = access.extractMemoValue(bytes, 0, 4);
         PowerMock.verifyAll();
 

@@ -38,7 +38,7 @@ public class RawRecordReadHelper {
      * @return a trimmed string, null if the string is empty.
      */
     public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length) {
-        return this.extractTrimmedString(recordBuffer, offset, length, this.charset);
+        return RawRecordReadHelper.extractTrimmedString(recordBuffer, offset, length, this.charset);
     }
 
     /**
@@ -48,9 +48,9 @@ public class RawRecordReadHelper {
      * @param length the length
      * @return a trimmed string, null if the string is empty.
      */
-    public String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
-                                            final int length) {
-        return this.extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
+    public static String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
+                                                   final int length) {
+        return RawRecordReadHelper.extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
     }
 
     /**
@@ -60,8 +60,9 @@ public class RawRecordReadHelper {
      * @param charset the charset
      * @return null if the string is empty.
      */
-    public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length,
-                                       final Charset charset) {
+    public static String extractTrimmedString(final byte[] recordBuffer, final int offset,
+                                              final int length,
+                                              final Charset charset) {
         int actualOffset = offset;
         int actualLength = length;
 

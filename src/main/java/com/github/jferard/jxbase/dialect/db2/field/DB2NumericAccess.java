@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db2.field;
 
-import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
@@ -56,7 +55,7 @@ public class DB2NumericAccess implements NumericAccess {
     public BigDecimal extractNumericValue(final byte[] recordBuffer, final int offset,
                                           final int length, final int numberOfDecimalPlaces) {
         final String s =
-                this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null || s.contains(NUMERIC_OVERFLOW)) {
             return null;
         }

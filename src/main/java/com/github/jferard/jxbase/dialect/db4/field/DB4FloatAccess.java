@@ -48,7 +48,7 @@ public class DB4FloatAccess implements FloatAccess {
     public BigDecimal extractFloatValue(final byte[] recordBuffer, final int offset,
                                         final int length) {
         final String s =
-                this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null || s.contains(NUMERIC_OVERFLOW)) {
             return null;
         }

@@ -19,14 +19,12 @@ package com.github.jferard.jxbase.field;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class RawRecordReadHelperTest {
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void test() {
         final RawRecordReadHelper helper = new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET);
         final byte[] bytes = "*".getBytes(JxBaseUtils.ASCII_CHARSET);
-        helper.extractTrimmedASCIIString(bytes, 0, 2);
+        RawRecordReadHelper.extractTrimmedASCIIString(bytes, 0, 2);
     }
 
 }

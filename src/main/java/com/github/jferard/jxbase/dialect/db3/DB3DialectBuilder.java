@@ -114,7 +114,7 @@ public class DB3DialectBuilder {
      * @throws IOException
      */
     public DB3DialectBuilder reader(final XBaseMemoReader memoReader) {
-        this.memoAccess = new DB3MemoAccess(memoReader, null, this.rawRecordReadHelper);
+        this.memoAccess = new DB3MemoAccess(memoReader, null);
         return this;
     }
 
@@ -131,7 +131,7 @@ public class DB3DialectBuilder {
         final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         final XBaseMemoWriter memoWriter = new DB3MemoWriter(memoChannel, memoHeaderMetadata);
-        this.memoAccess = new DB3MemoAccess(null, memoWriter, null);
+        this.memoAccess = new DB3MemoAccess(null, memoWriter);
         return this;
     }
 

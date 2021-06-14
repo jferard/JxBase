@@ -99,7 +99,7 @@ public class MemoFieldTest {
         final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
         final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
         final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
-        final MemoAccess memoAccess = new DB3MemoAccess(reader, writer, readHelper);
+        final MemoAccess memoAccess = new DB3MemoAccess(reader, writer);
         final DB3Access access = new DB3Access(null, null, null, null, memoAccess);
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         PowerMock.resetAll();
@@ -140,7 +140,7 @@ public class MemoFieldTest {
         final XBaseMemoReader reader = PowerMock.createMock(XBaseMemoReader.class);
         final XBaseMemoWriter writer = PowerMock.createMock(XBaseMemoWriter.class);
         final RawRecordReadHelper readHelper = PowerMock.createMock(RawRecordReadHelper.class);
-        final MemoAccess memoAccess = new DB3MemoAccess(reader, writer, readHelper);
+        final MemoAccess memoAccess = new DB3MemoAccess(reader, writer);
         PowerMock.resetAll();
         PowerMock.replayAll();
 

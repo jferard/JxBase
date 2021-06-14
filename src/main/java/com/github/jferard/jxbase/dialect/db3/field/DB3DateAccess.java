@@ -58,7 +58,7 @@ public class DB3DateAccess implements DateAccess {
     @Override
     public Date extractDateValue(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
-                this.rawRecordReader.extractTrimmedASCIIString(recordBuffer, offset, length);
+                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return null;
         }

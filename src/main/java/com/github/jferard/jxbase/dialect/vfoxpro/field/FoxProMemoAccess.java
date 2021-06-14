@@ -28,7 +28,7 @@ import com.github.jferard.jxbase.util.BytesUtils;
 public class FoxProMemoAccess extends DB3MemoAccess {
     public FoxProMemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter,
                             final RawRecordReadHelper rawRecordReader) {
-        super(memoReader, memoWriter, rawRecordReader);
+        super(memoReader, memoWriter);
     }
 
     @Override

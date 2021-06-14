@@ -130,7 +130,7 @@ public class FoxProDialectBuilder {
      */
     public FoxProDialectBuilder reader(final XBaseMemoReader memoReader) {
         this.memoAccess =
-                new DB3MemoAccess(memoReader, null, new RawRecordReadHelper(this.charset));
+                new DB3MemoAccess(memoReader, null);
         return this;
     }
 
@@ -144,13 +144,12 @@ public class FoxProDialectBuilder {
     public FoxProDialectBuilder writer(final String tableName,
                                        final Map<String, Object> memoHeaderMetadata)
             throws IOException {
-        final XBaseMemoReader memoReader = null;
         final File memoFile = new File(tableName + this.type.memoFileType().getExtension());
         final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
         final XBaseMemoWriter memoWriter =
                 new FoxProMemoWriter(memoChannel, 512, memoHeaderMetadata);
         this.memoAccess =
-                new DB3MemoAccess(memoReader, memoWriter, new RawRecordReadHelper(this.charset));
+                new DB3MemoAccess(null, memoWriter);
         return this;
     }
 
