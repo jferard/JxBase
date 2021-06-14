@@ -53,19 +53,19 @@ public class FloatFieldTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = "3.141592653589793".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertEquals(new BigDecimal("3.14"), this.f.getValue(this.access, bytes, 0, 4));
+        Assert.assertEquals(new BigDecimal("3.14"), this.f.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test
     public void getNullEmptyValue() throws IOException {
         final byte[] bytes = "    ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.f.getValue(this.access, bytes, 0, 4));
+        Assert.assertNull(this.f.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test
     public void getNullOverflowValue() throws IOException {
         final byte[] bytes = "*   ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.f.getValue(this.access, bytes, 0, 4));
+        Assert.assertNull(this.f.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test

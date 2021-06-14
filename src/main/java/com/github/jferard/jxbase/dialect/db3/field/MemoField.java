@@ -44,8 +44,8 @@ public class MemoField implements XBaseField<MemoAccess> {
     }
 
     @Override
-    public XBaseMemoRecord getValue(final MemoAccess memoAccess, final byte[] recordBuffer,
-                                    final int offset, final int length) throws IOException {
+    public XBaseMemoRecord extractValue(final MemoAccess memoAccess, final byte[] recordBuffer,
+                                        final int offset, final int length) throws IOException {
         return memoAccess.extractMemoValue(recordBuffer, offset, length);
     }
 

@@ -95,19 +95,19 @@ public class FoxProAccessTest {
     @Test(expected = IllegalArgumentException.class)
     public void getNullValueWrongLength() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertArrayEquals(bytes, this.nf.getValue(this.access, bytes, 0, 4));
+        Assert.assertArrayEquals(bytes, this.nf.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getNullBadLengthValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertArrayEquals(bytes, this.nf.getValue(this.access, bytes, 0, 4));
+        Assert.assertArrayEquals(bytes, this.nf.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test
     public void getNullValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8};
-        Assert.assertArrayEquals(bytes, this.nf.getValue(this.access, bytes, 0, 8));
+        Assert.assertArrayEquals(bytes, this.nf.extractValue(this.access, bytes, 0, 8));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class FoxProAccessTest {
     @Test
     public void getIntValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertEquals(Long.valueOf(67305985), this.inf.getValue(this.access, bytes, 0, 4));
+        Assert.assertEquals(Long.valueOf(67305985), this.inf.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test

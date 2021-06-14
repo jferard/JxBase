@@ -46,19 +46,19 @@ public class NullFlagsFieldTest {
     @Test(expected = IllegalArgumentException.class)
     public void getValueWrongLength() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertArrayEquals(bytes, this.f.getValue(this.access, bytes, 0, 4));
+        Assert.assertArrayEquals(bytes, this.f.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getBadLengthValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertArrayEquals(bytes, this.f.getValue(this.access, bytes, 0, 4));
+        Assert.assertArrayEquals(bytes, this.f.extractValue(this.access, bytes, 0, 4));
     }
 
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8};
-        Assert.assertArrayEquals(bytes, this.f.getValue(this.access, bytes, 0, 8));
+        Assert.assertArrayEquals(bytes, this.f.extractValue(this.access, bytes, 0, 8));
     }
 
     @Test

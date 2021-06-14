@@ -51,7 +51,7 @@ public class DB4AccessTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = "               18.94".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertEquals(new BigDecimal("18.94"), this.f.getValue(this.access, bytes, 0, 20));
+        Assert.assertEquals(new BigDecimal("18.94"), this.f.extractValue(this.access, bytes, 0, 20));
     }
 
     @Test(expected = ClassCastException.class)

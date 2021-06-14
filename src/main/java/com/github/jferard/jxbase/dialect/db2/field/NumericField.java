@@ -56,8 +56,8 @@ public class NumericField implements XBaseField<NumericAccess> {
     }
 
     @Override
-    public BigDecimal getValue(final NumericAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) {
+    public BigDecimal extractValue(final NumericAccess reader, final byte[] recordBuffer,
+                                   final int offset, final int length) {
         return reader
                 .extractNumericValue(recordBuffer, offset, length, this.fieldNumberOfDecimalPlaces);
     }

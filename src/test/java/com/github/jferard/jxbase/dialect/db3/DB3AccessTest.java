@@ -70,7 +70,7 @@ public class DB3AccessTest {
     public void getDateValue() throws IOException {
         final byte[] bytes = "19700101".getBytes(JxBaseUtils.ASCII_CHARSET);
         final Date date = new Date(0);
-        Assert.assertEquals(date, this.df.getValue(this.access, bytes, 0, 8));
+        Assert.assertEquals(date, this.df.extractValue(this.access, bytes, 0, 8));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class DB3AccessTest {
         EasyMock.expect(memoAccess.extractMemoValue(bytes, 0, 4)).andReturn(record);
         PowerMock.replayAll();
 
-        final XBaseMemoRecord memoRecord = this.mf.getValue(access, bytes, 0, 4);
+        final XBaseMemoRecord memoRecord = this.mf.extractValue(access, bytes, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertEquals(record, memoRecord);

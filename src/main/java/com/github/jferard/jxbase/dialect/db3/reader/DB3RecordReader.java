@@ -84,7 +84,7 @@ public class DB3RecordReader<A> implements XBaseRecordReader {
         final Map<String, Object> valueByFieldName = new HashMap<String, Object>();
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
-            final Object value = field.getValue(this.access, this.recordBuffer, offset,
+            final Object value = field.extractValue(this.access, this.recordBuffer, offset,
                     field.getValueLength(this.access));
             final String name = field.getName();
             valueByFieldName.put(name, value);

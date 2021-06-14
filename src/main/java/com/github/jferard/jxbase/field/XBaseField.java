@@ -31,7 +31,7 @@ public interface XBaseField<A> {
     int getValueLength(A access);
 
     /**
-     * The value in the buffer.
+     * Extract the value from the buffer. Delegates the job to the access
      * @param access the access
      * @param recordBuffer the buffer
      * @param offset offset of the value in the buffer
@@ -39,11 +39,11 @@ public interface XBaseField<A> {
      * @return the value.
      * @throws IOException
      */
-    Object getValue(A access, byte[] recordBuffer, int offset, int length)
+    Object extractValue(A access, byte[] recordBuffer, int offset, int length)
             throws IOException;
 
     /**
-     * Write the value.
+     * Write the value. Delegates the job to the access.
      * @param access the access
      * @param out the output stream
      * @param value the value to write.

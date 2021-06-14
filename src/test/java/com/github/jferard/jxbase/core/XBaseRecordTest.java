@@ -109,9 +109,9 @@ public class XBaseRecordTest {
         final byte[] recordBuffer = "tf0".getBytes(JxBaseUtils.ASCII_CHARSET);
         PowerMock.replayAll();
 
-        final Boolean value1 = (Boolean) field1.getValue(this.access, recordBuffer, 0, 1);
-        final Boolean value2 = (Boolean) field2.getValue(this.access, recordBuffer, 1, 1);
-        final Boolean value3 = (Boolean) field3.getValue(this.access, recordBuffer, 2, 1);
+        final Boolean value1 = (Boolean) field1.extractValue(this.access, recordBuffer, 0, 1);
+        final Boolean value2 = (Boolean) field2.extractValue(this.access, recordBuffer, 1, 1);
+        final Boolean value3 = (Boolean) field3.extractValue(this.access, recordBuffer, 2, 1);
         PowerMock.verifyAll();
 
         Assert.assertTrue(value1);
@@ -153,7 +153,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "20100501".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.getValue(this.access, buffer, 0, 8);
+        final Object value = field.extractValue(this.access, buffer, 0, 8);
         PowerMock.verifyAll();
 
         final Calendar cal = Calendar.getInstance();
@@ -170,7 +170,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "abcd".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.getValue(this.access, buffer, 0, 4);
+        final Object value = field.extractValue(this.access, buffer, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertEquals(1684234849L, value);
@@ -184,7 +184,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "abcdefgh".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.getValue(this.access, buffer, 0, 8);
+        final Object value = field.extractValue(this.access, buffer, 0, 8);
         PowerMock.verifyAll();
 
         Assert.assertEquals(1.2926117907728089E161, (Double) value, 0.01);
@@ -198,7 +198,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = " bc ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.getValue(this.access, buffer, 0, 4);
+        final Object value = field.extractValue(this.access, buffer, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertEquals("bc", (String) value);
@@ -216,7 +216,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "0123".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object rec = field.getValue(this.access, buffer, 0, 4);
+        final Object rec = field.extractValue(this.access, buffer, 0, 4);
         final String value = ((TextMemoRecord) rec).getValue();
         PowerMock.verifyAll();
 

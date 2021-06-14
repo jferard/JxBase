@@ -44,8 +44,8 @@ public class DateField implements XBaseField<DateAccess> {
     }
 
     @Override
-    public Date getValue(final DateAccess access, final byte[] recordBuffer,
-                         final int offset, final int length) throws IOException {
+    public Date extractValue(final DateAccess access, final byte[] recordBuffer,
+                             final int offset, final int length) throws IOException {
         return access.extractDateValue(recordBuffer, offset, length);
     }
 

@@ -73,7 +73,7 @@ public class MemoFieldTest {
         EasyMock.expect(memoAccess.extractMemoValue(bytes, 0, 4)).andReturn(record);
         PowerMock.replayAll();
 
-        final XBaseMemoRecord memoRecord = this.mf.getValue(access, bytes, 0, 4);
+        final XBaseMemoRecord memoRecord = this.mf.extractValue(access, bytes, 0, 4);
         PowerMock.verifyAll();
 
         Assert.assertEquals(record, memoRecord);
