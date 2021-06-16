@@ -18,11 +18,15 @@ package com.github.jferard.jxbase.writer;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * A factory to create writer for various chunks.
@@ -64,10 +68,16 @@ public interface XBaseChunkWriterFactory<D extends XBaseDialect<D, A>, A> {
      * @param outputStream      the output stream
      * @param metadata          the written meta data
      * @param array             the written array
+     * @param memoWriter
      * @param optional          the written optional
      * @return                  the writer
      */
     XBaseRecordWriter<D> createRecordWriter(OutputStream outputStream, Charset charset,
                                             XBaseMetadata metadata,
-                                            XBaseFieldDescriptorArray<A> array, Object optional);
+                                            XBaseFieldDescriptorArray<A> array,
+                                            XBaseMemoWriter memoWriter,
+                                            Object optional);
+
+    XBaseMemoWriter createMemoWriter(final XBaseFileTypeEnum type, String tableName, Map<String, Object> memoHeaderMetadata)
+            throws IOException;
 }

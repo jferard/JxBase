@@ -24,13 +24,15 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.GenericWriter;
-import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
+import org.powermock.reflect.exceptions.FieldNotFoundException;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -44,6 +46,7 @@ import java.util.Map;
 
 /**
  * A factory for writers
+ *
  * @param <D> The dialect
  * @param <A> The access
  */
@@ -51,37 +54,38 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
     /**
      * Create a new writer.
      *
-     * @param type              the type/flavour of the dbf file
-     * @param tableName         the name of the table (without .dbf)
-     * @param charset           the charset
-     * @param meta              the meta information as a map
-     * @param fields            list of fields
-     * @param optional          optional 263 bytes data. Might contain the relative path of a DBC
-     *                          file
-     * @param memoHeaderMeta    the memo meta information as a map
-     * @param <E>               a dialect.
-     * @param <F>               an access.
-     * @return                  a writer on the table.
+     * @param type           the type/flavour of the dbf file
+     * @param tableName      the name of the table (without .dbf)
+     * @param charset        the charset
+     * @param meta           the meta information as a map
+     * @param fields         list of fields
+     * @param optional       optional 263 bytes data. Might contain the relative path of a DBC
+     *                       file
+     * @param memoHeaderMeta the memo meta information as a map
+     * @param <E>            a dialect.
+     * @param <F>            an access.
+     * @return a writer on the table.
      * @throws IOException
      */
     public static <E extends XBaseDialect<E, F>, F> XBaseWriter createWriter(
             final XBaseFileTypeEnum type, final String tableName, final Charset charset,
             final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,
-            final XBaseOptional optional, final Map<String, Object> memoHeaderMeta) throws IOException {
+            final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
+            throws IOException {
         return new XBaseWriterFactory<E, F>()
                 .create(type, tableName, charset, meta, fields, optional, memoHeaderMeta);
     }
 
     private XBaseWriter create(final XBaseFileTypeEnum type, final String tableName,
-                              final Charset charset, final Map<String, Object> meta,
-                              final Collection<XBaseField<? super A>> fields,
-                              final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
+                               final Charset charset, final Map<String, Object> meta,
+                               final Collection<XBaseField<? super A>> fields,
+                               final XBaseOptional optional,
+                               final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        @SuppressWarnings("unchecked")
-        final D dialect = (D) DialectFactory
-                .getDialect(type, tableName, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
+        @SuppressWarnings("unchecked") final D dialect = (D) DialectFactory
+                .getDialect(type, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
         final XBaseChunkWriterFactory<D, A> writerFactory =
-                dialect.getInternalWriterFactory(tableName, charset, memoHeaderMeta);
+                dialect.getInternalWriterFactory();
         final File dbfFile = new File(tableName + ".dbf");
         dbfFile.delete();
 
@@ -94,17 +98,24 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
         final XBaseMetadataWriter<D, A> metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
                         optional);
+        XBaseMemoWriter memoWriter;
+        try {
+            memoWriter = writerFactory.createMemoWriter(type, tableName, memoHeaderMeta);
+        } catch (final FieldNotFoundException e) {
+            memoWriter = null;
+        }
         final XBaseRecordWriter<D> recordWriter =
-                writerFactory.createRecordWriter(out, charset, initialMetadata, array, optional);
+                writerFactory.createRecordWriter(out, charset, initialMetadata, array,
+                        memoWriter, optional);
         return new GenericWriter<D, A>(metadataWriter, recordWriter);
     }
 
     private XBaseMetadataWriter<D, A> writeHeader(final D dialect, final RandomAccessFile file,
-                                               final OutputStream out, final Charset charset,
-                                               final XBaseChunkWriterFactory<D, A> writerFactory,
-                                               final XBaseMetadata initialMetadata,
-                                               final XBaseFieldDescriptorArray<A> array,
-                                               final XBaseOptional optional) throws IOException {
+                                                  final OutputStream out, final Charset charset,
+                                                  final XBaseChunkWriterFactory<D, A> writerFactory,
+                                                  final XBaseMetadata initialMetadata,
+                                                  final XBaseFieldDescriptorArray<A> array,
+                                                  final XBaseOptional optional) throws IOException {
         final XBaseMetadataWriter<D, A> metadataWriter =
                 writerFactory.createMetadataWriter(file, out, charset);
         metadataWriter.write(initialMetadata);
@@ -128,7 +139,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
 
     private XBaseFieldDescriptorArray<A> getFieldDescriptorArray(final D dialect,
                                                                  final Collection<XBaseField<?
-                                                                            super A>> fields) {
+                                                                         super A>> fields) {
         final int arrayLength = fields.size() * dialect.getFieldDescriptorLength() + 1;
         final int oneRecordLength = this.calculateOneRecordLength(fields, dialect);
         return new GenericFieldDescriptorArray<A>(fields, arrayLength, oneRecordLength);

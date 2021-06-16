@@ -16,7 +16,6 @@
 
 package com.github.jferard.jxbase.dialect.db3.memo;
 
-import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoWriter;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;

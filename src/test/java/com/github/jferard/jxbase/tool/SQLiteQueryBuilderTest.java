@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -38,10 +38,10 @@ public class SQLiteQueryBuilderTest {
 
     @Before
     @SuppressWarnings("unchecked")
-    public void setUp() throws IOException {
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectBuilder
+    public void setUp() {
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
-                        .getDefault()).build();
+                        .getDefault());
         final List<XBaseField<?>> fields =
                 Arrays.<XBaseField<?>>asList(TestHelper.fromStringRepresentation(dialect, "a,C,10,0"),
                         TestHelper.fromStringRepresentation(dialect, "b,D,8,0"),
@@ -64,12 +64,12 @@ public class SQLiteQueryBuilderTest {
     }
 
     @Test
-    public void testGetValuesSize() throws IOException {
+    public void testGetValuesSize() {
         Assert.assertEquals(3, this.builder.getColumnsSize());
     }
 
     @Test
-    public void testInsertValues() throws IOException {
+    public void testInsertValues() {
         Assert.assertEquals("INSERT INTO \"foo\" VALUES (?, ?, ?)" +
                 "", this.builder.insertValues());
     }

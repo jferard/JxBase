@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.vfoxpro;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
@@ -25,12 +24,21 @@ import com.github.jferard.jxbase.dialect.db2.field.DB2NumericAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
-import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.CurrencyAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProCurrencyAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProDatetimeAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProDoubleAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProIntegerAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProMemoAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.FoxProNullFlagsAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerAccess;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsAccess;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 
@@ -38,9 +46,9 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 
 /**
- * A FoxPro dialect factory.
+ * A VisualFoxPro dialect factory.
  */
-public class FoxProDialectBuilder {
+public class VisualFoxProDialectFactory {
     /**
      * Create the builder
      *
@@ -49,8 +57,8 @@ public class FoxProDialectBuilder {
      * @param timeZone the time zone
      * @return the builder
      */
-    public static FoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                       final TimeZone timeZone) {
+    public static VisualFoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
+                                             final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
@@ -59,10 +67,16 @@ public class FoxProDialectBuilder {
         final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
         final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
         final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
-        final MemoAccess memoAccess = new DB3MemoAccess();
-        final DB4Access access =
-                new DB4Access(characterAccess, dateAccess, floatAccess,
-                        logicalAccess, memoAccess, numericAccess);
-        return new FoxProDialect(type, access);
+        final DatetimeAccess datetimeAccess = new FoxProDatetimeAccess();
+        final NullFlagsAccess nullFlagsAccess = new FoxProNullFlagsAccess();
+        final IntegerAccess integerAccess = new FoxProIntegerAccess();
+        final DoubleAccess doubleAccess = new FoxProDoubleAccess();
+        final CurrencyAccess currencyAccess = new FoxProCurrencyAccess();
+        final MemoAccess memoAccess = new FoxProMemoAccess();
+        final VisualFoxProAccess access =
+                new VisualFoxProAccess(characterAccess, dateAccess, datetimeAccess,
+                        floatAccess, integerAccess, logicalAccess, memoAccess,
+                        nullFlagsAccess, numericAccess, doubleAccess, currencyAccess);
+        return new VisualFoxProDialect(type, access);
     }
 }

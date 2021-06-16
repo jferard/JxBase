@@ -26,12 +26,6 @@ import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.vfoxpro.field.CurrencyField;
-import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
-import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
-import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
-import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.foxpro.reader.FoxProChunkReaderFactory;
 import com.github.jferard.jxbase.dialect.foxpro.writer.FoxProChunkWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -39,9 +33,6 @@ import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -117,21 +108,13 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, DB4Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<FoxProDialect, DB4Access> getInternalReaderFactory(
-            final String tableName, final Charset charset) {
+    public XBaseChunkReaderFactory<FoxProDialect, DB4Access> getInternalReaderFactory() {
         return new FoxProChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<FoxProDialect, DB4Access> getInternalWriterFactory(
-            final String tableName, final Charset charset,
-            final Map<String, Object> headerMeta) {
+    public XBaseChunkWriterFactory<FoxProDialect, DB4Access> getInternalWriterFactory() {
         return new FoxProChunkWriterFactory(this, TimeZone.getDefault());
-    }
-
-    @Override
-    public void close() throws IOException {
-        this.access.close();
     }
 }
 

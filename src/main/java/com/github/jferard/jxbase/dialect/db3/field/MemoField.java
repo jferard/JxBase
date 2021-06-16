@@ -19,10 +19,10 @@ package com.github.jferard.jxbase.dialect.db3.field;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
-import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * A memo field.
@@ -47,14 +47,14 @@ public class MemoField implements XBaseField<MemoAccess> {
     @Override
     public XBaseMemoRecord extractValue(final MemoAccess memoAccess, final byte[] recordBuffer,
                                         final int offset, final int length) throws IOException {
-        return memoAccess.extractMemoValue(recordBuffer, offset, length);
+        throw new UnsupportedEncodingException();
+//        final XBaseMemoReader memoReader = memoAccess.getMemoReader();
+//        return memoAccess.extractMemoValue(memoReader, recordBuffer, offset, length);
     }
 
     @Override
-    public void writeValue(final MemoAccess memoAccess, final OutputStream out, final Object value)
-            throws IOException {
-        final long offsetInBlocks = memoAccess.writeMemoValue(memoAccess.getMemoWriter(), (XBaseMemoRecord) value);
-        memoAccess.writeMemoAddress(out, offsetInBlocks);
+    public void writeValue(final MemoAccess memoAccess, final OutputStream out, final Object value) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -88,10 +88,5 @@ public class MemoField implements XBaseField<MemoAccess> {
     @Override
     public int hashCode() {
         return this.name.hashCode();
-    }
-
-    public <A extends MemoAccess> long writeMemoValue(final A access, final XBaseMemoWriter memoWriter, final Object value)
-            throws IOException {
-        return access.writeMemoValue(memoWriter, (XBaseMemoRecord) value);
     }
 }

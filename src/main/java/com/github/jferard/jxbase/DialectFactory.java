@@ -31,14 +31,13 @@ import java.util.TimeZone;
 public class DialectFactory {
     /**
      * @param type           the type
-     * @param tableName      the full path/to/table (used for memo).
      * @param charset        the charset (used for memo).
      * @param memoHeaderMeta null if reader only
      * @return the dialect associated to the type
      * @throws IOException
      */
     public static XBaseDialect<?, ?> getDialect(final XBaseFileTypeEnum type,
-                                                final String tableName, final Charset charset,
+                                                final Charset charset,
                                                 final Map<String, Object> memoHeaderMeta)
             throws IOException {
         final XBaseDialect<?, ?> dialect;
@@ -46,11 +45,11 @@ public class DialectFactory {
             dialect = getNoMemoDialect(type, charset);
         } else if (memoHeaderMeta == null) {
             dialect = DialectFactory.getDialect(
-                    new ReaderDialectFactoryAux(type, charset), type, tableName, charset, null);
+                    new ReaderDialectFactoryAux(type, charset), type);
         } else {
             dialect = DialectFactory.getDialect(
-                    new WriterDialectFactoryAux(type, charset), type, tableName, charset,
-                    memoHeaderMeta);
+                    new WriterDialectFactoryAux(type, charset), type
+            );
         }
         return dialect;
     }
@@ -58,14 +57,11 @@ public class DialectFactory {
     public static XBaseDialect<?, ?> getNoMemoDialect(final XBaseFileTypeEnum type,
                                                       final Charset charset) throws IOException {
         return DialectFactory
-                .getDialect(new NoMemoDialectFactoryAux(type, charset), type, null, charset, null);
+                .getDialect(new NoMemoDialectFactoryAux(type, charset), type);
     }
 
     private static XBaseDialect<?, ?> getDialect(final DialectFactoryAux dialectFactoryAux,
-                                                 final XBaseFileTypeEnum type,
-                                                 final String tableName, final Charset charset,
-                                                 final Map<String, Object> memoHeaderMeta)
-            throws IOException {
+                                                 final XBaseFileTypeEnum type) {
         final XBaseDialect<?, ?> dialect;
         switch (type) {
             case dBASE2:
@@ -75,32 +71,32 @@ public class DialectFactory {
             case dBASE3plusMemo:
             case FoxBASEPlus1:
                 dialect = dialectFactoryAux
-                        .createDB3Dialect(TimeZone.getDefault(), tableName,
-                                memoHeaderMeta);
+                        .createDB3Dialect(TimeZone.getDefault()
+                        );
                 break;
             case dBASE4:
             case dBASE4SQLTable:
             case dBASE4Memo:
             case dBASE4SQLTableMemo:
                 dialect = dialectFactoryAux
-                        .createDB4Dialect(TimeZone.getDefault(), tableName,
-                                memoHeaderMeta);
+                        .createDB4Dialect(TimeZone.getDefault()
+                        );
                 break;
             case VisualFoxPro:
             case VisualFoxProAutoIncrement:
                 dialect = dialectFactoryAux
-                        .createVisualFoxProDialect(TimeZone.getDefault(), tableName,
-                                memoHeaderMeta);
+                        .createVisualFoxProDialect(TimeZone.getDefault()
+                        );
                 break;
             case FoxPro2xMemo:
                 dialect = dialectFactoryAux
-                        .createFoxProDialect(TimeZone.getDefault(), tableName,
-                                memoHeaderMeta);
+                        .createFoxProDialect(TimeZone.getDefault()
+                        );
                 break;
             default:
                 dialect = dialectFactoryAux
-                        .createDB3Dialect(TimeZone.getDefault(), tableName,
-                                memoHeaderMeta);
+                        .createDB3Dialect(TimeZone.getDefault()
+                        );
                 break;
         }
         return dialect;

@@ -21,8 +21,9 @@ import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,14 +37,15 @@ import java.util.HashMap;
 public class DB3RecordWriterTest {
     @Test
     public void testWrite() throws IOException {
+        final XBaseMemoWriter memoWriter = null;
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        final DB3Dialect dialect = DB3DialectBuilder
+        final DB3Dialect dialect = DB3DialectFactory
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE).build();
+                        JxBaseUtils.UTC_TIME_ZONE);
         @SuppressWarnings("unchecked")
         final DB3RecordWriter<DB3Dialect, DB3Access> writer =
                 new DB3RecordWriter<DB3Dialect, DB3Access>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
-                        Arrays.<XBaseField<? super DB3Access>>asList(
+                        memoWriter, Arrays.<XBaseField<? super DB3Access>>asList(
                                 new CharacterField("chars", 10),
                                 new NumericField("num", 8, 2)));
         final HashMap<String, Object> map = new HashMap<String, Object>();

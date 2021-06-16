@@ -30,14 +30,11 @@ import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.field.XBaseField;
-import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
-
-import java.util.Collections;
 
 public class FoxProDialectTest {
     private VisualFoxProDialect dialect;
@@ -225,12 +222,12 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetInternalReaderFactory() {
-        this.dialect.getInternalReaderFactory("a", JxBaseUtils.ASCII_CHARSET);
+        this.dialect.getInternalReaderFactory();
     }
 
     @Test
     public void testGetInternalWriterFactory() {
-        this.dialect.getInternalWriterFactory("a", JxBaseUtils.ASCII_CHARSET,
-                Collections.<String, Object>emptyMap());
+        this.dialect.getInternalWriterFactory(
+        );
     }
 }

@@ -44,7 +44,7 @@ public class IntegerField implements XBaseField<IntegerAccess> {
 
     @Override
     public Long extractValue(final IntegerAccess reader, final byte[] recordBuffer,
-                             final int offset, final int length) throws IOException {
+                             final int offset, final int length) {
         return reader.extractIntegerValue(recordBuffer, offset, length);
     }
 

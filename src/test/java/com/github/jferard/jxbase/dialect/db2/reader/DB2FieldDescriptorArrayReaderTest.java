@@ -35,7 +35,7 @@ public class DB2FieldDescriptorArrayReaderTest {
         final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
-                        new ByteArrayInputStream(new byte[]{}), null);
+                        new ByteArrayInputStream(new byte[]{}));
         arrayReader.read();
     }
 
@@ -45,7 +45,7 @@ public class DB2FieldDescriptorArrayReaderTest {
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
-                                "abcdefghijklmnop".getBytes(JxBaseUtils.ASCII_CHARSET)), null);
+                                "abcdefghijklmnop".getBytes(JxBaseUtils.ASCII_CHARSET)));
         arrayReader.read();
     }
 
@@ -55,7 +55,7 @@ public class DB2FieldDescriptorArrayReaderTest {
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
-                                "abcdefghijkCmnop".getBytes(JxBaseUtils.ASCII_CHARSET)), null);
+                                "abcdefghijkCmnop".getBytes(JxBaseUtils.ASCII_CHARSET)));
         arrayReader.read();
     }
 
@@ -65,7 +65,7 @@ public class DB2FieldDescriptorArrayReaderTest {
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
-                                "abcdefghijkCmnopQ".getBytes(JxBaseUtils.ASCII_CHARSET)), null);
+                                "abcdefghijkCmnopQ".getBytes(JxBaseUtils.ASCII_CHARSET)));
         arrayReader.read();
     }
 
@@ -75,7 +75,7 @@ public class DB2FieldDescriptorArrayReaderTest {
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
-                                "abcdefghijkCmnop\015".getBytes(JxBaseUtils.ASCII_CHARSET)), null);
+                                "abcdefghijkCmnop\015".getBytes(JxBaseUtils.ASCII_CHARSET)));
         arrayReader.read();
     }
 
@@ -87,7 +87,7 @@ public class DB2FieldDescriptorArrayReaderTest {
         final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
                 new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
-                        new ByteArrayInputStream(bytes), null);
+                        new ByteArrayInputStream(bytes));
         final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
         Assert.assertEquals(110, array.getRecordLength());
         Assert.assertEquals(513, array.getArrayLength());

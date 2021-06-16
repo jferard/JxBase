@@ -37,7 +37,9 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRecordWriter<D> {
+public class DB3RecordWriter<D extends XBaseDialect<D, A>, A extends MemoAccess>
+        implements XBaseRecordWriter<D> {
+    private final XBaseMemoWriter memoWriter;
     protected final Collection<XBaseField<? super A>> fields;
     protected final D dialect;
     protected final OutputStream out;
@@ -45,10 +47,12 @@ public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRe
     protected int recordCount;
 
     public DB3RecordWriter(final D dialect, final OutputStream out, final Charset charset,
+                           final XBaseMemoWriter memoWriter,
                            final Collection<XBaseField<? super A>> fields) {
         this.dialect = dialect;
         this.out = out;
         this.charset = charset;
+        this.memoWriter = memoWriter;
         this.fields = fields;
         this.recordCount = 0;
     }
@@ -60,10 +64,9 @@ public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRe
         for (final XBaseField<? super A> field : this.fields) {
             final Object value = objectByName.get(field.getName());
             if (field instanceof MemoField) {
-                final MemoAccess memoAccess = (MemoAccess) access;
-                final XBaseMemoWriter memoWriter = memoAccess.getMemoWriter();
-                final long offsetInBlocks = memoAccess.writeMemoValue(memoWriter, (XBaseMemoRecord) value);
-                memoAccess.writeMemoAddress(this.out, offsetInBlocks);
+                final long offsetInBlocks =
+                        access.writeMemoValue(this.memoWriter, (XBaseMemoRecord) value);
+                access.writeMemoAddress(this.out, offsetInBlocks);
             } else {
                 field.writeValue(access, this.out, value);
             }
@@ -80,6 +83,8 @@ public class DB3RecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRe
     public void close() throws IOException {
         this.out.write(0x1A);
         this.out.flush();
-        this.dialect.close();
+        if (this.memoWriter != null) {
+            this.memoWriter.close();
+        }
     }
 }

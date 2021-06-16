@@ -29,9 +29,8 @@ public interface SQLQueryBuilder {
 
     /**
      * @return the CREATE TABLE query
-     * @throws IOException
      */
-    String createTable() throws IOException;
+    String createTable();
 
     /**
      * @return the INSERT VALUES query

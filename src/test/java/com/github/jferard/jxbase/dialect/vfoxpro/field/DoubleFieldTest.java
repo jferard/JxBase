@@ -28,7 +28,7 @@ public class DoubleFieldTest {
     private DoubleAccess access;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.access = new FoxProDoubleAccess();
         this.f = new DoubleField("d", 2);
     }

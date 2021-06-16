@@ -31,7 +31,7 @@ public class DateFieldTest {
     private DateField df;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.access = DB3DateAccess.create(JxBaseUtils.ASCII_CHARSET, JxBaseUtils.UTC_TIME_ZONE);
         this.df = new DateField("date");
     }
@@ -60,7 +60,7 @@ public class DateFieldTest {
     }
 
     @Test
-    public void getDateValueException() throws IOException {
+    public void getDateValueException() {
         final byte[] bytes = "abcdefgh".getBytes(JxBaseUtils.ASCII_CHARSET);
         final DateField thisDf = this.df;
         final DateAccess thisAccess = this.access;

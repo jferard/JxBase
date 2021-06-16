@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.db3;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
@@ -28,9 +27,6 @@ import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
-import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
-import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
 
@@ -38,31 +34,32 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 
 /**
- * A FoxPro dialect factory.
+ * A factory for DB3 dialect.
  */
-public class FoxProDialectBuilder {
+public class DB3DialectFactory {
     /**
      * Create the builder
-     *
-     * @param type     the actual type of the DBf file
-     * @param charset  the charset
+     * @param type the actual type of the DBf file
+     * @param charset the charset
      * @param timeZone the time zone
      * @return the builder
      */
-    public static FoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                       final TimeZone timeZone) {
-        final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
-        final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
+    public static DB3Dialect create(final XBaseFileTypeEnum type, final Charset charset,
+                                    final TimeZone timeZone) {
+        final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
+        final RawRecordWriteHelper rawRecordWriterHelper = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
-                new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+                new DB2CharacterAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final LogicalAccess logicalAccess =
+                new DB2LogicalAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final NumericAccess numericAccess =
+                new DB2NumericAccess(rawRecordReadHelper, rawRecordWriterHelper);
+        final DateAccess dateAccess =
+                new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
         final MemoAccess memoAccess = new DB3MemoAccess();
-        final DB4Access access =
-                new DB4Access(characterAccess, dateAccess, floatAccess,
-                        logicalAccess, memoAccess, numericAccess);
-        return new FoxProDialect(type, access);
+        final DB3Access access =
+                new DB3Access(characterAccess, logicalAccess, numericAccess, dateAccess,
+                        memoAccess);
+        return new DB3Dialect(type, access);
     }
 }

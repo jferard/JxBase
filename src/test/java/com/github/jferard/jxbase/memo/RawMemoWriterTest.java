@@ -24,8 +24,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 
-import static org.junit.Assert.*;
-
 public class RawMemoWriterTest {
     @Test(expected = AssertionError.class)
     public void testError() throws IOException {

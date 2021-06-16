@@ -33,8 +33,6 @@ import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -111,20 +109,12 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<DB4Dialect, DB4Access> getInternalReaderFactory(
-            final String tableName, final Charset charset) throws IOException {
+    public XBaseChunkReaderFactory<DB4Dialect, DB4Access> getInternalReaderFactory() {
         return new DB4ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<DB4Dialect, DB4Access> getInternalWriterFactory(
-            final String tableName, final Charset charset, final Map<String, Object> headerMeta)
-            throws IOException {
+    public XBaseChunkWriterFactory<DB4Dialect, DB4Access> getInternalWriterFactory() {
         return new DB4ChunkWriterFactory(this, TimeZone.getDefault());
-    }
-
-    @Override
-    public void close() throws IOException {
-        this.access.close();
     }
 }

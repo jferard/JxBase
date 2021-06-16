@@ -29,17 +29,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class DB3DialectTest {
     private XBaseDialect<DB3Dialect, DB3Access> dialect;
 
     @Before
     public void setUp() {
-        final DB3DialectBuilder factory =
-                DB3DialectBuilder.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+        final DB3Dialect factory =
+                DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
-        this.dialect = factory.build();
+        this.dialect = factory;
     }
 
     @Test
@@ -96,8 +95,8 @@ public class DB3DialectTest {
 
     @Test
     public void test() throws IOException {
-        this.dialect.getInternalReaderFactory("d", JxBaseUtils.ASCII_CHARSET);
-        this.dialect.getInternalWriterFactory("d", JxBaseUtils.ASCII_CHARSET,
-                new HashMap<String, Object>());
+        this.dialect.getInternalReaderFactory();
+        this.dialect.getInternalWriterFactory(
+        );
     }
 }

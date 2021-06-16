@@ -17,9 +17,12 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
@@ -58,12 +61,18 @@ public interface XBaseChunkReaderFactory<D extends XBaseDialect<D, A>, A> {
     /**
      * @param inputStream the input stream
      * @param charset the charset
+     * @param memoReader
      * @param metadata the read meta data
      * @param array the read array
      * @param optional the read optional
      * @return the record reader
      */
     XBaseRecordReader createRecordReader(InputStream inputStream, Charset charset,
+                                         XBaseMemoReader memoReader,
                                          XBaseMetadata metadata, XBaseFieldDescriptorArray<A> array,
                                          Object optional);
+
+    XBaseMemoReader createMemoReader(final XBaseFileTypeEnum type, final String tableName,
+                                     Charset charset)
+            throws IOException;
 }

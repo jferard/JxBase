@@ -18,7 +18,6 @@ package com.github.jferard.jxbase.dialect.db2.reader;
 
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -43,8 +42,7 @@ public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
     private final int fieldDescriptorLength;
     private final D dialect;
 
-    public DB2FieldDescriptorArrayReader(final D dialect, final InputStream inputStream,
-                                         final XBaseMetadata metadata) {
+    public DB2FieldDescriptorArrayReader(final D dialect, final InputStream inputStream) {
         this.dialect = dialect;
         this.inputStream = inputStream;
         this.fieldDescriptorLength = dialect.getFieldDescriptorLength();

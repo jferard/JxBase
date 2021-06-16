@@ -37,9 +37,6 @@ import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -135,21 +132,13 @@ public class VisualFoxProDialect implements XBaseDialect<VisualFoxProDialect, Vi
     }
 
     @Override
-    public XBaseChunkReaderFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalReaderFactory(
-            final String tableName, final Charset charset) {
+    public XBaseChunkReaderFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalReaderFactory() {
         return new VisualFoxProChunksReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalWriterFactory(
-            final String tableName, final Charset charset,
-            final Map<String, Object> headerMeta) {
+    public XBaseChunkWriterFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalWriterFactory() {
         return new VisualFoxProChunksWriterFactory(this, TimeZone.getDefault());
-    }
-
-    @Override
-    public void close() throws IOException {
-        this.access.close();
     }
 }
 

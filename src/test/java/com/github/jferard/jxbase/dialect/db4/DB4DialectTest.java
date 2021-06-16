@@ -30,17 +30,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class DB4DialectTest {
     private XBaseDialect<DB4Dialect, DB4Access> dialect;
 
     @Before
     public void setUp() {
-        final DB4DialectBuilder factory =
-                DB4DialectBuilder.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+        this.dialect = DB4DialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
-        this.dialect = factory.build();
     }
 
     @Test
@@ -99,8 +96,8 @@ public class DB4DialectTest {
 
     @Test
     public void test() throws IOException {
-        this.dialect.getInternalReaderFactory("d", JxBaseUtils.ASCII_CHARSET);
-        this.dialect.getInternalWriterFactory("d", JxBaseUtils.ASCII_CHARSET,
-                new HashMap<String, Object>());
+        this.dialect.getInternalReaderFactory();
+        this.dialect.getInternalWriterFactory(
+        );
     }
 }

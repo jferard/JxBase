@@ -29,7 +29,6 @@ public interface XBaseMemoReader extends Closeable {
      *
      * @param offsetInBlocks 1 for the first block, 2 for the second. 0 is forbidden (header)
      * @return the memo record
-     * @throws IOException if an I/O error occurs
      */
-    XBaseMemoRecord read(long offsetInBlocks) throws IOException;
+    XBaseMemoRecord read(long offsetInBlocks);
 }

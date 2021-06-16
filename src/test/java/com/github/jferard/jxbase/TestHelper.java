@@ -29,7 +29,6 @@ import java.nio.channels.SeekableByteChannel;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,7 +41,7 @@ public class TestHelper {
         return pathname.substring(0, pathname.lastIndexOf('.'));
     }
 
-    public static String getResourcePath(final String filename) throws IOException {
+    public static String getResourcePath(final String filename) {
         final URL resource = TestHelper.class.getClassLoader().getResource(filename);
         if (resource == null) {
             return null;
@@ -65,33 +64,33 @@ public class TestHelper {
             }
 
             @Override
-            public int read(final ByteBuffer dst) throws IOException {
+            public int read(final ByteBuffer dst) {
                 return this.transfer(buffer, dst);
             }
 
             @Override
-            public int write(final ByteBuffer src) throws IOException {
+            public int write(final ByteBuffer src) {
                 return this.transfer(src, buffer);
             }
 
             @Override
-            public long position() throws IOException {
+            public long position() {
                 return buffer.position();
             }
 
             @Override
-            public SeekableByteChannel position(final long newPosition) throws IOException {
+            public SeekableByteChannel position(final long newPosition) {
                 buffer.position((int) newPosition);
                 return this;
             }
 
             @Override
-            public long size() throws IOException {
+            public long size() {
                 return buffer.array().length;
             }
 
             @Override
-            public SeekableByteChannel truncate(final long size) throws IOException {
+            public SeekableByteChannel truncate(final long size) {
                 return null;
             }
 
@@ -101,7 +100,7 @@ public class TestHelper {
             }
 
             @Override
-            public void close() throws IOException {
+            public void close() {
 
             }
         };

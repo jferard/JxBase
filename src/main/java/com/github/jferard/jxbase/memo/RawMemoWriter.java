@@ -20,7 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
-import java.util.Arrays;
 
 /**
  * A writer for a memo file.

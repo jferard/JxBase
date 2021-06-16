@@ -47,7 +47,7 @@ public class FoxProMemoReaderTest {
 
     @Before
     public void setUp() {
-        final FileChannel channel = PowerMock.createMock(FileChannel.class);
+        // final FileChannel channel = PowerMock.createMock(FileChannel.class);
         this.memoRecordFactory = new FoxProMemoRecordFactory(JxBaseUtils.ASCII_CHARSET);
         this.rawMemoReader = EasyMock.strictMock(RawMemoReader.class);
         this.r = new FoxProMemoReader(this.memoRecordFactory, this.rawMemoReader);
@@ -83,11 +83,12 @@ public class FoxProMemoReaderTest {
     }
 
     @Test
-    public void testCreate() throws IOException, NoSuchMethodException {
+    public void testCreate() throws IOException {
         final byte[] bytes = new byte[]{0, 0, 0, 10, 0, 0, 0, 1};
         final ByteBuffer bbuffer = ByteBuffer.allocateDirect(8192);
         bbuffer.put(bytes);
         final TextMemoRecord memoRecord = new TextMemoRecord("foo", JxBaseUtils.ASCII_CHARSET);
+        PowerMock.resetAll();
 
         final FileChannel channel = PowerMock.createMock(FileChannel.class);
         final FoxProMemoRecordFactory memoRecordFactory =

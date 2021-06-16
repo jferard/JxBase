@@ -16,10 +16,12 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.writer.GenericRecordWriter;
 import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
@@ -27,9 +29,11 @@ import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -70,8 +74,15 @@ public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Dialect
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
                                                             final XBaseFieldDescriptorArray<DB2Access> array,
+                                                            final XBaseMemoWriter memoWriter,
                                                             final Object optional) {
         return GenericRecordWriter.create(this.dialect, outputStream, charset,
                 array.getFields());
+    }
+
+    @Override
+    public XBaseMemoWriter createMemoWriter(final XBaseFileTypeEnum type, final String tableName,
+                                            final Map<String, Object> memoHeaderMetadata) {
+        return null;
     }
 }

@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
@@ -45,13 +45,12 @@ public class FoxProRecordWriterTest {
     private Map<String, Object> map;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         this.mw = PowerMock.createMock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
-                VisualFoxProDialectBuilder.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
-                        TimeZone.getTimeZone("GMT")).writer("foo", new HashMap<String, Object>())
-                        .build();
+                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
+                        TimeZone.getTimeZone("GMT"));
         this.access =
                 dialect.getAccess();
         this.map = new HashMap<String, Object>();
@@ -72,7 +71,6 @@ public class FoxProRecordWriterTest {
 //        EasyMock.expect(this.mw.write(memo)).andReturn(10L);
         PowerMock.replayAll();
 
-        this.access.writeMemoValue(this.access.getMemoWriter(), memo);
         this.access.writeMemoAddress(this.bos, 1L);
         PowerMock.verifyAll();
 
@@ -104,7 +102,7 @@ public class FoxProRecordWriterTest {
     }
 
     @Test
-    public void writeNumericValueError() throws IOException {
+    public void writeNumericValueError() {
         final VisualFoxProAccess thisAccess = this.access;
         final ByteArrayOutputStream thisBos = this.bos;
         final IllegalArgumentException e =

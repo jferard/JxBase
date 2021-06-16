@@ -46,7 +46,7 @@ public class DB2OptionalWriter<D extends XBaseDialect<D, A>, A> implements XBase
     }
 
     @Override
-    public void write(final XBaseOptional optional) throws IOException {
+    public void write(final XBaseOptional optional) {
         // write nothing.
     }
 }

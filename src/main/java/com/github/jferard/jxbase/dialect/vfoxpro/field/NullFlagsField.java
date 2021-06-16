@@ -46,7 +46,7 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
 
     @Override
     public byte[] extractValue(final NullFlagsAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) throws IOException {
+                               final int offset, final int length) {
         if (length != this.fieldLength) {
             throw new IllegalArgumentException();
         }

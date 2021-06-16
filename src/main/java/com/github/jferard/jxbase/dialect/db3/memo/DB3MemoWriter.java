@@ -27,7 +27,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -55,7 +54,7 @@ public class DB3MemoWriter implements XBaseMemoWriter {
      * @return the writer
      * @throws IOException
      */
-    public static DB3MemoWriter fromChannel(final File memoFile, final Charset charset,
+    public static DB3MemoWriter fromChannel(final File memoFile,
                                             final Map<String, Object> headerMeta)
             throws IOException {
         final FileOutputStream fileOutputStream = new FileOutputStream(memoFile);

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 public class DB2Utils {
     public static final int DB2_FIELD_DESCRIPTOR_LENGTH = 16;

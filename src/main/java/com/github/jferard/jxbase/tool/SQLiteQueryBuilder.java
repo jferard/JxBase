@@ -74,7 +74,7 @@ public class SQLiteQueryBuilder implements SQLQueryBuilder {
     }
 
     @Override
-    public String createTable() throws IOException {
+    public String createTable() {
         final StringBuilder sb = new StringBuilder(
                 "CREATE TABLE \"").append(this.tableShortName).append("\" (\n");
         final List<String> definitions = new ArrayList<String>(this.fields.size());

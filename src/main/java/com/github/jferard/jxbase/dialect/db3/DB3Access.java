@@ -72,9 +72,11 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     }
 
     @Override
-    public XBaseMemoRecord extractMemoValue(final byte[] recordBuffer, final int offset,
-                                            final int length) throws IOException {
-        return this.memoAccess.extractMemoValue(recordBuffer, offset, length);
+    public XBaseMemoRecord extractMemoValue(
+            final XBaseMemoReader memoReader, final byte[] recordBuffer,
+            final int offset,
+            final int length) throws IOException {
+        return this.memoAccess.extractMemoValue(memoReader, recordBuffer, offset, length);
     }
 
     @Override
@@ -92,22 +94,5 @@ public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return this.memoAccess.getMemoFieldRepresentation(fieldName);
-    }
-
-    @Override
-    public XBaseMemoWriter getMemoWriter() {
-        return this.memoAccess.getMemoWriter();
-    }
-
-    @Override
-    public XBaseMemoReader getMemoReader() {
-        return this.memoAccess.getMemoReader();
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (this.memoAccess != null) {
-            this.memoAccess.close();
-        }
     }
 }

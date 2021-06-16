@@ -31,14 +31,6 @@ import java.io.OutputStream;
  * Access (read OR write) for DB3 memos.
  */
 public class DB3MemoAccess implements MemoAccess {
-    private final XBaseMemoReader memoReader;
-    private final XBaseMemoWriter memoWriter;
-
-    public DB3MemoAccess(final XBaseMemoReader memoReader, final XBaseMemoWriter memoWriter) {
-        this.memoReader = memoReader;
-        this.memoWriter = memoWriter;
-    }
-
     /**
      * https://www.clicketyclick.dk/databases/xbase/format/data_types.html:
      * > Pointer to ASCII text field in memo file 10 digits representing a pointer to a DBT block
@@ -51,13 +43,15 @@ public class DB3MemoAccess implements MemoAccess {
     }
 
     @Override
-    public XBaseMemoRecord extractMemoValue(final byte[] recordBuffer, final int offset,
-                                            final int length) throws IOException {
+    public XBaseMemoRecord extractMemoValue(
+            final XBaseMemoReader memoReader, final byte[] recordBuffer,
+            final int offset,
+            final int length) throws IOException {
         final long offsetInBlocks = this.getOffsetInBlocks(recordBuffer, offset, length);
         if (offsetInBlocks == 0) {
             return null;
         }
-        return this.memoReader.read(offsetInBlocks);
+        return memoReader.read(offsetInBlocks);
     }
 
     /**
@@ -103,25 +97,5 @@ public class DB3MemoAccess implements MemoAccess {
     @Override
     public FieldRepresentation getMemoFieldRepresentation(final String fieldName) {
         return new FieldRepresentation(fieldName, 'M', 10, 0);
-    }
-
-    @Override
-    public XBaseMemoWriter getMemoWriter() {
-        return this.memoWriter;
-    }
-
-    @Override
-    public XBaseMemoReader getMemoReader() {
-        return this.memoReader;
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (this.memoReader != null) {
-            this.memoReader.close();
-        }
-        if (this.memoWriter != null) {
-            this.memoWriter.close();
-        }
     }
 }

@@ -87,7 +87,7 @@ public class DB2AccessTest {
     }
 
     @Test
-    public void getLogicValue() throws IOException {
+    public void getLogicValue() {
         final byte[] bytes = {'t'};
         Assert.assertTrue(this.lf.extractValue(this.access, bytes, 0, 1));
     }
@@ -125,7 +125,7 @@ public class DB2AccessTest {
     }
 
     @Test
-    public void getNumValue() throws IOException, IOException {
+    public void getNumValue() {
         final byte[] bytes = "     18.90".getBytes(JxBaseUtils.ASCII_CHARSET);
         final BigDecimal v = new BigDecimal("18.90");
         final BigDecimal value = this.nf.extractValue(this.access, bytes, 0, 10);

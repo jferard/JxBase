@@ -28,7 +28,7 @@ public class IntegerFieldTest {
     private IntegerAccess access;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.access = new FoxProIntegerAccess();
         this.f = new IntegerField("i");
     }

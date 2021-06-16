@@ -17,13 +17,15 @@
 
 package com.github.jferard.jxbase.reader;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
-import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -49,12 +51,14 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
      * Warning: read some data.
      *
      * @param dialect       the dialect
+     * @param tableName
      * @param inputStream   the input stream
      * @param charset       the charset
      * @param readerFactory the chunk reader factory
      * @throws IOException
      */
-    public GenericReader(final D dialect, final InputStream inputStream, final Charset charset,
+    public GenericReader(final D dialect, final String tableName, final InputStream inputStream,
+                         final Charset charset,
                          final XBaseChunkReaderFactory<D, A> readerFactory) throws IOException {
         this.dialect = dialect;
         this.inputStream = inputStream;
@@ -64,8 +68,16 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
         this.optional =
                 readerFactory.createOptionalReader(inputStream, charset, this.metadata, this.array)
                         .read();
+        XBaseMemoReader memoReader;
+        try {
+            memoReader =
+                    readerFactory.createMemoReader(dialect.getType(), tableName, charset);
+        } catch (final FileNotFoundException e) {
+            memoReader = null;
+        }
         this.recordReader = readerFactory
-                .createRecordReader(inputStream, charset, this.metadata, this.array, this.optional);
+                .createRecordReader(inputStream, charset, memoReader, this.metadata, this.array,
+                        this.optional);
         this.checkLengths();
     }
 
@@ -109,6 +121,6 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
     @Override
     public void close() throws IOException {
         this.inputStream.close();
-        this.dialect.close();
+        this.recordReader.close();
     }
 }

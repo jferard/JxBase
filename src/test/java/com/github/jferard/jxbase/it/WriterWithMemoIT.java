@@ -30,7 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

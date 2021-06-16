@@ -27,8 +27,6 @@ import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 
-import java.io.IOException;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -38,18 +36,18 @@ interface DialectFactoryAux {
     XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect();
 
     XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(
-            TimeZone aDefault, String tableName, Map<String, Object> memoHeaderMeta)
-            throws IOException;
+            TimeZone aDefault)
+            ;
 
     XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(
-            TimeZone aDefault, String tableName, Map<String, Object> memoHeaderMeta)
-            throws IOException;
+            TimeZone aDefault)
+            ;
 
     XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(
-            TimeZone timeZone, String tableName, Map<String, Object> memoHeaderMeta)
-            throws IOException;
+            TimeZone timeZone)
+            ;
 
     XBaseDialect<FoxProDialect, DB4Access> createFoxProDialect(
-            TimeZone timeZone, String tableName, Map<String, Object> memoHeaderMeta)
-            throws IOException;
+            TimeZone timeZone)
+            ;
 }

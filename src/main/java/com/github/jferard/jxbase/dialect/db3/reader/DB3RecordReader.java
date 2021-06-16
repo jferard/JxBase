@@ -19,7 +19,10 @@ package com.github.jferard.jxbase.dialect.db3.reader;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
+import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
 import com.github.jferard.jxbase.util.IOUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -35,10 +38,12 @@ import java.util.TimeZone;
 
 /**
  * A reader for DB3 records.
+ *
  * @param <A> the access
  */
 public class DB3RecordReader<A> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
+    private final XBaseMemoReader memoReader;
     protected final Charset charset;
     protected final byte[] recordBuffer;
     protected final int recordLength;
@@ -47,9 +52,12 @@ public class DB3RecordReader<A> implements XBaseRecordReader {
     protected final TimeZone timezone;
     protected int recordsCounter;
 
-    public DB3RecordReader(final A access, final InputStream dbfInputStream, final Charset charset,
+    public DB3RecordReader(final A access, final InputStream dbfInputStream,
+                           final XBaseMemoReader memoReader,
+                           final Charset charset,
                            final XBaseFieldDescriptorArray<A> array, final TimeZone timezone) {
         this.dbfInputStream = dbfInputStream;
+        this.memoReader = memoReader;
         this.charset = charset;
         this.recordLength = array.getRecordLength();
         this.recordBuffer = new byte[this.recordLength];
@@ -84,9 +92,16 @@ public class DB3RecordReader<A> implements XBaseRecordReader {
         final Map<String, Object> valueByFieldName = new HashMap<String, Object>();
         int offset = 1;
         for (final XBaseField<? super A> field : this.fields) {
-            final Object value = field.extractValue(this.access, this.recordBuffer, offset,
-                    field.getValueLength(this.access));
-            final String name = field.getName();
+            final String name= field.getName();
+            final Object value;
+            if (field instanceof MemoField) {
+                final MemoAccess memoAccess = (MemoAccess) this.access;
+                value = memoAccess.extractMemoValue(this.memoReader, this.recordBuffer, offset,
+                        memoAccess.getMemoValueLength());
+            } else {
+                value = field.extractValue(this.access, this.recordBuffer, offset,
+                        field.getValueLength(this.access));
+            }
             valueByFieldName.put(name, value);
             offset += field.getValueLength(this.access);
         }
@@ -97,5 +112,8 @@ public class DB3RecordReader<A> implements XBaseRecordReader {
     @Override
     public void close() throws IOException {
         this.dbfInputStream.close();
+        if (this.memoReader != null) {
+            this.memoReader.close();
+        }
     }
 }

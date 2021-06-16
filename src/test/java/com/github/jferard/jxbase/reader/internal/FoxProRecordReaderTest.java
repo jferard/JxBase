@@ -20,16 +20,12 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
-import com.github.jferard.jxbase.memo.XBaseMemoWriter;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
@@ -39,11 +35,10 @@ public class FoxProRecordReaderTest {
     private Map<String, Object> map;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
-                VisualFoxProDialectBuilder.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
-                        TimeZone.getTimeZone("GMT")).reader("foo")
-                        .build();
+                VisualFoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
+                        TimeZone.getTimeZone("GMT"));
         this.access =
                 dialect.getAccess();
         this.map = new HashMap<String, Object>();
@@ -51,7 +46,7 @@ public class FoxProRecordReaderTest {
     }
 
     @Test
-    public void getLogicalValue() throws IOException {
+    public void getLogicalValue() {
         Assert.assertFalse(this.access.extractLogicalValue(new byte[]{'F'}, 0, 1));
     }
 

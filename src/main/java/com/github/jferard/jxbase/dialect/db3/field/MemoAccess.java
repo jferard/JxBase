@@ -21,14 +21,13 @@ import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
  * Access (read/write) to a memo field.
  */
-public interface MemoAccess extends Closeable {
+public interface MemoAccess {
     /**
      * @return the actual length of the field (*in the DBF file*)
      */
@@ -36,13 +35,16 @@ public interface MemoAccess extends Closeable {
 
     /**
      * Get the memo value.
+     *
+     * @param memoReader the memo reader
      * @param recordBuffer the record buffer
      * @param offset the offset
      * @param length the actual length
      * @return the memo record
      * @throws IOException
      */
-    XBaseMemoRecord extractMemoValue(byte[] recordBuffer, int offset, int length) throws IOException;
+    XBaseMemoRecord extractMemoValue(XBaseMemoReader memoReader,
+                                     byte[] recordBuffer, int offset, int length) throws IOException;
 
     /**
      * Write the memo address.
@@ -69,14 +71,4 @@ public interface MemoAccess extends Closeable {
      * @return the field representation.
      */
     FieldRepresentation getMemoFieldRepresentation(String fieldName);
-
-    /**
-     * temp
-     */
-    XBaseMemoWriter getMemoWriter();
-
-    /**
-     * temp
-     */
-    XBaseMemoReader getMemoReader();
 }

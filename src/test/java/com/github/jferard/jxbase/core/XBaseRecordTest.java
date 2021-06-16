@@ -20,13 +20,14 @@ import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
+import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
@@ -58,12 +59,12 @@ public class XBaseRecordTest {
     // new XBaseRecord("0000000000".getBytes(JxBaseUtils.ASCII_CHARSET), this.md, this.mr, 1);
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         this.mr = PowerMock.createMock(DB3MemoReader.class);
         this.md = PowerMock.createMock(GenericMetadata.class);
-        this.dialect = VisualFoxProDialectBuilder
+        this.dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
-                        .getDefault()).reader(this.mr).build();
+                        .getDefault());
         this.access = this.dialect.getAccess();
     }
 
@@ -75,7 +76,7 @@ public class XBaseRecordTest {
                 new GenericFieldDescriptorArray<DB4Access>(
                         Collections.<XBaseField<? super DB4Access>>emptyList(), 0, 4);
         final XBaseRecordReader reader =
-                new DB3RecordReader<DB4Access>(null, in, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
+                new DB3RecordReader<DB4Access>(null, in, null, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
         final XBaseRecord record = reader.read();
         Assert.assertTrue(record.isDeleted());
     }
@@ -90,7 +91,7 @@ public class XBaseRecordTest {
                                 new CharacterField("y", 3)), 0, 4);
         final XBaseRecordReader reader = new DB3RecordReader<DB2CharacterAccess>(
                 new DB2CharacterAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET), null),
-                in, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
+                in, null, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
         Assert.assertEquals("abc", record.getMap().get("y"));
@@ -146,7 +147,7 @@ public class XBaseRecordTest {
     }
 
     @Test
-    public void testGetDate() throws IOException, ParseException {
+    public void testGetDate() throws IOException {
         final XBaseField<? super VisualFoxProAccess> field =
                 TestHelper.fromStringRepresentation(this.dialect, "x,D,8,0");
         PowerMock.resetAll();
@@ -163,7 +164,7 @@ public class XBaseRecordTest {
     }
 
     @Test
-    public void testGetInteger() throws IOException, ParseException {
+    public void testGetInteger() throws IOException {
         final XBaseField<? super VisualFoxProAccess> field =
                 TestHelper.fromStringRepresentation(this.dialect, "x,I,4,0");
         PowerMock.resetAll();
@@ -177,7 +178,7 @@ public class XBaseRecordTest {
     }
 
     @Test
-    public void testGetNullDouble() throws IOException, ParseException {
+    public void testGetNullDouble() throws IOException {
         final XBaseField<? super VisualFoxProAccess> field =
                 TestHelper.fromStringRepresentation(this.dialect, "x,B,8,0");
         PowerMock.resetAll();
@@ -216,21 +217,24 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "0123".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object rec = field.extractValue(this.access, buffer, 0, 4);
+
+        final Object rec = this.access.extractMemoValue(this.mr, buffer, 0, 4);
         final String value = ((TextMemoRecord) rec).getValue();
         PowerMock.verifyAll();
 
+        Assert.assertTrue(field instanceof MemoField);
         Assert.assertEquals("ok", value);
     }
 
     @Test
-    public void testNotDeleted() throws IOException, ParseException {
+    public void testNotDeleted() throws IOException {
         final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream("abc".getBytes(ascii));
         final GenericFieldDescriptorArray<DB3Access> descriptorArray =
                 new GenericFieldDescriptorArray<DB3Access>(
                         Collections.<XBaseField<? super DB3Access>>emptyList(), 0, 3);
-        final DB3RecordReader<DB3Access> reader = new DB3RecordReader<DB3Access>(null, in, ascii,
+        final DB3RecordReader<DB3Access> reader = new DB3RecordReader<DB3Access>(null, in,
+                null, ascii,
                 descriptorArray, null);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());
@@ -239,7 +243,7 @@ public class XBaseRecordTest {
     }
 
     @Test
-    public void test() throws IOException {
+    public void test() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("x", "0123456789".getBytes(JxBaseUtils.ASCII_CHARSET));
         final XBaseRecord record =

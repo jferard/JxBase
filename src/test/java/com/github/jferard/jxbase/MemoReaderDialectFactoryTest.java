@@ -22,13 +22,13 @@ import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
-import com.github.jferard.jxbase.dialect.db4.DB4DialectBuilder;
+import com.github.jferard.jxbase.dialect.db4.DB4DialectFactory;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -41,8 +41,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.io.IOException;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DB2Dialect.class, DB3DialectBuilder.class, DB4DialectBuilder.class,
-        VisualFoxProDialectBuilder.class})
+@PrepareForTest({DB2Dialect.class, DB3DialectFactory.class, DB4DialectFactory.class,
+        VisualFoxProDialectFactory.class})
 public class MemoReaderDialectFactoryTest {
     @Test
     public void createDB2Dialect() {
@@ -65,71 +65,65 @@ public class MemoReaderDialectFactoryTest {
     @Test
     public void createDB3Dialect() throws IOException {
         final DB3Dialect dialect = PowerMock.createMock(DB3Dialect.class);
-        final DB3DialectBuilder factory = PowerMock.createMock(DB3DialectBuilder.class);
-        PowerMock.mockStatic(DB3DialectBuilder.class);
+        final DB3DialectFactory factory = PowerMock.createMock(DB3DialectFactory.class);
+        PowerMock.mockStatic(DB3DialectFactory.class);
         PowerMock.resetAll();
 
-        EasyMock.expect(DB3DialectBuilder
+        EasyMock.expect(DB3DialectFactory
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE))
-                .andReturn(factory);
-        EasyMock.expect(factory.reader("foo")).andReturn(factory);
-        EasyMock.expect(factory.build()).andReturn(dialect);
+                .andReturn(dialect);
         PowerMock.replayAll();
 
         final XBaseDialect<DB3Dialect, DB3Access> d =
                 new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET)
                         .createDB3Dialect(
-                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+                                JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);
     }
 
     @Test
-    public void createDB4Dialect() throws IOException {
+    public void createDB4Dialect() {
         final DB4Dialect dialect = PowerMock.createMock(DB4Dialect.class);
-        final DB4DialectBuilder factory = PowerMock.createMock(DB4DialectBuilder.class);
-        PowerMock.mockStatic(DB4DialectBuilder.class);
+        final DB4DialectFactory factory = PowerMock.createMock(DB4DialectFactory.class);
+        PowerMock.mockStatic(DB4DialectFactory.class);
         PowerMock.resetAll();
 
-        EasyMock.expect(DB4DialectBuilder
+        EasyMock.expect(DB4DialectFactory
                 .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE))
-                .andReturn(factory);
-        EasyMock.expect(factory.reader("foo")).andReturn(factory);
-        EasyMock.expect(factory.build()).andReturn(dialect);
+                .andReturn(dialect);
         PowerMock.replayAll();
 
         final XBaseDialect<DB4Dialect, DB4Access> d =
                 new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
                         .createDB4Dialect(
-                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+                                JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);
     }
 
     @Test
-    public void createFoxProDialect() throws IOException {
+    public void createFoxProDialect() {
         final VisualFoxProDialect dialect = PowerMock.createMock(VisualFoxProDialect.class);
-        final VisualFoxProDialectBuilder factory =
-                PowerMock.createMock(VisualFoxProDialectBuilder.class);
-        PowerMock.mockStatic(VisualFoxProDialectBuilder.class);
+        final VisualFoxProDialectFactory factory =
+                PowerMock.createMock(VisualFoxProDialectFactory.class);
+        PowerMock.mockStatic(VisualFoxProDialectFactory.class);
         PowerMock.resetAll();
 
-        EasyMock.expect(VisualFoxProDialectBuilder
+        EasyMock.expect(VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE))
-                .andReturn(factory);
-        EasyMock.expect(factory.reader("foo")).andReturn(factory);
-        EasyMock.expect(factory.build()).andReturn(dialect);
+                .andReturn(dialect);
         PowerMock.replayAll();
 
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> d =
                 new ReaderDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
                         .createVisualFoxProDialect(
-                                JxBaseUtils.UTC_TIME_ZONE, "foo", null);
+                                JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();
 
         Assert.assertSame(dialect, d);

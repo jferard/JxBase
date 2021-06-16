@@ -17,21 +17,30 @@
 package com.github.jferard.jxbase.dialect.db4.writer;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3FieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.dialect.db3.writer.DB3RecordWriter;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoWriter;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.writer.GenericOptionalWriter;
-import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
+import com.github.jferard.jxbase.writer.XBaseFieldDescriptorArrayWriter;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -49,7 +58,8 @@ public class DB4ChunkWriterFactory implements XBaseChunkWriterFactory<DB4Dialect
     @Override
     public XBaseMetadataWriter<DB4Dialect, DB4Access> createMetadataWriter(
             final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
-        return new DB4MetadataWriter<DB4Dialect, DB4Access>(this.dialect, file, outputStream, charset);
+        return new DB4MetadataWriter<DB4Dialect, DB4Access>(this.dialect, file, outputStream,
+                charset);
     }
 
     @Override
@@ -62,7 +72,8 @@ public class DB4ChunkWriterFactory implements XBaseChunkWriterFactory<DB4Dialect
     public XBaseOptionalWriter<DB4Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
                                                                 final XBaseFieldDescriptorArray<DB4Access> array) {
-        return new GenericOptionalWriter<DB4Dialect, DB4Access>(this.dialect, outputStream, metadata,
+        return new GenericOptionalWriter<DB4Dialect, DB4Access>(this.dialect, outputStream,
+                metadata,
                 array);
     }
 
@@ -71,8 +82,19 @@ public class DB4ChunkWriterFactory implements XBaseChunkWriterFactory<DB4Dialect
                                                             final Charset charset,
                                                             final XBaseMetadata metadata,
                                                             final XBaseFieldDescriptorArray<DB4Access> array,
+                                                            final XBaseMemoWriter memoWriter,
                                                             final Object optional) {
         return new DB3RecordWriter<DB4Dialect, DB4Access>(this.dialect, outputStream, charset,
-                array.getFields());
+                memoWriter, array.getFields());
+    }
+
+    @Override
+    public XBaseMemoWriter createMemoWriter(final XBaseFileTypeEnum type, final String tableName,
+                                            final Map<String, Object> memoHeaderMetadata)
+            throws IOException {
+            final File memoFile = new File(tableName + type.memoFileType().getExtension());
+            final FileChannel memoChannel = new FileOutputStream(memoFile).getChannel();
+            return new DB4MemoWriter(memoChannel, DB3Utils.BLOCK_LENGTH,
+                    memoHeaderMetadata);
     }
 }

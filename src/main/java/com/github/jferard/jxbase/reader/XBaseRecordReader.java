@@ -29,7 +29,6 @@ public interface XBaseRecordReader extends Closeable {
     /**
      * @return the next record or null if there is no record left
      * @throws IOException
-     * @throws ParseException
      */
-    XBaseRecord read() throws IOException, ParseException;
+    XBaseRecord read() throws IOException;
 }

@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.db4;
 
-import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
@@ -28,7 +27,6 @@ import com.github.jferard.jxbase.dialect.db3.field.DB3DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DB3MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.DateAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.DB4FloatAccess;
 import com.github.jferard.jxbase.dialect.db4.field.FloatAccess;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
@@ -38,9 +36,9 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 
 /**
- * A FoxPro dialect factory.
+ * A DB4 dialect factory.
  */
-public class FoxProDialectBuilder {
+public class DB4DialectFactory {
     /**
      * Create the builder
      *
@@ -49,8 +47,8 @@ public class FoxProDialectBuilder {
      * @param timeZone the time zone
      * @return the builder
      */
-    public static FoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
-                                       final TimeZone timeZone) {
+    public static DB4Dialect create(final XBaseFileTypeEnum type, final Charset charset,
+                                    final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
@@ -63,6 +61,6 @@ public class FoxProDialectBuilder {
         final DB4Access access =
                 new DB4Access(characterAccess, dateAccess, floatAccess,
                         logicalAccess, memoAccess, numericAccess);
-        return new FoxProDialect(type, access);
+        return new DB4Dialect(type, access);
     }
 }

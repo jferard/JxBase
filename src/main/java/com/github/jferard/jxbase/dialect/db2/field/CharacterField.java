@@ -46,7 +46,7 @@ public class CharacterField implements XBaseField<CharacterAccess> {
 
     @Override
     public String extractValue(final CharacterAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) throws IOException {
+                               final int offset, final int length) {
         return reader.extractCharacterValue(recordBuffer, offset, length);
     }
 

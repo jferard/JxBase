@@ -47,7 +47,7 @@ public class LogicalFieldTest {
     }
 
     @Test
-    public void getLogicValue() throws IOException {
+    public void getLogicValue() {
         final byte[] bytes = {'t'};
         Assert.assertTrue(this.lf.extractValue(this.access, bytes, 0, 1));
     }

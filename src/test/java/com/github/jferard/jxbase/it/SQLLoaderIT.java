@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 public class SQLLoaderIT {
     @Test
-    public void testQuery() throws IOException, ParseException {
+    public void testQuery() throws IOException {
         final String tableName = TestHelper.getResourceTableName("data1/gds_im.dbf");
         final SQLiteQueryBuilder builder = SQLiteQueryBuilder.create(tableName);
         Assert.assertEquals("DROP TABLE IF EXISTS \"gds_im\"", builder.dropTable());

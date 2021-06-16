@@ -18,8 +18,6 @@ package com.github.jferard.jxbase.writer;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Map;
 
 /**

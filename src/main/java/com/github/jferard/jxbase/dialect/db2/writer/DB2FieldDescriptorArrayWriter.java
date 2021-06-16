@@ -52,7 +52,7 @@ public class DB2FieldDescriptorArrayWriter<A>
         for (int i = 0; i < fieldCount; i++) {
             assert iterator.hasNext();
             final XBaseField<? super A> field = iterator.next();
-            this.writeField(field.toRepresentation(this.access), offset);
+            this.writeField(field.toRepresentation(this.access));
             offset += field.getValueLength(this.access);
         }
         assert !iterator.hasNext();
@@ -64,7 +64,7 @@ public class DB2FieldDescriptorArrayWriter<A>
         return offset;
     }
 
-    private void writeField(final FieldRepresentation representation, final int offset)
+    private void writeField(final FieldRepresentation representation)
             throws IOException {
         final byte[] nameBytes = representation.getName().getBytes(JxBaseUtils.ASCII_CHARSET);
         final int nameLength = nameBytes.length;

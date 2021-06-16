@@ -21,7 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.dialect.db3.DB3DialectBuilder;
+import com.github.jferard.jxbase.dialect.db3.DB3DialectFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,8 +37,8 @@ public class DB3FieldDescriptorArrayReaderTest {
     @Before
     public void setUp() {
         this.db3Access =
-                 DB3DialectBuilder.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
-                        JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
+                 DB3DialectFactory.create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
+                        JxBaseUtils.UTC_TIME_ZONE).getAccess();
     }
 
     @Test(expected = IOException.class)

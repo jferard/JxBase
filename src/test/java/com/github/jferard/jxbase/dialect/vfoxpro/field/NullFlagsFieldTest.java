@@ -28,7 +28,7 @@ public class NullFlagsFieldTest {
     private NullFlagsAccess access;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.access = new FoxProNullFlagsAccess();
         this.f = new NullFlagsField("nf", 8);
     }

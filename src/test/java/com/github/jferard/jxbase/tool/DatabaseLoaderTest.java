@@ -16,22 +16,15 @@
 
 package com.github.jferard.jxbase.tool;
 
-import org.easymock.EasyMock;
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
-import java.util.logging.Logger;
 
 public class DatabaseLoaderTest {
     @Test
-    public void test() throws SQLException, IOException, ParseException {
+    public void test() {
         /*
         final Connection connection = PowerMock.createMock(Connection.class);
         final SQLQueryBuilderProvider provider =

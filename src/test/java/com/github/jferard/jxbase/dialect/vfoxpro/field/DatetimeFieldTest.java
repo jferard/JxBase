@@ -30,7 +30,7 @@ public class DatetimeFieldTest {
     private DatetimeAccess access;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.access = new FoxProDatetimeAccess();
         this.f = new DatetimeField("dt");
     }

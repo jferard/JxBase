@@ -17,17 +17,24 @@
 package com.github.jferard.jxbase.dialect.db3.reader;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
-import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
+import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
+import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
@@ -51,15 +58,19 @@ public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect
     @Override
     public XBaseFieldDescriptorArrayReader<DB3Dialect, DB3Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata);
+        return new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(this.dialect, inputStream,
+                metadata);
     }
 
     @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
-                                                final Charset charset, final XBaseMetadata metadata,
+                                                final Charset charset,
+                                                final XBaseMemoReader memoReader,
+                                                final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB3Access> array,
                                                 final Object optional) {
-        return new DB3RecordReader<DB3Access>(this.dialect.getAccess(), inputStream, charset, array, this.timezone);
+        return new DB3RecordReader<DB3Access>(this.dialect.getAccess(), inputStream, memoReader,
+                charset, array, this.timezone);
     }
 
     @Override
@@ -67,6 +78,16 @@ public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<DB3Access> array) {
-        return new DB2OptionalReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata, array);
+        return new DB2OptionalReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata,
+                array);
+    }
+
+    @Override
+    public XBaseMemoReader createMemoReader(final XBaseFileTypeEnum type, final String tableName,
+                                            final Charset charset)
+            throws IOException {
+        final File memoFile = new File(tableName + type.memoFileType().getExtension());
+        final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
+        return DB3MemoReader.create(memoChannel);
     }
 }

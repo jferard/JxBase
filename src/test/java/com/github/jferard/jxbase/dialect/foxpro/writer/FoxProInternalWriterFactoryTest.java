@@ -21,9 +21,10 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.vfoxpro.writer.VisualFoxProChunksWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
+import com.github.jferard.jxbase.memo.XBaseMemoWriter;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
@@ -31,7 +32,6 @@ import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Collections;
 
 public class FoxProInternalWriterFactoryTest {
@@ -39,12 +39,10 @@ public class FoxProInternalWriterFactoryTest {
     private VisualFoxProChunksWriterFactory factory;
 
     @Before
-    public void setUp() throws IOException {
-        final VisualFoxProDialectBuilder f =
-                VisualFoxProDialectBuilder
-                        .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
-                                JxBaseUtils.UTC_TIME_ZONE);
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = f.build();
+    public void setUp() {
+        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectFactory
+                .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
+                        JxBaseUtils.UTC_TIME_ZONE);
         this.factory =
                 new VisualFoxProChunksWriterFactory((VisualFoxProDialect) dialect,
                         JxBaseUtils.UTC_TIME_ZONE);
@@ -57,6 +55,7 @@ public class FoxProInternalWriterFactoryTest {
         final XBaseFieldDescriptorArray<VisualFoxProAccess> array =
                 (XBaseFieldDescriptorArray<VisualFoxProAccess>) PowerMock
                         .createMock(XBaseFieldDescriptorArray.class);
+        final XBaseMemoWriter memoWriter = PowerMock.createMock(XBaseMemoWriter.class);
         PowerMock.resetAll();
 
         EasyMock.expect(array.getFields()).andReturn(
@@ -65,7 +64,7 @@ public class FoxProInternalWriterFactoryTest {
 
         this.factory.createFieldDescriptorArrayWriter(bos, null);
         this.factory.createOptionalWriter(bos, null, null);
-        this.factory.createRecordWriter(bos, null, null, array, null);
+        this.factory.createRecordWriter(bos, null, null, array, memoWriter, null);
         this.factory.createMetadataWriter(null, null, null);
         PowerMock.verifyAll();
     }

@@ -133,7 +133,7 @@ public class IOUtilsTest {
                 new ByteArrayInputStream(new byte[]{0x00, 0x20});
         final InputStream is = new InputStream() {
             @Override
-            public int read() throws IOException {
+            public int read() {
                 return bis.read();
             }
         };

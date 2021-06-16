@@ -16,16 +16,19 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
@@ -50,17 +53,25 @@ public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Dialect
     @Override
     public XBaseFieldDescriptorArrayReader<DB2Dialect, DB2Access> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(this.dialect, inputStream,
-                metadata);
+        return new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(this.dialect, inputStream
+        );
     }
 
     @Override
     public XBaseRecordReader createRecordReader(final InputStream inputStream,
-                                                final Charset charset, final XBaseMetadata metadata,
+                                                final Charset charset,
+                                                final XBaseMemoReader memoReader,
+                                                final XBaseMetadata metadata,
                                                 final XBaseFieldDescriptorArray<DB2Access> array,
                                                 final Object optional) {
         return new DB2RecordReader<DB2Access>(this.dialect.getAccess(), inputStream, charset,
                 array);
+    }
+
+    @Override
+    public XBaseMemoReader createMemoReader(final XBaseFileTypeEnum type, final String tableName,
+                                            final Charset charset) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

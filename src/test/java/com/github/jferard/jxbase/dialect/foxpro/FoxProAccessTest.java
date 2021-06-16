@@ -17,7 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro;
 
 import com.github.jferard.jxbase.dialect.vfoxpro.CDDtFILMN0FieldsAccess;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectBuilder;
+import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
@@ -37,9 +37,9 @@ public class FoxProAccessTest {
     private DatetimeField df;
 
     @Before
-    public void setUp() throws Exception {
-        this.access = VisualFoxProDialectBuilder.create(null, JxBaseUtils.ASCII_CHARSET,
-                JxBaseUtils.UTC_TIME_ZONE).build().getAccess();
+    public void setUp() {
+        this.access = VisualFoxProDialectFactory.create(null, JxBaseUtils.ASCII_CHARSET,
+                JxBaseUtils.UTC_TIME_ZONE).getAccess();
         this.inf = new IntegerField("int");
         this.nf = new NullFlagsField("nf", 8);
         this.df = new DatetimeField("dt");
@@ -56,7 +56,7 @@ public class FoxProAccessTest {
     }
 
     @Test
-    public void getDTValue() throws IOException {
+    public void getDTValue() {
         final byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8};
 //        Assert.assertEquals(new Date(1098477320L), this.df.getValue(this.access, bytes, 0, 8));
     }

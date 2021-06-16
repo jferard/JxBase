@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseOptional;
 import com.github.jferard.jxbase.core.XBaseRecord;
@@ -45,6 +46,7 @@ public class GenericReaderTest {
     private XBaseOptionalReader or;
     private XBaseOptional optional;
     private XBaseRecordReader rr;
+    private XBaseMemoReader memoReader;
 
     @Before
     @SuppressWarnings("unchecked")
@@ -57,6 +59,7 @@ public class GenericReaderTest {
         this.or = PowerMock.createMock(XBaseOptionalReader.class);
         this.optional = PowerMock.createMock(XBaseOptional.class);
         this.rr = PowerMock.createMock(XBaseRecordReader.class);
+        this.memoReader = PowerMock.createMock(XBaseMemoReader.class);
 
         this.dialect = PowerMock.createMock(DB3Dialect.class);
         this.rf = PowerMock.createMock(XBaseChunkReaderFactory.class);
@@ -71,8 +74,13 @@ public class GenericReaderTest {
         EasyMock.expect(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
                 this.array)).andReturn(this.or);
         EasyMock.expect(this.or.read()).andReturn(this.optional);
-        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+        EasyMock.expect(this.dialect.getType()).andReturn(XBaseFileTypeEnum.dBASE3plusMemo);
+        EasyMock.expect(this.rf.createMemoReader(XBaseFileTypeEnum.dBASE3plusMemo, "tableName", JxBaseUtils.ASCII_CHARSET)).andReturn(memoReader);
+
+        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, memoReader,
+                this.metadata,
                 this.array, this.optional)).andReturn(this.rr);
+
         EasyMock.expect(this.dialect.getMetaDataLength()).andReturn(512);
         EasyMock.expect(this.array.getArrayLength()).andReturn(512).times(1);
         EasyMock.expect(this.optional.getLength()).andReturn(512).times(1);
@@ -80,7 +88,7 @@ public class GenericReaderTest {
     }
 
     private GenericReader<DB3Dialect, DB3Access> getGenericReader() throws IOException {
-        return new GenericReader<DB3Dialect, DB3Access>(this.dialect, this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
+        return new GenericReader<DB3Dialect, DB3Access>(this.dialect, "tableName", this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
     }
 
     @Test
@@ -156,8 +164,8 @@ public class GenericReaderTest {
         PowerMock.resetAll();
 
         this.init();
+        this.rr.close();
         this.is.close();
-        this.dialect.close();
         PowerMock.replayAll();
 
         this.getGenericReader().close();
