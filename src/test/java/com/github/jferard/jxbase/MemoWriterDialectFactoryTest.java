@@ -55,7 +55,7 @@ public class MemoWriterDialectFactoryTest {
         PowerMock.replayAll();
 
         final XBaseDialect<DB2Dialect, DB2Access> d =
-                new WriterDialectFactoryAux(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET)
+                new DialectFactoryAux(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET)
                         .createDB2Dialect();
         PowerMock.verifyAll();
 
@@ -76,7 +76,7 @@ public class MemoWriterDialectFactoryTest {
         PowerMock.replayAll();
 
         final XBaseDialect<DB3Dialect, DB3Access> d =
-                new WriterDialectFactoryAux(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET)
+                new DialectFactoryAux(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET)
                         .createDB3Dialect(
                                 JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();
@@ -98,7 +98,7 @@ public class MemoWriterDialectFactoryTest {
         PowerMock.replayAll();
 
         final XBaseDialect<DB4Dialect, DB4Access> d =
-                new WriterDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
+                new DialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
                         .createDB4Dialect(
                                 JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();
@@ -121,7 +121,7 @@ public class MemoWriterDialectFactoryTest {
         PowerMock.replayAll();
 
         final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> d =
-                new WriterDialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
+                new DialectFactoryAux(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET)
                         .createVisualFoxProDialect(
                                 JxBaseUtils.UTC_TIME_ZONE);
         PowerMock.verifyAll();

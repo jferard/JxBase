@@ -83,7 +83,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
                                final Map<String, Object> memoHeaderMeta)
             throws IOException {
         @SuppressWarnings("unchecked") final D dialect = (D) DialectFactory
-                .getDialect(type, JxBaseUtils.UTF8_CHARSET, memoHeaderMeta);
+                .getDialect(type, JxBaseUtils.UTF8_CHARSET);
         final XBaseChunkWriterFactory<D, A> writerFactory =
                 dialect.getInternalWriterFactory();
         final File dbfFile = new File(tableName + ".dbf");

@@ -36,7 +36,7 @@ public class FoxProMetadataReaderTest {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
         @SuppressWarnings("unchecked") final FoxProDialect dialect =
                 (FoxProDialect) DialectFactory
-                        .getNoMemoDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
+                        .getDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
         final FoxProMetadataReader<FoxProDialect, DB4Access> reader =
                 new FoxProMetadataReader<FoxProDialect, DB4Access>(dialect,
                         inputStream);
@@ -51,7 +51,7 @@ public class FoxProMetadataReaderTest {
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         @SuppressWarnings("unchecked") final FoxProDialect dialect = (FoxProDialect) DialectFactory
-                .getNoMemoDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
+                .getDialect(XBaseFileTypeEnum.FoxPro2xMemo, JxBaseUtils.ASCII_CHARSET);
         final FoxProMetadataReader<FoxProDialect, DB4Access> reader =
                 new FoxProMetadataReader<FoxProDialect, DB4Access>(dialect, inputStream);
         final GenericMetadata meta = reader.read();

@@ -40,7 +40,7 @@ import java.util.TimeZone;
 /**
  * A FoxPro dialect factory.
  */
-public class FoxProDialectBuilder {
+public class FoxProDialectFactory {
     /**
      * Create the builder
      *

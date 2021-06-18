@@ -62,7 +62,7 @@ public class XBaseReaderFactory {
         final XBaseFileTypeEnum type = this.getXBaseFileType(resettableInputStream);
 
         @SuppressWarnings("unchecked") final D dialect =
-                (D) DialectFactory.getDialect(type, charset, null);
+                (D) DialectFactory.getDialect(type, charset);
         final XBaseChunkReaderFactory<D, A> readerFactory =
                 dialect.getInternalReaderFactory();
         return new GenericReader<D, A>(dialect, tableName, resettableInputStream, charset, readerFactory);

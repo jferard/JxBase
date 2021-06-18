@@ -25,9 +25,9 @@ import java.io.IOException;
 
 public class DialectFactoryTest {
     @Test
-    public void getNoMemoDialect() throws IOException {
+    public void getDialect() throws IOException {
         for (final XBaseFileTypeEnum type : XBaseFileTypeEnum.values()) {
-            Assert.assertNotNull(DialectFactory.getNoMemoDialect(type, JxBaseUtils.ASCII_CHARSET));
+            Assert.assertNotNull(DialectFactory.getDialect(type, JxBaseUtils.ASCII_CHARSET));
         }
     }
 }

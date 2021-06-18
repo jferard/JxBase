@@ -38,7 +38,7 @@ public class DB4MetadataReaderTest {
         @SuppressWarnings("unchecked")
         final XBaseDialect<DB4Dialect, DB4Access> dialect =
                 (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
-                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
+                        .getDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
         final DB4MetadataReader reader = new DB4MetadataReader(dialect,
                 inputStream);
         reader.read();
@@ -54,7 +54,7 @@ public class DB4MetadataReaderTest {
         @SuppressWarnings("unchecked")
         final XBaseDialect<DB4Dialect, DB4Access> dialect =
                 (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
-                        .getNoMemoDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
+                        .getDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
         final DB4MetadataReader reader = new DB4MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
