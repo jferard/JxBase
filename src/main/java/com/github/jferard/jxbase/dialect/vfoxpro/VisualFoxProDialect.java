@@ -42,7 +42,7 @@ import java.util.TimeZone;
 /**
  * The VisualFoxPro dialect.
  */
-public class VisualFoxProDialect implements XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> {
+public class VisualFoxProDialect implements XBaseDialect<VisualFoxProAccess, VisualFoxProDialect> {
     protected final XBaseFileTypeEnum type;
     private final VisualFoxProAccess access;
 
@@ -132,12 +132,12 @@ public class VisualFoxProDialect implements XBaseDialect<VisualFoxProDialect, Vi
     }
 
     @Override
-    public XBaseChunkReaderFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalReaderFactory() {
+    public XBaseChunkReaderFactory<VisualFoxProAccess, VisualFoxProDialect> getInternalReaderFactory() {
         return new VisualFoxProChunksReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<VisualFoxProDialect, VisualFoxProAccess> getInternalWriterFactory() {
+    public XBaseChunkWriterFactory<VisualFoxProAccess, VisualFoxProDialect> getInternalWriterFactory() {
         return new VisualFoxProChunksWriterFactory(this, TimeZone.getDefault());
     }
 }

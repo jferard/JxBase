@@ -43,7 +43,7 @@ import java.util.TimeZone;
 /**
  * A writer for DB3 chunks.
  */
-public class DB3ChunkWriterFactory implements XBaseChunkWriterFactory<DB3Dialect, DB3Access> {
+public class DB3ChunkWriterFactory implements XBaseChunkWriterFactory<DB3Access, DB3Dialect> {
     private final DB3Dialect dialect;
     private final TimeZone timeZone;
 
@@ -53,9 +53,9 @@ public class DB3ChunkWriterFactory implements XBaseChunkWriterFactory<DB3Dialect
     }
 
     @Override
-    public XBaseMetadataWriter<DB3Dialect, DB3Access> createMetadataWriter(
+    public XBaseMetadataWriter<DB3Access, DB3Dialect> createMetadataWriter(
             final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
-        return new DB3MetadataWriter<DB3Dialect, DB3Access>(this.dialect, file, outputStream,
+        return new DB3MetadataWriter<DB3Access, DB3Dialect>(this.dialect, file, outputStream,
                 charset);
     }
 
@@ -69,7 +69,7 @@ public class DB3ChunkWriterFactory implements XBaseChunkWriterFactory<DB3Dialect
     public XBaseOptionalWriter<DB3Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
                                                                 final XBaseFieldDescriptorArray<DB3Access> array) {
-        return new GenericOptionalWriter<DB3Dialect, DB3Access>(this.dialect, outputStream,
+        return new GenericOptionalWriter<DB3Access, DB3Dialect>(this.dialect, outputStream,
                 metadata, array);
     }
 
@@ -80,7 +80,7 @@ public class DB3ChunkWriterFactory implements XBaseChunkWriterFactory<DB3Dialect
                                                             final XBaseFieldDescriptorArray<DB3Access> array,
                                                             final XBaseMemoWriter memoWriter,
                                                             final Object optional) {
-        return new DB3RecordWriter<DB3Dialect, DB3Access>(this.dialect, outputStream, charset,
+        return new DB3RecordWriter<DB3Access, DB3Dialect>(this.dialect, outputStream, charset,
                 memoWriter, array.getFields());
     }
 

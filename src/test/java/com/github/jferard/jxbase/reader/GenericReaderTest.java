@@ -36,13 +36,13 @@ import java.io.InputStream;
 import java.text.ParseException;
 
 public class GenericReaderTest {
-    private XBaseChunkReaderFactory<DB3Dialect, DB3Access> rf;
+    private XBaseChunkReaderFactory<DB3Access, DB3Dialect> rf;
     private InputStream is;
     private DB3Dialect dialect;
     private XBaseMetadataReader mdr;
     private XBaseMetadata metadata;
     private XBaseFieldDescriptorArray<DB3Access> array;
-    private XBaseFieldDescriptorArrayReader<DB3Dialect, DB3Access> ar;
+    private XBaseFieldDescriptorArrayReader<DB3Access, DB3Dialect> ar;
     private XBaseOptionalReader or;
     private XBaseOptional optional;
     private XBaseRecordReader rr;
@@ -87,8 +87,8 @@ public class GenericReaderTest {
         EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512*3).times(1);
     }
 
-    private GenericReader<DB3Dialect, DB3Access> getGenericReader() throws IOException {
-        return new GenericReader<DB3Dialect, DB3Access>(this.dialect, "tableName", this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
+    private GenericReader<DB3Access, DB3Dialect> getGenericReader() throws IOException {
+        return new GenericReader<DB3Access, DB3Dialect>(this.dialect, "tableName", this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
     }
 
     @Test

@@ -38,7 +38,7 @@ import java.util.TimeZone;
 /**
  * A dialect for FoxPro <= 2.6.
  */
-public class FoxProDialect implements XBaseDialect<FoxProDialect, DB4Access> {
+public class FoxProDialect implements XBaseDialect<DB4Access, FoxProDialect> {
     protected final XBaseFileTypeEnum type;
     private final DB4Access access;
 
@@ -108,12 +108,12 @@ public class FoxProDialect implements XBaseDialect<FoxProDialect, DB4Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<FoxProDialect, DB4Access> getInternalReaderFactory() {
+    public XBaseChunkReaderFactory<DB4Access, FoxProDialect> getInternalReaderFactory() {
         return new FoxProChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<FoxProDialect, DB4Access> getInternalWriterFactory() {
+    public XBaseChunkWriterFactory<DB4Access, FoxProDialect> getInternalWriterFactory() {
         return new FoxProChunkWriterFactory(this, TimeZone.getDefault());
     }
 }

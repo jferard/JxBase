@@ -30,9 +30,9 @@ public class GenericWriterTest {
     @Test
     @SuppressWarnings("unchecked")
     public void test() throws IOException {
-        final XBaseMetadataWriter<DB3Dialect, DB3Access> metadataWriter = PowerMock.createMock(XBaseMetadataWriter.class);
+        final XBaseMetadataWriter<DB3Access, DB3Dialect> metadataWriter = PowerMock.createMock(XBaseMetadataWriter.class);
         final XBaseRecordWriter<DB3Dialect> recordWriter = PowerMock.createMock(XBaseRecordWriter.class);
-        final GenericWriter<DB3Dialect, DB3Access> gw = new GenericWriter<DB3Dialect, DB3Access>(metadataWriter, recordWriter);
+        final GenericWriter<DB3Access, DB3Dialect> gw = new GenericWriter<DB3Access, DB3Dialect>(metadataWriter, recordWriter);
         final Map<String, Object> objectByName = new HashMap<String, Object>();
         PowerMock.resetAll();
 

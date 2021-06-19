@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,27 +16,8 @@
 
 package com.github.jferard.jxbase.core;
 
-import com.github.jferard.jxbase.field.XBaseField;
-
-import java.util.Collection;
-
 /**
- * The field descriptor array
- * @param <A> the access
+ * A marker interface
  */
-public interface XBaseFieldDescriptorArray<A extends XBaseAccess> {
-    /**
-     * @return the fields
-     */
-    Collection<XBaseField<? super A>> getFields();
-
-    /**
-     * @return the array length in bytes
-     */
-    int getArrayLength();
-
-    /**
-     * @return the length of a record in bytes
-     */
-    int getRecordLength();
+public interface XBaseAccess {
 }

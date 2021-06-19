@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.dialect.db3.field.MemoAccess;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
@@ -37,7 +38,7 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class DB3RecordWriter<D extends XBaseDialect<D, A>, A extends MemoAccess>
+public class DB3RecordWriter<A extends MemoAccess & XBaseAccess, D extends XBaseDialect<A, D>>
         implements XBaseRecordWriter<D> {
     private final XBaseMemoWriter memoWriter;
     protected final Collection<XBaseField<? super A>> fields;

@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.core;
 
 import com.github.jferard.jxbase.TestHelper;
+import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
@@ -85,12 +86,12 @@ public class XBaseRecordTest {
     public void testString() throws IOException, ParseException {
         final Charset ascii = JxBaseUtils.ASCII_CHARSET;
         final InputStream in = new ByteArrayInputStream(" abc".getBytes(ascii));
-        final GenericFieldDescriptorArray<DB2CharacterAccess> array =
-                new GenericFieldDescriptorArray<DB2CharacterAccess>(
-                        Collections.<XBaseField<? super DB2CharacterAccess>>singleton(
+        final GenericFieldDescriptorArray<DB2Access> array =
+                new GenericFieldDescriptorArray<DB2Access>(
+                        Collections.<XBaseField<? super DB2Access>>singleton(
                                 new CharacterField("y", 3)), 0, 4);
-        final XBaseRecordReader reader = new DB3RecordReader<DB2CharacterAccess>(
-                new DB2CharacterAccess(new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET), null),
+        final XBaseRecordReader reader = new DB3RecordReader<DB2Access>(
+                DB2Access.create(JxBaseUtils.ASCII_CHARSET),
                 in, null, ascii, array, JxBaseUtils.UTC_TIME_ZONE);
         final XBaseRecord record = reader.read();
         Assert.assertFalse(record.isDeleted());

@@ -18,6 +18,7 @@
 package com.github.jferard.jxbase.reader;
 
 import com.github.jferard.jxbase.XBaseReader;
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -39,7 +40,8 @@ import java.util.logging.Logger;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseReader<D, A> {
+public class GenericReader<A extends XBaseAccess, D extends XBaseDialect<A, D>>
+        implements XBaseReader<A, D> {
     private final XBaseFieldDescriptorArray<A> array;
     private final XBaseRecordReader recordReader;
     private final XBaseOptional optional;
@@ -59,7 +61,7 @@ public class GenericReader<D extends XBaseDialect<D, A>, A> implements XBaseRead
      */
     public GenericReader(final D dialect, final String tableName, final InputStream inputStream,
                          final Charset charset,
-                         final XBaseChunkReaderFactory<D, A> readerFactory) throws IOException {
+                         final XBaseChunkReaderFactory<A, D> readerFactory) throws IOException {
         this.dialect = dialect;
         this.inputStream = inputStream;
         this.metadata = readerFactory.createMetadataReader(inputStream).read();

@@ -41,7 +41,7 @@ import java.util.TimeZone;
 /**
  * A factory to create readers for various chunks.
  */
-public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect, DB3Access> {
+public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Access, DB3Dialect> {
     protected final DB3Dialect dialect;
     protected final TimeZone timezone;
 
@@ -56,9 +56,9 @@ public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect
     }
 
     @Override
-    public XBaseFieldDescriptorArrayReader<DB3Dialect, DB3Access> createFieldDescriptorArrayReader(
+    public XBaseFieldDescriptorArrayReader<DB3Access, DB3Dialect> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(this.dialect, inputStream,
+        return new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(this.dialect, inputStream,
                 metadata);
     }
 
@@ -78,7 +78,7 @@ public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Dialect
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<DB3Access> array) {
-        return new DB2OptionalReader<DB3Dialect, DB3Access>(this.dialect, inputStream, metadata,
+        return new DB2OptionalReader<DB3Access, DB3Dialect>(this.dialect, inputStream, metadata,
                 array);
     }
 

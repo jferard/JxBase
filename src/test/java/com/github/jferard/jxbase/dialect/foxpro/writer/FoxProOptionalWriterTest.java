@@ -36,7 +36,7 @@ public class FoxProOptionalWriterTest {
                 VisualFoxProDialectFactory.create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        final FoxProOptionalWriter<?, ?> gow = new FoxProOptionalWriter<VisualFoxProDialect, VisualFoxProAccess>(dialect, bos, null, null);
+        final FoxProOptionalWriter<?, ?> gow = new FoxProOptionalWriter<VisualFoxProAccess, VisualFoxProDialect>(dialect, bos, null, null);
         final byte[] bytes = new byte[100];
         Arrays.fill(bytes, (byte) 13);
 

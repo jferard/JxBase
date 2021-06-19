@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
@@ -34,7 +35,7 @@ import java.util.Date;
 /**
  * Access (read/write) for DB3 fields.
  */
-public class DB3Access extends DB2Access implements CDLMNFieldsAccess {
+public class DB3Access extends DB2Access implements CDLMNFieldsAccess, XBaseAccess {
     private final DateAccess dateAccess;
     private final MemoAccess memoAccess;
 

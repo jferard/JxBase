@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
@@ -33,7 +34,7 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the accesss
  */
-public interface XBaseChunkWriterFactory<D extends XBaseDialect<D, A>, A> {
+public interface XBaseChunkWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A, D>> {
     /**
      * Create a writer for meta data.
      * @param file              we need the file as random access file to fix metadata
@@ -41,7 +42,7 @@ public interface XBaseChunkWriterFactory<D extends XBaseDialect<D, A>, A> {
      * @param charset           the charset
      * @return                  the meta data writer
      */
-    XBaseMetadataWriter<D, A> createMetadataWriter(RandomAccessFile file, OutputStream outputStream,
+    XBaseMetadataWriter<A, D> createMetadataWriter(RandomAccessFile file, OutputStream outputStream,
                                                    Charset charset);
 
     /**

@@ -40,7 +40,7 @@ public class FoxProInternalWriterFactoryTest {
 
     @Before
     public void setUp() {
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectFactory
+        final XBaseDialect<VisualFoxProAccess, VisualFoxProDialect> dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         this.factory =

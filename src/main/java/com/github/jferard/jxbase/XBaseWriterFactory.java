@@ -18,6 +18,7 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
@@ -47,10 +48,10 @@ import java.util.Map;
 /**
  * A factory for writers
  *
- * @param <D> The dialect
  * @param <A> The access
+ * @param <D> The dialect
  */
-public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
+public class XBaseWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A, D>> {
     /**
      * Create a new writer.
      *
@@ -67,12 +68,12 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
      * @return a writer on the table.
      * @throws IOException
      */
-    public static <E extends XBaseDialect<E, F>, F> XBaseWriter createWriter(
+    public static <F extends XBaseAccess, E extends XBaseDialect<F, E>> XBaseWriter createWriter(
             final XBaseFileTypeEnum type, final String tableName, final Charset charset,
             final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,
             final XBaseOptional optional, final Map<String, Object> memoHeaderMeta)
             throws IOException {
-        return new XBaseWriterFactory<E, F>()
+        return new XBaseWriterFactory<F, E>()
                 .create(type, tableName, charset, meta, fields, optional, memoHeaderMeta);
     }
 
@@ -84,7 +85,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
             throws IOException {
         @SuppressWarnings("unchecked") final D dialect = (D) DialectFactory
                 .getDialect(type, JxBaseUtils.UTF8_CHARSET);
-        final XBaseChunkWriterFactory<D, A> writerFactory =
+        final XBaseChunkWriterFactory<A, D> writerFactory =
                 dialect.getInternalWriterFactory();
         final File dbfFile = new File(tableName + ".dbf");
         dbfFile.delete();
@@ -95,7 +96,7 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
         final XBaseFieldDescriptorArray<A> array = this.getFieldDescriptorArray(dialect, fields);
         final XBaseMetadata initialMetadata = this.getInitialMetadata(type, dialect, meta, array);
 
-        final XBaseMetadataWriter<D, A> metadataWriter =
+        final XBaseMetadataWriter<A, D> metadataWriter =
                 this.writeHeader(dialect, file, out, charset, writerFactory, initialMetadata, array,
                         optional);
         XBaseMemoWriter memoWriter;
@@ -107,16 +108,16 @@ public class XBaseWriterFactory<D extends XBaseDialect<D, A>, A> {
         final XBaseRecordWriter<D> recordWriter =
                 writerFactory.createRecordWriter(out, charset, initialMetadata, array,
                         memoWriter, optional);
-        return new GenericWriter<D, A>(metadataWriter, recordWriter);
+        return new GenericWriter<A, D>(metadataWriter, recordWriter);
     }
 
-    private XBaseMetadataWriter<D, A> writeHeader(final D dialect, final RandomAccessFile file,
+    private XBaseMetadataWriter<A, D> writeHeader(final D dialect, final RandomAccessFile file,
                                                   final OutputStream out, final Charset charset,
-                                                  final XBaseChunkWriterFactory<D, A> writerFactory,
+                                                  final XBaseChunkWriterFactory<A, D> writerFactory,
                                                   final XBaseMetadata initialMetadata,
                                                   final XBaseFieldDescriptorArray<A> array,
                                                   final XBaseOptional optional) throws IOException {
-        final XBaseMetadataWriter<D, A> metadataWriter =
+        final XBaseMetadataWriter<A, D> metadataWriter =
                 writerFactory.createMetadataWriter(file, out, charset);
         metadataWriter.write(initialMetadata);
         final XBaseFieldDescriptorArrayWriter<A> fieldDescriptorArrayWriter =

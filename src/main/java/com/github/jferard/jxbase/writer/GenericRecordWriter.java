@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -36,11 +37,12 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class GenericRecordWriter<D extends XBaseDialect<D, A>, A> implements XBaseRecordWriter<D> {
-    public static <D extends XBaseDialect<D, A>, A> XBaseRecordWriter<D> create(
-            final D dialect, final OutputStream outputStream, final Charset charset,
-            final Collection<XBaseField<? super A>> fields) {
-        return new GenericRecordWriter<D, A>(dialect.getAccess(), outputStream, charset, fields);
+public class GenericRecordWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>>
+        implements XBaseRecordWriter<D> {
+    public static <E extends XBaseAccess, F extends XBaseDialect<E, F>> XBaseRecordWriter<F> create(
+            final F dialect, final OutputStream outputStream, final Charset charset,
+            final Collection<XBaseField<? super E>> fields) {
+        return new GenericRecordWriter<E, F>(dialect.getAccess(), outputStream, charset, fields);
     }
 
     protected final Collection<XBaseField<? super A>> fields;

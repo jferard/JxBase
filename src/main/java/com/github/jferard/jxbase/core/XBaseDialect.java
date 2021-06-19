@@ -20,19 +20,19 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
-
 /**
  * A dialect.
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
-public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
+public interface XBaseDialect<A extends XBaseAccess, D extends XBaseDialect<A, D>> {
     /**
      * Create a field. The field depends on the dialect (e.g. memo fields dialect dependent).
-     * @param name name of the field
-     * @param typeByte the type byte of the field ('C' for char...)
-     * @param length the given length of the field
+     *
+     * @param name                  name of the field
+     * @param typeByte              the type byte of the field ('C' for char...)
+     * @param length                the given length of the field
      * @param numberOfDecimalPlaces the given number of decimal places
      * @return the field.
      */
@@ -64,7 +64,7 @@ public interface XBaseDialect<D extends XBaseDialect<D, A>, A> {
      */
     A getAccess();
 
-    XBaseChunkReaderFactory<D, A> getInternalReaderFactory();
+    XBaseChunkReaderFactory<A, D> getInternalReaderFactory();
 
-    XBaseChunkWriterFactory<D, A> getInternalWriterFactory();
+    XBaseChunkWriterFactory<A, D> getInternalWriterFactory();
 }

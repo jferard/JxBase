@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.DB2LogicalAccess;
@@ -34,7 +35,7 @@ import java.nio.charset.Charset;
 /**
  * Access to DB2 fields.
  */
-public class DB2Access implements CLNFieldsAccess {
+public class DB2Access implements CLNFieldsAccess, XBaseAccess {
     public static DB2Access create(final Charset charset) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);

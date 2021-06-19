@@ -67,7 +67,7 @@ public class WriterIT {
         meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter =
-                XBaseWriterFactory.<DB4Dialect, DB4Access>createWriter(XBaseFileTypeEnum.dBASE4SQLTableMemo, "111",
+                XBaseWriterFactory.<DB4Access, DB4Dialect>createWriter(XBaseFileTypeEnum.dBASE4SQLTableMemo, "111",
                         JxBaseUtils.UTF8_CHARSET, meta, this.fields, new GenericOptional(new byte[263]),
                         Collections.<String, Object>emptyMap());
         try {

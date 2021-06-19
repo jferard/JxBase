@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -30,7 +31,7 @@ import java.io.OutputStream;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class GenericOptionalWriter<D extends XBaseDialect<D, A>, A> implements XBaseOptionalWriter<D> {
+public class GenericOptionalWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>> implements XBaseOptionalWriter<D> {
     private final D dialect;
     private final OutputStream outputStream;
     private final XBaseMetadata metadata;

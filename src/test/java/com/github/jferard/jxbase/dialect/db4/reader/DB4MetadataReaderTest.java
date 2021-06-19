@@ -36,8 +36,8 @@ public class DB4MetadataReaderTest {
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
         @SuppressWarnings("unchecked")
-        final XBaseDialect<DB4Dialect, DB4Access> dialect =
-                (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
+        final XBaseDialect<DB4Access, DB4Dialect> dialect =
+                (XBaseDialect<DB4Access, DB4Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
         final DB4MetadataReader reader = new DB4MetadataReader(dialect,
                 inputStream);
@@ -52,8 +52,8 @@ public class DB4MetadataReaderTest {
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         @SuppressWarnings("unchecked")
-        final XBaseDialect<DB4Dialect, DB4Access> dialect =
-                (XBaseDialect<DB4Dialect, DB4Access>) DialectFactory
+        final XBaseDialect<DB4Access, DB4Dialect> dialect =
+                (XBaseDialect<DB4Access, DB4Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE4, JxBaseUtils.ASCII_CHARSET);
         final DB4MetadataReader reader = new DB4MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();

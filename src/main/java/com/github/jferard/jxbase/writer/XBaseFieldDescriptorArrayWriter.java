@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 
 import java.io.IOException;
@@ -24,6 +25,6 @@ import java.io.IOException;
  * A writer for the descriptor array (description of the fields).
  * @param <A> the access
  */
-public interface XBaseFieldDescriptorArrayWriter<A> {
+public interface XBaseFieldDescriptorArrayWriter<A extends XBaseAccess> {
     int write(XBaseFieldDescriptorArray<A> array) throws IOException;
 }

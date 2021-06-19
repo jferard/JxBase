@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.XBaseWriter;
 
@@ -27,11 +28,11 @@ import java.util.Map;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class GenericWriter<D extends XBaseDialect<D, A>, A> implements XBaseWriter {
-    private final XBaseMetadataWriter<D, A> metadataWriter;
+public class GenericWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>> implements XBaseWriter {
+    private final XBaseMetadataWriter<A, D> metadataWriter;
     private final XBaseRecordWriter<D> recordWriter;
 
-    public GenericWriter(final XBaseMetadataWriter<D, A> metadataWriter,
+    public GenericWriter(final XBaseMetadataWriter<A, D> metadataWriter,
                          final XBaseRecordWriter<D> recordWriter) {
         this.metadataWriter = metadataWriter;
         this.recordWriter = recordWriter;

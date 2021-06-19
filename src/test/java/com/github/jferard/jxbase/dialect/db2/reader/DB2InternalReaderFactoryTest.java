@@ -61,7 +61,7 @@ public class DB2InternalReaderFactoryTest {
         final DB2ChunkReaderFactory factory =
                 new DB2ChunkReaderFactory(dialect, JxBaseUtils.UTC_TIME_ZONE);
 
-        final XBaseFieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
+        final XBaseFieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
                 factory.createFieldDescriptorArrayReader(bis, metadata);
         final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
         PowerMock.verifyAll();

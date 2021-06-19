@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.vfoxpro;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
@@ -37,7 +38,7 @@ import java.util.Date;
 /**
  * Access (read/write) for VisualFoxPro fields.
  */
-public class VisualFoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess {
+public class VisualFoxProAccess extends DB4Access implements CDDtFILMN0FieldsAccess, XBaseAccess {
     private final DatetimeAccess datetimeAccess;
     private final IntegerAccess integerAccess;
     private final NullFlagsAccess nullFlagsAccess;

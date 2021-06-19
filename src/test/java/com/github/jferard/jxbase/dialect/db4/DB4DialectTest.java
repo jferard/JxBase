@@ -32,7 +32,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class DB4DialectTest {
-    private XBaseDialect<DB4Dialect, DB4Access> dialect;
+    private XBaseDialect<DB4Access, DB4Dialect> dialect;
 
     @Before
     public void setUp() {

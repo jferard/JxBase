@@ -48,7 +48,7 @@ public class FoxProRecordWriterTest {
     public void setUp() {
         this.mw = PowerMock.createMock(XBaseMemoWriter.class);
         this.bos = new ByteArrayOutputStream();
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect =
+        final XBaseDialect<VisualFoxProAccess, VisualFoxProDialect> dialect =
                 VisualFoxProDialectFactory.create(XBaseFileTypeEnum.VisualFoxPro, JxBaseUtils.UTF8_CHARSET,
                         TimeZone.getTimeZone("GMT"));
         this.access =

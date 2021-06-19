@@ -48,7 +48,7 @@ import java.util.TimeZone;
  * A factory for VisualFoxPro chunks readers.
  */
 public class VisualFoxProChunksReaderFactory implements
-        XBaseChunkReaderFactory<VisualFoxProDialect, VisualFoxProAccess> {
+        XBaseChunkReaderFactory<VisualFoxProAccess, VisualFoxProDialect> {
     protected final VisualFoxProDialect dialect;
     protected final TimeZone timezone;
 
@@ -59,13 +59,13 @@ public class VisualFoxProChunksReaderFactory implements
 
     @Override
     public XBaseMetadataReader createMetadataReader(final InputStream inputStream) {
-        return new FoxProMetadataReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream);
+        return new FoxProMetadataReader<VisualFoxProAccess, VisualFoxProDialect>(this.dialect, inputStream);
     }
 
     @Override
-    public XBaseFieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess> createFieldDescriptorArrayReader(
+    public XBaseFieldDescriptorArrayReader<VisualFoxProAccess, VisualFoxProDialect> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB3FieldDescriptorArrayReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream,
+        return new DB3FieldDescriptorArrayReader<VisualFoxProAccess, VisualFoxProDialect>(this.dialect, inputStream,
                 metadata);
     }
 
@@ -104,6 +104,6 @@ public class VisualFoxProChunksReaderFactory implements
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<VisualFoxProAccess> array) {
-        return new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, inputStream, metadata, array);
+        return new FoxProOptionalReader<VisualFoxProAccess, VisualFoxProDialect>(this.dialect, inputStream, metadata, array);
     }
 }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.reader.GenericReader;
@@ -47,8 +48,8 @@ public class XBaseReaderFactory {
         return new XBaseReaderFactory().create(tableName, charset);
     }
 
-    private <D extends XBaseDialect<D, A>, A> XBaseReader<D, A> create(final String tableName,
-                                                                       final Charset charset)
+    private <A extends XBaseAccess, D extends XBaseDialect<A, D>> XBaseReader<A, D> create(
+            final String tableName, final Charset charset)
             throws IOException {
         final File file = IOUtils.getIgnoreCaseFile(tableName + ".dbf");
         if (file == null) {
@@ -63,9 +64,10 @@ public class XBaseReaderFactory {
 
         @SuppressWarnings("unchecked") final D dialect =
                 (D) DialectFactory.getDialect(type, charset);
-        final XBaseChunkReaderFactory<D, A> readerFactory =
+        final XBaseChunkReaderFactory<A, D> readerFactory =
                 dialect.getInternalReaderFactory();
-        return new GenericReader<D, A>(dialect, tableName, resettableInputStream, charset, readerFactory);
+        return new GenericReader<A, D>(dialect, tableName, resettableInputStream, charset,
+                readerFactory);
     }
 
     private XBaseFileTypeEnum getXBaseFileType(final InputStream resettableInputStream)

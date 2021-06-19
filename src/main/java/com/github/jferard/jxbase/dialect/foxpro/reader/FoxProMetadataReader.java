@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
@@ -33,7 +34,7 @@ import java.util.Map;
 /**
  * A foxpro meta data reader
  */
-public class FoxProMetadataReader<D extends XBaseDialect<D, A>, A> implements XBaseMetadataReader {
+public class FoxProMetadataReader<A extends XBaseAccess, D extends XBaseDialect<A, D>> implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
     private final D dialect;
 

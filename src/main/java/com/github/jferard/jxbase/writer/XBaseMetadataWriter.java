@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 
@@ -24,13 +25,16 @@ import java.io.IOException;
 
 /**
  * A writer for the meta data (first chunk of the file).
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
-public interface XBaseMetadataWriter<D extends XBaseDialect<D, A>, A> extends Closeable {
+public interface XBaseMetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>>
+        extends Closeable {
     /**
      * Write the meta data.
-     * @param metadata      the meta data
+     *
+     * @param metadata the meta data
      * @throws IOException
      */
     void write(XBaseMetadata metadata) throws IOException;

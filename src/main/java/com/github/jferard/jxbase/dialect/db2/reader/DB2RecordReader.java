@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -32,7 +33,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DB2RecordReader<A> implements XBaseRecordReader {
+public class DB2RecordReader<A extends XBaseAccess> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
     protected final Charset charset;
     protected final byte[] recordBuffer;

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -30,7 +31,7 @@ import java.io.OutputStream;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class FoxProOptionalWriter<D extends XBaseDialect<D, A>, A>
+public class FoxProOptionalWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>>
         implements XBaseOptionalWriter<D> {
     private final OutputStream outputStream;
 

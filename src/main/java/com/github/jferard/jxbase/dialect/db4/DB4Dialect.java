@@ -32,13 +32,12 @@ import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
 import java.util.TimeZone;
 
 /**
  * The DB4 dialect.
  */
-public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
+public class DB4Dialect implements XBaseDialect<DB4Access, DB4Dialect> {
     protected final XBaseFileTypeEnum type;
     private final DB4Access access;
 
@@ -109,12 +108,12 @@ public class DB4Dialect implements XBaseDialect<DB4Dialect, DB4Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<DB4Dialect, DB4Access> getInternalReaderFactory() {
+    public XBaseChunkReaderFactory<DB4Access, DB4Dialect> getInternalReaderFactory() {
         return new DB4ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<DB4Dialect, DB4Access> getInternalWriterFactory() {
+    public XBaseChunkWriterFactory<DB4Access, DB4Dialect> getInternalWriterFactory() {
         return new DB4ChunkWriterFactory(this, TimeZone.getDefault());
     }
 }

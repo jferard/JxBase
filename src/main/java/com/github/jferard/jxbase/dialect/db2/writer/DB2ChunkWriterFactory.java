@@ -29,7 +29,6 @@ import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 import com.github.jferard.jxbase.writer.XBaseOptionalWriter;
 import com.github.jferard.jxbase.writer.XBaseRecordWriter;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
@@ -39,7 +38,7 @@ import java.util.TimeZone;
 /**
  * A chunk writer factory for DB2.
  */
-public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Dialect, DB2Access> {
+public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Access, DB2Dialect> {
     private final DB2Dialect dialect;
     private final TimeZone timeZone;
 
@@ -49,9 +48,9 @@ public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Dialect
     }
 
     @Override
-    public XBaseMetadataWriter<DB2Dialect, DB2Access> createMetadataWriter(
+    public XBaseMetadataWriter<DB2Access, DB2Dialect> createMetadataWriter(
             final RandomAccessFile file, final OutputStream outputStream, final Charset charset) {
-        return new DB2MetadataWriter<DB2Dialect, DB2Access>(this.dialect, file, outputStream,
+        return new DB2MetadataWriter<DB2Access, DB2Dialect>(this.dialect, file, outputStream,
                 charset);
     }
 
@@ -65,7 +64,7 @@ public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Dialect
     public XBaseOptionalWriter<DB2Dialect> createOptionalWriter(final OutputStream outputStream,
                                                                 final XBaseMetadata metadata,
                                                                 final XBaseFieldDescriptorArray<DB2Access> array) {
-        return new DB2OptionalWriter<DB2Dialect, DB2Access>(this.dialect, outputStream, metadata,
+        return new DB2OptionalWriter<DB2Access, DB2Dialect>(this.dialect, outputStream, metadata,
                 array);
     }
 

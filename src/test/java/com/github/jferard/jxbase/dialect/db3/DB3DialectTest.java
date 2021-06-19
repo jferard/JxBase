@@ -31,7 +31,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 public class DB3DialectTest {
-    private XBaseDialect<DB3Dialect, DB3Access> dialect;
+    private XBaseDialect<DB3Access, DB3Dialect> dialect;
 
     @Before
     public void setUp() {

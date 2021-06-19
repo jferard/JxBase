@@ -43,8 +43,8 @@ public class DB3RecordWriterTest {
                 .create(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET,
                         JxBaseUtils.UTC_TIME_ZONE);
         @SuppressWarnings("unchecked")
-        final DB3RecordWriter<DB3Dialect, DB3Access> writer =
-                new DB3RecordWriter<DB3Dialect, DB3Access>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
+        final DB3RecordWriter<DB3Access, DB3Dialect> writer =
+                new DB3RecordWriter<DB3Access, DB3Dialect>(dialect, bos, JxBaseUtils.ASCII_CHARSET,
                         memoWriter, Arrays.<XBaseField<? super DB3Access>>asList(
                                 new CharacterField("chars", 10),
                                 new NumericField("num", 8, 2)));

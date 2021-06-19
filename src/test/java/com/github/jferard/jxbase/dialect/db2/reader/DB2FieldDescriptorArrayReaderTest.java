@@ -32,8 +32,8 @@ import java.util.Collections;
 public class DB2FieldDescriptorArrayReaderTest {
     @Test(expected = IOException.class)
     public void testVoidStream() throws IOException {
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(new byte[]{}));
         arrayReader.read();
@@ -41,8 +41,8 @@ public class DB2FieldDescriptorArrayReaderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testRandomStream() throws IOException {
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
                                 "abcdefghijklmnop".getBytes(JxBaseUtils.ASCII_CHARSET)));
@@ -51,8 +51,8 @@ public class DB2FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testStreamWithoutTerminator() throws IOException {
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
                                 "abcdefghijkCmnop".getBytes(JxBaseUtils.ASCII_CHARSET)));
@@ -61,8 +61,8 @@ public class DB2FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testStreamWithoutBadTerminator() throws IOException {
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
                                 "abcdefghijkCmnopQ".getBytes(JxBaseUtils.ASCII_CHARSET)));
@@ -71,8 +71,8 @@ public class DB2FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testStreamIncorrectRemainingFields() throws IOException {
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
                                 "abcdefghijkCmnop\015".getBytes(JxBaseUtils.ASCII_CHARSET)));
@@ -84,8 +84,8 @@ public class DB2FieldDescriptorArrayReaderTest {
         final byte[] bytes = new byte[16 * 32 + 2];
         System.arraycopy("abcdefghijkCmnop".getBytes(JxBaseUtils.ASCII_CHARSET), 0, bytes, 0, 16);
         bytes[16] = JxBaseUtils.HEADER_TERMINATOR;
-        final DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access> arrayReader =
-                new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(bytes));
         final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();

@@ -38,13 +38,13 @@ public class DB4MetadataWriterTest {
 
     private RandomAccessFile file;
     private ByteArrayOutputStream out;
-    private DB4MetadataWriter<DB4Dialect, DB4Access> writer;
+    private DB4MetadataWriter<DB4Access, DB4Dialect> writer;
 
     @Before
     public void setUp() {
         this.file = PowerMock.createMock(RandomAccessFile.class);
         this.out = new ByteArrayOutputStream();
-        this.writer = new DB4MetadataWriter<DB4Dialect, DB4Access>(null, this.file, this.out,
+        this.writer = new DB4MetadataWriter<DB4Access, DB4Dialect>(null, this.file, this.out,
                 JxBaseUtils.ASCII_CHARSET);
     }
 

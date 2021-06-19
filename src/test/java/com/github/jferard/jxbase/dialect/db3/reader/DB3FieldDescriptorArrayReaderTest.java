@@ -43,8 +43,8 @@ public class DB3FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testVoidStream() throws IOException {
-        final DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access> arrayReader =
-                new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(
+        final DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect> arrayReader =
+                new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(
                         new DB3Dialect(XBaseFileTypeEnum.dBASE3plus, this.db3Access),
                         new ByteArrayInputStream(new byte[]{}), null);
         arrayReader.read();
@@ -52,8 +52,8 @@ public class DB3FieldDescriptorArrayReaderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testRandomStream() throws IOException {
-        final DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access> arrayReader =
-                new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(
+        final DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect> arrayReader =
+                new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(
                         new DB3Dialect(XBaseFileTypeEnum.dBASE3plus, this.db3Access),
                         new ByteArrayInputStream("abcdefghijklmnop                "
                                 .getBytes(JxBaseUtils.ASCII_CHARSET)), null);
@@ -62,8 +62,8 @@ public class DB3FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testStreamWithoutTerminator() throws IOException {
-        final DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access> arrayReader =
-                new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(
+        final DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect> arrayReader =
+                new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(
                         new DB3Dialect(XBaseFileTypeEnum.dBASE3plus, this.db3Access),
                         new ByteArrayInputStream("abcdefghijkCmnop                                "
                                 .getBytes(JxBaseUtils.ASCII_CHARSET)), null);
@@ -72,8 +72,8 @@ public class DB3FieldDescriptorArrayReaderTest {
 
     @Test(expected = IOException.class)
     public void testStreamWithoutBadTerminator() throws IOException {
-        final DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access> arrayReader =
-                new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(
+        final DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect> arrayReader =
+                new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(
                         new DB3Dialect(XBaseFileTypeEnum.dBASE3plus, this.db3Access),
                         new ByteArrayInputStream("abcdefghijkCmnop                Q"
                                 .getBytes(JxBaseUtils.ASCII_CHARSET)), null);
@@ -86,8 +86,8 @@ public class DB3FieldDescriptorArrayReaderTest {
         System.arraycopy("abcdefghijkCmnop                ".getBytes(JxBaseUtils.ASCII_CHARSET), 0,
                 bytes, 0, 16);
         bytes[32] = JxBaseUtils.HEADER_TERMINATOR;
-        final DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access> arrayReader =
-                new DB3FieldDescriptorArrayReader<DB3Dialect, DB3Access>(
+        final DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect> arrayReader =
+                new DB3FieldDescriptorArrayReader<DB3Access, DB3Dialect>(
                         new DB3Dialect(XBaseFileTypeEnum.dBASE3plus, this.db3Access),
                         new ByteArrayInputStream(bytes), null);
         final XBaseFieldDescriptorArray<DB3Access> array = arrayReader.read();

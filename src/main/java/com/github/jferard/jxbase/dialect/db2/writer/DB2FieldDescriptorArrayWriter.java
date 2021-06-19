@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
@@ -33,7 +34,7 @@ import java.util.Iterator;
  * The descriptor array writer in DB2.
  * @param <A> the access
  */
-public class DB2FieldDescriptorArrayWriter<A>
+public class DB2FieldDescriptorArrayWriter<A extends XBaseAccess>
         implements XBaseFieldDescriptorArrayWriter<A> {
     final A access;
     final OutputStream out;

@@ -37,9 +37,9 @@ import java.util.Map;
  */
 public class DB4MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
-    private final XBaseDialect<DB4Dialect, DB4Access> dialect;
+    private final XBaseDialect<DB4Access, DB4Dialect> dialect;
 
-    public DB4MetadataReader(final XBaseDialect<DB4Dialect, DB4Access> dialect,
+    public DB4MetadataReader(final XBaseDialect<DB4Access, DB4Dialect> dialect,
                              final InputStream dbfInputStream) {
         this.dialect = dialect;
         this.dbfInputStream = dbfInputStream;

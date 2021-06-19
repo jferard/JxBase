@@ -37,9 +37,9 @@ import java.util.Map;
  */
 public class DB3MetadataReader implements XBaseMetadataReader {
     private final InputStream dbfInputStream;
-    private final XBaseDialect<DB3Dialect, DB3Access> dialect;
+    private final XBaseDialect<DB3Access, DB3Dialect> dialect;
 
-    public DB3MetadataReader(final XBaseDialect<DB3Dialect, DB3Access> dialect,
+    public DB3MetadataReader(final XBaseDialect<DB3Access, DB3Dialect> dialect,
                              final InputStream dbfInputStream) {
         this.dialect = dialect;
         this.dbfInputStream = dbfInputStream;

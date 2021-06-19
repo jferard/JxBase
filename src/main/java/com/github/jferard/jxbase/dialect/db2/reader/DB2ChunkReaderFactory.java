@@ -28,7 +28,6 @@ import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
@@ -36,7 +35,7 @@ import java.util.TimeZone;
 /**
  * A factory to create internal readers.
  */
-public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Dialect, DB2Access> {
+public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Access, DB2Dialect> {
     protected final DB2Dialect dialect;
     protected final TimeZone timezone;
 
@@ -51,9 +50,9 @@ public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Dialect
     }
 
     @Override
-    public XBaseFieldDescriptorArrayReader<DB2Dialect, DB2Access> createFieldDescriptorArrayReader(
+    public XBaseFieldDescriptorArrayReader<DB2Access, DB2Dialect> createFieldDescriptorArrayReader(
             final InputStream inputStream, final XBaseMetadata metadata) {
-        return new DB2FieldDescriptorArrayReader<DB2Dialect, DB2Access>(this.dialect, inputStream
+        return new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(this.dialect, inputStream
         );
     }
 
@@ -79,7 +78,7 @@ public class DB2ChunkReaderFactory implements XBaseChunkReaderFactory<DB2Dialect
                                                     final Charset charset,
                                                     final XBaseMetadata metadata,
                                                     final XBaseFieldDescriptorArray<DB2Access> array) {
-        return new DB2OptionalReader<DB2Dialect, DB2Access>(this.dialect, inputStream, metadata,
+        return new DB2OptionalReader<DB2Access, DB2Dialect>(this.dialect, inputStream, metadata,
                 array);
     }
 }

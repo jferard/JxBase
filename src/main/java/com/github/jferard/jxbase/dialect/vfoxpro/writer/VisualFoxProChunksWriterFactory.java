@@ -47,7 +47,7 @@ import java.util.TimeZone;
  * A factory for VisualFoxPro chunks writers.
  */
 public class VisualFoxProChunksWriterFactory implements
-        XBaseChunkWriterFactory<VisualFoxProDialect, VisualFoxProAccess> {
+        XBaseChunkWriterFactory<VisualFoxProAccess, VisualFoxProDialect> {
     private final VisualFoxProDialect dialect;
     private final TimeZone timeZone;
 
@@ -58,11 +58,11 @@ public class VisualFoxProChunksWriterFactory implements
     }
 
     @Override
-    public XBaseMetadataWriter<VisualFoxProDialect, VisualFoxProAccess> createMetadataWriter(
+    public XBaseMetadataWriter<VisualFoxProAccess, VisualFoxProDialect> createMetadataWriter(
             final RandomAccessFile file,
             final OutputStream outputStream,
             final Charset charset) {
-        return new DB4MetadataWriter<VisualFoxProDialect, VisualFoxProAccess>(this.dialect, file,
+        return new DB4MetadataWriter<VisualFoxProAccess, VisualFoxProDialect>(this.dialect, file,
                 outputStream, charset);
     }
 
@@ -78,7 +78,7 @@ public class VisualFoxProChunksWriterFactory implements
             final OutputStream outputStream,
             final XBaseMetadata metadata,
             final XBaseFieldDescriptorArray<VisualFoxProAccess> array) {
-        return new FoxProOptionalWriter<VisualFoxProDialect, VisualFoxProAccess>(this.dialect,
+        return new FoxProOptionalWriter<VisualFoxProAccess, VisualFoxProDialect>(this.dialect,
                 outputStream, metadata, array);
     }
 
@@ -89,7 +89,7 @@ public class VisualFoxProChunksWriterFactory implements
             final XBaseMetadata metadata,
             final XBaseFieldDescriptorArray<VisualFoxProAccess> array,
             final XBaseMemoWriter memoWriter, final Object optional) {
-        return new DB3RecordWriter<VisualFoxProDialect, VisualFoxProAccess>(this.dialect,
+        return new DB3RecordWriter<VisualFoxProAccess, VisualFoxProDialect>(this.dialect,
                 outputStream, charset,
                 memoWriter, array.getFields());
     }

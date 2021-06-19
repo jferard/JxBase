@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase.dialect.foxpro.reader;
 
 import com.github.jferard.jxbase.core.GenericOptional;
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -32,7 +33,7 @@ import java.io.InputStream;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class FoxProOptionalReader<D extends XBaseDialect<D, A>, A> implements XBaseOptionalReader {
+public class FoxProOptionalReader<A extends XBaseAccess, D extends XBaseDialect<A, D>> implements XBaseOptionalReader {
     public static final int DATABASE_CONTAINER_LENGTH = 263;
     private final InputStream inputStream;
 

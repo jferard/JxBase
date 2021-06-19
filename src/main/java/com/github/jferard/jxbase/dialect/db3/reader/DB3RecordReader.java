@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.reader;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -41,7 +42,7 @@ import java.util.TimeZone;
  *
  * @param <A> the access
  */
-public class DB3RecordReader<A> implements XBaseRecordReader {
+public class DB3RecordReader<A extends XBaseAccess> implements XBaseRecordReader {
     protected final InputStream dbfInputStream;
     private final XBaseMemoReader memoReader;
     protected final Charset charset;

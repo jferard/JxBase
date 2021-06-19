@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
@@ -36,8 +37,8 @@ import java.util.Collection;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class DB2FieldDescriptorArrayReader<D extends XBaseDialect<D, A>, A>
-        implements XBaseFieldDescriptorArrayReader<D, A> {
+public class DB2FieldDescriptorArrayReader<A extends XBaseAccess, D extends XBaseDialect<A, D>>
+        implements XBaseFieldDescriptorArrayReader<A, D> {
     private final InputStream inputStream;
     private final int fieldDescriptorLength;
     private final D dialect;

@@ -46,7 +46,7 @@ import java.util.TimeZone;
  * A writer for foxpro chunks
  */
 public class FoxProChunkWriterFactory
-        implements XBaseChunkWriterFactory<FoxProDialect, DB4Access> {
+        implements XBaseChunkWriterFactory<DB4Access, FoxProDialect> {
     private final FoxProDialect dialect;
     private final TimeZone timeZone;
 
@@ -56,11 +56,11 @@ public class FoxProChunkWriterFactory
     }
 
     @Override
-    public XBaseMetadataWriter<FoxProDialect, DB4Access> createMetadataWriter(
+    public XBaseMetadataWriter<DB4Access, FoxProDialect> createMetadataWriter(
             final RandomAccessFile file,
             final OutputStream outputStream,
             final Charset charset) {
-        return new DB4MetadataWriter<FoxProDialect, DB4Access>(this.dialect, file,
+        return new DB4MetadataWriter<DB4Access, FoxProDialect>(this.dialect, file,
                 outputStream, charset);
     }
 
@@ -75,7 +75,7 @@ public class FoxProChunkWriterFactory
     public XBaseOptionalWriter<FoxProDialect> createOptionalWriter(final OutputStream outputStream,
                                                                    final XBaseMetadata metadata,
                                                                    final XBaseFieldDescriptorArray<DB4Access> array) {
-        return new FoxProOptionalWriter<FoxProDialect, DB4Access>(this.dialect,
+        return new FoxProOptionalWriter<DB4Access, FoxProDialect>(this.dialect,
                 outputStream, metadata, array);
     }
 
@@ -86,7 +86,7 @@ public class FoxProChunkWriterFactory
                                                                final XBaseFieldDescriptorArray<DB4Access> array,
                                                                final XBaseMemoWriter memoWriter,
                                                                final Object optional) {
-        return new DB3RecordWriter<FoxProDialect, DB4Access>(this.dialect, outputStream,
+        return new DB3RecordWriter<DB4Access, FoxProDialect>(this.dialect, outputStream,
                 charset,
                 memoWriter, array.getFields());
     }

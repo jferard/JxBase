@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterAccess;
 import com.github.jferard.jxbase.dialect.db2.field.LogicalAccess;
 import com.github.jferard.jxbase.dialect.db2.field.NumericAccess;
@@ -32,7 +33,7 @@ import java.math.BigDecimal;
 /**
  * Access for DB4 fields.
  */
-public class DB4Access extends DB3Access implements CDFLMNFieldsAccess {
+public class DB4Access extends DB3Access implements CDFLMNFieldsAccess, XBaseAccess {
     private final FloatAccess floatAccess;
 
     public DB4Access(final CharacterAccess characterAccess, final DateAccess dateAccess,

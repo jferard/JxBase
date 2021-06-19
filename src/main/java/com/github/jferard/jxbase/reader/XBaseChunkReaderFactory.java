@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.reader;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -32,7 +33,7 @@ import java.nio.charset.Charset;
  * @param <D> dialect
  * @param <A> access
  */
-public interface XBaseChunkReaderFactory<D extends XBaseDialect<D, A>, A> {
+public interface XBaseChunkReaderFactory<A extends XBaseAccess, D extends XBaseDialect<A, D>> {
     /**
      * @param inputStream the input stream
      * @return the meta data reader
@@ -44,7 +45,7 @@ public interface XBaseChunkReaderFactory<D extends XBaseDialect<D, A>, A> {
      * @param metadata the read meta data
      * @return the field descriptor array reader
      */
-    XBaseFieldDescriptorArrayReader<D, A> createFieldDescriptorArrayReader(InputStream inputStream,
+    XBaseFieldDescriptorArrayReader<A, D> createFieldDescriptorArrayReader(InputStream inputStream,
                                                                            XBaseMetadata metadata);
 
     /**

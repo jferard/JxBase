@@ -17,6 +17,7 @@
 package com.github.jferard.jxbase;
 
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -124,8 +125,8 @@ public class TestHelper {
         return path.substring(0, path.lastIndexOf('.'));
     }
 
-    public static <T> XBaseField<? super T> fromStringRepresentation(final XBaseDialect<?, T> dialect,
-                                                      final String representation) {
+    public static <A extends XBaseAccess> XBaseField<? super A> fromStringRepresentation(final XBaseDialect<A, ?> dialect,
+                                                                                         final String representation) {
         final String[] split = representation.split(",");
         assert split.length == 4;
         final String name = split[0];

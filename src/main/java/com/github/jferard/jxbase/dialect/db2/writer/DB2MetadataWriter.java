@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db2.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
@@ -30,10 +31,12 @@ import java.util.Date;
 
 /**
  * A writer for DB2 meta data.
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
-public class DB2MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBaseMetadataWriter<D, A> {
+public class DB2MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>>
+        implements XBaseMetadataWriter<A, D> {
     final OutputStream out;
     final Charset charset;
     private final RandomAccessFile file;

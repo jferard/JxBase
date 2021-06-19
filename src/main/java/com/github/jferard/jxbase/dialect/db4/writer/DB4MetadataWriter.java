@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db4.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.util.BytesUtils;
@@ -33,7 +34,7 @@ import java.util.Date;
  * @param <D> the dialect
  * @param <A> the access
  */
-public class DB4MetadataWriter<D extends XBaseDialect<D, A>, A> implements XBaseMetadataWriter<D, A> {
+public class DB4MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, D>> implements XBaseMetadataWriter<A, D> {
     final OutputStream out;
     final Charset charset;
     private final RandomAccessFile file;

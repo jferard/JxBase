@@ -36,11 +36,10 @@ import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 
-public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
+public class DB2Dialect implements XBaseDialect<DB2Access, DB2Dialect> {
     public static DB2Dialect create(final XBaseFileTypeEnum type, final Charset charset) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
@@ -107,12 +106,12 @@ public class DB2Dialect implements XBaseDialect<DB2Dialect, DB2Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<DB2Dialect, DB2Access> getInternalReaderFactory() {
+    public XBaseChunkReaderFactory<DB2Access, DB2Dialect> getInternalReaderFactory() {
         return new DB2ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<DB2Dialect, DB2Access> getInternalWriterFactory() {
+    public XBaseChunkWriterFactory<DB2Access, DB2Dialect> getInternalWriterFactory() {
         return new DB2ChunkWriterFactory(this, TimeZone.getDefault());
     }
 }

@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -31,7 +32,7 @@ import java.text.ParseException;
  * @param <D> the dialect
  * @param <A> the access
  */
-public interface XBaseReader<D extends XBaseDialect<D, A>, A> extends Closeable {
+public interface XBaseReader<A extends XBaseAccess, D extends XBaseDialect<A, D>> extends Closeable {
     /**
      * @return the next record, or null if the end of file was reached
      * @throws IOException if an I/O exception occurs
@@ -41,7 +42,7 @@ public interface XBaseReader<D extends XBaseDialect<D, A>, A> extends Closeable 
     /**
      * @return the dialect
      */
-    XBaseDialect<D, A> getDialect();
+    XBaseDialect<A, D> getDialect();
 
     /**
      * @return the meta data

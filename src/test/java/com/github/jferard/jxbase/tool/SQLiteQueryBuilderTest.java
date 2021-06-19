@@ -39,7 +39,7 @@ public class SQLiteQueryBuilderTest {
     @Before
     @SuppressWarnings("unchecked")
     public void setUp() {
-        final XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> dialect = VisualFoxProDialectFactory
+        final XBaseDialect<VisualFoxProAccess, VisualFoxProDialect> dialect = VisualFoxProDialectFactory
                 .create(XBaseFileTypeEnum.dBASE4SQLTable, JxBaseUtils.ASCII_CHARSET, TimeZone
                         .getDefault());
         final List<XBaseField<?>> fields =

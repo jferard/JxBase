@@ -44,24 +44,24 @@ class DialectFactoryAux {
         this.charset = charset;
     }
 
-    public XBaseDialect<DB2Dialect, DB2Access> createDB2Dialect() {
+    public XBaseDialect<DB2Access, DB2Dialect> createDB2Dialect() {
         return DB2Dialect.create(this.type, this.charset);
     }
 
-    public XBaseDialect<DB3Dialect, DB3Access> createDB3Dialect(final TimeZone timeZone) {
+    public XBaseDialect<DB3Access, DB3Dialect> createDB3Dialect(final TimeZone timeZone) {
         return DB3DialectFactory.create(this.type, this.charset, timeZone);
     }
 
-    public XBaseDialect<DB4Dialect, DB4Access> createDB4Dialect(final TimeZone timeZone) {
+    public XBaseDialect<DB4Access, DB4Dialect> createDB4Dialect(final TimeZone timeZone) {
         return DB4DialectFactory.create(this.type, this.charset, timeZone);
     }
 
-    public XBaseDialect<VisualFoxProDialect, VisualFoxProAccess> createVisualFoxProDialect(
+    public XBaseDialect<VisualFoxProAccess, VisualFoxProDialect> createVisualFoxProDialect(
             final TimeZone timeZone) {
         return VisualFoxProDialectFactory.create(this.type, this.charset, timeZone);
     }
 
-    public XBaseDialect<FoxProDialect, DB4Access> createFoxProDialect(
+    public XBaseDialect<DB4Access, FoxProDialect> createFoxProDialect(
             final TimeZone timeZone) {
         return FoxProDialectFactory.create(this.type, this.charset, timeZone);
     }

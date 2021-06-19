@@ -16,6 +16,7 @@
 
 package com.github.jferard.jxbase.dialect.db3.writer;
 
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.field.FieldRepresentation;
@@ -31,7 +32,7 @@ import java.io.OutputStream;
  * A writer for DB3 field descriptor array
  * @param <A> the access
  */
-public class DB3FieldDescriptorArrayWriter<A> implements XBaseFieldDescriptorArrayWriter<A> {
+public class DB3FieldDescriptorArrayWriter<A extends XBaseAccess> implements XBaseFieldDescriptorArrayWriter<A> {
     final A access;
     final OutputStream out;
 

@@ -30,13 +30,12 @@ import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import com.github.jferard.jxbase.writer.XBaseChunkWriterFactory;
 
-import java.io.IOException;
 import java.util.TimeZone;
 
 /**
  * the DB3 dialect.
  */
-public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
+public class DB3Dialect implements XBaseDialect<DB3Access, DB3Dialect> {
     protected final XBaseFileTypeEnum type;
     private final DB3Access access;
 
@@ -101,12 +100,12 @@ public class DB3Dialect implements XBaseDialect<DB3Dialect, DB3Access> {
     }
 
     @Override
-    public XBaseChunkReaderFactory<DB3Dialect, DB3Access> getInternalReaderFactory() {
+    public XBaseChunkReaderFactory<DB3Access, DB3Dialect> getInternalReaderFactory() {
         return new DB3ChunkReaderFactory(this, TimeZone.getDefault());
     }
 
     @Override
-    public XBaseChunkWriterFactory<DB3Dialect, DB3Access> getInternalWriterFactory() {
+    public XBaseChunkWriterFactory<DB3Access, DB3Dialect> getInternalWriterFactory() {
 
         return new DB3ChunkWriterFactory(this, TimeZone.getDefault());
     }

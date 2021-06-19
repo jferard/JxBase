@@ -29,8 +29,8 @@ import java.io.IOException;
 public class FoxProOptionalReaderTest {
     @Test(expected = IOException.class)
     public void testFail() throws IOException {
-        final FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess> reader =
-                new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(
+        final FoxProOptionalReader<VisualFoxProAccess, VisualFoxProDialect> reader =
+                new FoxProOptionalReader<VisualFoxProAccess, VisualFoxProDialect>(
                         new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
                         new ByteArrayInputStream(new byte[]{}), null, null);
         reader.read();
@@ -38,8 +38,8 @@ public class FoxProOptionalReaderTest {
 
     @Test
     public void test() throws IOException {
-        final FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess> reader =
-                new FoxProOptionalReader<VisualFoxProDialect, VisualFoxProAccess>(
+        final FoxProOptionalReader<VisualFoxProAccess, VisualFoxProDialect> reader =
+                new FoxProOptionalReader<VisualFoxProAccess, VisualFoxProDialect>(
                         new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, null),
                         new ByteArrayInputStream(new byte[263]), null, null);
         final XBaseOptional actual = reader.read();

@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.it;
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
+import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseMetadata;
@@ -40,13 +41,13 @@ import java.text.ParseException;
 public class ReaderWithMemoIT {
     @Test
     @SuppressWarnings("unchecked")
-    public <D extends XBaseDialect<D, A>, A> void test1() throws IOException, ParseException {
+    public <A extends XBaseAccess, D extends XBaseDialect<A, D>> void test1() throws IOException, ParseException {
         final String tableName = TestHelper.getResourceTableName("memo1/texto.dbf");
 
         try {
             final Charset charset = Charset.forName("cp1252");
-            final XBaseReader<D, A> reader =
-                    (XBaseReader<D, A>) XBaseReaderFactory.createReader(tableName, charset);
+            final XBaseReader<A, D> reader =
+                    (XBaseReader<A, D>) XBaseReaderFactory.createReader(tableName, charset);
             try {
                 final XBaseMetadata meta = reader.getMetadata();
 
@@ -57,26 +58,27 @@ public class ReaderWithMemoIT {
                 Assert.assertEquals(TestHelper.createDate(114, 6, 4), meta.get("updateDate"));
                 Assert.assertEquals(6, reader.getFieldDescriptorArray().getFields().size());
 
-                final XBaseDialect<D, A> dialect = reader.getDialect();
+                final XBaseDialect<A, D> dialect = reader.getDialect();
                 final XBaseFieldDescriptorArray<A> array = reader.getFieldDescriptorArray();
 
                 Assert.assertEquals(VisualFoxProDialect.class, dialect.getClass());
+                final A access = dialect.getAccess();
                 for (final XBaseField<? super A> field : array.getFields()) {
                     final String name = field.getName();
                     if (name.equals("TEXVER")) {
-                        Assert.assertEquals(5, field.getValueLength(dialect.getAccess()));
+                        Assert.assertEquals(5, field.getValueLength(access));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXTEX")) {
-                        Assert.assertEquals(4, field.getValueLength(dialect.getAccess()));
+                        Assert.assertEquals(4, field.getValueLength(access));
                         Assert.assertEquals(MemoField.class, field.getClass());
                     } else if (name.equals("TEXDAT")) {
-                        Assert.assertEquals(8, field.getValueLength(dialect.getAccess()));
+                        Assert.assertEquals(8, field.getValueLength(access));
                         Assert.assertEquals(DateField.class, field.getClass());
                     } else if (name.equals("TEXSTA")) {
-                        Assert.assertEquals(1, field.getValueLength(dialect.getAccess()));
+                        Assert.assertEquals(1, field.getValueLength(access));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     } else if (name.equals("TEXCAM")) {
-                        Assert.assertEquals(254, field.getValueLength(dialect.getAccess()));
+                        Assert.assertEquals(254, field.getValueLength(access));
                         Assert.assertEquals(CharacterField.class, field.getClass());
                     }
                 }

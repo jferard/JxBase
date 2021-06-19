@@ -37,7 +37,7 @@ public class DB3MetadataReaderTest {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
         @SuppressWarnings("unchecked")
         final DB3MetadataReader reader = new DB3MetadataReader(
-                (XBaseDialect<DB3Dialect, DB3Access>) DialectFactory
+                (XBaseDialect<DB3Access, DB3Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
                 inputStream);
         reader.read();
@@ -51,8 +51,8 @@ public class DB3MetadataReaderTest {
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         @SuppressWarnings("unchecked")
-        final XBaseDialect<DB3Dialect, DB3Access> dialect =
-                (XBaseDialect<DB3Dialect, DB3Access>) DialectFactory
+        final XBaseDialect<DB3Access, DB3Dialect> dialect =
+                (XBaseDialect<DB3Access, DB3Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET);
         final DB3MetadataReader reader = new DB3MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();

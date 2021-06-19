@@ -24,7 +24,7 @@ import java.util.Collection;
  * The descriptor array.
  * @param <A> the access
  */
-public class GenericFieldDescriptorArray<A>
+public class GenericFieldDescriptorArray<A extends XBaseAccess>
         implements XBaseFieldDescriptorArray<A> {
     private final Collection<XBaseField<? super A>> fields;
     private final int arrayLength;
