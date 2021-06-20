@@ -77,7 +77,7 @@ public class DB3RecordReader<A extends XBaseAccess> implements XBaseRecordReader
         final int readLength = IOUtils.readFully(this.dbfInputStream, this.recordBuffer);
 
         if (readLength < this.recordLength) {
-            throw new IOException("Bad record: " + readLength + " -> " + this.recordBuffer[0]);
+            throw new IOException("Bad record: " + readLength + " bytes available vs " + this.recordBuffer.length + " needed");
         }
         this.recordsCounter++;
 

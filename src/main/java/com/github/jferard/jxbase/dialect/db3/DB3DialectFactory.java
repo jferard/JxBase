@@ -46,6 +46,11 @@ public class DB3DialectFactory {
      */
     public static DB3Dialect create(final XBaseFileTypeEnum type, final Charset charset,
                                     final TimeZone timeZone) {
+        final DB3Access access = createAccess(charset, timeZone);
+        return new DB3Dialect(type, access);
+    }
+
+    public static DB3Access createAccess(final Charset charset, final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReadHelper = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriterHelper = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
@@ -57,9 +62,7 @@ public class DB3DialectFactory {
         final DateAccess dateAccess =
                 new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
         final MemoAccess memoAccess = new DB3MemoAccess();
-        final DB3Access access =
-                new DB3Access(characterAccess, logicalAccess, numericAccess, dateAccess,
-                        memoAccess);
-        return new DB3Dialect(type, access);
+        return new DB3Access(characterAccess, logicalAccess, numericAccess, dateAccess,
+                memoAccess);
     }
 }
