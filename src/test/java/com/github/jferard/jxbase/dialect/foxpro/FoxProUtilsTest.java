@@ -55,12 +55,18 @@ public class FoxProUtilsTest {
         Assert.assertEquals(1720693, FoxProUtils.dateToJulianDays(cal.getTime()));
         cal.set(1, Calendar.JANUARY, 1);
         Assert.assertEquals(1721058, FoxProUtils.dateToJulianDays(cal.getTime()));
-        cal.set(2, 9, 30);
+        cal.set(2, Calendar.OCTOBER, 30);
         Assert.assertEquals(1720995, FoxProUtils.dateToJulianDays(cal.getTime()));
+        cal.set(-1, Calendar.OCTOBER, 30);
+        Assert.assertEquals(1722091, FoxProUtils.dateToJulianDays(cal.getTime()));
+        cal.set(-1000, Calendar.OCTOBER, 30);
+        Assert.assertEquals(1356111, FoxProUtils.dateToJulianDays(cal.getTime()));
     }
 
     @Test
     public void julianToDate() {
+        Assert.assertEquals(FoxProUtils.getDate(4714, Calendar.DECEMBER, 31, GregorianCalendar.BC),
+                FoxProUtils.julianDaysToDate(-1));
         Assert.assertEquals(FoxProUtils.getDate(4713, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(0));
         Assert.assertEquals(FoxProUtils.getDate(1, Calendar.JANUARY, 1, GregorianCalendar.BC),
