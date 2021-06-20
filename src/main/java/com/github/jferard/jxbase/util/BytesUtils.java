@@ -156,7 +156,7 @@ public class BytesUtils {
     }
 
     public static long extractLEInt8(final byte[] buffer, final int offset) {
-        return 1 << 32 * extractLEInt4(buffer, offset) + extractLEInt4(buffer, offset + 4);
+        return (1L << 32) * extractLEInt4(buffer, offset) + extractLEInt4(buffer, offset + 4);
     }
 
     private BytesUtils() {

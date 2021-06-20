@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.foxpro;
+package com.github.jferard.jxbase.dialect.vfoxpro;
 
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
@@ -22,10 +22,7 @@ import com.github.jferard.jxbase.dialect.db2.field.LogicalField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
-import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
-import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
@@ -37,14 +34,14 @@ import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
-public class FoxProDialectTest {
-    private FoxProDialect dialect;
-    private DB4Access access;
+public class VisualFoxProDialectTest {
+    private VisualFoxProDialect dialect;
+    private VisualFoxProAccess access;
 
     @Before
     public void setUp() {
         this.access = PowerMock.createMock(VisualFoxProAccess.class);
-        this.dialect = new FoxProDialect(XBaseFileTypeEnum.FoxPro2xMemo, this.access);
+        this.dialect = new VisualFoxProDialect(XBaseFileTypeEnum.VisualFoxPro, this.access);
     }
 
     @Test
@@ -63,7 +60,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetDateFieldException() {
-        final FoxProDialect thisDialect = this.dialect;
+        final VisualFoxProDialect thisDialect = this.dialect;
         final IllegalArgumentException e =
                 Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
                     @Override
@@ -75,6 +72,26 @@ public class FoxProDialectTest {
     }
 
     @Test
+    public void testGetDatetimeField() {
+        final XBaseField<? super VisualFoxProAccess> field =
+                this.dialect.createXBaseField("datetime", (byte) 'T', 8, 0);
+        Assert.assertEquals(new DatetimeField("datetime"), field);
+    }
+
+    @Test
+    public void testGetDatetimeFieldException() {
+        final VisualFoxProDialect thisDialect = this.dialect;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        thisDialect.createXBaseField("datetime", (byte) 'T', 9, 0);
+                    }
+                });
+        Assert.assertEquals("A date time has 8 chars", e.getMessage());
+    }
+
+    @Test
     public void testGetFloatField() {
         final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.createXBaseField("float", (byte) 'F', 20, 0);
@@ -83,7 +100,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetFloatFieldException() {
-        final FoxProDialect thisDialect = this.dialect;
+        final VisualFoxProDialect thisDialect = this.dialect;
         final IllegalArgumentException e =
                 Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
                     @Override
@@ -95,6 +112,26 @@ public class FoxProDialectTest {
     }
 
     @Test
+    public void testGetIntegerField() {
+        final XBaseField<? super VisualFoxProAccess> field =
+                this.dialect.createXBaseField("int", (byte) 'I', 4, 0);
+        Assert.assertEquals(new IntegerField("int"), field);
+    }
+
+    @Test
+    public void testGetIntegerFieldException() {
+        final VisualFoxProDialect thisDialect = this.dialect;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        thisDialect.createXBaseField("int", (byte) 'I', 5, 0);
+                    }
+                });
+        Assert.assertEquals("An integer has 4 bytes", e.getMessage());
+    }
+
+    @Test
     public void testGetLogicalField() {
         final XBaseField<? super VisualFoxProAccess> field =
                 this.dialect.createXBaseField("bool", (byte) 'L', 1, 0);
@@ -102,28 +139,15 @@ public class FoxProDialectTest {
     }
 
     @Test
-    public void testGetLogicalFieldException() {
-        final FoxProDialect thisDialect = this.dialect;
-        final IllegalArgumentException e =
-                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
-                    @Override
-                    public void run() {
-                        thisDialect.createXBaseField("bool", (byte) 'L', 2, 0);
-                    }
-                });
-        Assert.assertEquals("A boolean has one char", e.getMessage());
-    }
-
-    @Test
     public void testGetMemoField() {
         final XBaseField<? super VisualFoxProAccess> field =
-                this.dialect.createXBaseField("memo", (byte) 'M', 10, 0);
+                this.dialect.createXBaseField("memo", (byte) 'M', 4, 0);
         Assert.assertEquals(new MemoField("memo"), field);
     }
 
     @Test
     public void testGetMemoFieldException() {
-        final FoxProDialect thisDialect = this.dialect;
+        final VisualFoxProDialect thisDialect = this.dialect;
         final IllegalArgumentException e =
                 Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
                     @Override
@@ -131,7 +155,7 @@ public class FoxProDialectTest {
                         thisDialect.createXBaseField("memo", (byte) 'M', 5, 0);
                     }
                 });
-        Assert.assertEquals("A memo offset has 10 chars, was 5", e.getMessage());
+        Assert.assertEquals("A memo offset has 4 bytes, was 5", e.getMessage());
     }
 
     @Test
@@ -142,8 +166,22 @@ public class FoxProDialectTest {
     }
 
     @Test
+    public void testGetNullFlagsField() {
+        final XBaseField<? super VisualFoxProAccess> field =
+                this.dialect.createXBaseField("null", (byte) '0', 8, 0);
+        Assert.assertEquals(new NullFlagsField("null", 8), field);
+    }
+
+    @Test
+    public void testGetDoubleField() {
+        final XBaseField<? super VisualFoxProAccess> field =
+                this.dialect.createXBaseField("double", (byte) 'B', 18, 2);
+        Assert.assertEquals(new DoubleField("double", 2), field);
+    }
+
+    @Test
     public void testGetUnknownFieldException() {
-        final FoxProDialect thisDialect = this.dialect;
+        final VisualFoxProDialect thisDialect = this.dialect;
         final IllegalArgumentException e =
                 Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
                     @Override
@@ -157,7 +195,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetType() {
-        Assert.assertEquals(XBaseFileTypeEnum.FoxPro2xMemo, this.dialect.getType());
+        Assert.assertEquals(XBaseFileTypeEnum.VisualFoxPro, this.dialect.getType());
     }
 
     @Test

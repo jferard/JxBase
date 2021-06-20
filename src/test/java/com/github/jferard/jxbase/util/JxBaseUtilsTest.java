@@ -16,8 +16,59 @@
 
 package com.github.jferard.jxbase.util;
 
-public class JdbfUtilsTest {
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class JxBaseUtilsTest {
+    @Test
+    public void testJoin() {
+        Assert.assertEquals("", JxBaseUtils.join(",", Collections.<String>emptyList()));
+        Assert.assertEquals("a", JxBaseUtils.join(",", Collections.singleton("a")));
+        Assert.assertEquals("a,b", JxBaseUtils.join(",", Arrays.asList("a", "b")));
+    }
+
+    @Test
+    public void testGetLength() {
+        Assert.assertEquals(10, JxBaseUtils.getLength((byte) 10));
+        Assert.assertEquals(246, JxBaseUtils.getLength((byte) -10));
+    }
+
+    @Test
+    public void testGetName() {
+        Assert.assertThrows(ArrayIndexOutOfBoundsException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() throws Throwable {
+                        JxBaseUtils.getName(new byte[]{'f', 'o', 'o'});
+                    }
+                });
+        Assert.assertEquals("foo", JxBaseUtils.getName(new byte[] {'f', 'o', 'o', 0x0, 'b', 'a', 'r'}));
+    }
+
+    @Test
+    public void testReadFieldBytesLess() throws IOException {
+        final byte[] buf = new byte[2];
+        JxBaseUtils.readFieldBytes(new ByteArrayInputStream(new byte[]{'f', 'o', 'o'}), buf);
+        Assert.assertArrayEquals(new byte[] { 'f', 'o'}, buf);
+    }
+
+    @Test
+    public void testReadFieldBytesMore() throws IOException {
+        Assert.assertThrows(IOException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                final byte[] buf = new byte[4];
+                JxBaseUtils.readFieldBytes(new ByteArrayInputStream(new byte[]{'f', 'o', 'o'}), buf);
+            }
+        });
+    }
     /*
+
     @Test
     public void testCreateFieldsFromString() {
         final List<XBaseField> fieldsFromString =

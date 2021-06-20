@@ -172,4 +172,16 @@ public class IOUtilsTest {
         Assert.assertNull(IOUtils.removeExtension(new File(pathDir, "foo")));
         Assert.assertEquals(new File(pathDir, "tir_im").getAbsolutePath(), IOUtils.removeExtension(new File(pathDir, "tir_im.dbf")));
     }
+
+    @Test
+    public void testRemoveExtensionNoExt() throws IOException {
+        final File foo = new File("LICENSE");
+        Assert.assertEquals(foo.getAbsolutePath(), IOUtils.removeExtension(foo));
+    }
+
+    @Test
+    public void testGetExtensionNoExt() throws IOException {
+        final File foo = new File("LICENSE");
+        Assert.assertEquals("", IOUtils.getExtension(foo));
+    }
 }
