@@ -16,7 +16,7 @@
 
 package com.github.jferard.jxbase.field;
 
-import com.github.jferard.jxbase.util.JxBaseUtils;
+import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.nio.charset.Charset;
 
@@ -38,49 +38,7 @@ public class RawRecordReadHelper {
      * @return a trimmed string, null if the string is empty.
      */
     public String extractTrimmedString(final byte[] recordBuffer, final int offset, final int length) {
-        return RawRecordReadHelper.extractTrimmedString(recordBuffer, offset, length, this.charset);
+        return BytesUtils.extractTrimmedString(recordBuffer, offset, length, this.charset);
     }
 
-    /**
-     * Read an ASCII string
-     * @param recordBuffer the source buffer
-     * @param offset the offset in the buffer
-     * @param length the length
-     * @return a trimmed string, null if the string is empty.
-     */
-    public static String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
-                                                   final int length) {
-        return RawRecordReadHelper.extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
-    }
-
-    /**
-     * @param recordBuffer the source buffer
-     * @param offset the offset in the buffer
-     * @param length the length
-     * @param charset the charset
-     * @return null if the string is empty.
-     */
-    public static String extractTrimmedString(final byte[] recordBuffer, final int offset,
-                                              final int length,
-                                              final Charset charset) {
-        int actualOffset = offset;
-        int actualLength = length;
-
-        // check for empty strings
-        while (actualLength > 0 && (recordBuffer[actualOffset] == JxBaseUtils.EMPTY)) {
-            actualOffset++;
-            actualLength--;
-        }
-
-        while (actualLength > 0 &&
-                (recordBuffer[actualOffset + actualLength - 1] == JxBaseUtils.EMPTY)) {
-            actualLength--;
-        }
-
-        if (actualLength == 0) {
-            return null;
-        }
-
-        return new String(recordBuffer, actualOffset, actualLength, charset);
-    }
 }

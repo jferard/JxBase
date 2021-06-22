@@ -20,10 +20,12 @@ import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.reader.DB2OptionalReader;
+import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReader;
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
@@ -31,6 +33,7 @@ import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
+import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,14 +83,15 @@ public class DB4ChunkReaderFactory implements XBaseChunkReaderFactory<DB4Access,
     public XBaseMemoReader createMemoReader(final XBaseFileTypeEnum type, final String tableName,
                                             final Charset charset)
             throws IOException {
-        final File memoFile = new File(tableName + type.memoFileType().getExtension());
-        final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-        /* other version:
-         * final FileChannel memoChannel = new RandomAccessFile(memoFile, "r").getChannel();
-         */
-        return DB4MemoReader.create(memoChannel, new DB4MemoFileHeaderReader());
+        final String filename = tableName + type.memoFileType().getExtension();
+        final File memoFile = IOUtils.getIgnoreCaseFile(filename);
+        if (memoFile == null) {
+            return null;
+        } else {
+            final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
+            return DB4MemoReader.create(memoChannel, new DB4MemoFileHeaderReader());
+        }
     }
-
 
     @Override
     public XBaseOptionalReader createOptionalReader(final InputStream inputStream,

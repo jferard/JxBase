@@ -31,7 +31,7 @@ import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.NullFlagsField;
 import com.github.jferard.jxbase.dialect.vfoxpro.reader.VisualFoxProChunksReaderFactory;
-import com.github.jferard.jxbase.dialect.vfoxpro.writer.VisualFoxProChunksWriterFactory;
+import com.github.jferard.jxbase.dialect.vfoxpro.writer.VisualFoxProChunkWriterFactory;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseChunkReaderFactory;
 import com.github.jferard.jxbase.util.JxBaseUtils;
@@ -138,7 +138,7 @@ public class VisualFoxProDialect implements XBaseDialect<VisualFoxProAccess, Vis
 
     @Override
     public XBaseChunkWriterFactory<VisualFoxProAccess, VisualFoxProDialect> getInternalWriterFactory() {
-        return new VisualFoxProChunksWriterFactory(this, TimeZone.getDefault());
+        return new VisualFoxProChunkWriterFactory(this, TimeZone.getDefault());
     }
 }
 

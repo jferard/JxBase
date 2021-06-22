@@ -1,5 +1,5 @@
 /*
- * JxBase - Copyright (c) 2019-2020 Julien Férard
+ * JxBase - Copyright (c) 2019 Julien Férard
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.jferard.jxbase.dialect.db4.reader;
+package com.github.jferard.jxbase.dialect.db4.memo;
 
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
+import com.github.jferard.jxbase.dialect.db4.reader.MemoFileHeaderReader;
 import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.util.BytesUtils;
-import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -40,7 +40,8 @@ public class DB4MemoFileHeaderReader implements MemoFileHeaderReader {
         if (blockLength == 0) {
             blockLength = 512;
         }
-        final String dbfName = new String(headerBytes, 8, 8, JxBaseUtils.ASCII_CHARSET);
+        final String dbfName = BytesUtils
+                .extractTrimmedASCIIString(headerBytes, 8, 8);
         assert headerBytes[16] == 0x00;
         // final int Length = BitUtils.makeInt(headerBytes[21], headerBytes[20]);
 

@@ -106,8 +106,8 @@ public class XBaseWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A,
             memoWriter = null;
         }
         final XBaseRecordWriter<D> recordWriter =
-                writerFactory.createRecordWriter(out, charset, initialMetadata, array,
-                        memoWriter, optional);
+                writerFactory.createRecordWriter(out, charset, memoWriter, initialMetadata, array,
+                        optional);
         return new GenericWriter<A, D>(metadataWriter, recordWriter);
     }
 

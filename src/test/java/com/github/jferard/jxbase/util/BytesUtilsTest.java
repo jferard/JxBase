@@ -83,4 +83,10 @@ public class BytesUtilsTest {
         Assert.assertEquals(289077004534744581L,
                 BytesUtils.extractLEInt8(new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, 0));
     }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void test() {
+        final byte[] bytes = "*".getBytes(JxBaseUtils.ASCII_CHARSET);
+        BytesUtils.extractTrimmedASCIIString(bytes, 0, 2);
+    }
 }

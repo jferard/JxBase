@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.dialect.db3.field;
 import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.RawRecordWriteHelper;
+import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class DB3DateAccess implements DateAccess {
     @Override
     public Date extractDateValue(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
-                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
+                BytesUtils.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return null;
         }

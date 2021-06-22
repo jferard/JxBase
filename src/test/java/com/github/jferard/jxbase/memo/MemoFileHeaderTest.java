@@ -18,7 +18,7 @@ package com.github.jferard.jxbase.memo;
 
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.dialect.db3.DB3Utils;
-import com.github.jferard.jxbase.dialect.db4.reader.DB4MemoFileHeaderReader;
+import com.github.jferard.jxbase.dialect.db4.memo.DB4MemoFileHeaderReader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -38,26 +38,5 @@ public class MemoFileHeaderTest {
         Assert.assertEquals(
                 "MemoFileHeader[blockLength=512, nextFreeBlockLocation=1, meta={foo=bar}]",
                 header.toString());
-    }
-
-    @Test
-    public void testBlockAndNext() {
-        final byte[] bytes = TestHelper
-                .getBytes("abcdefghijklmnop\0qrstuvw", DB3Utils.MEMO_HEADER_LENGTH);
-        final MemoFileHeader memoFileHeader =
-                new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
-        Assert.assertEquals(1751606885, memoFileHeader.getBlockLength());
-        Assert.assertEquals(1684234849, memoFileHeader.getNextFreeBlockLocation());
-    }
-
-    @Test
-    public void testToString() {
-        final byte[] bytes = TestHelper
-                .getBytes("abcdefghijklmnop\0qrstuvw", DB3Utils.MEMO_HEADER_LENGTH);
-        final MemoFileHeader memoFileHeader =
-                new DB4MemoFileHeaderReader().read(ByteBuffer.wrap(bytes));
-        Assert.assertEquals(
-                "MemoFileHeader[blockLength=1751606885, nextFreeBlockLocation=1684234849, " +
-                        "meta={dbfName=ijklmnop}]", memoFileHeader.toString());
     }
 }

@@ -67,16 +67,15 @@ public interface XBaseChunkWriterFactory<A extends XBaseAccess, D extends XBaseD
     /**
      * Create a writer for the records.
      * @param outputStream      the output stream
+     * @param memoWriter
      * @param metadata          the written meta data
      * @param array             the written array
-     * @param memoWriter
      * @param optional          the written optional
      * @return                  the writer
      */
     XBaseRecordWriter<D> createRecordWriter(OutputStream outputStream, Charset charset,
-                                            XBaseMetadata metadata,
+                                            XBaseMemoWriter memoWriter, XBaseMetadata metadata,
                                             XBaseFieldDescriptorArray<A> array,
-                                            XBaseMemoWriter memoWriter,
                                             Object optional);
 
     XBaseMemoWriter createMemoWriter(final XBaseFileTypeEnum type, String tableName, Map<String, Object> memoHeaderMetadata)

@@ -18,6 +18,7 @@ package com.github.jferard.jxbase.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 /**
  * Util to handle bytes
@@ -157,6 +158,49 @@ public class BytesUtils {
 
     public static long extractLEInt8(final byte[] buffer, final int offset) {
         return (1L << 32) * extractLEInt4(buffer, offset) + extractLEInt4(buffer, offset + 4);
+    }
+
+    /**
+     * Read an ASCII string
+     * @param recordBuffer the source buffer
+     * @param offset the offset in the buffer
+     * @param length the length
+     * @return a trimmed string, null if the string is empty.
+     */
+    public static String extractTrimmedASCIIString(final byte[] recordBuffer, final int offset,
+                                                   final int length) {
+        return extractTrimmedString(recordBuffer, offset, length, JxBaseUtils.ASCII_CHARSET);
+    }
+
+    /**
+     * @param recordBuffer the source buffer
+     * @param offset the offset in the buffer
+     * @param length the length
+     * @param charset the charset
+     * @return null if the string is empty.
+     */
+    public static String extractTrimmedString(final byte[] recordBuffer, final int offset,
+                                              final int length,
+                                              final Charset charset) {
+        int actualOffset = offset;
+        int actualLength = length;
+
+        // check for empty strings
+        while (actualLength > 0 && (recordBuffer[actualOffset] == JxBaseUtils.EMPTY)) {
+            actualOffset++;
+            actualLength--;
+        }
+
+        while (actualLength > 0 &&
+                (recordBuffer[actualOffset + actualLength - 1] == JxBaseUtils.EMPTY)) {
+            actualLength--;
+        }
+
+        if (actualLength == 0) {
+            return null;
+        }
+
+        return new String(recordBuffer, actualOffset, actualLength, charset);
     }
 
     private BytesUtils() {

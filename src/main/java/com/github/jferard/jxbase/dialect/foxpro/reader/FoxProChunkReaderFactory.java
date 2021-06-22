@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.dialect.db3.reader.DB3FieldDescriptorArrayReade
 import com.github.jferard.jxbase.dialect.db3.reader.DB3RecordReader;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProDialect;
+import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoFileHeaderReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoReader;
 import com.github.jferard.jxbase.dialect.foxpro.memo.FoxProMemoRecordFactory;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;

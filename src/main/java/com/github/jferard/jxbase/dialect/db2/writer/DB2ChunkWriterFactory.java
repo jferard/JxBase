@@ -71,9 +71,9 @@ public class DB2ChunkWriterFactory implements XBaseChunkWriterFactory<DB2Access,
     @Override
     public XBaseRecordWriter<DB2Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
+                                                            final XBaseMemoWriter memoWriter,
                                                             final XBaseMetadata metadata,
                                                             final XBaseFieldDescriptorArray<DB2Access> array,
-                                                            final XBaseMemoWriter memoWriter,
                                                             final Object optional) {
         return GenericRecordWriter.create(this.dialect, outputStream, charset,
                 array.getFields());

@@ -46,13 +46,13 @@ import java.util.TimeZone;
 /**
  * A factory for VisualFoxPro chunks writers.
  */
-public class VisualFoxProChunksWriterFactory implements
+public class VisualFoxProChunkWriterFactory implements
         XBaseChunkWriterFactory<VisualFoxProAccess, VisualFoxProDialect> {
     private final VisualFoxProDialect dialect;
     private final TimeZone timeZone;
 
-    public VisualFoxProChunksWriterFactory(final VisualFoxProDialect dialect,
-                                           final TimeZone timeZone) {
+    public VisualFoxProChunkWriterFactory(final VisualFoxProDialect dialect,
+                                          final TimeZone timeZone) {
         this.dialect = dialect;
         this.timeZone = timeZone;
     }
@@ -86,9 +86,9 @@ public class VisualFoxProChunksWriterFactory implements
     public XBaseRecordWriter<VisualFoxProDialect> createRecordWriter(
             final OutputStream outputStream,
             final Charset charset,
-            final XBaseMetadata metadata,
+            final XBaseMemoWriter memoWriter, final XBaseMetadata metadata,
             final XBaseFieldDescriptorArray<VisualFoxProAccess> array,
-            final XBaseMemoWriter memoWriter, final Object optional) {
+            final Object optional) {
         return new DB3RecordWriter<VisualFoxProAccess, VisualFoxProDialect>(this.dialect,
                 outputStream, charset,
                 memoWriter, array.getFields());

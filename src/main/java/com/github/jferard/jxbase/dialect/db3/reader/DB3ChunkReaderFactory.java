@@ -29,6 +29,7 @@ import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.reader.XBaseOptionalReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
+import com.github.jferard.jxbase.util.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,8 +87,13 @@ public class DB3ChunkReaderFactory implements XBaseChunkReaderFactory<DB3Access,
     public XBaseMemoReader createMemoReader(final XBaseFileTypeEnum type, final String tableName,
                                             final Charset charset)
             throws IOException {
-        final File memoFile = new File(tableName + type.memoFileType().getExtension());
-        final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
-        return DB3MemoReader.create(memoChannel);
+        final String filename = tableName + type.memoFileType().getExtension();
+        final File memoFile = IOUtils.getIgnoreCaseFile(filename);
+        if (memoFile == null) {
+            return null;
+        } else {
+            final FileChannel memoChannel = new FileInputStream(memoFile).getChannel();
+            return DB3MemoReader.create(memoChannel);
+        }
     }
 }

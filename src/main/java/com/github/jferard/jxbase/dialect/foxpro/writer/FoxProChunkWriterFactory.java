@@ -82,9 +82,9 @@ public class FoxProChunkWriterFactory
     @Override
     public XBaseRecordWriter<FoxProDialect> createRecordWriter(final OutputStream outputStream,
                                                                final Charset charset,
+                                                               final XBaseMemoWriter memoWriter,
                                                                final XBaseMetadata metadata,
                                                                final XBaseFieldDescriptorArray<DB4Access> array,
-                                                               final XBaseMemoWriter memoWriter,
                                                                final Object optional) {
         return new DB3RecordWriter<DB4Access, FoxProDialect>(this.dialect, outputStream,
                 charset,

@@ -17,7 +17,6 @@
 package com.github.jferard.jxbase.dialect.db3.field;
 
 import com.github.jferard.jxbase.field.FieldRepresentation;
-import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.memo.XBaseMemoRecord;
 import com.github.jferard.jxbase.memo.XBaseMemoWriter;
@@ -63,7 +62,7 @@ public class DB3MemoAccess implements MemoAccess {
      */
     protected long getOffsetInBlocks(final byte[] recordBuffer, final int offset, final int length) {
         final String s =
-                RawRecordReadHelper.extractTrimmedASCIIString(recordBuffer, offset, length);
+                BytesUtils.extractTrimmedASCIIString(recordBuffer, offset, length);
         if (s == null) {
             return 0;
         }

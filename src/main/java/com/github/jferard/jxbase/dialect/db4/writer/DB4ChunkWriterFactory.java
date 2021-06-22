@@ -80,9 +80,9 @@ public class DB4ChunkWriterFactory implements XBaseChunkWriterFactory<DB4Access,
     @Override
     public XBaseRecordWriter<DB4Dialect> createRecordWriter(final OutputStream outputStream,
                                                             final Charset charset,
+                                                            final XBaseMemoWriter memoWriter,
                                                             final XBaseMetadata metadata,
                                                             final XBaseFieldDescriptorArray<DB4Access> array,
-                                                            final XBaseMemoWriter memoWriter,
                                                             final Object optional) {
         return new DB3RecordWriter<DB4Access, DB4Dialect>(this.dialect, outputStream, charset,
                 memoWriter, array.getFields());
