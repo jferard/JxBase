@@ -1,6 +1,6 @@
 JxBase
 ======
-* JxBase - Copyright (c) 2019-2020 Julien Férard (https://github.com/jferard)
+* JxBase - Copyright (c) 2019-2021 Julien Férard (https://github.com/jferard)
 * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
 
 [![Build Status](https://travis-ci.com/jferard/JxBase.svg?branch=master)](https://travis-ci.com/jferard/JxBase)
