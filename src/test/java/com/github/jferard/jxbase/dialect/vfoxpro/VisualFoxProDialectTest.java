@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db4.field.FloatField;
+import com.github.jferard.jxbase.dialect.vfoxpro.field.CurrencyField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.DatetimeField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.DoubleField;
 import com.github.jferard.jxbase.dialect.vfoxpro.field.IntegerField;
@@ -193,6 +194,25 @@ public class VisualFoxProDialectTest {
         Assert.assertEquals("'Z' (90) is not a dbf field type", e.getMessage());
     }
 
+    @Test
+    public void testGetCurrencyField() {
+            final XBaseField<? super VisualFoxProAccess> field =
+                this.dialect.createXBaseField("currency", (byte) 'Y', 8, 0);
+        Assert.assertEquals(new CurrencyField("currency"), field);
+    }
+
+    @Test
+    public void testGetCurrencyFieldException() {
+        final VisualFoxProDialect thisDialect = this.dialect;
+        final IllegalArgumentException e =
+                Assert.assertThrows(IllegalArgumentException.class, new ThrowingRunnable() {
+                    @Override
+                    public void run() {
+                        thisDialect.createXBaseField("currency", (byte) 'Y', 5, 0);
+                    }
+                });
+        Assert.assertEquals("A currency has 8 bytes", e.getMessage());
+    }
 
     @Test
     public void testGetType() {

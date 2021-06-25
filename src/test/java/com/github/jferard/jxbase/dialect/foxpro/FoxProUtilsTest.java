@@ -17,6 +17,7 @@
 
 package com.github.jferard.jxbase.dialect.foxpro;
 
+import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,8 +28,8 @@ import java.util.TimeZone;
 
 public class FoxProUtilsTest {
     @Test
-    public void dateToJulianAD() {
-        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.US);
+    public void testDateToJulianAD() {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE, Locale.US);
         cal.set(Calendar.ERA, GregorianCalendar.AD);
         cal.set(1, Calendar.JANUARY, 1);
         Assert.assertEquals(1721424, FoxProUtils.dateToJulianDays(cal.getTime()));
@@ -41,8 +42,8 @@ public class FoxProUtilsTest {
     }
 
     @Test
-    public void dateToJulianBC() {
-        final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.US);
+    public void testDateToJulianBC() {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE, Locale.US);
         cal.set(Calendar.ERA, GregorianCalendar.BC);
         cal.set(4713, Calendar.JANUARY, 1);
         Assert.assertEquals(0, FoxProUtils.dateToJulianDays(cal.getTime()));
@@ -65,26 +66,59 @@ public class FoxProUtilsTest {
     }
 
     @Test
-    public void julianToDate() {
+    public void testJulianToDateBC() {
         Assert.assertEquals(FoxProUtils.getDate(4714, Calendar.DECEMBER, 31, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(-1));
         Assert.assertEquals(FoxProUtils.getDate(4713, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(0));
-        Assert.assertEquals(FoxProUtils.getDate(1, Calendar.JANUARY, 1, GregorianCalendar.BC),
-                FoxProUtils.julianDaysToDate(1721424));
         Assert.assertEquals(FoxProUtils.getDate(5, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(1719597));
         Assert.assertEquals(FoxProUtils.getDate(4, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(1719963));
         Assert.assertEquals(FoxProUtils.getDate(3, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(1720328));
+        Assert.assertEquals(FoxProUtils.getDate(2, Calendar.OCTOBER, 30, GregorianCalendar.BC),
+                FoxProUtils.julianDaysToDate(1720995));
         Assert.assertEquals(FoxProUtils.getDate(2, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(1720693));
         Assert.assertEquals(FoxProUtils.getDate(1, Calendar.JANUARY, 1, GregorianCalendar.BC),
                 FoxProUtils.julianDaysToDate(1721058));
-        Assert.assertEquals(FoxProUtils.getDate(2, Calendar.OCTOBER, 30, GregorianCalendar.BC),
-                FoxProUtils.julianDaysToDate(1720995));
-        Assert.assertEquals(FoxProUtils.getDate(2019, Calendar.DECEMBER, 15, GregorianCalendar.BC),
+    }
+
+    @Test
+    public void testJulianToDateAD() {
+        Assert.assertEquals(FoxProUtils.getDate(1, Calendar.JANUARY, 1, GregorianCalendar.AD),
+                FoxProUtils.julianDaysToDate(1721424));
+        Assert.assertEquals(FoxProUtils.getDate(2019, Calendar.DECEMBER, 15, GregorianCalendar.AD),
                 FoxProUtils.julianDaysToDate(2458833));
+        Assert.assertEquals(FoxProUtils.getDate(2021, Calendar.JUNE, 25, GregorianCalendar.AD),
+                FoxProUtils.julianDaysToDate(2459391));
+        Assert.assertEquals(FoxProUtils.getDate(2021, Calendar.JULY, 8, GregorianCalendar.AD),
+                FoxProUtils.julianDaysToDate(2459404));
+    }
+
+    @Test
+    public void testCreateHeaderUpdateDate() {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        cal.setTimeInMillis(0);
+        cal.set(2021, Calendar.JUNE, 25);
+        Assert.assertEquals(cal.getTime(), FoxProUtils.createHeaderUpdateDate((byte) 21, (byte) 6, (byte) 25));
+    }
+
+    @Test
+    public void testDateToJulianDays() {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        cal.setTimeInMillis(0);
+        cal.set(2021, Calendar.JUNE, 25, 22, 7, 49);
+        Assert.assertEquals(2459391, FoxProUtils.dateToJulianDays(cal.getTime()));
+    }
+
+    @Test
+    public void testMillisFromDate() {
+        final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        cal.setTimeInMillis(0);
+        cal.set(2021, Calendar.JUNE, 25, 22, 7, 49);
+        final int seconds = ((22 * 60) + 7) * 60 + 49;
+        Assert.assertEquals(seconds*1000, FoxProUtils.millisFromDate(cal.getTime()));
     }
 }

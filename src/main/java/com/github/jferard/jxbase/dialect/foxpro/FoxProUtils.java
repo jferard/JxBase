@@ -101,7 +101,7 @@ public class FoxProUtils {
     public static int millisFromDate(final Date date) {
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.setTime(date);
-        return ((calendar.get(Calendar.HOUR) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
+        return ((calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)) * 60 +
                 calendar.get(Calendar.SECOND)) * 1000;
     }
 
@@ -146,8 +146,9 @@ public class FoxProUtils {
 
     public static Date getDate(final int year, final int month, final int day, final int era) {
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
+        calendar.setTimeInMillis(0);
         calendar.set(year, month, day, 0, 0, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.ERA, era);
         return calendar.getTime();
     }
 

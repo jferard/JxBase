@@ -45,6 +45,6 @@ public class FoxProCurrencyAccess implements CurrencyAccess {
 
     @Override
     public FieldRepresentation getCurrencyRepresentation(final String fieldName) {
-        return new FieldRepresentation(fieldName, 'T', 8, 0);
+        return new FieldRepresentation(fieldName, 'Y', 8, 0);
     }
 }

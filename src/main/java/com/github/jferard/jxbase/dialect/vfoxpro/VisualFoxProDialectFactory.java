@@ -60,6 +60,12 @@ public class VisualFoxProDialectFactory {
      */
     public static VisualFoxProDialect create(final XBaseFileTypeEnum type, final Charset charset,
                                              final TimeZone timeZone) {
+        final VisualFoxProAccess access =
+                createAccess(charset, timeZone);
+        return new VisualFoxProDialect(type, access);
+    }
+
+    public static VisualFoxProAccess createAccess(final Charset charset, final TimeZone timeZone) {
         final RawRecordReadHelper rawRecordReader = new RawRecordReadHelper(charset);
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
@@ -74,10 +80,8 @@ public class VisualFoxProDialectFactory {
         final DoubleAccess doubleAccess = new FoxProDoubleAccess();
         final CurrencyAccess currencyAccess = new FoxProCurrencyAccess();
         final MemoAccess memoAccess = new FoxProMemoAccess();
-        final VisualFoxProAccess access =
-                new VisualFoxProAccess(characterAccess, dateAccess, datetimeAccess,
-                        floatAccess, integerAccess, logicalAccess, memoAccess,
-                        nullFlagsAccess, numericAccess, doubleAccess, currencyAccess);
-        return new VisualFoxProDialect(type, access);
+        return new VisualFoxProAccess(characterAccess, dateAccess, datetimeAccess,
+                floatAccess, integerAccess, logicalAccess, memoAccess,
+                nullFlagsAccess, numericAccess, doubleAccess, currencyAccess);
     }
 }

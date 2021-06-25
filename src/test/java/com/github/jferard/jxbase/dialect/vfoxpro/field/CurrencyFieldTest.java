@@ -63,19 +63,19 @@ public class CurrencyFieldTest {
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("currency,T,8,0",
+        Assert.assertEquals("currency,Y,8,0",
                 this.field.toStringRepresentation(this.access));
     }
 
     @Test
     public void toRepresentation() {
-        Assert.assertEquals(new FieldRepresentation("currency", 'T', 8, 0),
+        Assert.assertEquals(new FieldRepresentation("currency", 'Y', 8, 0),
                 this.field.toRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("currency,T,8,0",
+        Assert.assertEquals("currency,Y,8,0",
                 this.field.toStringRepresentation(this.access));
     }
 

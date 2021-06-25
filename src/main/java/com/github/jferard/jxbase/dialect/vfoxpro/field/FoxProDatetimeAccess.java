@@ -40,8 +40,9 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
                                      final int length) {
         assert length == 8;
         final int julianDaysCount = BytesUtils.extractLEInt4(recordBuffer, offset);
-        return new Date(FoxProUtils.julianDaysToDate(julianDaysCount).getTime() + FoxProUtils
-                .toMillis(recordBuffer, offset + 4));
+        final long daysAsMillis = FoxProUtils.julianDaysToDate(julianDaysCount).getTime();
+        final long millis = FoxProUtils.toMillis(recordBuffer, offset + 4);
+        return new Date(daysAsMillis + millis);
     }
 
     @Override
@@ -50,7 +51,6 @@ public class FoxProDatetimeAccess implements DatetimeAccess {
         if (value == null) {
             BytesUtils.writeEmpties(out, fieldLength);
         } else {
-            final long time = value.getTime();
             BytesUtils.writeLEByte4(out, FoxProUtils.dateToJulianDays(value));
             BytesUtils.writeLEByte4(out, FoxProUtils.millisFromDate(value));
         }
