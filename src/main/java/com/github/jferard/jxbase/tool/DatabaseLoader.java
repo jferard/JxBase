@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.tool;
 
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
+import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -33,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -142,7 +144,7 @@ public class DatabaseLoader {
         this.fillTable(builder, filenameWithoutExt);
     }
 
-    private void buildTable(final SQLQueryBuilder builder) throws IOException, SQLException {
+    public void buildTable(final SQLQueryBuilder builder) throws IOException, SQLException {
         if (this.dropTable) {
             final String dropQuery = builder.dropTable();
             this.logger.fine(dropQuery);
@@ -153,19 +155,28 @@ public class DatabaseLoader {
         this.statement.execute(createQuery);
     }
 
-    private void fillTable(final SQLQueryBuilder builder,
+    public void fillTable(final SQLQueryBuilder builder,
                           final String filenameWithoutExt)
+            throws SQLException, IOException, ParseException {
+        final XBaseReader<?, ?> reader =
+                XBaseReaderFactory.createReader(filenameWithoutExt, JxBaseUtils.LATIN1_CHARSET);
+        this.fillTable(builder, reader);
+    }
+
+    public void fillTable(final SQLQueryBuilder builder, final XBaseReader<?, ?> reader)
             throws SQLException, IOException, ParseException {
         this.connection.setAutoCommit(false);
         final String sql = builder.insertValues();
         this.logger.fine(sql);
         final PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
-        final XBaseReader<?, ?> reader =
-                XBaseReaderFactory.createReader(filenameWithoutExt, JxBaseUtils.LATIN1_CHARSET);
         try {
-            while (this.addBatchRows(preparedStatement, reader)) {
-                preparedStatement.executeBatch();
-                this.connection.commit();
+            int count = this.chunkSize;
+            while (count == this.chunkSize) {
+                count = this.addBatchRows(preparedStatement, reader);
+                if (count != 0) {
+                    preparedStatement.executeBatch();
+                    this.connection.commit();
+                }
             }
         } finally {
             reader.close();
@@ -173,22 +184,30 @@ public class DatabaseLoader {
         this.connection.setAutoCommit(true);
     }
 
-    private boolean addBatchRows(final PreparedStatement preparedStatement,
+    /**
+     *
+     * @return -1
+     */
+    private int addBatchRows(final PreparedStatement preparedStatement,
                                  final XBaseReader<?, ?> reader)
             throws IOException, SQLException, ParseException {
+        final XBaseFieldDescriptorArray<?> fieldDescriptorArray =
+                reader.getFieldDescriptorArray();
+        final Collection<XBaseField<?>> fields =
+                (Collection<XBaseField<?>>) fieldDescriptorArray.getFields();
         for (int i = 0; i != this.chunkSize; i++) {
             final XBaseRecord record = reader.read();
             if (record == null) {
-                return i != 0;
+                return i;
             }
             final Map<String, Object> map = record.getMap();
             int j = 1;
-            for (final XBaseField<?> field : reader.getFieldDescriptorArray().getFields()) {
+            for (final XBaseField<?> field : fields) {
                 preparedStatement.setObject(j++, map.get(field.getName()));
             }
             preparedStatement.addBatch();
         }
-        return true;
+        return this.chunkSize;
     }
 
     public void close() throws SQLException {
