@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.dialect.db2.field;
 
 import com.github.jferard.jxbase.dialect.db2.CLNFieldsAccess;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
+import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,6 +64,12 @@ public class LogicalFieldTest {
     @Test
     public void toLogicStringRepresentation() {
         Assert.assertEquals("bool,L,1,0", this.lf.toStringRepresentation(this.access));
+    }
+
+    @Test
+    public void toRepresentation() {
+        Assert.assertEquals(new FieldRepresentation("bool", 'L', 1, 0),
+                this.lf.toRepresentation(this.access));
     }
 
     @Test

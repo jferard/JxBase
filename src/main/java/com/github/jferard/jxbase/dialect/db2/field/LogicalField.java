@@ -39,8 +39,8 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     }
 
     @Override
-    public int getValueLength(final LogicalAccess dialect) {
-        return dialect.getLogicalValueLength();
+    public int getValueLength(final LogicalAccess access) {
+        return access.getLogicalValueLength();
     }
 
     @Override
@@ -50,19 +50,19 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     }
 
     @Override
-    public void writeValue(final LogicalAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final LogicalAccess access, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeLogicalValue(out, (Boolean) value);
+        access.writeLogicalValue(out, (Boolean) value);
     }
 
     @Override
-    public String toStringRepresentation(final LogicalAccess dialect) {
-        return dialect.getLogicalFieldRepresentation(this.name).toString();
+    public String toStringRepresentation(final LogicalAccess access) {
+        return access.getLogicalFieldRepresentation(this.name).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final LogicalAccess dialect) {
-        return dialect.getLogicalFieldRepresentation(this.name);
+    public FieldRepresentation toRepresentation(final LogicalAccess access) {
+        return access.getLogicalFieldRepresentation(this.name);
     }
 
     @Override

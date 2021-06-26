@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ package com.github.jferard.jxbase.dialect.db2.field;
 
 import com.github.jferard.jxbase.dialect.db2.CLNFieldsAccess;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
+import com.github.jferard.jxbase.field.FieldRepresentation;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -74,6 +75,12 @@ public class CharacterFieldTest {
         Assert.assertEquals("char,C,20,0", this.cf.toStringRepresentation(this.access));
     }
 
+    @Test
+    public void toRepresentation() {
+        Assert.assertEquals(new FieldRepresentation("char", 'C', 20, 0),
+                this.cf.toRepresentation(this.access));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void toCharStringRepresentationException() {
         final CharacterField field = new CharacterField("char", 734);
@@ -94,5 +101,7 @@ public class CharacterFieldTest {
         Assert.assertNotEquals(this.cf, f2);
         final CharacterField f3 = new CharacterField("char", 20);
         Assert.assertEquals(this.cf, f3);
+        final CharacterField f4 = new CharacterField("char2", 20);
+        Assert.assertNotEquals(this.cf, f4);
     }
 }

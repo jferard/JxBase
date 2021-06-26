@@ -56,8 +56,8 @@ public class DB4DialectFactory {
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
         final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
         final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordWriter);
         final MemoAccess memoAccess = new DB3MemoAccess();
         final DB4Access access =
                 new DB4Access(characterAccess, dateAccess, floatAccess,

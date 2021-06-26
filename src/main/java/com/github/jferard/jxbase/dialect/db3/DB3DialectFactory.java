@@ -57,9 +57,9 @@ public class DB3DialectFactory {
         final CharacterAccess characterAccess =
                 new DB2CharacterAccess(rawRecordReadHelper, rawRecordWriterHelper);
         final LogicalAccess logicalAccess =
-                new DB2LogicalAccess(rawRecordReadHelper, rawRecordWriterHelper);
+                new DB2LogicalAccess(rawRecordWriterHelper);
         final NumericAccess numericAccess =
-                new DB2NumericAccess(rawRecordReadHelper, rawRecordWriterHelper);
+                new DB2NumericAccess(rawRecordWriterHelper);
         final DateAccess dateAccess =
                 new DB3DateAccess(rawRecordReadHelper, rawRecordWriterHelper, timeZone);
         final MemoAccess memoAccess = new DB3MemoAccess();

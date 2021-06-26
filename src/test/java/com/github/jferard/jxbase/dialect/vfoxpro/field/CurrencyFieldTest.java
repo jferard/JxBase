@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -74,19 +74,26 @@ public class CurrencyFieldTest {
     }
 
     @Test
-    public void testToString() {
+    public void testToStringRepresentation() {
         Assert.assertEquals("currency,Y,8,0",
                 this.field.toStringRepresentation(this.access));
     }
 
     @Test
+    public void testToString() {
+        Assert.assertEquals("CurrencyField[name=currency]",
+                this.field.toString());
+    }
+
+    @Test
     public void testEquals() {
-        Assert.assertEquals(new CurrencyField("currency"),
-                this.field);
-        Assert.assertNotEquals(new CurrencyField("currency2"),
-                this.field);
+        Assert.assertEquals(this.field, this.field);
+        Assert.assertEquals(new CurrencyField("currency"), this.field);
+        Assert.assertNotEquals(new CurrencyField("currency2"), this.field);
         Assert.assertNotEquals(new CharacterField("currency", 10),
                 this.field);
+        Assert.assertNotEquals(this.field,
+                new CharacterField("currency", 10));
     }
 
     @Test

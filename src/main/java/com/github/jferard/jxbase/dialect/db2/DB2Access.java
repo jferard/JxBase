@@ -42,8 +42,8 @@ public class DB2Access implements CLNFieldsAccess, XBaseAccess {
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterAccess =
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordWriter);
+        final NumericAccess numericAccess = new DB2NumericAccess(rawRecordWriter);
         return new DB2Access(characterAccess, logicalAccess, numericAccess);
     }
 

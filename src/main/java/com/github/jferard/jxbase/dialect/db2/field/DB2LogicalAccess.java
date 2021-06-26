@@ -30,12 +30,13 @@ import java.io.OutputStream;
  * A logical access in DB2.
  */
 public class DB2LogicalAccess implements LogicalAccess {
-    private final RawRecordReadHelper rawRecordReader;
+    public static final byte[] QUESTION_MARK = "?".getBytes(JxBaseUtils.ASCII_CHARSET);
+    public static final byte[] T = "T".getBytes(JxBaseUtils.ASCII_CHARSET);
+    public static final byte[] F = "F".getBytes(JxBaseUtils.ASCII_CHARSET);
+
     private final RawRecordWriteHelper rawRecordWriter;
 
-    public DB2LogicalAccess(final RawRecordReadHelper rawRecordReader,
-                            final RawRecordWriteHelper rawRecordWriter) {
-        this.rawRecordReader = rawRecordReader;
+    public DB2LogicalAccess(final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordWriter = rawRecordWriter;
     }
 
@@ -65,10 +66,9 @@ public class DB2LogicalAccess implements LogicalAccess {
     public void writeLogicalValue(final OutputStream out, final Boolean value) throws IOException {
         final byte[] bytes;
         if (value == null) {
-            bytes = "?".getBytes(JxBaseUtils.ASCII_CHARSET);
+            bytes = QUESTION_MARK;
         } else {
-            final String s = value ? "T" : "F";
-            bytes = s.getBytes();
+            bytes = value ? T : F;
         }
         this.rawRecordWriter.write(out, bytes);
     }

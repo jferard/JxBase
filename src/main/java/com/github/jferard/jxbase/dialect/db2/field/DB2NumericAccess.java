@@ -37,13 +37,10 @@ import java.util.Map;
  */
 public class DB2NumericAccess implements NumericAccess {
     public static final CharSequence NUMERIC_OVERFLOW = "*";
-    private final RawRecordReadHelper rawRecordReader;
     private final RawRecordWriteHelper rawRecordWriter;
     private final Map<Integer, DecimalFormat> decimalFormatByDecimalPlaces;
 
-    public DB2NumericAccess(final RawRecordReadHelper rawRecordReader,
-                            final RawRecordWriteHelper rawRecordWriter) {
-        this.rawRecordReader = rawRecordReader;
+    public DB2NumericAccess(final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordWriter = rawRecordWriter;
         this.decimalFormatByDecimalPlaces = new HashMap<Integer, DecimalFormat>();
     }

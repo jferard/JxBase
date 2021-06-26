@@ -46,8 +46,8 @@ public class DB2Dialect implements XBaseDialect<DB2Access, DB2Dialect> {
         final RawRecordWriteHelper rawRecordWriter = new RawRecordWriteHelper(charset);
         final CharacterAccess characterDialect =
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
-        final LogicalAccess logicalDialect = new DB2LogicalAccess(rawRecordReader, rawRecordWriter);
-        final NumericAccess numericDialect = new DB2NumericAccess(rawRecordReader, rawRecordWriter);
+        final LogicalAccess logicalDialect = new DB2LogicalAccess(rawRecordWriter);
+        final NumericAccess numericDialect = new DB2NumericAccess(rawRecordWriter);
         final DB2Access access = new DB2Access(characterDialect, logicalDialect, numericDialect);
         return new DB2Dialect(type, access);
     }
