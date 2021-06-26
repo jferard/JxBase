@@ -31,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.text.ParseException;
-import java.util.logging.Logger;
 
 /**
  * A generic reader: combination of various readers.
@@ -83,15 +82,18 @@ public class GenericReader<A extends XBaseAccess, D extends XBaseDialect<A, D>>
         this.checkLengths();
     }
 
-    private void checkLengths() {
+    private void checkLengths() throws IOException {
         final int metaLength = this.dialect.getMetaDataLength();
+        final int arrayLength = this.array.getArrayLength();
+        final int optionalLength = this.optional.getLength();
+        final int fullHeaderLength = this.metadata.getFullHeaderLength();
+
         final int actualHeaderLength =
-                this.array.getArrayLength() + metaLength + this.optional.getLength();
-        if (actualHeaderLength != this.metadata.getFullHeaderLength()) {
-            Logger.getLogger(GenericReader.class.getName()).severe(String
-                    .format("Bad header length: expected: %s, actual: %s + %s + %s",
-                            this.metadata.getFullHeaderLength(), this.array.getArrayLength(),
-                            metaLength, this.optional.getLength()));
+                arrayLength + metaLength + optionalLength;
+        if (actualHeaderLength != fullHeaderLength) {
+            throw new IOException(
+                    String.format("Bad header length: expected: %s, actual: %s + %s + %s",
+                            fullHeaderLength, arrayLength, metaLength, optionalLength));
         }
     }
 

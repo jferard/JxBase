@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -30,8 +30,10 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 import org.powermock.api.easymock.PowerMock;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -67,29 +69,63 @@ public class GenericReaderTest {
     }
 
     private void init() throws IOException {
+        this.init0();
+        EasyMock.expect(this.dialect.getType()).andReturn(XBaseFileTypeEnum.dBASE3plusMemo);
+        EasyMock.expect(this.rf.createMemoReader(XBaseFileTypeEnum.dBASE3plusMemo, "tableName",
+                JxBaseUtils.ASCII_CHARSET)).andReturn(this.memoReader);
+
+        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET,
+                this.memoReader, this.metadata, this.array, this.optional)).andReturn(this.rr);
+
+        EasyMock.expect(this.dialect.getMetaDataLength()).andReturn(512);
+        EasyMock.expect(this.array.getArrayLength()).andReturn(512).times(1);
+        EasyMock.expect(this.optional.getLength()).andReturn(512).times(1);
+        EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512 * 3).times(1);
+    }
+
+    private void init0() throws IOException {
         EasyMock.expect(this.rf.createMetadataReader(this.is)).andReturn(this.mdr);
         EasyMock.expect(this.mdr.read()).andReturn(this.metadata);
         EasyMock.expect(this.rf.createFieldDescriptorArrayReader(this.is, this.metadata))
                 .andReturn(this.ar);
         EasyMock.expect(this.ar.read()).andReturn(this.array);
-        EasyMock.expect(this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
-                this.array)).andReturn(this.or);
+        EasyMock.expect(
+                this.rf.createOptionalReader(this.is, JxBaseUtils.ASCII_CHARSET, this.metadata,
+                        this.array)).andReturn(this.or);
         EasyMock.expect(this.or.read()).andReturn(this.optional);
-        EasyMock.expect(this.dialect.getType()).andReturn(XBaseFileTypeEnum.dBASE3plusMemo);
-        EasyMock.expect(this.rf.createMemoReader(XBaseFileTypeEnum.dBASE3plusMemo, "tableName", JxBaseUtils.ASCII_CHARSET)).andReturn(memoReader);
-
-        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET, memoReader,
-                this.metadata,
-                this.array, this.optional)).andReturn(this.rr);
-
-        EasyMock.expect(this.dialect.getMetaDataLength()).andReturn(512);
-        EasyMock.expect(this.array.getArrayLength()).andReturn(512).times(1);
-        EasyMock.expect(this.optional.getLength()).andReturn(512).times(1);
-        EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512*3).times(1);
     }
 
     private GenericReader<DB3Access, DB3Dialect> getGenericReader() throws IOException {
-        return new GenericReader<DB3Access, DB3Dialect>(this.dialect, "tableName", this.is, JxBaseUtils.ASCII_CHARSET, this.rf);
+        return new GenericReader<DB3Access, DB3Dialect>(this.dialect, "tableName", this.is,
+                JxBaseUtils.ASCII_CHARSET, this.rf);
+    }
+
+    @Test
+    public void getReaderError() throws IOException {
+        PowerMock.resetAll();
+
+        this.init0();
+        EasyMock.expect(this.dialect.getType()).andReturn(XBaseFileTypeEnum.dBASE3plusMemo);
+        EasyMock.expect(this.rf.createMemoReader(XBaseFileTypeEnum.dBASE3plusMemo, "tableName",
+                JxBaseUtils.ASCII_CHARSET)).andThrow(new FileNotFoundException());
+
+        EasyMock.expect(this.rf.createRecordReader(this.is, JxBaseUtils.ASCII_CHARSET,
+                null, this.metadata, this.array, this.optional)).andReturn(this.rr);
+
+        EasyMock.expect(this.dialect.getMetaDataLength()).andReturn(512);
+        EasyMock.expect(this.array.getArrayLength()).andReturn(512);
+        EasyMock.expect(this.optional.getLength()).andReturn(512);
+        EasyMock.expect(this.metadata.getFullHeaderLength()).andReturn(512 * 5);
+        PowerMock.replayAll();
+
+        final GenericReaderTest finalThis = this;
+        Assert.assertThrows(IOException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                finalThis.getGenericReader();
+            }
+        });
+        PowerMock.verifyAll();
     }
 
     @Test
