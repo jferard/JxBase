@@ -48,7 +48,7 @@ public class DoubleFieldTest {
     public void getValue() throws IOException {
         final byte[] bytes =
                 {0x40, 0x09, 0x21, (byte) 0xFB, 0x54, 0x44, 0x2D, 0x18};
-        Assert.assertEquals(3.141592653589793d, (Double) this.f.extractValue(this.access, bytes, 0, 8), 1e-10);
+        Assert.assertEquals(3.141592653589793d, (Double) this.f.extractValue(this.access, bytes, 0), 1e-10);
     }
 
     @Test

@@ -51,7 +51,7 @@ public class CharacterFieldTest {
     @Test
     public void getCharValue() throws IOException {
         final byte[] bytes = "some text           ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertEquals("some text", this.cf.extractValue(this.access, bytes, 0, 20));
+        Assert.assertEquals("some text", this.cf.extractValue(this.access, bytes, 0));
     }
 
     @Test

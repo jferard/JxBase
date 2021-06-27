@@ -47,10 +47,8 @@ public class MemoField implements XBaseField<MemoAccess> {
 
     @Override
     public XBaseMemoRecord extractValue(final MemoAccess memoAccess, final byte[] recordBuffer,
-                                        final int offset, final int length) throws IOException {
+                                        final int offset) throws IOException {
         throw new UnsupportedEncodingException();
-//        final XBaseMemoReader memoReader = memoAccess.getMemoReader();
-//        return memoAccess.extractMemoValue(memoReader, recordBuffer, offset, length);
     }
 
     @Override

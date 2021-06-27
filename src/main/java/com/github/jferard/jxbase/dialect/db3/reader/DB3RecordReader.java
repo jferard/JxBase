@@ -101,8 +101,7 @@ public class DB3RecordReader<A extends XBaseAccess> implements XBaseRecordReader
                 value = memoAccess.extractMemoValue(this.memoReader, this.recordBuffer, offset,
                         memoAccess.getMemoValueLength());
             } else {
-                value = field.extractValue(this.access, this.recordBuffer, offset,
-                        field.getValueLength(this.access));
+                value = field.extractValue(this.access, this.recordBuffer, offset);
             }
             valueByFieldName.put(name, value);
             offset += field.getValueLength(this.access);

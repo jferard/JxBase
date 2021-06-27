@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,19 +39,20 @@ public class IntegerField implements XBaseField<IntegerAccess> {
     }
 
     @Override
-    public int getValueLength(final IntegerAccess dialect) {
-        return dialect.getIntegerValueLength();
+    public int getValueLength(final IntegerAccess access) {
+        return access.getIntegerValueLength();
     }
 
     @Override
-    public Long extractValue(final IntegerAccess reader, final byte[] recordBuffer,
-                             final int offset, final int length) {
-        return reader.extractIntegerValue(recordBuffer, offset, length);
+    public Long extractValue(final IntegerAccess access, final byte[] recordBuffer,
+                             final int offset) {
+        return access.extractIntegerValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override
-    public void writeValue(final IntegerAccess writer, final OutputStream out, final Object value) throws IOException {
-        writer.writeIntegerValue(out, (Long) value);
+    public void writeValue(final IntegerAccess access, final OutputStream out, final Object value)
+            throws IOException {
+        access.writeIntegerValue(out, (Long) value);
     }
 
     @Override

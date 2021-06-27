@@ -42,9 +42,9 @@ public class FloatField implements XBaseField<FloatAccess> {
     }
 
     @Override
-    public BigDecimal extractValue(final FloatAccess access, final byte[] recordBuffer, final int offset,
-                                   final int length) {
-        return access.extractFloatValue(recordBuffer, offset, length);
+    public BigDecimal extractValue(final FloatAccess access, final byte[] recordBuffer,
+                                   final int offset) {
+        return access.extractFloatValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override

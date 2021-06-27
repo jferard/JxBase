@@ -52,35 +52,35 @@ public class NumericField implements XBaseField<NumericAccess> {
     }
 
     @Override
-    public int getValueLength(final NumericAccess dialect) {
-        return dialect.getNumericValueLength(this.fieldLength);
+    public int getValueLength(final NumericAccess access) {
+        return access.getNumericValueLength(this.fieldLength);
     }
 
     @Override
-    public BigDecimal extractValue(final NumericAccess reader, final byte[] recordBuffer,
-                                   final int offset, final int length) {
-        return reader
-                .extractNumericValue(recordBuffer, offset, length, this.fieldNumberOfDecimalPlaces);
+    public BigDecimal extractValue(final NumericAccess access, final byte[] recordBuffer,
+                                   final int offset) {
+        return access
+                .extractNumericValue(recordBuffer, offset, this.getValueLength(access), this.fieldNumberOfDecimalPlaces);
     }
 
     @Override
-    public void writeValue(final NumericAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final NumericAccess access, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeNumericValue(out, (BigDecimal) value, this.fieldLength,
+        access.writeNumericValue(out, (BigDecimal) value, this.fieldLength,
                 this.fieldNumberOfDecimalPlaces);
     }
 
     @Override
-    public String toStringRepresentation(final NumericAccess dialect) {
-        return dialect
+    public String toStringRepresentation(final NumericAccess access) {
+        return access
                 .getNumericFieldRepresentation(this.fieldName, this.fieldLength,
                         this.fieldNumberOfDecimalPlaces)
                 .toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final NumericAccess dialect) {
-        return dialect
+    public FieldRepresentation toRepresentation(final NumericAccess access) {
+        return access
                 .getNumericFieldRepresentation(this.fieldName, this.fieldLength,
                         this.fieldNumberOfDecimalPlaces);
     }

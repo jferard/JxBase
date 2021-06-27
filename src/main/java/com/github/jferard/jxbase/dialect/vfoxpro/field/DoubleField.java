@@ -57,9 +57,9 @@ public class DoubleField implements XBaseField<DoubleAccess> {
     }
 
     @Override
-    public Object extractValue(final DoubleAccess access, final byte[] recordBuffer, final int offset,
-                               final int length) {
-        return access.extractDoubleValue(recordBuffer, offset, length);
+    public Object extractValue(final DoubleAccess access, final byte[] recordBuffer,
+                               final int offset) {
+        return access.extractDoubleValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override

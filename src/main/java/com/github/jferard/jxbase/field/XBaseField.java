@@ -36,11 +36,10 @@ public interface XBaseField<A> {
      * @param access the access
      * @param recordBuffer the buffer
      * @param offset offset of the value in the buffer
-     * @param length length of the value in the buffer
      * @return the value.
      * @throws IOException
      */
-    Object extractValue(A access, byte[] recordBuffer, int offset, int length)
+    Object extractValue(A access, byte[] recordBuffer, int offset)
             throws IOException;
 
     /**

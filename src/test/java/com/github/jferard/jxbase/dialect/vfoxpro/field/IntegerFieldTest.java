@@ -47,7 +47,7 @@ public class IntegerFieldTest {
     @Test
     public void getValue() throws IOException {
         final byte[] bytes = {1, 2, 3, 4};
-        Assert.assertEquals(Long.valueOf(67305985), this.f.extractValue(this.access, bytes, 0, 4));
+        Assert.assertEquals(Long.valueOf(67305985), this.f.extractValue(this.access, bytes, 0));
     }
 
     @Test

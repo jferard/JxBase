@@ -52,7 +52,7 @@ public class DatetimeFieldTest {
         final Calendar cal = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         cal.set(1997, Calendar.AUGUST, 27, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        Assert.assertEquals(cal.getTime(), this.f.extractValue(this.access, bytes, 0, 8));
+        Assert.assertEquals(cal.getTime(), this.f.extractValue(this.access, bytes, 0));
     }
 
     @Test

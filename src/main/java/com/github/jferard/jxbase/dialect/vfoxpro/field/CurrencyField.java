@@ -44,9 +44,9 @@ public class CurrencyField implements XBaseField<CurrencyAccess> {
     }
 
     @Override
-    public Long extractValue(final CurrencyAccess access, final byte[] recordBuffer, final int offset,
-                             final int length) {
-        return access.extractCurrencyValue(recordBuffer, offset, length);
+    public Long extractValue(final CurrencyAccess access, final byte[] recordBuffer,
+                             final int offset) {
+        return access.extractCurrencyValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override

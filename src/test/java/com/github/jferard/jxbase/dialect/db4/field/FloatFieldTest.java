@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 public class FloatFieldTest {
-    private FloatField f;
+    private FloatField field;
     private FloatAccess access;
 
     @Before
@@ -37,42 +37,42 @@ public class FloatFieldTest {
         final RawRecordReadHelper readHelper = new RawRecordReadHelper(JxBaseUtils.ASCII_CHARSET);
         final RawRecordWriteHelper writeHelper =
                 new RawRecordWriteHelper(JxBaseUtils.ASCII_CHARSET);
-        this.access = new DB4FloatAccess(readHelper, writeHelper);
-        this.f = new FloatField("float");
+        this.access = new DB4FloatAccess(writeHelper);
+        this.field = new FloatField("float");
     }
 
     @Test
     public void getName() {
-        Assert.assertEquals("float", this.f.getName());
+        Assert.assertEquals("float", this.field.getName());
     }
 
     @Test
     public void getByteLength() {
-        Assert.assertEquals(20, this.f.getValueLength(this.access));
+        Assert.assertEquals(20, this.field.getValueLength(this.access));
     }
 
     @Test
     public void getValue() throws IOException {
-        final byte[] bytes = "3.141592653589793".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertEquals(new BigDecimal("3.14"), this.f.extractValue(this.access, bytes, 0, 4));
+        final byte[] bytes = "   3.141592653589793".getBytes(JxBaseUtils.ASCII_CHARSET);
+        Assert.assertEquals(new BigDecimal("3.141592653589793"), this.field.extractValue(this.access, bytes, 0));
     }
 
     @Test
     public void getNullEmptyValue() throws IOException {
-        final byte[] bytes = "    ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.f.extractValue(this.access, bytes, 0, 4));
+        final byte[] bytes = "                    ".getBytes(JxBaseUtils.ASCII_CHARSET);
+        Assert.assertNull(this.field.extractValue(this.access, bytes, 0));
     }
 
     @Test
     public void getNullOverflowValue() throws IOException {
-        final byte[] bytes = "*   ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.f.extractValue(this.access, bytes, 0, 4));
+        final byte[] bytes = "*                   ".getBytes(JxBaseUtils.ASCII_CHARSET);
+        Assert.assertNull(this.field.extractValue(this.access, bytes, 0));
     }
 
     @Test
     public void writeValue() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.f.writeValue(this.access, bos, 3.141592653589793f);
+        this.field.writeValue(this.access, bos, 3.141592653589793f);
         final byte[] bytes = "           3.1415927".getBytes(JxBaseUtils.ASCII_CHARSET);
         Assert.assertArrayEquals(bytes, bos.toByteArray());
     }
@@ -80,7 +80,7 @@ public class FloatFieldTest {
     @Test(expected = IllegalArgumentException.class)
     public void writeLongValue() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.f.writeValue(this.access, bos, new BigDecimal("1415926535897933.141592653589793"));
+        this.field.writeValue(this.access, bos, new BigDecimal("1415926535897933.141592653589793"));
         final byte[] bytes = "           3.1415927".getBytes(JxBaseUtils.ASCII_CHARSET);
         Assert.assertArrayEquals(bytes, bos.toByteArray());
     }
@@ -89,31 +89,31 @@ public class FloatFieldTest {
     @Test
     public void writeNullValue() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.f.writeValue(this.access, bos, null);
+        this.field.writeValue(this.access, bos, null);
         final byte[] bytes = "                    ".getBytes(JxBaseUtils.ASCII_CHARSET);
         Assert.assertArrayEquals(bytes, bos.toByteArray());
     }
 
     @Test
     public void toStringRepresentation() {
-        Assert.assertEquals("float,F,20,0", this.f.toStringRepresentation(this.access));
+        Assert.assertEquals("float,F,20,0", this.field.toStringRepresentation(this.access));
     }
 
     @Test
     public void testToString() {
-        Assert.assertEquals("FloatField[name=float]", this.f.toString());
+        Assert.assertEquals("FloatField[name=float]", this.field.toString());
     }
 
 
     @Test
     public void testEquals() {
-        Assert.assertEquals(97526364, this.f.hashCode());
-        Assert.assertEquals(this.f, this.f);
-        Assert.assertNotEquals(this.f, new Object());
+        Assert.assertEquals(97526364, this.field.hashCode());
+        Assert.assertEquals(this.field, this.field);
+        Assert.assertNotEquals(this.field, new Object());
         final FloatField f2 = new FloatField("int");
-        Assert.assertNotEquals(this.f, f2);
+        Assert.assertNotEquals(this.field, f2);
         final FloatField f3 = new FloatField("float");
-        Assert.assertEquals(this.f, f3);
+        Assert.assertEquals(this.field, f3);
     }
 
 }

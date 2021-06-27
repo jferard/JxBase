@@ -46,15 +46,15 @@ public class CharacterField implements XBaseField<CharacterAccess> {
     }
 
     @Override
-    public String extractValue(final CharacterAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) {
-        return reader.extractCharacterValue(recordBuffer, offset, length);
+    public String extractValue(final CharacterAccess access, final byte[] recordBuffer,
+                               final int offset) {
+        return access.extractCharacterValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override
-    public void writeValue(final CharacterAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final CharacterAccess access, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeCharacterValue(out, (String) value, this.fieldLength);
+        access.writeCharacterValue(out, (String) value, this.fieldLength);
     }
 
     @Override

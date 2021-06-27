@@ -57,7 +57,7 @@ public class NumericFieldTest {
     public void getNumericValue() {
         final byte[] bytes = "     18.90".getBytes(JxBaseUtils.ASCII_CHARSET);
         final BigDecimal v = new BigDecimal("18.90");
-        final BigDecimal value = this.nf.extractValue(this.access, bytes, 0, 10);
+        final BigDecimal value = this.nf.extractValue(this.access, bytes, 0);
         Assert.assertEquals(v, value);
     }
 

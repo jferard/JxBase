@@ -76,7 +76,7 @@ public class DB3AccessTest {
     public void getDateValue() throws IOException {
         final byte[] bytes = "19700101".getBytes(JxBaseUtils.ASCII_CHARSET);
         final Date date = new Date(0);
-        Assert.assertEquals(date, this.df.extractValue(this.access, bytes, 0, 8));
+        Assert.assertEquals(date, this.df.extractValue(this.access, bytes, 0));
     }
 
     @Test

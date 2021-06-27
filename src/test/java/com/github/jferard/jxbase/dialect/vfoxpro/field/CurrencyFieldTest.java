@@ -50,7 +50,7 @@ public class CurrencyFieldTest {
     public void extractValue() {
         Assert.assertEquals(10L,
                 (long) this.field
-                        .extractValue(this.access, new byte[]{0, 0, 0, 0, 10, 0, 0, 0}, 0, 8));
+                        .extractValue(this.access, new byte[]{0, 0, 0, 0, 10, 0, 0, 0}, 0));
     }
 
     @Test

@@ -32,12 +32,9 @@ import java.math.BigDecimal;
  */
 public class DB4FloatAccess implements FloatAccess {
     public static final CharSequence NUMERIC_OVERFLOW = "*";
-    private final RawRecordReadHelper rawRecordReader;
     private final RawRecordWriteHelper rawRecordWriter;
 
-    public DB4FloatAccess(final RawRecordReadHelper rawRecordReader,
-                          final RawRecordWriteHelper rawRecordWriter) {
-        this.rawRecordReader = rawRecordReader;
+    public DB4FloatAccess(final RawRecordWriteHelper rawRecordWriter) {
         this.rawRecordWriter = rawRecordWriter;
     }
 

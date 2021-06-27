@@ -40,19 +40,19 @@ public class DateField implements XBaseField<DateAccess> {
     }
 
     @Override
-    public int getValueLength(final DateAccess dialect) {
-        return dialect.getDateValueLength();
+    public int getValueLength(final DateAccess access) {
+        return access.getDateValueLength();
     }
 
     @Override
     public Date extractValue(final DateAccess access, final byte[] recordBuffer,
-                             final int offset, final int length) {
-        return access.extractDateValue(recordBuffer, offset, length);
+                             final int offset) {
+        return access.extractDateValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override
-    public void writeValue(final DateAccess writer, final OutputStream out, final Object value) throws IOException {
-        writer.writeDateValue(out, (Date) value);
+    public void writeValue(final DateAccess access, final OutputStream out, final Object value) throws IOException {
+        access.writeDateValue(out, (Date) value);
     }
 
     @Override

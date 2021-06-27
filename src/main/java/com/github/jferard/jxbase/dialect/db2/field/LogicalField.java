@@ -44,9 +44,9 @@ public class LogicalField implements XBaseField<LogicalAccess> {
     }
 
     @Override
-    public Boolean extractValue(final LogicalAccess reader, final byte[] recordBuffer, final int offset,
-                                final int length) {
-        return reader.extractLogicalValue(recordBuffer, offset, length);
+    public Boolean extractValue(final LogicalAccess access, final byte[] recordBuffer,
+                                final int offset) {
+        return access.extractLogicalValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override

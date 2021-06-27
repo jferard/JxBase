@@ -20,7 +20,6 @@ package com.github.jferard.jxbase.core;
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
-import com.github.jferard.jxbase.dialect.db2.field.DB2CharacterAccess;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
 import com.github.jferard.jxbase.dialect.db3.memo.DB3MemoReader;
@@ -30,7 +29,6 @@ import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProAccess;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialectFactory;
-import com.github.jferard.jxbase.field.RawRecordReadHelper;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.memo.XBaseMemoReader;
 import com.github.jferard.jxbase.reader.XBaseRecordReader;
@@ -112,9 +110,9 @@ public class XBaseRecordTest {
         final byte[] recordBuffer = "tf0".getBytes(JxBaseUtils.ASCII_CHARSET);
         PowerMock.replayAll();
 
-        final Boolean value1 = (Boolean) field1.extractValue(this.access, recordBuffer, 0, 1);
-        final Boolean value2 = (Boolean) field2.extractValue(this.access, recordBuffer, 1, 1);
-        final Boolean value3 = (Boolean) field3.extractValue(this.access, recordBuffer, 2, 1);
+        final Boolean value1 = (Boolean) field1.extractValue(this.access, recordBuffer, 0);
+        final Boolean value2 = (Boolean) field2.extractValue(this.access, recordBuffer, 1);
+        final Boolean value3 = (Boolean) field3.extractValue(this.access, recordBuffer, 2);
         PowerMock.verifyAll();
 
         Assert.assertTrue(value1);
@@ -156,7 +154,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "20100501".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.extractValue(this.access, buffer, 0, 8);
+        final Object value = field.extractValue(this.access, buffer, 0);
         PowerMock.verifyAll();
 
         final Calendar cal = Calendar.getInstance();
@@ -173,7 +171,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "abcd".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.extractValue(this.access, buffer, 0, 4);
+        final Object value = field.extractValue(this.access, buffer, 0);
         PowerMock.verifyAll();
 
         Assert.assertEquals(1684234849L, value);
@@ -187,7 +185,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = "abcdefgh".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.extractValue(this.access, buffer, 0, 8);
+        final Object value = field.extractValue(this.access, buffer, 0);
         PowerMock.verifyAll();
 
         Assert.assertEquals(1.2926117907728089E161, (Double) value, 0.01);
@@ -201,7 +199,7 @@ public class XBaseRecordTest {
         PowerMock.replayAll();
 
         final byte[] buffer = " bc ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        final Object value = field.extractValue(this.access, buffer, 0, 4);
+        final Object value = field.extractValue(this.access, buffer, 0);
         PowerMock.verifyAll();
 
         Assert.assertEquals("bc", (String) value);

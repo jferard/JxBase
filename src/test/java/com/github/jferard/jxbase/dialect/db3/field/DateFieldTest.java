@@ -51,13 +51,13 @@ public class DateFieldTest {
     public void getDateValue() throws IOException {
         final byte[] bytes = "19700101".getBytes(JxBaseUtils.ASCII_CHARSET);
         final Date date = new Date(0);
-        Assert.assertEquals(date, this.df.extractValue(this.access, bytes, 0, 8));
+        Assert.assertEquals(date, this.df.extractValue(this.access, bytes, 0));
     }
 
     @Test
     public void getDateValueNull() throws IOException {
         final byte[] bytes = "        ".getBytes(JxBaseUtils.ASCII_CHARSET);
-        Assert.assertNull(this.df.extractValue(this.access, bytes, 0, 8));
+        Assert.assertNull(this.df.extractValue(this.access, bytes, 0));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class DateFieldTest {
         Assert.assertThrows(RuntimeException.class, new ThrowingRunnable() {
             @Override
             public void run() throws Throwable {
-                thisDf.extractValue(thisAccess, bytes, 0, 8);
+                thisDf.extractValue(thisAccess, bytes, 0);
             }
         });
     }

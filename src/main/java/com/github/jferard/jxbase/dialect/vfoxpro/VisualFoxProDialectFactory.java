@@ -71,7 +71,7 @@ public class VisualFoxProDialectFactory {
         final CharacterAccess characterAccess =
                 new DB2CharacterAccess(rawRecordReader, rawRecordWriter);
         final DateAccess dateAccess = new DB3DateAccess(rawRecordReader, rawRecordWriter, timeZone);
-        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordReader, rawRecordWriter);
+        final FloatAccess floatAccess = new DB4FloatAccess(rawRecordWriter);
         final LogicalAccess logicalAccess = new DB2LogicalAccess(rawRecordWriter);
         final NumericAccess numericAccess = new DB2NumericAccess(rawRecordWriter);
         final DatetimeAccess datetimeAccess = new FoxProDatetimeAccess();

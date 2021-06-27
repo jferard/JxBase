@@ -41,33 +41,30 @@ public class NullFlagsField implements XBaseField<NullFlagsAccess> {
     }
 
     @Override
-    public int getValueLength(final NullFlagsAccess dialect) {
-        return dialect.getNullFlagsFieldLength(this.fieldLength);
+    public int getValueLength(final NullFlagsAccess access) {
+        return access.getNullFlagsFieldLength(this.fieldLength);
     }
 
     @Override
-    public byte[] extractValue(final NullFlagsAccess reader, final byte[] recordBuffer,
-                               final int offset, final int length) {
-        if (length != this.fieldLength) {
-            throw new IllegalArgumentException();
-        }
-        return reader.extractNullFlagsValue(recordBuffer, offset, length);
+    public byte[] extractValue(final NullFlagsAccess access, final byte[] recordBuffer,
+                               final int offset) {
+        return access.extractNullFlagsValue(recordBuffer, offset, this.getValueLength(access));
     }
 
     @Override
-    public void writeValue(final NullFlagsAccess writer, final OutputStream out, final Object value)
+    public void writeValue(final NullFlagsAccess access, final OutputStream out, final Object value)
             throws IOException {
-        writer.writeNullFlagsValue(out, (byte[]) value, this.fieldLength);
+        access.writeNullFlagsValue(out, (byte[]) value, this.fieldLength);
     }
 
     @Override
-    public String toStringRepresentation(final NullFlagsAccess dialect) {
-        return this.toRepresentation(dialect).toString();
+    public String toStringRepresentation(final NullFlagsAccess access) {
+        return this.toRepresentation(access).toString();
     }
 
     @Override
-    public FieldRepresentation toRepresentation(final NullFlagsAccess dialect) {
-        return dialect.getNullFlagsFieldRepresentation(this.fieldName, this.fieldLength);
+    public FieldRepresentation toRepresentation(final NullFlagsAccess access) {
+        return access.getNullFlagsFieldRepresentation(this.fieldName, this.fieldLength);
     }
 
     @Override
