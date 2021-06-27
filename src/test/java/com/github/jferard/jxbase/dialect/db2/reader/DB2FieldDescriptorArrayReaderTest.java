@@ -76,13 +76,91 @@ public class DB2FieldDescriptorArrayReaderTest {
                 new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
                         DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
                         new ByteArrayInputStream(
-                                "abcdefghijkCmnop\015".getBytes(JxBaseUtils.ASCII_CHARSET)));
+                                "abcdefghijkC\155xx\0\015".getBytes(JxBaseUtils.ASCII_CHARSET)));
         arrayReader.read();
     }
 
     @Test
+    public void test31Fields() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i<31; i++) {
+            sb.append("abcdefghijkC\155xx\0");
+        }
+        sb.append('\015');
+        for (int j=0; j<16; j++) {
+            sb.append('\0');
+        }
+        Assert.assertEquals(32*16+1, sb.toString().length());
+        final byte[] bytes = sb.toString().getBytes(JxBaseUtils.ASCII_CHARSET);
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
+                        DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
+                        new ByteArrayInputStream(
+                                bytes));
+        final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
+        Assert.assertEquals(32*16+1, array.getArrayLength());
+
+    }
+
+    @Test
+    public void test32Fields() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i<32; i++) {
+            sb.append("abcdefghijkC\155xx\0");
+        }
+        sb.append('\015');
+        Assert.assertEquals(32*16+1, sb.toString().length());
+        final byte[] bytes = sb.toString().getBytes(JxBaseUtils.ASCII_CHARSET);
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
+                        DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
+                        new ByteArrayInputStream(
+                                bytes));
+        final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
+        Assert.assertEquals(32*16+1, array.getArrayLength());
+
+    }
+
+    @Test(expected = IOException.class)
+    public void test32FieldsButNoTerminator() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i<32; i++) {
+            sb.append("abcdefghijkC\155xx\0");
+        }
+        sb.append('\0');
+        Assert.assertEquals(32*16+1, sb.toString().length());
+        final byte[] bytes = sb.toString().getBytes(JxBaseUtils.ASCII_CHARSET);
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
+                        DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
+                        new ByteArrayInputStream(
+                                bytes));
+        final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
+    }
+
+    @Test(expected = IOException.class)
+    public void test31FieldsError() throws IOException {
+        final StringBuilder sb = new StringBuilder();
+        for (int i=0; i<31; i++) {
+            sb.append("abcdefghijkC\155xx\0");
+        }
+        sb.append('\015');
+        sb.append("abcdefghijkC\155xx\0");
+        Assert.assertEquals(32*16+1, sb.toString().length());
+        final byte[] bytes = sb.toString().getBytes(JxBaseUtils.ASCII_CHARSET);
+        final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =
+                new DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect>(
+                        DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET),
+                        new ByteArrayInputStream(
+                                bytes));
+        final XBaseFieldDescriptorArray<DB2Access> array = arrayReader.read();
+        Assert.assertEquals(32*16+1, array.getArrayLength());
+
+    }
+
+    @Test
     public void testStream() throws IOException {
-        final byte[] bytes = new byte[16 * 32 + 2];
+        final byte[] bytes = new byte[32 * 16 + 1];
         System.arraycopy("abcdefghijkCmnop".getBytes(JxBaseUtils.ASCII_CHARSET), 0, bytes, 0, 16);
         bytes[16] = JxBaseUtils.HEADER_TERMINATOR;
         final DB2FieldDescriptorArrayReader<DB2Access, DB2Dialect> arrayReader =

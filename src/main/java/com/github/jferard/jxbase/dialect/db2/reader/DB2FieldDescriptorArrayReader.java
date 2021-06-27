@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,10 +17,10 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
+import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
-import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
@@ -35,6 +35,7 @@ import java.util.Collection;
 
 /**
  * A reader for DB2 array descriptor.
+ *
  * @param <D> the dialect
  * @param <A> the access
  */
@@ -62,32 +63,29 @@ public class DB2FieldDescriptorArrayReader<A extends XBaseAccess, D extends XBas
             JxBaseUtils.readFieldBytes(this.inputStream, fieldBytes);
             final XBaseField<? super A> field = this.createDbfField(fieldBytes);
             fields.add(field);
-
             recordLength += field.getValueLength(this.dialect.getAccess());
 
             if (IOUtils.isEndOfFieldArray(this.inputStream, JxBaseUtils.HEADER_TERMINATOR)) {
                 break;
             }
         }
-        if (this.incorrectRemainingFields(fieldBytes, i+1)) {
+        if (i == DB2Utils.DB2_MAX_FIELDS) { // not terminated
             throw new IOException("The file is corrupted or is not a DB2 file");
+        } else if (i == DB2Utils.DB2_MAX_FIELDS - 1) { // terminated
+            /* do nothing */
+        } else {
+            // pos = (i+1)*16 + 1
+            for (int j = i+1; j < DB2Utils.DB2_MAX_FIELDS; j++) {
+                JxBaseUtils.readFieldBytes(this.inputStream, fieldBytes);
+                if (!Arrays.equals(DB2Utils.DB2_BLANK_FIELD, fieldBytes)) {
+                    throw new IOException("The file is corrupted or is not a DB2 file");
+                }
+            }
+            // pos = 32*16 + 1
+            // pos = 32*16 + 1
         }
         return new GenericFieldDescriptorArray<A>(fields,
                 DB2Utils.DB2_MAX_FIELDS * DB2Utils.DB2_FIELD_DESCRIPTOR_LENGTH + 1, recordLength);
-    }
-
-    private boolean incorrectRemainingFields(final byte[] fieldBytes, final int fieldCount)
-            throws IOException {
-        if (fieldCount == DB2Utils.DB2_MAX_FIELDS - 1) {
-            return this.inputStream.read() != JxBaseUtils.HEADER_TERMINATOR;
-        }
-        for (int i = fieldCount; i < DB2Utils.DB2_MAX_FIELDS; i++) {
-            JxBaseUtils.readFieldBytes(this.inputStream, fieldBytes);
-            if (!Arrays.equals(DB2Utils.DB2_BLANK_FIELD, fieldBytes)) {
-                return true;
-            }
-        }
-        return this.inputStream.read() != JxBaseUtils.NULL_BYTE;
     }
 
     private XBaseField<? super A> createDbfField(final byte[] fieldBytes) {
