@@ -18,9 +18,10 @@
 package com.github.jferard.jxbase.dialect.db2.reader;
 
 import com.github.jferard.jxbase.TestHelper;
-import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,13 +53,14 @@ public class DB2MetadataReaderTest {
                 inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
+        Assert.assertEquals(XBaseFileTypeEnum.FoxBASEPlus1, meta.getFileType());
         Assert.assertEquals(520, meta.getFullHeaderLength());
         Assert.assertEquals(12, meta.getOneRecordLength());
-        Assert.assertEquals(TestHelper.newSet("updateDate", "recordsQty"), meta.keySet());
+        Assert.assertEquals(TestHelper.newSet(DB2Utils.META_UPDATE_DATE, DB2Utils.META_RECORDS_QTY), meta.keySet());
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(2001, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        Assert.assertEquals(calendar.getTime(), meta.get("updateDate"));
-        Assert.assertEquals(1, meta.get("recordsQty"));
+        Assert.assertEquals(calendar.getTime(), meta.get(DB2Utils.META_UPDATE_DATE));
+        Assert.assertEquals(1, meta.get(DB2Utils.META_RECORDS_QTY));
     }
 }

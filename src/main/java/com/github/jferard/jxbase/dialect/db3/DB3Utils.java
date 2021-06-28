@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.memo.MemoFileHeader;
 import com.github.jferard.jxbase.util.BytesUtils;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -30,6 +31,26 @@ public class DB3Utils {
     public static final int DB3_FIELD_DESCRIPTOR_SIZE = 32;
     public static final int MEMO_HEADER_LENGTH = 512;
     public static final int BLOCK_LENGTH = 512;
+
+    public static final String META_RECORDS_QTY = "recordsQty";
+    public static final String META_UPDATE_DATE = "updateDate";
+
+    /**
+     * Write the number of records
+     * @param out the output
+     * @param r the object
+     * @throws IOException
+     */
+    public static void writeRecordQty4(final OutputStream out, final Object r) throws IOException {
+        if (r == null) {
+            BytesUtils.writeZeroes(out, 4);
+        } else if (r instanceof Number) {
+            final int recordsQty = ((Number) r).intValue();
+            BytesUtils.writeLEByte4(out, recordsQty);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
 
     /**
      * Read the header of memo files.

@@ -36,7 +36,7 @@ public class GenericMetadataWriterTest {
     @Test
     public void write() throws IOException {
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", new Date(0));
+        meta.put(DB2Utils.META_UPDATE_DATE, new Date(0));
         meta.put("dummy", "dummy");
 
         this.gmw.write(new GenericMetadata(XBaseFileTypeEnum.dBASE4SQLTable.toByte(), 200, 150,

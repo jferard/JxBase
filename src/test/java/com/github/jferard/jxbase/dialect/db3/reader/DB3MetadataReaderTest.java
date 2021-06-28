@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,8 +37,7 @@ public class DB3MetadataReaderTest {
     @Test(expected = IOException.class)
     public void testVoidHeader() throws IOException {
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(new byte[]{});
-        @SuppressWarnings("unchecked")
-        final DB3MetadataReader reader = new DB3MetadataReader(
+        @SuppressWarnings("unchecked") final DB3MetadataReader reader = new DB3MetadataReader(
                 (XBaseDialect<DB3Access, DB3Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET),
                 inputStream);
@@ -51,20 +51,21 @@ public class DB3MetadataReaderTest {
                         0, 0, 0, 0, 0, 0, 0};
         Assert.assertEquals(32, bytes.length);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        @SuppressWarnings("unchecked")
-        final XBaseDialect<DB3Access, DB3Dialect> dialect =
+        @SuppressWarnings("unchecked") final XBaseDialect<DB3Access, DB3Dialect> dialect =
                 (XBaseDialect<DB3Access, DB3Dialect>) DialectFactory
                         .getDialect(XBaseFileTypeEnum.dBASE3plus, JxBaseUtils.ASCII_CHARSET);
         final DB3MetadataReader reader = new DB3MetadataReader(dialect, inputStream);
         final GenericMetadata meta = reader.read();
         Assert.assertEquals(0x03, meta.getFileTypeByte());
+        Assert.assertEquals(XBaseFileTypeEnum.FoxBASEPlus1, meta.getFileType());
         Assert.assertEquals(48, meta.getFullHeaderLength());
         Assert.assertEquals(12, meta.getOneRecordLength());
-        Assert.assertEquals(TestHelper.newSet("updateDate", "recordsQty"), meta.keySet());
+        Assert.assertEquals(TestHelper.newSet(DB3Utils.META_UPDATE_DATE, DB3Utils.META_RECORDS_QTY),
+                meta.keySet());
         final Calendar calendar = Calendar.getInstance(JxBaseUtils.UTC_TIME_ZONE);
         calendar.set(2001, 1, 3, 0, 0, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        Assert.assertEquals(calendar.getTime(), meta.get("updateDate"));
-        Assert.assertEquals(1, meta.get("recordsQty"));
+        Assert.assertEquals(calendar.getTime(), meta.get(DB3Utils.META_UPDATE_DATE));
+        Assert.assertEquals(1, meta.get(DB3Utils.META_RECORDS_QTY));
     }
 }

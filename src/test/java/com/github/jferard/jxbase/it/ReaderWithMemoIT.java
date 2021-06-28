@@ -22,11 +22,13 @@ import com.github.jferard.jxbase.XBaseReaderFactory;
 import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseRecord;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db3.field.DateField;
 import com.github.jferard.jxbase.dialect.db3.field.MemoField;
+import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.vfoxpro.VisualFoxProDialect;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -41,7 +43,8 @@ import java.text.ParseException;
 public class ReaderWithMemoIT {
     @Test
     @SuppressWarnings("unchecked")
-    public <A extends XBaseAccess, D extends XBaseDialect<A, D>> void test1() throws IOException, ParseException {
+    public <A extends XBaseAccess, D extends XBaseDialect<A, D>> void test1()
+            throws IOException, ParseException {
         final String tableName = TestHelper.getResourceTableName("memo1/texto.dbf");
 
         try {
@@ -51,11 +54,13 @@ public class ReaderWithMemoIT {
             try {
                 final XBaseMetadata meta = reader.getMetadata();
 
-                Assert.assertEquals(5, meta.get("recordsQty"));
-                Assert.assertEquals(48, meta.getFileTypeByte());
+                Assert.assertEquals(0x30, meta.getFileTypeByte());
+                Assert.assertEquals(XBaseFileTypeEnum.VisualFoxPro, meta.getFileType());
+                Assert.assertEquals(5, meta.get(FoxProUtils.META_RECORDS_QTY));
                 Assert.assertEquals(488, meta.getFullHeaderLength());
                 Assert.assertEquals(274, meta.getOneRecordLength());
-                Assert.assertEquals(TestHelper.createDate(114, 6, 4), meta.get("updateDate"));
+                Assert.assertEquals(TestHelper.createDate(114, 6, 4),
+                        meta.get(FoxProUtils.META_UPDATE_DATE));
                 Assert.assertEquals(6, reader.getFieldDescriptorArray().getFields().size());
 
                 final XBaseDialect<A, D> dialect = reader.getDialect();

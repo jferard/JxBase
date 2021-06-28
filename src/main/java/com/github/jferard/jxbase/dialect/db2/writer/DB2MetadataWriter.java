@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,20 +54,8 @@ public class DB2MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, 
     @Override
     public void write(final XBaseMetadata metadata) throws IOException {
         this.out.write(metadata.getFileTypeByte());
-        final Object r = metadata.get("recordsQty");
-        if (r instanceof Number) {
-            final int recordsQty = ((Number) r).intValue();
-            BytesUtils.writeLEByte2(this.out, recordsQty);
-        } else {
-            BytesUtils.writeZeroes(this.out, 2);
-        }
-        final Object d = metadata.get("updateDate");
-        if (d instanceof Date) {
-            final Date updateDate = (Date) d;
-            DB2Utils.writeHeaderUpdateDate(this.out, updateDate);
-        } else {
-            BytesUtils.writeZeroes(this.out, 3);
-        }
+        DB2Utils.writeRecordQty2(this.out, metadata.get(DB2Utils.META_RECORDS_QTY));
+        DB2Utils.writeHeaderUpdateDate3(this.out, metadata.get(DB2Utils.META_UPDATE_DATE));
         BytesUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
     }
 
@@ -76,7 +64,7 @@ public class DB2MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, 
         this.out.flush();
         this.file.seek(1);
         BytesUtils.writeLEByte2(this.out, recordQty);
-        DB2Utils.writeHeaderUpdateDate(this.out, new Date());
+        DB2Utils.writeHeaderUpdateDate3(this.out, new Date());
     }
 
     @Override

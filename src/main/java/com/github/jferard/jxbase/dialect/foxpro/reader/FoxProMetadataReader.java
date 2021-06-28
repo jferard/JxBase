@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.foxpro.FoxProUtils;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BytesUtils;
@@ -65,8 +66,8 @@ public class FoxProMetadataReader<A extends XBaseAccess, D extends XBaseDialect<
         // 12-31: Reserved; filled with zeros.
 
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
+        meta.put(FoxProUtils.META_UPDATE_DATE, updateDate);
+        meta.put(FoxProUtils.META_RECORDS_QTY, recordsQty);
         return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

@@ -20,11 +20,12 @@ package com.github.jferard.jxbase.memo;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class RawMemoReaderTest {
     @Test
-    public void test() {
+    public void test() throws IOException {
         final byte[] bytes = new byte[1024];
         for (int i=0; i<1024; i++) {
             bytes[i] = (byte) i;
@@ -32,8 +33,15 @@ public class RawMemoReaderTest {
         final ByteBuffer buffer = ByteBuffer.wrap(bytes);
         final RawMemoReader reader = new RawMemoReader(buffer, 512, 16, null);
         final byte[] temp = reader.read(0); // header
-        Assert.assertArrayEquals(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, temp);
         final byte[] temp2 = reader.read(1, 10, 5);
+        try {
+            reader.close();
+            Assert.fail();
+        } catch (final NullPointerException e) {
+            // pass
+        }
+
+        Assert.assertArrayEquals(new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}, temp);
         Assert.assertArrayEquals(new byte[] {26, 27, 28, 29, 30}, temp2);
     }
 }

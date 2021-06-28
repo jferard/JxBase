@@ -50,4 +50,20 @@ public class DB2RecordReaderTest {
         Assert.assertEquals(expected, reader.read().getMap());
     }
 
+    @Test
+    public void testEndClose() throws IOException {
+        final GenericFieldDescriptorArray<DB2Access> array =
+                new GenericFieldDescriptorArray<DB2Access>(
+                        Collections.<XBaseField<? super DB2Access>>singleton(
+                                new CharacterField("text", 2)), 12, 3);
+        final DB2RecordReader<DB2Access> reader = new DB2RecordReader<DB2Access>(
+                DB2Access.create(JxBaseUtils.ASCII_CHARSET),
+                new ByteArrayInputStream(new byte[]{0x20, 'A', 0x20}), JxBaseUtils.ASCII_CHARSET,
+                array);
+        final Map<String, Object> expected = new HashMap<String, Object>();
+        expected.put("text", "A");
+        Assert.assertEquals(expected, reader.read().getMap());
+        Assert.assertNull(reader.read());
+        reader.close();
+    }
 }

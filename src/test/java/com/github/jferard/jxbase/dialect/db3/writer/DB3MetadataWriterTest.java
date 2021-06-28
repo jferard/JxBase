@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.dialect.db3.DB3Access;
 import com.github.jferard.jxbase.dialect.db3.DB3Dialect;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -52,8 +53,8 @@ public class DB3MetadataWriterTest {
     @Test
     public void write() throws IOException {
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", new Date(0));
-        meta.put("recordsQty", 1);
+        meta.put(DB3Utils.META_UPDATE_DATE, new Date(0));
+        meta.put(DB3Utils.META_RECORDS_QTY, 1);
         this.writer
                 .write(new GenericMetadata(XBaseFileTypeEnum.dBASE3plus.toByte(), 128, 11, meta));
         Assert.assertArrayEquals(

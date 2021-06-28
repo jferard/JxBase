@@ -24,9 +24,15 @@ import java.util.Set;
  */
 public interface XBaseMetadata {
     /**
-     * @return the file type
+     * @return the file type as a byte
      */
     int getFileTypeByte();
+
+    /**
+     * @return the file type as an enum constant, or
+     * @throws IllegalArgumentException if this type is not known
+     */
+    XBaseFileTypeEnum getFileType();
 
     /**
      * @return the length of the header

@@ -20,6 +20,8 @@ package com.github.jferard.jxbase.dialect.db3.writer;
 import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseMetadata;
+import com.github.jferard.jxbase.dialect.db2.DB2Utils;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.writer.XBaseMetadataWriter;
 
@@ -27,7 +29,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -52,20 +53,8 @@ public class DB3MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, 
     @Override
     public void write(final XBaseMetadata metadata) throws IOException {
         this.out.write(metadata.getFileTypeByte());
-        final Object d = metadata.get("updateDate");
-        if (d instanceof Date) {
-            final Date updateDate = (Date) d;
-            this.writeHeaderDate(updateDate);
-        } else {
-            BytesUtils.writeZeroes(this.out, 3);
-        }
-        final Object r = metadata.get("recordsQty");
-        if (r instanceof Number) {
-            final int recordsQty = ((Number) r).intValue();
-            BytesUtils.writeLEByte4(this.out, recordsQty);
-        } else {
-            BytesUtils.writeZeroes(this.out, 4);
-        }
+        DB2Utils.writeHeaderUpdateDate3(this.out, metadata.get(DB3Utils.META_UPDATE_DATE));
+        DB3Utils.writeRecordQty4(this.out, metadata.get(DB3Utils.META_RECORDS_QTY));
         BytesUtils.writeLEByte2(this.out, metadata.getFullHeaderLength());
         BytesUtils.writeLEByte2(this.out, metadata.getOneRecordLength());
         // 12-32: Reserved
@@ -76,7 +65,7 @@ public class DB3MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, 
     public void fixMetadata(final int recordQty) throws IOException {
         this.out.flush();
         this.file.seek(1);
-        this.writeHeaderDate(new Date());
+        DB2Utils.writeHeaderUpdateDate3(this.out, new Date());
         BytesUtils.writeLEByte4(this.out, recordQty);
     }
 
@@ -85,14 +74,4 @@ public class DB3MetadataWriter<A extends XBaseAccess, D extends XBaseDialect<A, 
         this.out.flush();
         this.out.close();
     }
-
-    private void writeHeaderDate(final Date updateDate) throws IOException {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(updateDate);
-        this.out.write(calendar.get(Calendar.YEAR) - 1900);
-        this.out.write(calendar.get(Calendar.MONTH) + 1);
-        this.out.write(calendar.get(Calendar.DAY_OF_MONTH));
-    }
-
-
 }

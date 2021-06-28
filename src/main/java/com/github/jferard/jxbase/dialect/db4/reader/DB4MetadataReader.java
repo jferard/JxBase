@@ -23,6 +23,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
+import com.github.jferard.jxbase.dialect.db4.DB4Utils;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
 import com.github.jferard.jxbase.util.BytesUtils;
 import com.github.jferard.jxbase.util.IOUtils;
@@ -72,12 +73,12 @@ public class DB4MetadataReader implements XBaseMetadataReader {
         // 30-31: Reserved
 
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
-        meta.put("uncompletedTxFlag", uncompletedTxFlag);
-        meta.put("encryptionFlag", encryptionFlag);
-        meta.put("mdxFlag", mdxFlag);
-        meta.put("languageDriverId", languageDriverId);
+        meta.put(DB4Utils.META_UPDATE_DATE, updateDate);
+        meta.put(DB4Utils.META_RECORDS_QTY, recordsQty);
+        meta.put(DB4Utils.META_UNCOMPLETED_TX_FLAG, uncompletedTxFlag);
+        meta.put(DB4Utils.META_ENCRYPTION_FLAG, encryptionFlag);
+        meta.put(DB4Utils.META_MDX_FLAG, mdxFlag);
+        meta.put(DB4Utils.META_LANGUAGE_DRIVER_ID, languageDriverId);
         return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

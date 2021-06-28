@@ -17,12 +17,32 @@
 
 package com.github.jferard.jxbase.dialect.db4;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * An utility class
  */
 public class DB4Utils {
     // see https://www.clicketyclick.dk/databases/xbase/format/dbt.html#DBT_STRUCT
     public static final byte[] MEMO_FIELD_RESERVED_BYTES = {(byte) 0xff, (byte) 0xff, 0x08, 0x00};
+
+    public static final String META_UPDATE_DATE = "updateDate";
+    public static final String META_RECORDS_QTY = "recordsQty";
+    public static final String META_UNCOMPLETED_TX_FLAG = "uncompletedTxFlag";
+    public static final String META_ENCRYPTION_FLAG = "encryptionFlag";
+    public static final String META_MDX_FLAG = "mdxFlag";
+    public static final String META_LANGUAGE_DRIVER_ID = "languageDriverId";
+
+    public static void writeFlag1(final OutputStream out, final Object f) throws IOException {
+        if (f == null) {
+            out.write(0);
+        } else if (f instanceof Number) {
+            out.write(((Number) f).byteValue());
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
 
     private DB4Utils() {}
 }

@@ -44,6 +44,11 @@ public class GenericMetadata implements XBaseMetadata {
     }
 
     @Override
+    public XBaseFileTypeEnum getFileType() {
+        return XBaseFileTypeEnum.fromInt(this.typeByte);
+    }
+
+    @Override
     public int getFullHeaderLength() {
         return this.fullHeaderLength;
     }

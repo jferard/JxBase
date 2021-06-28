@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,11 +17,13 @@
 
 package com.github.jferard.jxbase.dialect.db2.reader;
 
-import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.GenericMetadata;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
+import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.dialect.db2.DB2Access;
 import com.github.jferard.jxbase.dialect.db2.DB2Dialect;
+import com.github.jferard.jxbase.dialect.db2.DB2Utils;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.reader.XBaseFieldDescriptorArrayReader;
 import com.github.jferard.jxbase.reader.XBaseMetadataReader;
@@ -89,10 +91,11 @@ public class DB2InternalReaderFactoryTest {
         PowerMock.verifyAll();
 
         Assert.assertEquals(0x2, metadata.getFileTypeByte());
+        Assert.assertEquals(XBaseFileTypeEnum.FoxBASE1, metadata.getFileType());
         Assert.assertEquals(16, metadata.getOneRecordLength());
         Assert.assertEquals(520, metadata.getFullHeaderLength());
-        Assert.assertEquals(this.createDate(1999, 4, 1), metadata.get("updateDate"));
-        Assert.assertEquals(3, metadata.get("recordsQty"));
+        Assert.assertEquals(this.createDate(1999, 4, 1), metadata.get(DB2Utils.META_UPDATE_DATE));
+        Assert.assertEquals(3, metadata.get(DB2Utils.META_RECORDS_QTY));
     }
 
     private Date createDate(final int year, final int month, final int day) {

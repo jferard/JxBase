@@ -40,6 +40,9 @@ public class FoxProUtils {
     public static final double ONE_OUT_OF_FOUR = 0.25;
     public static final double DAYS_PER_GREGORIAN_YEAR = 365.2425;
 
+    public static final String META_RECORDS_QTY = "recordsQty";
+    public static final String META_UPDATE_DATE = "updateDate";
+
     public static Date createHeaderUpdateDate(final byte yearByte, final byte monthByte,
                                               final byte dayByte) {
         final int year = yearByte + 2000;

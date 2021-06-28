@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,6 +26,7 @@ import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,4 +50,21 @@ public class DB3FieldDescriptorArrayWriterTest {
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13}, out.toByteArray());
     }
 
+    @Test
+    public void testLongName() throws IOException {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final DB3FieldDescriptorArrayWriter<DB2Access> arrayWriter =
+                new DB3FieldDescriptorArrayWriter<DB2Access>(
+                        DB2Dialect.create(XBaseFileTypeEnum.dBASE2, JxBaseUtils.ASCII_CHARSET)
+                                .getAccess(), out);
+        @SuppressWarnings("unchecked") final List<XBaseField<? super DB2Access>> fields =
+                Arrays.<XBaseField<? super DB2Access>>asList(
+                        new CharacterField("averylongname", 10));
+        Assert.assertThrows(IOException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                arrayWriter.write(new GenericFieldDescriptorArray<DB2Access>(fields, 10, 10));
+            }
+        });
+    }
 }

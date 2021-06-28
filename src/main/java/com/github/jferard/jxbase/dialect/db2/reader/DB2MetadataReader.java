@@ -59,8 +59,8 @@ public class DB2MetadataReader implements XBaseMetadataReader {
                 DB2Utils.createHeaderUpdateDate(headerBytes[3], headerBytes[4], headerBytes[5]);
         final int oneRecordLength = BytesUtils.extractLEInt2(headerBytes, 6);
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
+        meta.put(DB2Utils.META_UPDATE_DATE, updateDate);
+        meta.put(DB2Utils.META_RECORDS_QTY, recordsQty);
         return new GenericMetadata(typeByte, 0x208, oneRecordLength, meta);
     }
 

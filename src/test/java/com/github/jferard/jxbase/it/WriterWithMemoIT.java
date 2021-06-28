@@ -21,6 +21,7 @@ import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.XBaseWriter;
 import com.github.jferard.jxbase.XBaseWriterFactory;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
+import com.github.jferard.jxbase.dialect.db4.DB4Utils;
 import com.github.jferard.jxbase.dialect.foxpro.memo.TextMemoRecord;
 import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.field.XBaseField;
@@ -51,8 +52,8 @@ public class WriterWithMemoIT {
     @Test
     public void test() throws IOException {
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
-        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        meta.put(DB4Utils.META_UNCOMPLETED_TX_FLAG, JxBaseUtils.NULL_BYTE);
+        meta.put(DB4Utils.META_ENCRYPTION_FLAG, JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
                 .createWriter(XBaseFileTypeEnum.dBASE4Memo, "112", JxBaseUtils.UTF8_CHARSET, meta,

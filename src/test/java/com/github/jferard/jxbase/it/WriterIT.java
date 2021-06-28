@@ -24,6 +24,7 @@ import com.github.jferard.jxbase.dialect.db2.field.CharacterField;
 import com.github.jferard.jxbase.dialect.db2.field.NumericField;
 import com.github.jferard.jxbase.dialect.db4.DB4Access;
 import com.github.jferard.jxbase.dialect.db4.DB4Dialect;
+import com.github.jferard.jxbase.dialect.db4.DB4Utils;
 import com.github.jferard.jxbase.field.XBaseField;
 import com.github.jferard.jxbase.util.JxBaseUtils;
 import org.junit.Before;
@@ -63,8 +64,8 @@ public class WriterIT {
     @Test
     public void test() throws IOException {
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("uncompletedTxFlag", JxBaseUtils.NULL_BYTE);
-        meta.put("encryptionFlag", JxBaseUtils.NULL_BYTE);
+        meta.put(DB4Utils.META_UNCOMPLETED_TX_FLAG, JxBaseUtils.NULL_BYTE);
+        meta.put(DB4Utils.META_ENCRYPTION_FLAG, JxBaseUtils.NULL_BYTE);
 
         final XBaseWriter dbfWriter =
                 XBaseWriterFactory.<DB4Access, DB4Dialect>createWriter(XBaseFileTypeEnum.dBASE4SQLTableMemo, "111",

@@ -63,8 +63,8 @@ public class DB3MetadataReader implements XBaseMetadataReader {
         // 12-31: Reserved
 
         final Map<String, Object> meta = new HashMap<String, Object>();
-        meta.put("updateDate", updateDate);
-        meta.put("recordsQty", recordsQty);
+        meta.put(DB2Utils.META_UPDATE_DATE, updateDate);
+        meta.put(DB2Utils.META_RECORDS_QTY, recordsQty);
         return new GenericMetadata(type.toByte(), fullHeaderLength, oneRecordLength, meta);
     }
 }

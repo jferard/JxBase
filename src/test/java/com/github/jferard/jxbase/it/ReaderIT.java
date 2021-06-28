@@ -19,8 +19,10 @@ package com.github.jferard.jxbase.it;
 import com.github.jferard.jxbase.TestHelper;
 import com.github.jferard.jxbase.XBaseReader;
 import com.github.jferard.jxbase.XBaseReaderFactory;
+import com.github.jferard.jxbase.core.XBaseFileTypeEnum;
 import com.github.jferard.jxbase.core.XBaseMetadata;
 import com.github.jferard.jxbase.core.XBaseRecord;
+import com.github.jferard.jxbase.dialect.db3.DB3Utils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,11 +46,12 @@ public class ReaderIT {
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
-            Assert.assertEquals(5, meta.get("recordsQty"));
-            Assert.assertEquals(3, meta.getFileTypeByte());
+            Assert.assertEquals(0x3, meta.getFileTypeByte());
+            Assert.assertEquals(XBaseFileTypeEnum.FoxBASEPlus1, meta.getFileType());
+            Assert.assertEquals(5, meta.get(DB3Utils.META_RECORDS_QTY));
             Assert.assertEquals(929, meta.getFullHeaderLength());
             Assert.assertEquals(479, meta.getOneRecordLength());
-            Assert.assertEquals(TestHelper.createDate(112, 8, 26), meta.get("updateDate"));
+            Assert.assertEquals(TestHelper.createDate(112, 8, 26), meta.get(DB3Utils.META_UPDATE_DATE));
             Assert.assertEquals(28, reader.getFieldDescriptorArray().getFields().size());
 
             int recCounter = 0;
@@ -76,11 +79,12 @@ public class ReaderIT {
         try {
             final XBaseMetadata meta = reader.getMetadata();
 
-            Assert.assertEquals(1, meta.get("recordsQty"));
-            Assert.assertEquals(3, meta.getFileTypeByte());
+            Assert.assertEquals(0x3, meta.getFileTypeByte());
+            Assert.assertEquals(XBaseFileTypeEnum.FoxBASEPlus1, meta.getFileType());
+            Assert.assertEquals(1, meta.get(DB3Utils.META_RECORDS_QTY));
             Assert.assertEquals(3777, meta.getFullHeaderLength());
             Assert.assertEquals(2763, meta.getOneRecordLength());
-            Assert.assertEquals(TestHelper.createDate(112, 8, 27), meta.get("updateDate"));
+            Assert.assertEquals(TestHelper.createDate(112, 8, 27), meta.get(DB3Utils.META_UPDATE_DATE));
             Assert.assertEquals(117, reader.getFieldDescriptorArray().getFields().size());
 
             int recCounter = 0;
