@@ -82,10 +82,11 @@ public class FoxProMemoWriter implements XBaseMemoWriter {
 
     @Override
     public long write(final XBaseMemoRecord memo) throws IOException {
+        final long ret = this.curOffsetInBlocks;
         this.curOffsetInBlocks = this.rawMemoWriter.write(this.curOffsetInBlocks, 0,
                 BytesUtils.makeBEByte4(memo.getMemoType().getType()),
                 BytesUtils.makeBEByte4(memo.getLength()), memo.getBytes());
-        return this.curOffsetInBlocks;
+        return ret;
     }
 
     @Override

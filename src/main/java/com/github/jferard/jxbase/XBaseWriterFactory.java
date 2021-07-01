@@ -86,6 +86,7 @@ public class XBaseWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A,
             throws IOException {
         @SuppressWarnings("unchecked") final D dialect = (D) DialectFactory
                 .getDialect(type, JxBaseUtils.UTF8_CHARSET);
+        assert optional.getLength() == dialect.getOptionalLength();
         final XBaseChunkWriterFactory<A, D> writerFactory =
                 dialect.getInternalWriterFactory();
         final File dbfFile = new File(tableName + ".dbf");

@@ -57,7 +57,7 @@ public class WriterWithMemoIT {
 
         final XBaseWriter dbfWriter = XBaseWriterFactory
                 .createWriter(XBaseFileTypeEnum.dBASE4Memo, "112", JxBaseUtils.UTF8_CHARSET, meta,
-                        this.fields, new GenericOptional(new byte[263]), Collections.<String, Object>emptyMap());
+                        this.fields, GenericOptional.DB234_EMPTY, Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);
         } finally {

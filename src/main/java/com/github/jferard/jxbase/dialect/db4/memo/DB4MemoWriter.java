@@ -83,10 +83,11 @@ public class DB4MemoWriter implements XBaseMemoWriter {
 
     @Override
     public long write(final XBaseMemoRecord memo) throws IOException {
+        final long ret = this.curOffsetInBlocks;
         this.curOffsetInBlocks = this.rawMemoWriter.write(this.curOffsetInBlocks, 0,
                 DB4Utils.MEMO_FIELD_RESERVED_BYTES,
                 BytesUtils.makeLEByte4(memo.getLength()), memo.getBytes());
-        return this.curOffsetInBlocks;
+        return ret;
     }
 
     @Override

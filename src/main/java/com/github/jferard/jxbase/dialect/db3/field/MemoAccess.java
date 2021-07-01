@@ -60,7 +60,7 @@ public interface MemoAccess {
      * Write the memo value.
      * @param memoWriter the memo writer
      * @param value the memo value
-     * @return the offset in blocks or -1
+     * @return the offset in blocks of the value or -1 if the value is null
      * @throws IOException
      * @return
      */

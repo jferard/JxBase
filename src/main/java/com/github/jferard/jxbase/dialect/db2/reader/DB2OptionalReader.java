@@ -40,6 +40,6 @@ public class DB2OptionalReader<A extends XBaseAccess, D extends XBaseDialect<A, 
 
     @Override
     public XBaseOptional read() {
-        return GenericOptional.EMPTY;
+        return GenericOptional.DB234_EMPTY;
     }
 }

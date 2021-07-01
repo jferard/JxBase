@@ -98,7 +98,7 @@ public class DB2Dialect implements XBaseDialect<DB2Access, DB2Dialect> {
 
     @Override
     public int getOptionalLength() {
-        return JxBaseUtils.OPTIONAL_LENGTH;
+        return 0;
     }
 
     @Override

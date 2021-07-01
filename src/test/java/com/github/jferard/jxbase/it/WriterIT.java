@@ -69,7 +69,7 @@ public class WriterIT {
 
         final XBaseWriter dbfWriter =
                 XBaseWriterFactory.<DB4Access, DB4Dialect>createWriter(XBaseFileTypeEnum.dBASE4SQLTableMemo, "111",
-                        JxBaseUtils.UTF8_CHARSET, meta, this.fields, new GenericOptional(new byte[263]),
+                        JxBaseUtils.UTF8_CHARSET, meta, this.fields, GenericOptional.DB234_EMPTY,
                         Collections.<String, Object>emptyMap());
         try {
             dbfWriter.write(this.valueMap);

@@ -100,7 +100,7 @@ public class DB4Dialect implements XBaseDialect<DB4Access, DB4Dialect> {
 
     @Override
     public int getOptionalLength() {
-        return JxBaseUtils.OPTIONAL_LENGTH;
+        return 0;
     }
 
     @Override

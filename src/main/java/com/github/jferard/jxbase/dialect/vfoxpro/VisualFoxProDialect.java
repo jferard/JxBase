@@ -124,7 +124,7 @@ public class VisualFoxProDialect implements XBaseDialect<VisualFoxProAccess, Vis
 
     @Override
     public int getOptionalLength() {
-        return JxBaseUtils.OPTIONAL_LENGTH;
+        return JxBaseUtils.VISUAL_FOXPRO_OPTIONAL_LENGTH;
     }
 
     @Override

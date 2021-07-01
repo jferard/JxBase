@@ -36,7 +36,7 @@ public class XBaseWriterFactoryTest {
                 XBaseWriterFactory.<DB2Access, DB2Dialect>createWriter(XBaseFileTypeEnum.dBASE2,
                         tableName, JxBaseUtils.UTF8_CHARSET, Collections.<String, Object>emptyMap(),
                         Collections.<XBaseField<? super DB2Access>>emptyList(),
-                        GenericOptional.EMPTY, null);
+                        GenericOptional.DB234_EMPTY, null);
         myBase.close();
     }
 

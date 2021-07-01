@@ -92,8 +92,8 @@ public class GenericReader<A extends XBaseAccess, D extends XBaseDialect<A, D>>
                 arrayLength + metaLength + optionalLength;
         if (actualHeaderLength != fullHeaderLength) {
             throw new IOException(
-                    String.format("Bad header length: expected: %s, actual: %s + %s + %s",
-                            fullHeaderLength, arrayLength, metaLength, optionalLength));
+                    String.format("Bad header length: expected: %s, actual: %s (meta) + %s (array) + %s (opt)",
+                            fullHeaderLength, metaLength, arrayLength, optionalLength));
         }
     }
 

@@ -39,7 +39,7 @@ public class RawMemoWriter implements Closeable {
 
     /**
      * @param offsetInBlocks the start block
-     * @param from           offset in the block
+     * @param from           offset *in* the block
      * @param arrayOfBytes   a list of buffers
      * @return               the new offset in block
      * @throws IOException
@@ -58,7 +58,12 @@ public class RawMemoWriter implements Closeable {
             }
             len += bytes.length;
         }
-        return offsetInBlocks + (from + len) / this.blockSize;
+        // ensure > offsetInBlocks to go to the next block
+        long newOffsetInBlocks = offsetInBlocks + (from + len) / this.blockSize;
+        if ((from + len) % this.blockSize > 0) {
+            newOffsetInBlocks += 1;
+        }
+        return newOffsetInBlocks;
     }
 
     @Override

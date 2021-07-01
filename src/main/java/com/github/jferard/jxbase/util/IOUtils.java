@@ -158,9 +158,12 @@ public class IOUtils {
      */
     public static File getIgnoreCaseFile(final String filename) {
         final File candidateFile = new File(filename);
+        if (candidateFile.exists()) {
+            return candidateFile;
+        }
         final String candidatePath = candidateFile.getAbsolutePath();
-        final File dir = candidateFile.getParentFile();
-        if (dir != null) {
+        final File dir = new File(candidatePath).getParentFile();
+        if (dir != null && dir.isDirectory()) {
             for (final File f : dir.listFiles()) {
                 if (candidatePath.equalsIgnoreCase(f.getAbsolutePath())) {
                     return f;

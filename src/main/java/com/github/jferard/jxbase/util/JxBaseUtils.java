@@ -42,7 +42,7 @@ public class JxBaseUtils {
     public static final Charset ASCII_CHARSET = Charset.forName("US-ASCII");
     public static final Charset LATIN1_CHARSET = Charset.forName("ISO-8859-1");
     public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-    public static final int OPTIONAL_LENGTH = 263;
+    public static final int VISUAL_FOXPRO_OPTIONAL_LENGTH = 263;
     public static final int BUFFER_SIZE = 8192;
     public static final int MAX_FIELD_NAME_SIZE = 11;
     public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("UTC");

@@ -44,7 +44,7 @@ public class DB4MemoWriterTest {
                 .andReturn(5);
         EasyMock.expect(channel.position(4L)).andReturn(channel);
         EasyMock.expect(channel.position(-508L)).andReturn(channel).times(2);
-        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{1, 0, 0, 0}))).andReturn(4);
+        EasyMock.expect(channel.write(ByteBuffer.wrap(new byte[]{2, 0, 0, 0}))).andReturn(4);
         channel.close();
         PowerMock.replayAll();
 

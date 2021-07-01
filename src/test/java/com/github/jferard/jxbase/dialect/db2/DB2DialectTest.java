@@ -41,7 +41,7 @@ public class DB2DialectTest {
 
     @Test
     public void testOptionalLength() {
-        Assert.assertEquals(263, this.dialect.getOptionalLength());
+        Assert.assertEquals(0, this.dialect.getOptionalLength());
     }
 
     @Test

@@ -26,7 +26,7 @@ import java.io.IOException;
 public interface XBaseMemoWriter extends Closeable {
     /**
      * @param memo the memo record
-     * @return the new offset in blocks
+     * @return the offset in blocks
      * @throws IOException
      */
     long write(XBaseMemoRecord memo) throws IOException;

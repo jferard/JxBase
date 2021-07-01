@@ -18,6 +18,7 @@
 package com.github.jferard.jxbase.memo;
 
 import org.easymock.EasyMock;
+import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
@@ -51,7 +52,9 @@ public class RawMemoWriterTest {
         PowerMock.replayAll();
 
         final RawMemoWriter writer = new RawMemoWriter(channel, 16, 32);
-        writer.write(2, 3, new byte[] {1, 2, 3}, new byte[] {4, 5, 6});
+        final long newOffset = writer.write(2, 3, new byte[]{1, 2, 3}, new byte[]{4, 5, 6});
         PowerMock.verifyAll();
+
+        Assert.assertEquals(3, newOffset);
     }
 }

@@ -31,7 +31,7 @@ public class GenericOptionalTest {
 
     @Test
     public void testEmpty() {
-        final XBaseOptional optional = GenericOptional.EMPTY;
+        final XBaseOptional optional = GenericOptional.DB234_EMPTY;
         Assert.assertArrayEquals(new byte[] {}, optional.getBytes());
         Assert.assertEquals(0, optional.getLength());
     }

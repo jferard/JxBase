@@ -92,7 +92,7 @@ public class DB3Dialect implements XBaseDialect<DB3Access, DB3Dialect> {
 
     @Override
     public int getOptionalLength() {
-        return JxBaseUtils.OPTIONAL_LENGTH;
+        return 0;
     }
 
     @Override

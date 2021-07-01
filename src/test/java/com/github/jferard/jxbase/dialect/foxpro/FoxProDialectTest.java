@@ -173,7 +173,7 @@ public class FoxProDialectTest {
 
     @Test
     public void testGetOptionalLength() {
-        Assert.assertEquals(263, this.dialect.getOptionalLength());
+        Assert.assertEquals(0, this.dialect.getOptionalLength());
     }
 
     @Test

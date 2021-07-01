@@ -22,9 +22,9 @@ package com.github.jferard.jxbase.core;
  */
 public class GenericOptional implements XBaseOptional {
     /**
-     * A empty optional (DB2).
+     * A empty optional (DB2 - DB3 - DB4 - FoxPro).
      */
-    public static final XBaseOptional EMPTY = new XBaseOptional() {
+    public static final XBaseOptional DB234_EMPTY = new XBaseOptional() {
         @Override
         public int getLength() {
             return 0;
@@ -32,7 +32,22 @@ public class GenericOptional implements XBaseOptional {
 
         @Override
         public byte[] getBytes() {
-            return new byte[]{};
+            return new byte[0];
+        }
+    };
+
+    /**
+     * A empty optional (VisualFoxPro).
+     */
+    public static final XBaseOptional VISUAL_FOXPRO_EMPTY = new XBaseOptional() {
+        @Override
+        public int getLength() {
+            return 263;
+        }
+
+        @Override
+        public byte[] getBytes() {
+            return new byte[263];
         }
     };
 
