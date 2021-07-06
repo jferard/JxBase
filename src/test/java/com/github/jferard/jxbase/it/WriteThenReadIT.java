@@ -90,7 +90,7 @@ public class WriteThenReadIT {
 
         return XBaseWriterFactory
                 .createWriter(XBaseFileTypeEnum.dBASE4Memo, tableName, charset, meta,
-                        fields, GenericOptional.DB234_EMPTY, Collections.<String, Object>emptyMap());
+                        fields, Collections.<String, Object>emptyMap());
     }
 
     private void addData(final XBaseWriter dbfWriter) throws IOException {

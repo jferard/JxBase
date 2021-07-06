@@ -30,7 +30,7 @@ import java.util.Collections;
 
 public class XBaseWriterFactoryTest {
     @Test
-    public void test() throws IOException {
+    public void testWithOptional() throws IOException {
         final String tableName = TestHelper.createTempTable("mybase");
         final XBaseWriter myBase =
                 XBaseWriterFactory.<DB2Access, DB2Dialect>createWriter(XBaseFileTypeEnum.dBASE2,
@@ -40,4 +40,13 @@ public class XBaseWriterFactoryTest {
         myBase.close();
     }
 
+    @Test
+    public void testWithoutOptional() throws IOException {
+        final String tableName = TestHelper.createTempTable("mybase");
+        final XBaseWriter myBase =
+                XBaseWriterFactory.<DB2Access, DB2Dialect>createWriter(XBaseFileTypeEnum.dBASE2,
+                        tableName, JxBaseUtils.UTF8_CHARSET, Collections.<String, Object>emptyMap(),
+                        Collections.<XBaseField<? super DB2Access>>emptyList(), null);
+        myBase.close();
+    }
 }

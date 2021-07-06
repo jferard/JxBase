@@ -1,7 +1,7 @@
 /*
-* JxBase - Copyright (c) 2019-2021 Julien Férard
-* JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
-*
+ * JxBase - Copyright (c) 2019-2021 Julien Férard
+ * JDBF - Copyright (c) 2012-2018 Ivan Ryndin (https://github.com/iryndin)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ package com.github.jferard.jxbase;
 
 import com.github.jferard.jxbase.core.GenericFieldDescriptorArray;
 import com.github.jferard.jxbase.core.GenericMetadata;
+import com.github.jferard.jxbase.core.GenericOptional;
 import com.github.jferard.jxbase.core.XBaseAccess;
 import com.github.jferard.jxbase.core.XBaseDialect;
 import com.github.jferard.jxbase.core.XBaseFieldDescriptorArray;
@@ -54,15 +55,48 @@ import java.util.Map;
  */
 public class XBaseWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A, D>> {
     /**
-     * Create a new writer.
+     * Create a new writer. Use this version.
      *
      * @param type           the type/flavour of the dbf file
      * @param tableName      the name of the table (without .dbf)
      * @param charset        the charset
      * @param meta           the meta information as a map
      * @param fields         list of fields
-     * @param optional       optional 263 bytes data. Might contain the relative path of a DBC
-     *                       file
+     * @param memoHeaderMeta the memo meta information as a map
+     * @param <E>            a dialect.
+     * @param <F>            an access.
+     * @return a writer on the table.
+     * @throws IOException
+     */
+    public static <F extends XBaseAccess, E extends XBaseDialect<F, E>> XBaseWriter createWriter(
+            final XBaseFileTypeEnum type, final String tableName, final Charset charset,
+            final Map<String, Object> meta, final Collection<XBaseField<? super F>> fields,
+            final Map<String, Object> memoHeaderMeta)
+            throws IOException {
+        final XBaseOptional optional;
+        switch (type) {
+            case VisualFoxPro:
+            case VisualFoxProAutoIncrement:
+                optional = GenericOptional.VISUAL_FOXPRO_EMPTY;
+                break;
+            default:
+                optional = GenericOptional.DB234_EMPTY;
+                break;
+        }
+        return new XBaseWriterFactory<F, E>()
+                .create(type, tableName, charset, meta, fields, optional, memoHeaderMeta);
+    }
+
+    /**
+     * Create a new writer. Use the other version.
+     *
+     * @param type           the type/flavour of the dbf file
+     * @param tableName      the name of the table (without .dbf)
+     * @param charset        the charset
+     * @param meta           the meta information as a map
+     * @param fields         list of fields
+     * @param optional       optional bytes. FoxPro: 263 bytes. Might contain the relative path of
+     *                       a DBC file
      * @param memoHeaderMeta the memo meta information as a map
      * @param <E>            a dialect.
      * @param <F>            an access.
@@ -85,7 +119,7 @@ public class XBaseWriterFactory<A extends XBaseAccess, D extends XBaseDialect<A,
                                final Map<String, Object> memoHeaderMeta)
             throws IOException {
         @SuppressWarnings("unchecked") final D dialect = (D) DialectFactory
-                .getDialect(type, JxBaseUtils.UTF8_CHARSET);
+                .getDialect(type, charset); // was JxBaseUtils.UTF_8
         assert optional.getLength() == dialect.getOptionalLength();
         final XBaseChunkWriterFactory<A, D> writerFactory =
                 dialect.getInternalWriterFactory();

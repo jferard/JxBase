@@ -24,32 +24,12 @@ public class GenericOptional implements XBaseOptional {
     /**
      * A empty optional (DB2 - DB3 - DB4 - FoxPro).
      */
-    public static final XBaseOptional DB234_EMPTY = new XBaseOptional() {
-        @Override
-        public int getLength() {
-            return 0;
-        }
-
-        @Override
-        public byte[] getBytes() {
-            return new byte[0];
-        }
-    };
+    public static final XBaseOptional DB234_EMPTY = new GenericOptional(new byte[0]);
 
     /**
      * A empty optional (VisualFoxPro).
      */
-    public static final XBaseOptional VISUAL_FOXPRO_EMPTY = new XBaseOptional() {
-        @Override
-        public int getLength() {
-            return 263;
-        }
-
-        @Override
-        public byte[] getBytes() {
-            return new byte[263];
-        }
-    };
+    public static final XBaseOptional VISUAL_FOXPRO_EMPTY = new GenericOptional(new byte[263]);
 
     private final byte[] bytes;
 
